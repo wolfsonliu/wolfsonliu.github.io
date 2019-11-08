@@ -1,0 +1,145 @@
+Title: Git 存储文件结构
+Date: 2018-10-19 20:52
+Modified: 2018-10-19 20:52
+Category: 壹零零壹
+Tags: git
+Authors: Wolfson Liu
+Summary: 了解 Git 文件存储结构
+
+# Git 存储文件结构 #
+
+Git 的文件都存储在项目目录下面的 .git 文件夹中，其一般具有如下一些文件和文件夹（可以参考下面给出的例子）：
+
+1. `COMMIT_EDITMSG`：文本文件，存储上一个 commit （提交） 的 comment （注释）信息。如例子中：`cat .git/COMMIT_EDITMSG` 输出结果为 `add markdown notes`。
+2. `HEAD`: 文本文件，存储当前的 head 的 ref 文件的路径，具体的 head 的 SHA-1 值保存在 ref 文件中。如例子中：`cat .git/HEAD` 输出结果为 `ref: refs/heads/master`。具体的 head 对应的 commit 的文件 SHA-1 需要在 `refs/heads/master` 中获取。Git 的下一次 commit 将以 HEAD 中给出的 ref 文件对应的 commit 作为 parent commit。
+3. `branches`：过时的存储 `git pull`， `git push` 等所需 URL 的办法。
+4. `config`：当前 Git 的配置文件。`git config --local` 的配置信息将存在该文件中，如 user 信息，remote 的信息，branch 的信息等。如例子中：
+  ```
+  cat .git/config
+
+  [core]
+        repositoryformatversion = 0
+        filemode = false
+        bare = false
+        logallrefupdates = true
+        editor = emacs
+  [user]
+        name = Wolfson Liu
+  [remote "origin"]
+        url = https://github.com/wolfsonliu/learngit.git
+        fetch = +refs/heads/*:refs/remotes/origin/*
+  [branch "master"]
+        remote = origin
+        merge = refs/heads/master
+  ```
+5. `description`：文本文件，记录该仓库的名称和描述信息。`description` 文件只被 GitWeb 软件使用，在网页上呈现其描述信息。
+6. `hooks`: 文件夹，包含有在执行一些 Git 命令后，git 命令调用的脚本。
+7. `index`: 二进制文件，作为 Git 存储 staging 信息的部分存在。 
+8. `info`：文件夹，存储有一些该仓库中记录的其他信息。例如，`exclude` 文件中要存储需要被排除在外的文件名，类似于 `.gitignore` 文件。
+9. `logs`：文件夹，存储对于 refs 文件中的所有的改动的记录信息。
+10. `objects`: 文件夹，`git commit` 命令建立的所有 commit 和文件快照的信息的存储空间。
+  该文件夹下有子文件夹：
+  * `objects/[0-9a-f][0-9a-f]`：存储对象的文件夹，以 SHA-1 的前两个字母命名
+  * `objects/info`：文件夹，关于存储在该文件下中的对象的其他信息
+  * `objects/pack`：文件夹，存储压缩的对象文件
+
+  存储对象的子文件夹下面存储有所有 SHA-1 前两个字符与子文件夹名相同的所有 commit 文件，tree 文件和具体的 blob 文件，以原 SHA-1 除去前两个字符剩下的字符命名。例如例子中，
+  ```
+  │   ├── objects
+  │   │   ├── 02
+  │   │   │   └── a5f419fa69f1df550172be067237223b246d36
+  │   │   ├── 0f
+  │   │   │   └── b6d6e6201ad79b3d74b77493d0a7b9b439a018
+  ```
+  `02a5f419fa69f1df550172be067237223b246d36` 文件存储路径为 `objects/02/a5f419fa69f1df550172be067237223b246d36`
+
+11. `refs`：文件夹，存储所有的参考信息。
+有如下子文件夹：
+  * `refs/heads`：文件夹，存储所有的本地的 heads 信息，例子中只有一个master一个head，所以只有 master 一个文件。head 文件中存储有 head 对应的 commit 文件的 SHA-1 值。如例子中：`cat .git/refs/heads/master` 返回的信息为 `d144d896cc3a57a21f1fdd443b2b76620584fd76`。在 `.git/HEAD` 中存储的就是当前 head 的相对路径，如: `cat .git/HEAD` 得到的就是 `ref: refs/heads/master`。
+  * `refs/remotes`：文件夹，存储所有的 remotes 的 heads 信息。
+  * `refs/tags`：文件夹，存储所有的 tags 的信息。
+
+## 一个例子 ## 
+
+假如我们的项目有.gitignore 和 file1 这样两个文件和保存 markdown 笔记的 md 文件夹， .git 文件夹下面有如下的内容
+
+```
+.
+├── .git
+│   ├── COMMIT_EDITMSG
+│   ├── HEAD
+│   ├── branches
+│   ├── config
+│   ├── description
+│   ├── hooks
+│   │   ├── applypatch-msg.sample
+│   │   ├── commit-msg.sample
+│   │   ├── fsmonitor-watchman.sample
+│   │   ├── post-update.sample
+│   │   ├── pre-applypatch.sample
+│   │   ├── pre-commit.sample
+│   │   ├── pre-push.sample
+│   │   ├── pre-rebase.sample
+│   │   ├── pre-receive.sample
+│   │   ├── prepare-commit-msg.sample
+│   │   └── update.sample
+│   ├── index
+│   ├── info
+│   │   └── exclude
+│   ├── logs
+│   │   ├── HEAD
+│   │   └── refs
+│   │       ├── heads
+│   │       │   └── master
+│   │       └── remotes
+│   │           └── origin
+│   │               └── master
+│   ├── objects
+│   │   ├── 02
+│   │   │   └── a5f419fa69f1df550172be067237223b246d36
+│   │   ├── 0f
+│   │   │   └── b6d6e6201ad79b3d74b77493d0a7b9b439a018
+│   │   ├── 16
+│   │   │   └── a63a284776906e0949a93567a0a35145e27067
+│   │   ├── 2a
+│   │   │   └── 65a9ad4587f6c689dc66b77917ff96f5afe653
+│   │   ├── 2b
+│   │   │   └── 548176ae75a1f62d6635409cc70c1ff6c2f25b
+│   │   ├── 30
+│   │   │   └── 3ff981c488b812b6215f7db7920dedb3b59d9a
+│   │   ├── 50
+│   │   │   └── d4402de7d0bbcfae79a23cd910c2eb7e61db30
+│   │   ├── 68
+│   │   │   └── 23658394fecca1415c17bccebf8dba3ed0cc54
+│   │   ├── 7e
+│   │   │   └── 03b5bfc52c8e4cf3cb422ef802fa36254d20a5
+│   │   ├── 9e
+│   │   │   └── 31cfc76e9ef587b6af3fd4b09e3d09afb6dd26
+│   │   ├── b2
+│   │   │   └── 5c15b81fae06e1c55946ac6270bfdb293870e8
+│   │   ├── bd
+│   │   │   └── c705169c09f886182d5dfe731f241c3a4e0586
+│   │   ├── d1
+│   │   │   ├── 44d896cc3a57a21f1fdd443b2b76620584fd76
+│   │   │   └── 4ca1be4beb6730ad33df72ceec1201692477c9
+│   │   ├── info
+│   │   └── pack
+│   └── refs
+│       ├── heads
+│       │   └── master
+│       ├── remotes
+│       │   └── origin
+│       │       └── master
+│       └── tags
+├── .gitignore
+├── file1
+├── file1~
+└── md
+    ├── git_config.md
+    ├── git_file_structure.md
+    ├── git_logic.md
+    ├── understand_git_index.md
+    └── version_control_brief.md
+```
+
+

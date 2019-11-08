@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：R 环境相关的操作</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>R 语言中的环境 (environment) 相当于其他语言中的命名空间 (naming space), 包含一系列对象的名称. 环境十分像一个列表 (list), 但是, 一旦改变一个环境, 该环境的复制 (通过 new.env 等函数创建) 也会跟着改变. 环境是有层次的, 在一个环境中没有找到对象, R 会到父环境中寻找.</p>
+<h2>环境</h2>
+<p>因为环境很类似一个列表, 所以可以使用类似于对列表操作的方式去修改一个环境. 查询一个环境中的对象, 可以使用 ls 函数. 创建一个新的环境使用 new.env 函数. 查询父环境使用 parent.env 函数. 返回全局环境可以使用 globalenv 函数. </p>
+<div class="highlight"><pre><span></span><span class="n">myenv</span> <span class="o">&lt;-</span> <span class="nf">new.env</span><span class="p">(</span><span class="n">parent</span> <span class="o">=</span> <span class="nf">emptyenv</span><span class="p">())</span>
+<span class="n">myenv</span><span class="o">$</span><span class="n">a</span> <span class="o">&lt;-</span> <span class="s">&quot;1&quot;</span>
+<span class="nf">ls</span><span class="p">(</span><span class="n">myenv</span><span class="p">)</span>
+<span class="c1">#[1] &quot;a&quot;</span>
+<span class="n">myenv</span><span class="o">$</span><span class="n">a</span>
+<span class="c1">#[1] &quot;1&quot;</span>
+</pre></div>
+
+
+<p>ls 函数有一个参数, all.names, 设置为 FALSE, 则 ls 不会显示以小数点 "." 其实的环境对象, 设置为 TRUE 则会全部显示. 这个有有点像 linux 系统下面列出文件的命令 ls 对隐藏文件的操作.</p>
+<p>建立一个环境使用 new.env 函数, 该函数的 parent 参数可以指定其继承父环境中的对象. 需要注意的是, 当父环境中的对象发生改变时, 子环境中对应的对象也会改变. 为了防止继承无关对象, 可以设置父环境为空环境, 使用 emptyenv 函数可以返回空环境.</p>
+<p>从列表中删除一个元素, 只要把该元素赋值为 NULL 即可, 而对于环境中对象的删除, 则应该使用 rm 函数. rm 函数可以使用 envir 参数指定特定的环境, 并删除其中的特定的对象.</p>
+<ul>
+<li>globalenv(): 用户的工作空间.</li>
+<li>baseenv(): base 包的环境.</li>
+<li>emptyenv(): 空环境.</li>
+</ul>
+<h3>函数的环境和命名空间</h3>
+<p>环境或者命名空间的作用在于防止名称冲突. 函数有其调用时所存在的环境, 另外函数运行时, 也会建立一个环境, 外界看不到函数内部的对象, 如果不特别指定, 函数内部的对象也不会影响外部的对象. 这些隔绝起来的环境保证了运行的正确.</p>
+<div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="nf">environment</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">emptyenv</span><span class="p">()</span>
+<span class="nf">f</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+<span class="c1"># Error in f(1) (from #1) : could not find function &quot;+&quot;</span>
+</pre></div>
+
+
+<p>上面这个例子中, 由于 f 函数的环境被设置为空环境, 所以显示出 "+" 函数没有定义.</p>
+<p>函数有四个环境:
+* 建立函数的环境, 有可能是在另一个函数的内部建立的, 可以使用 environment 查看.
+* 函数存在的环境, 也是函数可以被使用的环境, 使用 pryr 包中的 where 函数可以查看.
+* 函数每次运行时建立的环境, 在函数中可以使用 environment 返回其建立的环境.
+* 函数被调用的时候的环境, 可以在函数内部使用 parent.frame 返回其被调用的环境.</p>
+<h2>赋值</h2>
+<p>给对象的赋值是和环境很相关的一个概念. R 中有不同的赋值的方式. 最常用的方式就是使用 <code>&lt;-</code> 或者 <code>=</code> 来给变量赋值. 每次赋值的时候都会在语句所在的环境中新生成一个对象并赋值, 如果已经有同名的对象, 则对象的值会被替换. 也可以使用 assign 函数, 还可以指定特定的环境.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">myfun</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="p">;</span> <span class="n">x</span><span class="p">}</span>
+<span class="nf">myfun</span><span class="p">()</span>
+<span class="c1"># [1] 1</span>
+<span class="n">x</span>
+<span class="c1"># [1] 0</span>
+</pre></div>
+
+
+<p>如果我们不希望在子环境中重新建立一个新的对象, 而希望赋值只是改变原来父环境中已经存在的对象的值, 则可以使用 <code>&lt;&lt;-</code> 或者 assign 函数. 使用 <code>&lt;&lt;-</code> 不会在当前环境重新创建一个对象, 而是寻找父环境中是否存在该名称的对象, 如果有, 则进行赋值, 如果没有, 则继续寻找父环境. 如果所有的环境都没有找到名称一致的对象, 则在 global 环境中创建一个对象并赋值. 由于, 这样的赋值方式可能会牵扯到多个环境, 所以在使用的时候应该十分小心.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="n">myfun</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="n">x</span> <span class="o">&lt;&lt;-</span> <span class="m">1</span><span class="p">;</span> <span class="n">x</span><span class="p">}</span>
+<span class="nf">myfun</span><span class="p">()</span>
+<span class="c1"># [1] 1</span>
+<span class="n">x</span>
+<span class="c1"># [1] 1</span>
+</pre></div>
+
+
+<p>如果我们希望赋值只在某个对象真正被使用的时候才使用, 那么可以使用 delayedAssign 函数, 或者使用 pryr 包中的 <code>%&lt;d-%</code> 函数.</p>
+<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">&lt;-</span> <span class="s">&quot;old&quot;</span>
+<span class="nf">delayedAssign</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
+<span class="nf">substitute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># shows only &#39;x&#39;, as it is in the global env.</span>
+<span class="n">msg</span> <span class="o">&lt;-</span> <span class="s">&quot;new!&quot;</span>
+<span class="n">x</span> <span class="c1"># new!</span>
+</pre></div>
+
+
+<p>另外有的时候, 我们可能需要一个对象每次使用的时候能够出现不同的值, 比如生成不同的随机数, 这个时候就可以使用 makeActiveBinding 函数, 把一个随机数生成函数赋给某个对象. 这样每次使用该变量的时候, 都会重新生成一个随机数. 同样, 在 pryr 包中有函数 <code>%&lt;a-%</code>.</p>
+<div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="nf">rnorm</span><span class="p">(</span><span class="m">1</span><span class="p">)}</span>
+<span class="nf">makeActiveBinding</span><span class="p">(</span><span class="s">&quot;fred&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">.GlobalEnv</span><span class="p">)</span>
+<span class="n">fred</span>
+<span class="c1"># [1] -0.2072999</span>
+<span class="n">fred</span>
+<span class="c1"># [1] -0.3692274</span>
+</pre></div>
+
+
+<p>R 中不像 C 语言有常量这个概念, 但是, 如果需要的话, 也可以使用 lockBinding 函数来限制一个对象的值的改变. 如果想要取消, 可以使用 unlockBinding 函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nv">lockBinding</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">x</span><span class="s2">&quot;</span>, <span class="nv">env</span> <span class="o">=</span> .<span class="nv">GlobalEnv</span><span class="ss">)</span>
+<span class="nv">x</span> <span class="o">=</span> <span class="mi">2</span>
+# <span class="nv">Error</span>: <span class="nv">cannot</span> <span class="nv">change</span> <span class="nv">value</span> <span class="nv">of</span> <span class="nv">locked</span> <span class="nv">binding</span> <span class="k">for</span> <span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span>
+</pre></div>
+
+
+<h2>查询</h2>
+<h3>对象</h3>
+<p>使用 ls 函数可以直接查询环境中的对象. ls 可以接受环境名, 环境名空缺的情况下, 默认返回当前环境的对象. all.names 参数可以显示隐藏的对象, 即以小数点开头的环境名.</p>
+<p>exists 函数可以用来查看某个对象是否在特定存在, 其参数 inherits 如果设置为 TRUE, 则查询也会到指定环境的父环境中查找.</p>
+<div class="highlight"><pre><span></span><span class="k">exists</span><span class="p">(</span><span class="ss">&quot;a&quot;</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="n">myenv</span><span class="p">,</span> <span class="k">inherits</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">)</span>
+</pre></div>
+
+
+<p>可以通过 ls 和 objects 来查询环境中的对象, 包括变量和函数等. 另外, 对于知道对象名而不知其环境的, 还可以使用 pryr 包中的 where 函数, where 函数实际上是个递归函数, 从子环境查询到父环境.</p>
+<div class="highlight"><pre><span></span><span class="n">objects</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="ss">&quot;tmp&quot;</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="p">.</span><span class="n">GlobalEnv</span><span class="p">)</span>
+</pre></div>
+
+
+<p>如果想要查看变量的大小, 可以使用 object.size 函数, 同时可以使用 format 函数来配合设置输出的格式.</p>
+<div class="highlight"><pre><span></span><span class="n">format</span><span class="p">(</span><span class="k">object</span><span class="p">.</span><span class="k">size</span><span class="p">(</span><span class="n">myobject</span><span class="p">),</span> <span class="n">units</span> <span class="o">=</span> <span class="ss">&quot;Mb&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>如果想要知道一个 Class 的定义和所属的包, 可以使用 getClass 和 getClassDef 函数.</li>
+</ul>
+<h3>Package</h3>
+<p>可以通过 search 函数来查询已经加载的 R 包. 实际上 search 函数和 searchpaths 函数显示了一个对象所可能查询的路径.</p>
+<ul>
+<li>search(): search 函数没有参数, 直接列出所有加载的包.</li>
+<li>searchpaths(): searchpaths() 函数也没有参数, 列出所加载的包所存放的位置.</li>
+</ul>
+<p>使用 as.environment 函数可以去查询 search path 上的路径的环境内容.</p>
+<p>加载在环境中的包, 还可以使用 ls 函数去查询包中所包括的函数和变量.</p>
+<div class="highlight"><pre><span></span><span class="n">ls</span><span class="p">(</span><span class="ss">&quot;package:base&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>版本与平台</h3>
+<p>查询所安装的 R 的版本号或者平台信息有以下几种方法.</p>
+<div class="highlight"><pre><span></span><span class="n">R</span><span class="p">.</span><span class="k">Version</span><span class="p">()</span>
+<span class="n">R</span><span class="p">.</span><span class="k">version</span>
+<span class="n">R</span><span class="p">.</span><span class="k">version</span><span class="p">.</span><span class="n">string</span>
+<span class="k">version</span>
+<span class="n">Sys</span><span class="p">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+
+<p>如果想查询单独的包的版本, 则可以使用 <code>sessionInfo()</code> 函数.</p>
+<ul>
+<li>.Platform 保存 R 语言的版本和系统的信息.</li>
+<li>.Machine 保存机器存储数值大小.</li>
+<li>.Options 保存 R 的各种选项和设置的信息, 可以使用 getOption 函数来获取, 或者直接从 .Options 中获取.</li>
+</ul>
+<h2>加载和卸载</h2>
+<p>使用 library 函数加载 R 包, 使用 detach 来卸载 R 包.</p>
+<div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="n">gplot2</span><span class="p">)</span>
+<span class="n">detach</span><span class="p">(</span><span class="ss">&quot;package:gplot2&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>如果需要加载多个包, 又不太清楚这些包和其他包的依赖关系, 那么可以使用 require 函数来加载, 这样就能够避免重复加载. 如果环境中已经加载过某包, 则 require 函数返回真, 如果没有该包, 则 require 会加载该包, 并在成功后返回真.</p>
+<div class="highlight"><pre><span></span><span class="n">require</span><span class="p">(</span><span class="ss">&quot;ggplot2&quot;</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">)</span>
+</pre></div>
+
+
+<h2>清理</h2>
+<p>有的时候需要删除变量或者要释放内存空间, 需要使用清理和垃圾回收等机制.</p>
+<ul>
+<li>rm(): 删除变量, 使用 list= 参数来删除特定变量. <code>rm(list=ls())</code> 删除所有变量. 在进行一个单独的任务, 可以在脚本的最开头加上清除所有变量, 来防止冲突.</li>
+<li>gc(): 垃圾回收.</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+Title: Emacs 学习笔记：Emacs 和编程语言
+Date: 2016-03-12 16:53
+Modified: 2016-03-12 16:53
+Category: 壹零零壹
+Tags: emacs
+Authors: Wolfson Liu
+Summary: Emacs 作为 IDE 的一些技巧.
+
+## Compilation Mode ##
+
+使用 `compile` 可以开始编译代码并进入 compilation mode.
+
+* 下一个错误 (next-error): 移动到下一个错误信息并访问相应的源代码.
+* 下一个错误信息 (compilation-next-error): `M-n`, 移动到下一个错误信息.
+* 上一个错误信息 (compilation-previous-error): `M-p`, 移动到上一个错误信息.
+* 访问源代码 (compilation-goto-error): `C-c C-c`, 访问当前错误信息的源代码.
+
+--------------------------------------------------------------------------------
+
+## 写代码 ##
+
+### Mode ###
+
+如果相应的语言没有被 Emacs 默认支持, 则在部署相应的 mode 之后, 可能还需要在 init.el 文件中添加一行命令根据文件名自动加载相应的 mode.
+
+```
+(autoload \'function "filename" "description" t) 
+(autoload \'python-mode "python-mode" "python" t) ;; 加载 mode lisp 文件
+```
+
+在自动加载 lisp 文件后还应该自动根据代码后缀名自动开启相应的 mode. auto-mode-alist 存储文件后缀名和相应 mode 的对应关系.
+
+```
+(setq auto-mode-alist (cons \'("\\.py$" . python-mode) auto-mode-alist))
+```
+
+对于交互式语言, 还可以添加下列支持.
+
+```
+(setq interpreter-mode-alist
+      (cons \'("python" . python-mode)
+            interpreter-mode-alist))
+```
+
+### 注释 ###
+
+* 注释 (indent-for-comment): **M-;**, 根据相应的语言插入注释.
+* 设置注释列 (comment-set-column): **C-x ;**, 设置插入注释的列.
+* 在新行插入注释 (indent-new-comment-line): **M-j**, 在新行插入注释.
+* 注释区域 (comment-region): 把选择的区域注释.
+* 删除注释 (kill-comment): 把注释删除, 包括注释符号和内容, 放入 kill ring.
+
+### 缩进 ###
+
+* 缩进区域 (indent-region): **C-M \\**, 缩进选择的区域.
+* 移动到第一个非空格字符 (back-to-indentation): **M-m**, 调到行第一个非空格字符.
+* 删除缩进 (delete-indentation): **M-^**, 把本行和上一缩进对齐, 即删除本行新增缩进.
+
+--------------------------------------------------------------------------------
+
+## C/C++ ##
+
+可以通过 c-mode 或者 c++-mode 来使得文本进入 c/c++ mode. 同时, 以 .c .h .y 结尾的文件会自动开启 c-mode, 而以 .C .H .cc .hh .cpp .cxx .hxx .c++ .h++ 结尾的文件会进入 c++-mode.
+
+* 设置编程风格 (c-set-style): 可以设置 c mode 中的风格. 

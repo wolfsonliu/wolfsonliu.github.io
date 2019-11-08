@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：数据类型与存储</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html">
+<meta name="twitter:title" content="Wolf Cave ~ R 学习笔记：数据类型与存储">
+<meta name="twitter:description" content="R 数据类型和存储.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ R 学习笔记：数据类型与存储" />
+<meta property="og:description" content="R 数据类型和存储." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html" rel="bookmark" title="Permalink to R 学习笔记：数据类型与存储">R 学习笔记：数据类型与存储</a></h2>
+        <div class="entry-content blog-post">
+            <h2>R 数据类型</h2>
+<h3>R 的数据存储类型</h3>
+<h4>基本类型</h4>
+<p>最基本的类型是存储单一数值的类型. 主要包括 Numeric, Integer, Complex, Character, Logical 等.</p>
+<h5>数字</h5>
+<p>Numeric 或者 "double" 是 R 优先选择的存储数值的方式, 相当于 C 中的 "double". 需要注意的是, 有的时候认为 Numeric 是 "integer" 和 "double" 的统称. <code>.Machine$double.double.eps</code> 等变量给出环境中的存储 double 的限度.</p>
+<p>Integer 是整数, 相当于 C 中的 "int". 一般不管有没有小数点的数字, R 默认存成 Numeric, 这个时候需要使用 as.integer 函数强制去把数存为 Integer. <code>.Machine$integer.max</code> 给出能够存储的最大的整数, 总是 2^31 - 1 = 2147483647 .</p>
+<p>Complex 是复数的存储形式.</p>
+<h5>字符</h5>
+<p>Character 是存储字符和字符串的类型. 字符串和字符都可以存储.</p>
+<h5>逻辑</h5>
+<p>Logical 是存储 bool 值的类型, 只有 TRUE (T) 和 FALSE (F) 两个值.</p>
+<h5>时间</h5>
+<p>Date 类型是专门为存储时间设计的. POSIXct 把时间保存为一个整数, 为某时间距离 1970 年 1 月 1 日的时间. POSIXlt 则保存一个列表, 其中有年月日时分秒的信息. 使用 unclass 可以把相应的类转换为基本类. 相应函数有 as.POSIXct, as. POSIXlt, strptime, strftime, ISOdate, ISOdatetime 等, 还有 chron 包可以处理时间.</p>
+<h4>数据结构</h4>
+<p>数据往往不是单一的值, R 有很好的存储多值数据的结构.</p>
+<h5>向量</h5>
+<p>vector, 向量, 或者说是原子向量, 类似一维的 array, 存储相同的基本类型, 可以是逻辑型 (logical), 整型 (integer), 浮点型 (numeric, double), 字符型 (character) 等, 如果有字符型的元素, 则所有的值都会转为字符型. 向量有三个特征: 一个是基本类型, 可以使用 typeof() 等函数查看; 一个是长度, 可以使用 length() 函数查看; 还有一个是属性, 可以使用 attributes() 函数查看. 类型指的是构成向量的元素的基本类型, 长度指的是元素的个数, 而属性指的是有关向量的名称等其他方面的特征, 如可以使用 names() 去查看或者设置每个元素的名称.</p>
+<p>需要注意的是, 长度为 1 的也可以是 vector, 所以使用 is.vector 函数进行判断也会显示 <code>TRUE</code>, 也就是说所有单一的基本元素变量都会被认为是一个 vector. 而对于不同长度的 vector, 使用 class 或者 mode 等函数去判断其类型的话, 都会给出其基本元素的类型, 如果一个 vector 中所有元素都是 character 则返回 character. 这样的方式给人的策略是 R 语言试图忽视单复数的差别. 其实把单一数据和向量的类型不做太多区分正是 R 语言的特点的反应. R 语言用于处理大量数据, 那么其构造和逻辑就更符合这样的需求. 例如, 如果对一个实际上长度不为 1 的整数向量加 1, 得到的是和原向量的每个值加 1 的新的向量.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
+<span class="n">x</span> <span class="o">+</span> <span class="m">1</span>
+<span class="n">[1]</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">5</span> <span class="m">6</span> <span class="m">7</span>
+</pre></div>
+
+
+<p>如果是两个等长向量相加, 则是对应的元素一个个相加.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
+<span class="n">y</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
+<span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">[1]</span>  <span class="m">2</span>  <span class="m">4</span>  <span class="m">6</span>  <span class="m">8</span> <span class="m">10</span> <span class="m">12</span>
+</pre></div>
+
+
+<p>如果两个向量长度不等长, 那么只有一个长度是另一个长度的倍数才能相加. 而短的向量则会重复为长度和长向量一样长. 其实这样看也就理解了当短向量长度为 1 的时候的结果其实是个特例. 这也是 R 语言淡化单一值和向量之间区别的一个特点.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
+<span class="n">z</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">2</span>
+<span class="n">x</span> <span class="o">+</span> <span class="n">z</span>
+<span class="n">[1]</span> <span class="m">2</span> <span class="m">4</span> <span class="m">4</span> <span class="m">6</span> <span class="m">6</span> <span class="m">8</span>
+</pre></div>
+
+
+<p>判断一个变量是不是向量可以使用若干函数. 可以使用 is.character(), is.double(), is.interger(), is.logical() 等函数直接判断其类型, 也可以用 is.atomic() 函数来判断是不是向量. 需要注意的是, is.vector() 只能判断向量没有属性 (attributes) 或者仅有 names 属性的向量, 有其他属性的向量, 其也会给出 FALSE.</p>
+<p>构建向量, 如果元素的基本类型不一样, 那么会进行强制类型转换, 例如如果有字符, 则所有的元素都强制转换为字符. 也可以使用类型转换函数自己转换, as.character(), as.double(), as.interger(), as.logical().</p>
+<h5>因子</h5>
+<p>Factor 是一种能够帮助节省内存空间的方式. 如果一系列的值中有较多重复的值, 可以使用 factor, factor 中只会存储一份原值, 而原来的值本身会存为数字, 这样就会节省空间.</p>
+<p>原值被称为水平 (level), 可以自己去设置顺序等. levels 函数可以返回一个 factor 所有可能的 level, 而 nlevels 则可以返回 level 的个数. </p>
+<p>把一个向量转换成 factor 只要使用 as.factor 函数. 有的时候需要我们把数字先转换成 factor, 经过一定处理之后需要再把 factor 转换称为数字, 这个时候不能直接使用 as.numeric, 因为 as.numeric 会直接返回 factor 内部的值, 而不是原来的值. 我们需要先使用 as.character 或者 levels 先得到字符, 然后再转换为数字.</p>
+<div class="highlight"><pre><span></span><span class="n">myfactor</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">factor</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="mi">20</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">),</span><span class="w"> </span><span class="n">levels</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">),</span><span class="w"> </span><span class="n">ordered</span><span class="o">=</span><span class="k">TRUE</span><span class="p">)</span><span class="w"></span>
+<span class="k">as</span><span class="p">.</span><span class="nc">numeric</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">myfactor</span><span class="p">)</span><span class="o">[</span><span class="n">myfactor</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
+<span class="k">as</span><span class="p">.</span><span class="nc">numeric</span><span class="p">(</span><span class="k">as</span><span class="p">.</span><span class="k">character</span><span class="p">(</span><span class="n">myfactor</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+
+
+<p>有的时候我们会需要去生成某种类型的 factor 来做参数或者测试数据, 那么可以使用 gl 函数. gl 函数可以记成 "generate levels" 的缩写. gl 函数的参数主要有: <code>n</code> 用来设置 level 的个数; <code>k</code> 用来设置每个 level 重复的次数; <code>length</code> 来设置长度, 其实有了前两个参数这个可以忽略; <code>labels</code> 用来设置 level 的值; <code>ordered</code> 接受 bool 值, 设置是否 level 是排列好顺序的.</p>
+<p>需要注意的是, 在使用 c 函数把若干个因子组合在一起的时候, 需要先把因子转换为原来的值再使用 c 函数, 否则 c 函数直接把因子当作存在内存中的数字而丢失原来的意思.</p>
+<p>如果我有一个向量, 其中是连续的值, 我现在想要画直方图, 我可以直接用相应的函数画出来. 如果我不需要看到图, 而只想要知道这些值都怎么分布在区间内, 我就可以使用 cut 函数. cut 函数把数值分成不同的区间, 然后把原来的向量转化为 level 为区间的因子, 这样就能知道某个值属于哪个区间. 原向量和因子的长度相等, 因子的 level 是自己设定的. 使用 table 函数就可以统计每个区间中数值的个数. </p>
+<div class="highlight"><pre><span></span><span class="n">aaa</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">5</span><span class="p">,</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">5</span><span class="p">,</span><span class="m">6</span><span class="p">,</span><span class="m">7</span><span class="p">)</span>
+
+<span class="nf">cut</span><span class="p">(</span><span class="n">aaa</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+<span class="n">[1</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="n">]</span>
+<span class="n">[8</span><span class="nf">] </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.01</span><span class="nf">]  </span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.01</span><span class="n">]</span> 
+<span class="n">Levels</span><span class="o">:</span> <span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">] </span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.01</span><span class="n">]</span>
+
+<span class="nf">cut</span><span class="p">(</span><span class="n">aaa</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="n">dig.lab</span> <span class="o">=</span> <span class="m">4</span><span class="p">,</span> <span class="n">ordered</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">[1</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="nf">] </span><span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="n">]</span>
+<span class="n">[8</span><span class="nf">] </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="nf">]     </span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.006</span><span class="nf">] </span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.006</span><span class="n">]</span>
+<span class="n">Levels</span><span class="o">:</span> <span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="n">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="n">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.006</span><span class="n">]</span>
+</pre></div>
+
+
+<p>有的时候, 我需要去了解两个因子之间有多少组合, 这时候就可以选择 interaction 函数, interaction 函数可以给出多个因子 level 的组合. 这些组合并不都有数据, 如果设置 <code>drop = TRUE</code> 则会扔掉没有数据的 level, 而只保留真的有数据的 level.</p>
+<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">&lt;-</span> <span class="nf">gl</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">8</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">&lt;-</span> <span class="nf">gl</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ctrl&quot;</span><span class="p">,</span> <span class="s">&quot;treat&quot;</span><span class="p">))</span>
+<span class="nf">interaction</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">drop</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;.&quot;</span><span class="p">)</span>
+<span class="c1">#[1] 1.ctrl  1.ctrl  1.treat 1.treat 2.ctrl  2.ctrl  2.treat 2.treat</span>
+<span class="c1">#Levels: 1.ctrl 2.ctrl 1.treat 2.treat</span>
+</pre></div>
+
+
+<h5>矩阵</h5>
+<p>matrix, 二维的 array, 所有的元素都是相同类型. 函数 matrix(), as.matrix(), is.matrix(), 可以用来产生矩阵, 类型转换为矩阵和判断是否是矩阵.</p>
+<p>在取 matrix 中的元素的时候, 可以使用下标来操作. 一般情况下, 下标按照 [ROW, COL] 来取, 其中 ROW 和 COL 都可以是向量, 可以是指示想要取出的行号或者列号的向量, 也可以是 bool 值的向量. 如果方括号中没有逗号, 而按照 [NUM] 来取矩阵中的元素, 则会返回把矩阵当作一维的向量排列后对应位置的值, 如果是 2 乘 2 矩阵, [3] 则会返回 [2,1] 的值, 原矩阵会按照列优先延展成向量.</p>
+<p>在取矩阵的一个行或者列后, 其返回值的维度会减少, 在取下标的时候, 使用参数 <code>[,, drop = FALSE]</code> 则不会让矩阵所取结果的值的维度减少.</p>
+<p>矩阵在内存中是按照行优先或者列优先存储的一维的向量, 所以如果需要建立一个矩阵, 最好是先建立一个足够大的矩阵, 然后向其中填数, 而不应该去建立一个小的矩阵, 然后使用 rbind 或着 cbind 去补充. 因为如果矩阵的数量增加, R 需要重新申请空间, 并且, 如果添加的行或者列和存储的优先不一样的话, 则需要重新对矩阵元素进行排序, 这样的话就会使得效率十分低下. 所以, 建立矩阵应该建立足够大的矩阵, 如果最后不需要这么大的矩阵, 只要重新赋值一次就好.</p>
+<h5>数组</h5>
+<p>array, 可以有很多维. 函数 array(), as.array(), is.array(), 可以用来产生数组, 类型转换为数组和判断是否是数组. 数组也可以使用 dim() 函数去获得或者改变数据的维度属性.</p>
+<h5>列表</h5>
+<p>list, 列表, 可以把不同类型的变量组合在一起, list 中也可以包含子 list. 可以使用 list() 来建立列表, 通过 is.list() 来判断变量是否是列表, 或者使用 as.list() 把其他类型的变量转换为列表.</p>
+<p>列表实际上是一维的数据结构, 取列表中的元素就需要特别注意, 如果使用单方括号 "[]", 所取出的结果就是该列表的一个子列表, 而如果想要获得其本身内容, 则需要使用双方括号 "[[]]" 或者美元符号 "$". 取元素可以使用名称, 也可以使用数字.</p>
+<div class="highlight"><pre><span></span><span class="n">mylist</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">one</span> <span class="o">=</span> <span class="s">&quot;one&quot;</span><span class="p">,</span> <span class="n">two</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>
+<span class="n">mylist</span>
+<span class="c1">#$one</span>
+<span class="c1">#[1] &quot;one&quot;</span>
+
+<span class="c1">#$two</span>
+<span class="c1">#[1] 2 2</span>
+
+<span class="n">mylist[</span><span class="s">&quot;one&quot;</span><span class="n">]</span>
+<span class="c1">#$one</span>
+<span class="c1">#[1] &quot;one&quot;</span>
+
+<span class="n">mylist[[</span><span class="s">&quot;one&quot;</span><span class="n">]]</span>
+<span class="c1">#[1] &quot;one&quot;</span>
+<span class="n">mylist</span><span class="o">$</span><span class="n">one</span>
+<span class="c1">#[1] &quot;one&quot;</span>
+</pre></div>
+
+
+<p>由于列表中可以放各种类型的对象, 这就为把多种多样相关的数据整合在一起提供了便利. 一个 list 可以不准确地看作是 C++ 语言中专门用来存储数据的 class. 一些相关变量, 为了和其他的变量区分, 往往会取相似的变量名, 当变量十分多的时候, 这样的方法依然不方便查询. 我们就可以把这些相关的变量都放在一个列表中, 然后通过取下标的方法访问变量. 如果忘记了变量名, 还可以通过 names 函数或者 str 函数去查询包含在列表中的变量名. 这样的方法十分适合保存对多个数据集进行相同或相似的处理结果, 可以使用 for 循环来完成数据的保存.</p>
+<div class="highlight"><pre><span></span><span class="nv">rna</span>.<span class="nv">gene</span>.<span class="nv">fpkm</span>  <span class="o">&lt;-</span> <span class="nv">list</span><span class="ss">()</span>  # 需要提前建立空的列表.
+<span class="k">for</span> <span class="ss">(</span><span class="nv">nam</span> <span class="nv">in</span> <span class="nv">dir</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">cuffnorm</span>.<span class="nb">result</span>.<span class="nv">dir</span><span class="ss">))</span> {
+    <span class="nv">rna</span>.<span class="nv">gene</span>.<span class="nv">fpkm</span>[[<span class="nv">nam</span>]]  <span class="o">&lt;-</span> <span class="nv">read</span>.<span class="nv">table</span><span class="ss">(</span>  # 建立列表元素并赋值
+        <span class="nv">file</span>.<span class="nv">path</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">./</span><span class="s2">&quot;</span>,
+                  <span class="nv">nam</span>,
+                  <span class="s2">&quot;</span><span class="s">genes.fpkm_table</span><span class="s2">&quot;</span><span class="ss">)</span>,
+        <span class="nv">header</span> <span class="o">=</span> <span class="nv">TRUE</span>,
+        <span class="nv">sep</span>    <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="ss">)</span>
+}
+</pre></div>
+
+
+<p>如果想要删除列表中的一个元素, 则只要向该元素赋值 NULL 即可. 如果想要设置一个值为 NULL 的元素, 则应该向该元素赋值一个 <code>list(NULL)</code>.</p>
+<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+<span class="n">x[[</span><span class="s">&quot;b&quot;</span><span class="n">]]</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>
+<span class="nf">str</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="c1">#&gt; List of 1</span>
+<span class="c1">#&gt; $ a: num 1</span>
+
+<span class="n">y</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+<span class="n">y[</span><span class="s">&quot;b&quot;</span><span class="n">]</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="kc">NULL</span><span class="p">)</span>
+<span class="nf">str</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="c1">#&gt; List of 2</span>
+<span class="c1">#&gt; $ a: num 1</span>
+<span class="c1">#&gt; $ b: NULL</span>
+</pre></div>
+
+
+<p>列表在内存中的保存并不是连续的, 而是像 C 语言中的链表一样的分散开的, 所以对列表增加元素并不像矩阵那样效率低, 对于列表或者相应的数据框, 使用 rbind 则不会像对矩阵使用那么缓慢. 这也是为什么, 我们可以先建立一个空列表 (或数据框), 然后通过 for loop 等方式逐渐向其中高效地添加元素.</p>
+<h5>数据框</h5>
+<p>data.frame, 数据框, 是一种特别的 list, 其像 matrix 一样限制了每列的变量长度必须要一样, 但同时也像 list 一样, 每一列的变量类型可以不同. 可以通过 data.frame() 函数建立数据框, 通过 as.data.frame() 把矩阵等转换成为数据框, 或者通过 is.data.frame() 来判断类型是否是数据框. names() 和 colnames() 都可以返回或改变数据框的列名, 而 rownames() 则可以返回或改变数据框的行名.</p>
+<p>数据框实际上看着非常像我们常用的 Excel 中的一个表, 数据框的列名和行名也分别对应于 Excel 表格中的列名和行名. 由于数据框具有 list 和 matrix 的特点, 所以对数据框进行取元素也有 list 和 matrix 取元素的特点, 我们既可以像 list 一样使用 "$" 取一个列, 也可以像 matrix 一样使用 "[ROW, COL]" 取其中一个特定的值.</p>
+<p>在创建数据框的时候, 如果使用 cbind() 对向量作用, 除非已经有一个向量是数据框, 否则 cbind() 会输出矩阵, 而不是数据框, 这时候就需要使用 as.data.frame() 显式转换.</p>
+<h3>查询变量的类型</h3>
+<p>常用的查询变量类型的函数有: mode, storage.mode, class 和 typeof. 这些函数有一些差别.</p>
+<ul>
+<li>storage.mode 是数据实际在内存中存储所采用的方式.</li>
+<li>class 是面向对象的 R, 比如说 data.frame 实际上的存储方式 (storage.mode) 是 list, 但是为了更好处理表单数据, 就包装成为了 data.frame 类型.</li>
+<li>mode 和 typeof 给出的结果很接近, 是实际上的类型, 但是在 mode 中, "integer" 和 "double" 都被认为是 "numeric".</li>
+</ul>
+<p>如果需要知道环境中每个基本类型能存储的大小, 可以查询 <code>.Machine</code> 这个 list, 相应的大小存储在该 list 中.</p>
+<h3>NA</h3>
+<p>由于种种原因, 数据中可能会出现缺失值的情况, R 会用 NA 来替代相应的空值. 如果是计算后产生的空值, 则会用 Inf 或者 NaN 来代替. 处理空值是数据分析中的必要部分.</p>
+<ul>
+<li>判断 NA 可以使用 is.na 或者 is.nan 函数, 其中 is.na 会把 NA, Inf, NaN 都认为是 NA, 而 is.nan 则只关注 NaN.</li>
+<li>mean, var, sum, min, max, 等函数都有 na.rm 参数, 设置成真, 则会在计算的时候把 NA 给除去.</li>
+<li>lm, glm, gam 等函数有 na.action 参数, 该参数接受函数作为变量, 如 na.omit, na.fail. na.pass, na.exculde 等.</li>
+<li>na.omit 和 complete.cases 都可以返回一个只包含完整数据行的 data.frame, 也就是说如果一行中有一个或多个 NA, 该行就会被剔除.</li>
+<li>对于 read.table 等函数可以使用 na.strings 可以把特定的数值或字符认为是 NA.</li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sat 09 April 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html&text=R 学习笔记：数据类型与存储&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html&t=R 学习笔记：数据类型与存储"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html&title=R 学习笔记：数据类型与存储" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：数据类型与存储&amp;body=Viens découvrir un article à propos de [R 学习笔记：数据类型与存储] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-shu-ju-lei-xing-yu-cun-chu.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

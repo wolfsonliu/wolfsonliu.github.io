@@ -1,0 +1,29 @@
+Title: Emacs 学习笔记：Emacs 小工具
+Date: 2016-02-26 23:04
+Modified: 2016-02-26 23:04
+Category: 壹零零壹
+Tags: emacs
+Authors: Wolfson Liu
+Summary: Emacs 的一些常用小工具.
+
+
+# 日历 #
+日历: calendar, 显示日历, mode line 有简单说明, "." 回到今天. **M-x set-variable calendar-week-start** 可以设置星期开始的天. 如果在每次启动 Emacs 都需要看到日, 则在配置文件中添加 `(calendar)`. 日历还支持自己设定时间提醒, dairy.
+
+* **C-f**:      后一天
+* **C-b**:      前一天
+* **C-n**:      下一周
+* **C-p**:      上一周
+* **C-a**:      周开始
+* **C-e**:      周结束
+* **M-}**:      下一月
+* **M-{**:      上一月
+* **M-a**:      月开始
+* **M-e**:      月结束
+* **M-]**:      下一年
+* **M-[**:      上一年
+* **M-<**:      年开始
+* **M->**:      年结束
+* holidays:     显示节日, holiday-list 也是类似. h 可以查寻所选择天是否是假日.
+* lunar-phase:  查看月相.
+

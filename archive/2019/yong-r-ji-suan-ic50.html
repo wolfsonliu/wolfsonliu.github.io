@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>用 R 计算IC50</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2019/yong-r-ji-suan-ic50.html">
+<meta name="twitter:title" content="Wolf Cave ~ 用 R 计算IC50">
+<meta name="twitter:description" content="计算 IC50">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ 用 R 计算IC50" />
+<meta property="og:description" content="计算 IC50" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2019/yong-r-ji-suan-ic50.html" rel="bookmark" title="Permalink to 用 R 计算IC50">用 R 计算IC50</a></h2>
+        <div class="entry-content blog-post">
+            <p>数据如下, x 是加药量, y 是细胞数量.</p>
+<div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">20</span><span class="p">,</span> <span class="m">25</span><span class="p">),</span>
+    <span class="n">y</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">192.9</span><span class="p">,</span> <span class="m">167.3</span><span class="p">,</span> <span class="m">113.3</span><span class="p">,</span> <span class="m">21.2</span><span class="p">,</span> <span class="m">6.0</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>首先拟合曲线.</p>
+<div class="highlight"><pre><span></span><span class="n">lmresult</span> <span class="o">&lt;-</span> <span class="nf">lm</span><span class="p">(</span><span class="n">y</span> <span class="o">~</span> <span class="nf">poly</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&#39;p&#39;</span><span class="p">)</span>
+<span class="n">xx</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">25</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="m">100</span><span class="p">)</span>
+<span class="nf">lines</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="nf">predict</span><span class="p">(</span><span class="n">lmresult</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xx</span><span class="p">)),</span> <span class="n">col</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>然后计算 IC 50 的值.</p>
+<div class="highlight"><pre><span></span><span class="n">ic50func</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">abs</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">lmresult</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">a</span><span class="p">))</span> <span class="o">-</span> <span class="n">data[1</span><span class="p">,</span> <span class="s">&#39;y&#39;</span><span class="n">]</span> <span class="o">*</span> <span class="m">0.5</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">result.x</span> <span class="o">&lt;-</span> <span class="nf">optimize</span><span class="p">(</span><span class="n">ic50func</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">25</span><span class="p">))</span><span class="o">$</span><span class="n">minimum</span>
+</pre></div>
+
+
+<p>画图.</p>
+<div class="highlight"><pre><span></span><span class="n">result.y</span> <span class="o">&lt;-</span> <span class="nf">round</span><span class="p">(</span><span class="nf">predict</span><span class="p">(</span><span class="n">lmresult</span><span class="p">,</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">result.x</span><span class="p">)),</span> <span class="m">3</span><span class="p">)</span>
+<span class="nf">plot</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&#39;p&#39;</span><span class="p">)</span>
+<span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="o">=</span><span class="n">result.y</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> <span class="n">lty</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+<span class="nf">abline</span><span class="p">(</span><span class="n">v</span><span class="o">=</span><span class="n">result.x</span><span class="p">,</span> <span class="n">lty</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+<span class="nf">mtext</span><span class="p">(</span><span class="n">result.x</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="m">1</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="m">22.927</span><span class="p">)</span>
+<span class="nf">mtext</span><span class="p">(</span><span class="n">result.y</span><span class="p">,</span> <span class="n">side</span><span class="o">=</span><span class="m">2</span><span class="p">,</span> <span class="n">at</span> <span class="o">=</span> <span class="nf">predict</span><span class="p">(</span><span class="n">lr4</span><span class="p">,</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="m">22.927</span><span class="p">)))</span>
+<span class="nf">lines</span><span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="nf">predict</span><span class="p">(</span><span class="n">lr4</span><span class="p">,</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xx</span><span class="p">)),</span> <span class="n">col</span><span class="o">=</span><span class="s">&#39;red&#39;</span><span class="p">)</span>
+<span class="nf">points</span><span class="p">(</span><span class="n">result.x</span><span class="p">,</span> <span class="n">result.y</span><span class="p">,</span> <span class="n">pch</span><span class="o">=</span><span class="m">19</span><span class="p">,</span> <span class="n">cex</span><span class="o">=</span><span class="m">2</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s">&#39;blue&#39;</span><span class="p">)</span>
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yu-feng-mu-shi.html" rel="bookmark" title="Permalink to 羽风木石">[ 羽风木石 ]</a></span>
+            <span class="post_date">Thu 07 November 2019</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/biology.html">#biology, </a></span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2019/yong-r-ji-suan-ic50.html&text=用 R 计算IC50&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2019/yong-r-ji-suan-ic50.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2019/yong-r-ji-suan-ic50.html&t=用 R 计算IC50"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2019/yong-r-ji-suan-ic50.html&title=用 R 计算IC50" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=用 R 计算IC50&amp;body=Viens découvrir un article à propos de [用 R 计算IC50] sur le site de Wolfson Liu. ../../archive/2019/yong-r-ji-suan-ic50.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2019/yong-r-ji-suan-ic50.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

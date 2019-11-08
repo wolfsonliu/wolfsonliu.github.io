@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Ubuntu 16.04.3 设置 PostgreSQL</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2017/ubuntu-16043-she-zhi-postgresql.html">
+<meta name="twitter:title" content="Wolf Cave ~ Ubuntu 16.04.3 设置 PostgreSQL">
+<meta name="twitter:description" content="PostgreSQL">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Ubuntu 16.04.3 设置 PostgreSQL" />
+<meta property="og:description" content="PostgreSQL" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2017/ubuntu-16043-she-zhi-postgresql.html" rel="bookmark" title="Permalink to Ubuntu 16.04.3 设置 PostgreSQL">Ubuntu 16.04.3 设置 PostgreSQL</a></h2>
+        <div class="entry-content blog-post">
+            <p>我在 ubuntu 16.04.3 下安装了 PostgreSQL 9.5,
+按照之前的使用 PostgreSQL, 直接 <code>su postgres</code> 发现要输入密码, 我忘记了默认密码.
+网上查阅后发现, ubuntu 下 postgres 用户是锁定的, 不建议用密码登陆.
+但是我们可以直接用 sudo 来设置 psql 的用户和密码.</p>
+<p>设置 postgres 数据库的密码用于管理:</p>
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span> <span class="n">postgres</span>
+</pre></div>
+
+
+<p>其中 -u 是表示用用户 postgres, 后面的 psql 是 PostgreSQL shell 的程序, 打开 postgres 数据库.
+命令输入之后, 在 psql 中设置 postgres 用户的密码:</p>
+<div class="highlight"><pre><span></span><span class="n">postgres</span><span class="o">=#</span> <span class="err">\</span><span class="n">password</span> <span class="n">postgres</span>
+<span class="n">Enter</span> <span class="k">new</span> <span class="n">password</span><span class="p">:</span>
+<span class="n">Enter</span> <span class="n">it</span> <span class="n">again</span><span class="p">:</span>
+</pre></div>
+
+
+<p>于是就设置成功.</p>
+<p>接下来就是创建用户:</p>
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="k">createuser</span> <span class="c1">--interactive</span>
+<span class="n">Enter</span> <span class="n">name</span> <span class="k">of</span> <span class="k">role</span> <span class="k">to</span> <span class="k">add</span><span class="p">:</span> <span class="n">wolfson</span>
+<span class="n">Shall</span> <span class="n">the</span> <span class="k">new</span> <span class="k">role</span> <span class="n">be</span> <span class="n">a</span> <span class="n">superuser</span><span class="o">?</span> <span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="n">n</span>
+<span class="n">Shall</span> <span class="n">the</span> <span class="k">new</span> <span class="k">role</span> <span class="n">be</span> <span class="n">allowed</span> <span class="k">to</span> <span class="k">create</span> <span class="n">databases</span><span class="o">?</span> <span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="n">n</span>
+<span class="n">Shall</span> <span class="n">the</span> <span class="k">new</span> <span class="k">role</span> <span class="n">be</span> <span class="n">allowed</span> <span class="k">to</span> <span class="k">create</span> <span class="k">more</span> <span class="k">new</span> <span class="n">roles</span><span class="o">?</span> <span class="p">(</span><span class="n">y</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="n">n</span>
+</pre></div>
+
+
+<p>然后是创建用户的数据库:</p>
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="k">createdb</span> <span class="n">wolfson</span>
+</pre></div>
+
+
+<p>接着是设置用户的密码:</p>
+<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="o">-</span><span class="n">u</span> <span class="n">postgres</span> <span class="n">psql</span> <span class="n">wolfson</span>
+<span class="n">wolfson</span><span class="o">=#</span> <span class="err">\</span><span class="n">password</span> <span class="n">wolfson</span>
+<span class="n">Enter</span> <span class="k">new</span> <span class="n">password</span><span class="p">:</span>
+<span class="n">Enter</span> <span class="n">it</span> <span class="n">again</span><span class="p">:</span>
+</pre></div>
+
+
+<p>下面可以登陆新建的账户, 注意需要设置 <code>--host=localhost</code>,
+否则会出现错误 <code>psql: FATAL:  Peer authentication failed for user "wolfson"</code>.
+避免错误的另外一种方式创建一个 linux 用户为 wolfson.</p>
+<div class="highlight"><pre><span></span><span class="nv">psql</span> <span class="o">-</span><span class="nv">d</span> <span class="nv">wolfson</span> <span class="o">-</span><span class="nv">U</span> <span class="nv">wolfson</span> <span class="o">--</span><span class="nv">host</span><span class="o">=</span><span class="nv">localhost</span>
+
+<span class="nv">Password</span> <span class="k">for</span> <span class="nv">user</span> <span class="nv">biostore</span>:
+<span class="nv">psql</span> <span class="ss">(</span><span class="mi">9</span>.<span class="mi">5</span>.<span class="mi">7</span><span class="ss">)</span>
+<span class="nv">SSL</span> <span class="nv">connection</span> <span class="ss">(</span><span class="nv">protocol</span>: <span class="nv">TLSv1</span>.<span class="mi">2</span>, <span class="nv">cipher</span>: <span class="nv">ECDHE</span><span class="o">-</span><span class="nv">RSA</span><span class="o">-</span><span class="nv">AES256</span><span class="o">-</span><span class="nv">GCM</span><span class="o">-</span><span class="nv">SHA384</span>, <span class="nv">bits</span>: <span class="mi">256</span>, <span class="nv">compression</span>: <span class="nv">off</span><span class="ss">)</span>
+<span class="nv">Type</span> <span class="s2">&quot;</span><span class="s">help</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="nv">help</span>.
+
+<span class="nv">biostore</span><span class="o">=&gt;</span>
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sun 13 August 2017</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/linux.html">#linux, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2017/ubuntu-16043-she-zhi-postgresql.html&text=Ubuntu 16.04.3 设置 PostgreSQL&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2017/ubuntu-16043-she-zhi-postgresql.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2017/ubuntu-16043-she-zhi-postgresql.html&t=Ubuntu 16.04.3 设置 PostgreSQL"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2017/ubuntu-16043-she-zhi-postgresql.html&title=Ubuntu 16.04.3 设置 PostgreSQL" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Ubuntu 16.04.3 设置 PostgreSQL&amp;body=Viens découvrir un article à propos de [Ubuntu 16.04.3 设置 PostgreSQL] sur le site de Wolfson Liu. ../../archive/2017/ubuntu-16043-she-zhi-postgresql.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2017/ubuntu-16043-she-zhi-postgresql.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

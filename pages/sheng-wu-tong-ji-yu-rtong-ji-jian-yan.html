@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>生物统计与 R：统计检验</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>假设检验：</p>
+<ul>
+<li>null hypothesis： H0 零假设</li>
+<li>alternative hypothesis： H1 备选假设</li>
+<li>type I error： 一类错误，H0 为真而拒绝了 H0，type I error rate 用 alpha 表示</li>
+<li>type II error：二类错误，H1 为真而拒绝了 H1，type II error rate 用 beta 表示</li>
+<li>power：1 - beta，H1 为真而接受 H1 的概率</li>
+</ul>
+<p>若干单样本假设检验：
+* 对未知方差的正态分布的均值进行检验，用 one-sample t test
+* 对已知方差的正态分布的均值进行检验，用 one-sample z test
+* 对正态分布的方差进行检验，用 one-sample chi-squared test
+* 对二项分布（binomial test）的 p 检验，one-sample binomial test
+* 对 Poisson distribution 的期望的均值检验，one-sample Poisson test</p>
+<h3>one-sample t test</h3>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

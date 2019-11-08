@@ -1,0 +1,29 @@
+Title: 使用词典
+Date: 2018-05-04 15:20
+Modified: 2018-05-04 15:20
+Category: 壹零零壹
+Tags: software
+Authors: Wolfson Liu
+Summary: 各种词典使用
+
+在 linux 下， 我喜欢使用 goldendict。Goldendict可以添加本地词典，也可以添加在线词典。
+
+例如有道词典地址如下添加：
+
+```
+http://dict.youdao.com/search?q=%GDWORD%&ue=utf8
+```
+
+金山词霸地址如下添加：
+
+```
+http://www.iciba.com/%GDWORD%
+```
+
+bing 词典地址如下添加：
+
+```
+https://cn.bing.com/dict/search?q=%GDWORD%
+```
+
+实际上Goldendict直接显示网页，从三个词典网站地址可以找到规律，就是把任何一个词典网站的搜索词的网址复制下来，把相应的搜索的词换成 `%GDWORD%` 就可以了。

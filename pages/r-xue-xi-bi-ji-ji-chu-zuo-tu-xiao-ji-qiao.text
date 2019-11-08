@@ -1,0 +1,250 @@
+Title: R 学习笔记：基础做图小技巧
+Date: 2015-12-30 11:20
+Modified: 2016-03-01 13:54
+Category: 壹零零壹
+Tags: r
+Authors: Wolfson Liu
+Summary: R 基础做图的一些小技巧.
+
+## R 基础绘图 ##
+
+R 自带有强大的基础绘图包：`graphics`。默认情况下应该会自动加载。
+
+```{r}
+> search()
+ [1] ".GlobalEnv"        "ESSR"              "package:stats"    
+ [4] "package:graphics"  "package:grDevices" "package:utils"    
+ [7] "package:datasets"  "package:methods"   "Autoloads"        
+[10] "package:base"     
+```
+
+基础绘图包中有若干高级绘图函数，可以直接根据对应的数据画出完整的图。这
+些函数非常好用，但是有个问题是其默认的绘制往往不符合最终的需求。基础绘
+图包中提供了两种调整的方式：低级的绘图函数，如 `lines`，`points` 等可
+以在高级绘图函数生成的图像上增加新的元件；参数设置，如在高级绘图函数中
+直接设置参数或者通过 `par` 函数设置环境中的参数。
+
+
+### 高级绘图函数 ###
+
+最重要的高级绘图函数是 `plot` 函数。
+
+### 低级绘图函数 ###
+
+### par ###
+
+par 有太多的参数, 遇到问题再查是个好办法, 不过首先应该知道 par 能够调整哪些方面, 这就需要有个小的总结.
+
+par() 本身有 bool 参数 no.readonly, 单纯的 `par()` 或者
+`par(no.readonly = TRUE)` 可以用来获取所有的参数, 返回结果为 list, 可
+以保存备份.
+
+par 可以设置的绘图相关参数有 3 类:
+
+1. 只可以查询而不可以修改的参数, 即 readonly 参数, "cin", "cra",
+   "csi", "cxy", "din" 和 "page".
+2. 仅能通过 par 函数进行设置的参数: "ask", "fig", "fin", "lheight",
+   "mai", "mar", "mex", "mfcol", "mfrow", "mfg", "new", "oma", "omd",
+   "omi", "pin", "plt", "ps", "pty", "usr", "xlog", "ylog", "ylbias".
+3. 剩下的是可以被高级绘图函数设置的参数, 这些高级绘图函数主要包括:
+   plot.default, plot.window, points, lines, abline, axis, title,
+   text, mtext, segments, symbols, arrows, polygon, rect, box,
+   contour, filled.contour and image. 相应的参数如: lwd, lty, col, cex
+   等.
+
+#### readonly 参数 ####
+
+* **cin**: 以 inch 为单位的字符大小 (宽, 高), 如 LaTeX 中使用 M x 等宽度做度量.
+* **cra**: 以 raster (栅格, pixel) 来表示的字符大小 (宽, 高), 和 cin 的区别在于单位不同.
+* **csi**: 以 inch 为单位的字符高度, 同 cin 的第二个值.
+* **cxy**: 以用户坐标单位中默认字符大小 (宽，高), 是 par("cin")/par("pin"), 其实就是字符对于特定坐标轴的相对大小.
+* **din**: 以 inch 为单位的设备维度 (宽, 高), 即图像输出设备能够输出的图像的大小.
+* **page**: 一个 bool 值, 如果接下来的图是要开启新的图页, 则其值为
+  `TRUE`; 如果接下来的图是不开启新的图页, 则值为 `FALSE`. 设定 new 参
+  数可以改变 page 的值, page 实际上是用来指示是否开启新图.
+
+#### par 限制设定参数 ####
+
+有些参数只能够通过 par 函数来设定, 这些参数对于组合图和设定图的边框等有作用.
+
+* **ask**: bool 值, 如果是 `TRUE` 则在绘制新图形的时候会询问用户.
+* **fig**: 说明了新画图在输出设备上显示的位置, 其值是一个 vector
+  c(xleft, xright, ybottom, ytop ), 其中每个值均大于 0 小于 1, 实际上
+  是相对位置.
+* **fin**: 以 inch 为单位的图的维度 (宽, 高), 如果改输出设备仅输出一张
+  图, 则 fin 和 din 的值是相同的, 如果输出设备输出由若干子图构成的图,
+  则 fin 和相应子图对应.
+* **lheight**: 行高倍数, 默认是 1, 通过设置 lheight 可以调整一行文字的
+  行高, lheight 变大, 两行文字的行间距也会变大, 主要在 text 和
+  strheight 中使用.
+* **mai**: 以 inch 为单位的图像边距, c(bottom, left, top, right).
+* **mar**: 以行数来表示图像边距, c(bottom, left, top, right), 默认是
+  c(5, 4, 4, 2) + 0.1.
+* **mex**: 是在边界中的坐标轴的扩展参数 (character size expansion
+  factor), 有些类似调整字体大小的 cex, 是一个比例, 来调整 mai mar omi
+  oma. 当页面布局被设置的时候, mex 和 cex 都会被重新设置. 设置 mex 会
+  影响到在边界中输入的字体的行数.
+* **mfcol, mfrow**: 调整图形输出设备中子图排列的向量, c(nrow, ncol),
+  mfcol 让子图按照列优先排列, 相应的, mfrow 让子图按照行优先排列. 当设
+  置 mfcol mfrow 后, cex 和 mex 的基本单位都相应减小.
+* **mfg**: 指示下一个图像的输出位置, 设置可以是 c(row, col), 通过设置
+  mfg 可以控制下一个子图输出在图像输出设备的位置. mfg 的设置是和 mfrow
+  或者 mfcol 的设置相对应的, par()$mfg 将返回 c(row, col, nrow, ncol).
+* **new**: bool 值, 默认为 FALSE, 如果设置为 TRUE, page 的值会变成
+  FALSE, 那么使用高级绘图函数不会清除当前内容, 而是把图像重叠.
+* **oma**: 以行数为单位设置的外边界尺度, c(bottom, left, top, right).
+* **omd**: 给出了按照设备值进行标准化的外边界范围, c(x1, x2, y1, y2),
+  每个值的取值范围在 [0,1], 为相对比例.
+* **omi**: 以 inch 为单位设置外边界尺度, c(bottom, left, top, right).
+* **pin**: 以 inch 为单位表示的当前图像的维度.
+* **plt**: 当前绘图区域的范围, c(x1, x2, y1, y2), 其中每个取值是相对于
+  当前图像输出设备的比例, 和 omd 类似.
+* **ps**: 文字点大小的值, 是一个设备决定的值, a multiple of 1bp, that
+  is 1/72 of an inch.
+* **pty**: 表示当前绘图区域的形状, "s"表示生成一个正方形区域, 而"m"表
+  示生成最大的绘图区域. 如果输出设备是长方形, 则 "s" 将限定输出正方形.
+* **usr**: 当前绘图区域的坐标轴范围, c(xleft, xright, ybottom, ytop),
+  可以直接引用 usr 的值来获取当前图形的 x 坐标轴或 y 坐标轴的
+  limit. 如果是 log 坐标轴, 则该范围也是 log 值.
+* **xlog, ylog**: 设置 x 或者 y 为对数坐标轴的 bool 变量. 如果值为
+  TRUE, 则相应的坐标轴为对数坐标轴, 同时 usr 所指代的也变成对数.
+* **ylbias**:
+
+#### 高级绘图函数支持参数 ####
+
+有些参数可以在高级绘图函数中进行设置, 主要是调解输出显示情况的参数.
+
+##### 大小 #####
+
+* **cex**: 设置文字和符号相对于默认值的大小, 为一个比例数值. 当使用  mfrow 或 mfcol 也会改变该值.
+* **cex.axis**: 在当前 cex 基础上对坐标轴的大小进行调整的比例.
+* **cex.lab**: 在当前 cex 基础上对坐标轴标签的大小进行调整的比例.
+* **cex.main**: 在当前 cex 基础上对主标题的大小进行调整的比例.
+* **cex.sub**: 在当前 cex 基础上对小标题的大小进行调整的比例.
+
+##### 颜色 #####
+
+* **bg**: 设定背景的颜色, 如果设置 bg 则 new 会同时被设置为 FALSE, 默
+  认的 bg 为 "white". 但是在一些绘图函数，例如 `plot` 和 `points` 中，
+  bg 可以用来设置点的内部的颜色者图形的边框等。
+* **fg**: 设置前景的颜色, 默认是 "black", 应用于坐标轴, 标题等选项, 有
+  的时候会和 col.axis 等重复.
+* **col**: 设置颜色向量.
+* **col.axis**: 设置坐标轴的颜色, 默认是 "black".
+* **col.lab**: 设置坐标轴标签的颜色, 默认是 "black".
+* **col.main**: 设置主标题的颜色, 默认是 "black".
+* **col.sub**: 设置小标题的颜色, 默认是 "black".
+
+##### 文字 #####
+
+* **adj**: text, mtext and title. 调整文字的调整方式的一个数值, 0 代表
+  向左对齐, 0.5 代表行居中 (默认), 1 代表向右对齐, 取值可以在 [0,1] 之
+  间任意. NA，NaN 则代表绝对居中。
+* **las**: 在有坐标轴的地方的文字，0 代表与坐标轴平行，1 代表文字水平，
+  2 代表与坐标轴垂直，3 代表文字竖直。
+* **crt**: 设置单个的字符应该旋转的角度.
+* **srt**: 设置字符串成体的旋转的角度.
+* **family**: 设置字体家族的名称, 默认值是 "", 代表使用设备默认的字体,
+  有 "serif" "sans" "mono" 等. 可以使用 library(extrafont) 来加载字体,
+  使用 family 来设置使用地字体.
+* **font**: 指明使用字体的整数, 1 是普通, 2 是粗体, 3 是意大利体, 4 是粗意大利体. 5 是符号.
+* **font.axis**: 坐标轴的字体.
+* **font.lab**: 坐标轴标签的字体.
+* **font.main**: 主标题的字体.
+* **font.sub**: 小标题的字体.
+* **lheight**: 设置文字行数，默认是1.
+
+##### 线条 #####
+
+* **lty**: line type. 可以是数字或者字符, (0 = "blank", 1 = "solid"
+  (default), 2 = "dashed", 3 = "dotted", 4 = "dotdash", 5 =
+  "longdash", 6 = "twodash")
+* **lwd**: line width. 默认是 1, 设置线宽的放大倍数.
+* **lmitre**: 设置转折什么时候应该从 mitre 转换为 bevel, 值应该大于 1, 默认是 10.
+* **lend**: 线条结束的风格, 可以是数字或字符串. 0, 或者 "round", 线头
+  为圆形; 1, 或者 "butt", 线头为平头; 2, 或者 "square", 线头为正方形,
+  即增加一个正方形.
+* **ljoin**: 线条转折的风格, 可以是数字或字符串. 0, 或者 "round", 圆形
+  转折; 1, 或者 "mitre", 楔形转折; 2, 或者 "bevel", 平截转折.
+
+![lty](http://www.statmethods.net/advgraphs/images/lines.png)
+
+##### 点 #####
+
+* **pch**: 设置绘图所用的点的样式, 可以是数字指明符号, 或者使用字符做
+  点. points 等会绘点函数接受. 使用 col 可以设置实心点的颜色和空心点的
+  外边界, 使用 bg 可以设置空心点内部颜色.
+
+![pch](http://www.statmethods.net/advgraphs/images/points.png)
+
+##### 坐标轴 #####
+
+* **ann**: 如果该值为 FALSE, 则高级绘图函数默认不输出坐标轴标题等注释.
+  默认为 TRUE, 即输出图像注释.
+* **lab**: 设置坐标轴注释方式的向量 c(x, y, len), 默认是 c(5, 5, 7). x
+  指的是在 x 轴的刻度的数量, y 指的是在 y 轴的刻度的数量, len 指的是刻
+  度的长度.
+* **las**: 设置坐标轴标签的风格, 在 0, 1, 2, 3 中取值. 0, 默认, 和坐标
+  轴平行; 1, 水平; 2, 和坐标轴垂直; 3, 垂直. crt 和 srt 不会对其产生影
+  响.
+* **tck**: 刻度线的相对长度，为一个有符号的比值，表示绘图区域的高度或
+  宽度的比例, 如果是正值, 则在图像区域内画, 当 tck = 1 的时候, 绘制网
+  格; 如果是负值, 则向边界绘制, 默认为 NA 时, 使用 tcl = -0.5.
+* **tcl**: 刻度线的相对长度, 为相对于一行高度的比值, 正值表示向绘图中
+  心区域延伸, 负值表示向边缘延伸.
+* **xaxp, yaxp**: 设置极值刻度的样式. c(x1, x2, n), c(y1, y2, n). 当
+  xlog = FALSE 或者 ylog = FALSE 的时候, 相应的 xaxp 和 yaxp 中, x1 x2
+  和 y1 y2 分别表示 x 轴极值和 y 轴极值, n 表示在极值中间的刻度的个数.
+  xlog = TRUE 和 ylog = TRUE 时, n 的调整会相应改变. 通过 lab 的前两项
+  也可以设置 x 轴和 y 轴 n.
+* **xaxs, yaxs**: 绘图区域和坐标轴间隔的设置, 值为字符, R 中暂时只支持
+  "r" 和 "i". "r" (regular) 先把数据的极值向两端延伸 4% 再寻找合适的坐
+  标轴; "i" (internal) 直接在原来的数据范围内寻找合适的位置绘制坐标轴;
+  "s" (standard) 找到合适的地方绘制坐标轴; "e" (extended) 类似于 "s"
+  不过其保证图像中符号可以正确被绘制; "d" (direct) 后面绘图也用本次坐
+  标轴.
+* **xaxt, yaxt**: 坐标轴的型式, 值为字符. "n" 表示不绘制坐标轴, 其他字符均表示绘制坐标轴.
+* **xlog, ylog**: 坐标轴取 log 值.
+
+
+* **bty**: 设定 box 所绘制的方框的类型, plot 等函数也可以设置, 默认为
+  "o", 设置的型式类似其大写字母性状. "o" 代表四周都有线; "l" 代表左侧
+  和下侧有线; "7" 代表右侧和上侧有线; "c" 代表左侧和上下侧均有线; "u"
+  代表左右两侧和下侧有线; "]" 代表右侧和上下侧均有线; "n" 不输出方框.
+* **xpd**: 剪切图片, 可以参看 clip 函数. 如果 xpd 值为 FALSE, 所有的图
+  形被剪切为绘图区域 (plot); 如果 xpd 值为 TRUE, 所有图形被剪切为图像
+  区域 (figure) (绘图区域和边缘 (margin)); 如果 xpd 值为NA, 则图形被剪
+  切为设备区域, 即图像区域和外边界(outer) (参看下面图像区域图片). 使用
+  `clip()` 函数可以更自由地去修改切割的式样.
+
+
+#### R 绘图区域 ####
+
+参考其他网上给出的绘图区域和边缘区域可以更好理解绘图参数的设置.
+
+![R plot area](http://research.stowers-institute.org/efg/R/Graphics/Basics/mar-oma/Figure2A.gif)
+
+--------------------------------------------------------------------------------
+
+## R 常用基础绘图技巧 ##
+
+我在使用 R 基础做图函数做图的时候总是在网上搜索一些小技巧, 如双 y 坐标轴之类的. 记录下来这些东西, 为以后做个参考.
+
+### 双纵坐标轴 ###
+
+如果希望把一个自变量对应的两个变量的值都显示在一长图上, 则需要使用双纵
+坐标轴, 下面是个例子. 其中使用到了几点: 调整图形边界; 画一张图; 设置新
+图层; 画第二张图的点; 画第二个纵坐标轴; 细节处理.
+
+```
+x <- 1:5
+y1 <- rnorm(5, mean = 5)
+y2 <- rnorm(5, mean = 10)
+par(mar = c(5,5,4,5) + 0.1) #Margin of pic
+plot(x, y1, type="p", col="red")
+par(new = TRUE) #New plot
+plot(x, y2, type = "l", col = "blue", axes = FALSE, xlab = "", ylab = "")
+axis(side = 4) #New Y axis
+mtext("y2", side = 4, line = 3) #New Y axis label
+legend("topleft", col = c("red","blue"), legend = c("y1","y2"))
+```

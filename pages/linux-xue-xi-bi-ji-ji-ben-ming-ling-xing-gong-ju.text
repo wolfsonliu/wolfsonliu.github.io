@@ -1,0 +1,142 @@
+Title: Linux 学习笔记: 基本命令行工具
+Date: 2018-12-14 20:38
+Modified: 2018-12-14 20:38
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: Linux系统基本命令行工具
+
+
+## 寻求帮助 ##
+
+对于 bash 本身的命令，使用 help 跟命令名来查询其帮助，例如：
+```
+help cd
+```
+
+对于其他非 bash 本身的命令使用 man 命令（不懂就找男人，BTW，emacs的
+eshell下面帮助命令是woman）
+
+```
+man ls
+```
+
+
+## 路径操作 ##
+
+* 绝对路径：从根目录开始的路径，`/home/wolfson/Documents/README.md`。
+* 相对路径：相对于工作目录的路径，`./`当前目录，`../`父目录。
+
+* cd：change directory，切换目录，cd 后面跟目标路径作为参数，则可以从
+  当前目录切换到目标目录
+* pwd：print working directory，显示当前的路径
+* mkdir：make directory，创建一个新目录
+* rmdir：remove directory，删除一个空目录
+
+### $PATH 变量 ###
+
+系统根据PATH变量中的路径去寻找命令，PATH中的目录根据冒号来分割。系统首
+先在第一个路径中去寻找命令，如果找到则使用该命令，如果没有找到则去下一
+个目录寻找该命令。如果所有的目录都没有找到命令，则报错。
+
+```
+echo $PATH
+# /home/wolfson/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+```
+
+想要把非PATH路径中的命令也加入到系统搜索目录中，只需要修改 PATH 变量。
+
+```
+export PATH=/new/path/to/add:$PATH
+```
+
+## 文件及文件夹权限 ##
+
+* 用户：linux下面的用户，文件的所有者。root用户是管理员。
+* 用户组：一个或多个用户组成的有相同用户性质的组，方便系统管理员管理。
+  用户组的名字可以和用户一样。如root用户组。
+
+使用 ls 命令可以列出当前文件夹中的文件内容及文件权限：
+
+```
+ls -al
+total 460
+drwxr-xr-x 55 wolfson wolfson  4096 Dec 13 23:12 .
+drwxr-xr-x  3 root    root     4096 Jul 31  2017 ..
+drwxr-x---  2 root    root     4096 Sep 10  2017 .android
+drwxrwxr-x  8 wolfson wolfson  4096 Nov 19  2017 .atom
+-rw-rw-r--  1 wolfson wolfson   330 Oct 23 13:41 .bash_aliases
+-rw-------  1 wolfson wolfson 53135 Dec 13 23:12 .bash_history
+-rw-r--r--  1 wolfson wolfson   220 Jul 31  2017 .bash_logout
+-rw-r--r--  1 wolfson wolfson  3985 Aug  2  2017 .bashrc
+```
+
+最开头的十个字符分别表示文件类别和不同用户对该文件的权限。
+例如 `-rw-r--r--  1 wolfson wolfson  3985 Aug  2  2017 .bashrc`
+
+1. 第一个字符代表文件类别：例子中是 `-` 代表的是普通文件
+  * `-` 代表普通文件
+  * `d` 代表目录
+  * `l` 代表连接文件
+  * `b` 代表设备文件中的可存储设备
+  * `c` 代表设备文件中的串行端口设备，如键盘鼠标
+2. 第二到第四个字符为拥有该文件的用户的权限：例子中是 `rw-`，代表可读可写
+  * `-` 为占位符，无权限
+  * `r` 可读权限，数字表示为 4
+  * `w` 可写权限，数字表示为 2
+  * `x` 可执行权限，数字表示为 1
+3. 第五个到第七个字符为文件所有者所在用户组的成员权限：例子中是 `r--`，代表可读
+4. 第八个到第十个字符为文件除了文件所有者与其用户组成员外的其他人的权
+   限：例子中是 `r--`，代表可读权限
+
+
+| 字符标记      | 数字标记 | 含义 |
+| ------------ | ------- | --- |
+| `----------` | 0000    | 无权限           |
+| `-rwx------` | 0700    | 用户可读可写可执行 |
+| `-rwxrwx---` | 0770    | 用户和用户组可读可写可执行 |
+| `-rwxrwxrwx` | 0777    | 用户，用户组和其他人可读可写可执行 |
+| `---x--x--x` | 0111    | 所有人可执行 |
+| `--w--w--w-` | 0222    | 所有人可写 |
+| `--wx-wx-wx` | 0333    | 所有人可写可执行 |
+| `-r--r--r--` | 0444    | 所有人可读 |
+| `-r-xr-xr-x` | 0555    | 所有人可读可执行 |
+| `-rw-rw-rw-` | 0666    | 所有人可读可写 |
+| `-rwxr-----` | 0740    | 用户可读可写可执行，用户组可读 |
+
+
+权限管理有一些命令：
+
+* chown：change owner，改变文件或文件夹的所有者
+* chgrp：change group，改变文件或者文件夹的用户组
+* chmod：change mode，改变文件或者文件夹的权限
+
+```
+chrgrp root .bashrc
+chrgrp wolfson .bashrc
+chrown dog .bashrc
+chrown wolfson .bashrc
+chmod u+x README.md
+chmod g+w README.md
+chmod 644 .bashrc
+```
+
+## 文件操作 ##
+
+常用的文件操作就是显示属性，复制，删除，重命名，移动等。
+
+* ls：list，查看文件和目录
+* cp：copy，复制文件或者文件夹
+* rm：remove，删除文件或者文件夹
+* mv：move，移动或者重命名文件或者文件夹
+
+
+## 查看文件内容 ##
+
+* cat：concatenate，把文件从第一行输出到终端，可以连接多个文件
+* tac：从文件最后一行输出到终端，连接多个文件，cat反过来
+* nl: 输出文件并显示行号，类似 `cat -n`
+* more：一页页显示内容
+* less：比more更强大，可以翻页，less is more
+* head：显示文件前几行
+* tail：显示文件后几行

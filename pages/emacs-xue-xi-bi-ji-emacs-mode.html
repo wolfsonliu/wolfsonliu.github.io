@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Emacs 学习笔记：Emacs mode</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>Major Mode</h2>
+<p>打开的一个缓冲 (buffer) 在模式栏中小括号里面会有, 在缓冲列表的 Mode 栏目所显示, 一般和打开的为文件类型相匹配.</p>
+<h3>Shell Mode</h3>
+<p>通过 <strong>M-x shell</strong> 可以开启一个 shell, 在 shell 中, 需要在 <strong>C-c</strong> <strong>C-z</strong> <strong>C-d</strong> 等命令前面增加一个 <strong>C-c</strong> 才能正确执行功能.</p>
+<ul>
+<li><strong>C-c C-c</strong>:                                 shell 终止命令, 其他的类似, 均添加 <strong>C-c</strong>.</li>
+<li><strong>M-p</strong>:     comint-previous-input           上一条命令.</li>
+<li><strong>M-n</strong>:     comint-next-input               下一条命令.</li>
+<li><strong>C-c C-p</strong>: comint-previous-prompt          移动到上一条命令.</li>
+<li><strong>C-c C-n</strong>: comint-next-prompt              移动到下一条命令.</li>
+<li><strong>C-c C-o</strong>: comint-delete-output            把最后一条命令的输出结果清除.</li>
+<li><strong>C-c C-l</strong>: comint-dynamic-list-input-ring  列出最近输入的命令.</li>
+<li><strong>C-c C-r</strong>: comint-show-output              到输出结果的第一行.</li>
+<li><strong>C-c C-e</strong>: comint-show-maximum-output      到输出结果的最后一行.</li>
+</ul>
+<p>除了直接开启 shell 之外, 还可以运行简单的 shell 命令.</p>
+<ul>
+<li><strong>M-!</strong>:     shell-command                   运行一条 shell 命令并在 minibuffer 输出结果.</li>
+<li><strong>C-u M-!</strong>:                                 把运行的 shell 命令的输出结果保存在光标所在的文件位置.</li>
+<li><strong>M-|</strong>:     shell-command-on-region         运行选择的文字中的 shell 命令, 可以使用 <strong>M-h</strong> <strong>C-SPC</strong> 等选择.</li>
+</ul>
+<h3>Outline Mode</h3>
+<p>Outline Mode 作为主要的 Mode 时, 文本的目录需要有一定规律, 以一个 '*' 符号开头的表示最高级标题, 多一个降低一级.</p>
+<ul>
+<li><strong>C-c C-n</strong>: 到下一个或者一级目录.</li>
+<li><strong>C-c C-p</strong>: 到上一个目录.</li>
+<li><strong>C-c C-f</strong>: 到同级别的后一个目录.</li>
+<li><strong>C-c C-b</strong>: 到同级别的前一个目录.</li>
+<li><strong>C-c C-u</strong>: 到上一级目录.</li>
+<li><strong>C-c C-t</strong>: 只显示目录标题.</li>
+<li><strong>C-c C-q</strong>: 只显示第一级标题.</li>
+<li><strong>C-c C-a</strong>: 显示所有内容.</li>
+<li><strong>C-c C-^</strong>: 给标题升级.</li>
+<li><strong>C-c C-v</strong>: 给标题降级.</li>
+</ul>
+<hr>
+<h2>Minor Mode</h2>
+<ul>
+<li><strong>refill-mode</strong>:</li>
+<li><strong>auto-fill-mode</strong>: 在打字的时候自动添加换行符, 来保持整个文字排版良好. 不同的段落之间应该有空行, 否则会把所有的内容都重排成一段. 在修改排列好的段落后, 需要使用 <em>M-q</em>(fill-paragraph) 重排段落.</li>
+<li><strong>overwrite-mode</strong>: Overwrite Mode, 也可以按键盘 <strong>Insert</strong> 键来开启和关闭.</li>
+<li><strong>recursive-edit</strong>: 暂时停止手头工作, 如 quary-repace 开始编辑, <strong>C-M-c</strong> 退出 recursive-edit. 开始 recursive-edit, 当前 Major Mode 会被方括号包围.</li>
+<li><strong>flyspell-mode</strong>: 实时拼写检查.</li>
+<li><strong>abbrev-mode</strong>: 需要设定缩写方式, 可以使用 <strong>C-x a i g</strong> 全局设定, <strong>C-x a i l</strong> 局部设定, 或者使用 "./.abbrev_defs" 来设定.</li>
+<li><strong>rectangle-mark-mode</strong>: <strong>C-x SPASE</strong>, 可以在该模式中按照块进行选择, 并使用普通的移除, 删除操作.</li>
+<li><strong>read-only-mode</strong>: 只读模式, <strong>C-x C-q</strong>, 把当前的缓冲切换为只读模式.</li>
+<li><strong>outline-minor-mode</strong>: 开启 outline mode 的 minor mode, 可以和 Markdown 等 mode 一起使用.</li>
+<li><strong>folding-mode</strong>: 可以用于折叠代码.</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

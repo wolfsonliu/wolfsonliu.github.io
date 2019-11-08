@@ -1,0 +1,20 @@
+Title: 公共数据集合
+Date: 2016-10-01 21:05
+Modified: 2016-10-01 21:05
+Category: 壹零零壹
+Tags: data
+Authors: Wolfson Liu
+Summary: 一些可以下载使用的公共数据链接
+
+收集一些可以用来作数据分析练习的公共数据.
+
+* [美国公民姓名统计](https://www.ssa.gov/oact/babynames/limits.html): 美国政府每年会发布一个文件, 其中是当年出生的美国公民的按照性别去区分的不同的名的人数.
+* [Ushahidi](http://community.ushahidi.com/research/datasets/): Ushahidi 提供了很多灾害相关数据.
+* [Enron email](https://www.cs.cmu.edu/~enron/): 安然公司的邮件数据, 来自于安然公司的 150 名左右雇员, 是当年政府机构调查安然公司时开放的数据. 还有[预处理好的数据](http://www.aueb.gr/users/ion/data/enron-spam/).
+
+### R 中的数据 ###
+
+* iris 数据: 来自 Fisher 的鸢尾花数据集合. 在 R 中是默认加载的: `str(iris)`.
+
+* ISLR 包: 该包中包含统计学习教材 *An Introduction to Statistical Learning* 中的数据,
+`library(ISLR)`.

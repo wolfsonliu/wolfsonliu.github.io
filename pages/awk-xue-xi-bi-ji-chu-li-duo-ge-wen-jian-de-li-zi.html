@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>AWK 学习笔记: 处理多个文件的例子</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>在实际应用中，很多时候需要处理不只一个文件，而是处理两个及以上文件，
+这个时候就需要去判断当前是哪个文件，并采取相应的操作。</p>
+<p>如果我们有两个文件，分别为：</p>
+<p>File1</p>
+<div class="highlight"><pre><span></span><span class="n">one</span> <span class="mi">1</span>
+<span class="n">two</span> <span class="mi">2</span>
+<span class="n">three</span> <span class="mi">3</span>
+</pre></div>
+
+
+<p>File2</p>
+<div class="highlight"><pre><span></span><span class="n">one</span> <span class="mi">3</span>
+<span class="n">two</span> <span class="mi">4</span>
+<span class="n">four</span> <span class="mi">5</span>
+</pre></div>
+
+
+<p>如果我只想输出File1中的第一列在File2中出现的行，可以在 <code>my.awk</code> 中写下以下代码：</p>
+<div class="highlight"><pre><span></span><span class="nb">BEGIN</span> <span class="p">{</span>
+    <span class="nb">FS</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nb">FNR</span><span class="o">==</span><span class="nb">NR</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">]</span><span class="o">=$</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nb">FNR</span><span class="o">!=</span><span class="nb">NR</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+        <span class="kr">print</span> <span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>在命令行运行该段代码：</p>
+<div class="highlight"><pre><span></span>$ awk -f my.awk File1 File2
+one <span class="m">1</span>
+two <span class="m">2</span>
+</pre></div>
+
+
+<p>在上面的例子中，我使用了 <code>FNR == NR</code> 来判断是否还是第一个文件。
+因为对于 <code>NR</code> 变量，其在整个 awk 运行中只递增地记录处理的行数，
+而对于 <code>FNR</code> 来说，只记录当前文件处理的行数，当更换文件之后会归零。
+所以，对于两个文件的处理来说，完全可以依靠 <code>FNR</code> 和 <code>NR</code> 来判断文件。</p>
+<p>然而对于有多个文件来说，只能根据 <code>FNR</code> 和 <code>NR</code> 去区分第一个文件和其他文件，
+想要区分每个不同文件来说，则相对困难。
+在多于两个文件的情况下可以使用文件名 <code>FILENAME</code> 变量来直接判断。
+修改 <code>my.awk</code> 代码如下：</p>
+<div class="highlight"><pre><span></span><span class="nb">BEGIN</span> <span class="p">{</span>
+    <span class="nb">FS</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nb">FILENAME</span><span class="o">==</span><span class="nb">ARGV</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
+    <span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">]</span><span class="o">=$</span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nb">FILENAME</span><span class="o">==</span><span class="nb">ARGV</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+        <span class="kr">print</span> <span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><code>FILENAME</code> 变量中存有当前处理的文件名，而<code>ARGV</code>数组中则存有按照顺序输入的文件名。
+所以，可以直接根据文件名来判断当前处理的文件。</p>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Internet Control Message Protocol 与网络问题排查</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>ping 和 traceroute 命令常常用于进行网络排查错误.
+其主要采用的是互联网控制消息协议 Internet Control Message Protocol (ICMP).</p>
+<h2>ping 命令</h2>
+<ul>
+<li><code>-c n</code>: 设置 ping 执行的次数.</li>
+<li><code>-s n</code>: 设置 ping 发送的 ICMP 数据包的大小, 默认是 56 bytes.</li>
+<li><code>-t n</code>: 设置 ping 执行的 TTL (Time To Live) 数值, 默认是 255, 每经过一个节点减少 1.</li>
+<li><code>-W n</code>: 设置 ping 等待相应对方主机的秒数.</li>
+</ul>
+<h2>traceroute 命令</h2>
+<p>traceroute 命令也经常用于网络问题排查,
+和 ping 不同的地方在于其可以追踪两个主机之间左右节点的信息.</p>
+<ul>
+<li><code>-n</code>: 不解析主机名称, 直接用 ip, 速度相对快.</li>
+<li><code>-U</code>: 默认使用 UDP 的方式进行检测, 默认 port 33434.</li>
+<li><code>-I</code>: 使用 ICMP 的方式进行检测.</li>
+<li><code>-T</code>: 使用 TCP 来检测, 默认 port 80. 如果有防火墙设置, 其他的检测方式可能不可用, 需要用 TCP 检测.</li>
+<li><code>-w n</code>: 等待时间, 默认是 5 秒.</li>
+<li><code>-p n</code>: 规定检测所用的端口号.</li>
+<li><code>-i dev</code>: 规定使用设备.</li>
+</ul>
+<h4>互联网控制消息协议</h4>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>代码</th>
+<th>状态</th>
+<th>描述</th>
+<th>查询</th>
+<th>差错</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 - Echo Reply</td>
+<td>0</td>
+<td></td>
+<td>echo响应 (被程序ping使用）</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>1 and 2</td>
+<td></td>
+<td>未分配</td>
+<td>保留</td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>3 - 目的不可達</td>
+<td>0</td>
+<td></td>
+<td>目标网络不可达</td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>目标主机不可达</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>目标协议不可达</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td>目标端口不可达</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>4</td>
+<td></td>
+<td>要求分段并设置DF flag标志</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>5</td>
+<td></td>
+<td>源路由失败</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td>未知的目标网络</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+<td>未知的目标主机</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>8</td>
+<td></td>
+<td>源主机隔离（作废不用）</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>9</td>
+<td></td>
+<td>禁止访问的网络</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>10</td>
+<td></td>
+<td>禁止访问的主机</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>11</td>
+<td></td>
+<td>对特定的TOS 网络不可达</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>12</td>
+<td></td>
+<td>对特定的TOS 主机不可达</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>13</td>
+<td></td>
+<td>由于过滤 网络流量被禁止</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>14</td>
+<td></td>
+<td>主机越权</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>15</td>
+<td></td>
+<td>优先权终止生效</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>4 - 源端关闭</td>
+<td>0</td>
+<td>弃用</td>
+<td>源端关闭（拥塞控制）</td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>5 - 重定向</td>
+<td>0</td>
+<td></td>
+<td>重定向网络</td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>重定向主机</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>基于TOS 的网络重定向</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>3</td>
+<td></td>
+<td>基于TOS 的主机重定向</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>6</td>
+<td></td>
+<td>弃用</td>
+<td>备用主机地址</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>7</td>
+<td></td>
+<td>未分配</td>
+<td>保留</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>8 - 请求回显</td>
+<td>0</td>
+<td></td>
+<td>Echo请求</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>9 - 路由器通告</td>
+<td>0</td>
+<td></td>
+<td>路由通告</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>10 - 路由器请求</td>
+<td>0</td>
+<td></td>
+<td>路由器的发现/选择/请求</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>11 - ICMP 超时</td>
+<td>0</td>
+<td></td>
+<td>TTL 超时</td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>分片重组超时</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>12 - 参数问题：错误IP头部</td>
+<td>0</td>
+<td></td>
+<td>IP 报首部参数错误</td>
+<td></td>
+<td>●</td>
+</tr>
+<tr>
+<td>1</td>
+<td></td>
+<td>丢失必要选项</td>
+<td></td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>2</td>
+<td></td>
+<td>不支持的长度</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>13 - 时间戳请求</td>
+<td>0</td>
+<td></td>
+<td>时间戳请求</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>14 - 时间戳应答</td>
+<td>0</td>
+<td></td>
+<td>时间戳应答</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>15 - 信息请求</td>
+<td>0</td>
+<td>弃用</td>
+<td>信息请求</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>16 - 信息应答</td>
+<td>0</td>
+<td>弃用</td>
+<td>信息应答</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>17 - 地址掩码请求</td>
+<td>0</td>
+<td>弃用</td>
+<td>地址掩码请求</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>18 - 地址掩码应答</td>
+<td>0</td>
+<td>弃用</td>
+<td>地址掩码应答</td>
+<td>●</td>
+<td></td>
+</tr>
+<tr>
+<td>19</td>
+<td></td>
+<td>保留</td>
+<td>因安全原因保留</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>20 至 29</td>
+<td></td>
+<td>保留</td>
+<td>Reserved for robustness experiment</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>30 - Traceroute</td>
+<td>0</td>
+<td>弃用</td>
+<td>信息请求</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>31</td>
+<td></td>
+<td>弃用</td>
+<td>数据报转换出错</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>32</td>
+<td></td>
+<td>弃用</td>
+<td>手机网络重定向</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>33</td>
+<td></td>
+<td>弃用</td>
+<td>Where-Are-You（originally meant for IPv6）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>34</td>
+<td></td>
+<td>弃用</td>
+<td>Here-I-Am（originally meant for IPv6）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>35</td>
+<td></td>
+<td>弃用</td>
+<td>Mobile Registration Request</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>36</td>
+<td></td>
+<td>弃用</td>
+<td>Mobile Registration Reply</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>37</td>
+<td></td>
+<td>弃用</td>
+<td>Domain Name Request</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>38</td>
+<td></td>
+<td>弃用</td>
+<td>Domain Name Reply</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>39</td>
+<td></td>
+<td>弃用</td>
+<td>SKIP Algorithm Discovery Protocol, Simple Key-Management for Internet Protocol</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>40</td>
+<td></td>
+<td></td>
+<td>Photuris, Security failures</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>41</td>
+<td></td>
+<td>实验性的</td>
+<td>ICMP for experimental mobility protocols such as Seamoby [RFC4065]</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>42 到 255</td>
+<td></td>
+<td>保留</td>
+<td>保留</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>235</td>
+<td></td>
+<td>实验性的</td>
+<td>RFC3692（ RFC 4727）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>254</td>
+<td></td>
+<td>实验性的</td>
+<td>RFC3692（ RFC 4727）</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>255</td>
+<td></td>
+<td>保留</td>
+<td>保留</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

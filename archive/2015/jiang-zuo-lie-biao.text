@@ -1,0 +1,86 @@
+Title: 讲座列表
+Date: 2015-12-14 20:58
+Modified: 2016-06-08 20:02
+Category: 柴米油盐
+Tags: lecture, life
+Authors: Wolfson Liu
+Summary: 记录一下我听过的讲座吧.
+
+
+我就是喜欢记录各种目录，有点像我喜欢收集各种东西一样。我也把自己听的讲座来做个目录出来吧。
+
+--------------------------------------------------------------------------------
+
+### 讲座目录 ###
+
+* 20170621 **Yuh Nung Jan & Lily Jan**: Travel hopefully and enjoy the scenery: our scientific journey. 北京大学 金光生命科学大楼 101 报告厅
+* 20170522 **Wing Hung Wong**: Two recent development in genome sequencing data analysis. 北京大学 金光生命科学大楼 101 报告厅
+* 20170519 **周德敏**: 基于蛋白质精准修饰的生物药物创新. 北京大学 金光生命科学大楼 101 报告厅
+* 20170504 **Sebastian Leidel**: When cells become dyslexic-connecting RNA and protein quality control. 北京大学 金光生命科学大楼 101 报告厅
+* 20170417 **Robert Roeder**: Mechanisms of transcriptional regulation through diverse co-activators. 北京大学 金光生命科学大楼 101 报告厅
+* 20170409 **赵东岩**: 文本大数据分析及其智能应用. 北京大学 英杰交流中心
+* 20170331 **Jin Zhang**: Illuminating biochemical activity architecture of the cell. 北京大学 金光生命科学大楼 101 报告厅
+* 20170224 **Colin Chapman**: 50 years of primate conservation: what changes has humanity brought to primates and what next. 北京大学 金光生命科学大楼 101 报告厅
+* 20161215 **Dennis Lo**: Unlocking the diagnostic potential of circulating DNA. 文津大酒店 阳光厅
+* 20161024 **John Kuriyan**: Kinase control in T cell and B cell signaling. 北京大学 金光生命科学大楼 101 报告厅
+* 20160929 **Laurence Maloney**: Uncertainty in biological decision making. 北京大学 王克桢 1113
+* 20160924 **吕植**: 人和野生动物能否共存. 北京大学 金光生命科学大楼 101 报告厅
+* 20160924 **李明**: 金丝猴的保护基因组研究. 北京大学 金光生命科学大楼 101 报告厅
+* 20160924 **王丁**: The fate of an endangered species in the Yangtze River: challenges and opportunities. 北京大学 金光生命科学大楼 101 报告厅
+* 20160919 **闵浩巍**: 大数据时代下的科研新模式. 北京大学 王克桢楼 348
+* 20160905 **陶乐天**: Dynamically routable information processing in neuronal networks. 北京大学 金光生命科学大楼 101 报告厅
+* 20160818 **Xianghong Zhou**: Searching fro meaningful signals in the 3D genome universe and in the blood of cancer patients. 北京大学 综合科研楼 302
+* 20160810 **李巍**: Novel biological insights from existing big data in cancer epigenome and transcriptome. 北京大学 王克桢楼 348
+* 20160805 **李文雄**: Genetic basic of feather diversity. 北京大学 王克桢楼 348
+* 20160608 **臧充之**: Intergrative Modeling of Gene Regulation: A Big Data Approach. 北京大学 王克桢楼 348
+* 20160529 **余光创**: ggtree for visualiztion and annotaion of phylogenetic trees. 中国人民大学 逸夫第一会议厅
+* 20160529 **殷腾飞**: Wrapping your R tools to analyze national scale cancer genomics in the cloud. 中国人民大学 逸夫第一会议厅
+* 20160529 **Jovana Maksimovic**: DNA methylation array analysis with MissMethyl and other Bioconductor. 中国人民大学 逸夫第一会议厅
+* 20160529 **Charity Law**: RNA-seq analysis in Bioconductor. 中国人民大学 逸夫第一会议厅
+* 20160529 **Lihua Zhu**: CRISPRseek and GUIDEseq packages for designing effective and target-specific gRNAs and assessing the precision of engineered CRISPR-Cas9 genome editing system. 中国人民大学 逸夫第一会议厅
+* 20160529 **Martin Morgan**: An overview of genomic data analysis in Bioconductor. 中国人民大学 逸夫第一会议厅
+* 20160528 **颜林林**: 癌症液体活检简介. 中国人民大学 逸夫第一会议厅
+* 20160528 **陈钢**: 用数据撰写每个家族的传奇. 中国人民大学 逸夫第一会议厅
+* 20160528 **李舰**: R 语言在医疗人工智能的应用. 中国人民大学 逸夫第一会议厅
+* 20160528 **沈侠**: What does that P-value means? 中国人民大学 逸夫第一会议厅
+* 20160528 **徐增林**: Association discovery and diagnosis of Alzheimer's disease. 中国人民大学 逸夫第二会议厅
+* 20160528 **黄帅**: 医疗问题中复杂系统的建模, 监测, 优化及控制问题. 中国人民大学 逸夫第二会议厅
+* 20160528 **李响**: 认知医学与健康大数据分析. 中国人民大学 逸夫第二会议厅
+* 20160528 **万小红**: Encoding and decoding of minds from neural activities. 中国人民大学 逸夫第二会议厅
+* 20160528 **霍剑**: A new confidence interval for the population proportion in binary clustered data. 中国人民大学 逸夫第二会议厅
+* 20160527 **韩春雨**: Presenting Argonante, the genome editor. 北京大学 金光生命科学大楼 101 报告厅
+* 20160525 **许田**: 当生物医药遇到人工智能--学术和产业的新革命. 北京大学 王克桢楼 1113
+* 20160521 **牛北方**: 泛癌体细胞突变的全景观分析. 中国科学院 数学与系统科学研究院 南楼 102 报告厅
+* 20160521 **张岩**: 利用细胞水平的表观遗传修饰特征评估乳腺癌的异质性. 中国科学院 数学与系统科学研究院 南楼 102 报告厅
+* 20160521 **万林**: The modeling, computation and synthesis of multi-mode biological data with application to mental disorder research. 中国科学院 数学与系统科学研究院 南楼 102 报告厅
+* 20160521 **曾坚阳**: 深度学习及其在计算生物学的应用. 中国科学院 数学与系统科学研究院 南楼 102 报告厅
+* 20160521 **韩敬东**: Integrative analysis of biological big data. 中国科学院 数学与系统科学研究院 南楼 102 报告厅
+* 20160521 **张奇伟**: Develop precision technologies for studying 3D cancer genome. 中国科学院 数学与系统科学研究院 南楼 102 报告厅
+* 20160504 **Peter Sicinski**: Cell cycle-targeting microRNAs as therapeutic tools against refractory cancers. 北京大学 金光生命科学大楼 101 报告厅
+* 20160429 **詹启敏**: 精准医学发展的需求的内涵. 北京大学 金光生命科学大楼 101 报告厅
+* 20160418 **Kim Sneppen**: Models of nucleosome mediated epigenetic landscapes. 北京大学 老化学楼 101 报告厅
+* 20160417 **钟嘉**: 遗鸥传奇. 北京北苑路 28 号, 北苑家园 1 号院 潮驿 178 保护地友好驿站
+* 20160415 **周其仁**: 城市化下一程. 北京大学 理科教学楼 207
+* 20160414 **李国民**: DNA mismatch repair in cancer susceptibility and therapy. 北京大学 老化学楼 101 报告厅
+* 20160331 **陈重建**: HiC 测序技术及应用解析. 北京大学 王克桢楼 348
+* 20160328 **熊春阳**: 细胞力学定量表征及应用研究. 北京大学 老化学楼 101 报告厅
+* 20160314 **Eric Betzig**: Imaging cellular dynamics from molecules to organisms. 北京大学 金光生命科学大楼 101 报告厅
+* 20160307 **汪小京**: Reservoir and localization of neuronal operation timescales. 北京大学 老化学楼 101 报告厅
+* 20151211 **赵宏宇**: What have we learned from genome wide associated study for human disease? 北京大学 金光生命科学大楼 101 报告厅
+* 20151206 **Mogens Jensen**: Arnold Tongues in cell dynamics. 北京大学 老化学楼 101 报告厅
+* 20151204 **Christopher Voigt**: Cello, a language for programming cell. 北京大学 金光生命科学大楼 101 报告厅
+* 20151203 **George Schaller**: Tibet Wild: 30 year's pursuit in the Tibetan plateau. 北京大学 图书馆北配殿
+* 20151202 **Paul Holt**: 中国观鸟趣事. 北京师范大学 教四楼 305
+* 20151120 **Yue Xiong**: Control of epigenetic and genetic stability by cancer metabolism. 清华大学 主楼会堂
+* 20151120 **Haifan Lin**: Uniting major constituents of the genome: Multi-faceted roles of piRNAs in the germline.  清华大学 主楼会堂
+* 20151120 **Michael Young**: Genes regulating sleep and circadian rhythms. 清华大学 主楼会堂
+* 20151120 **Herbert Levine**: The genetics and biophysics of the Epithelial-Mesenchymal Transition (EMT): Can theory help cancer biology? 清华大学 主楼会堂
+* 20151113 **谢灿**: Homing instinct: Signal from the earth. 北京大学 英杰交流中心 306
+* 20151110 **Rich Krauzlis**: New perspectives on visual attention. 北京大学 王克桢楼 1113
+* 20151103 **Michael Goldberg**: Attention and arousal in the parietal cortex. 北京大学 王克桢楼 1113
+* 20151027 **David Leopold**: New perspectives on face patches through longitadinal single-unit recording and fMRI. 北京大学 王克桢楼 1113
+* 20151019 **林潮**: 探索行星的起源与寻找地外生命. 北京大学 金光生命科学大楼 101报告厅
+* 20151019 **Cole Haynes**: Adapting to mitochondrial dysfunction via a UPR. 北京大学 金光生命科学大楼 101报告厅
+* 20151012 **管坤良**: The Hippo pathway in cell growth organ size and cancer. 北京大学 金光生命科学大楼 101报告厅
+* 20150925 **张毅**: Understanding DNA demethylation and SCNT mediated reprogramming. 北京大学 金光生命科学大楼 101报告厅
+* 20150922 **厉以宁**: 新常态和经济发展规律的转变. 北京大学 老光华楼101室 

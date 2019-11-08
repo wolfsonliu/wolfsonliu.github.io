@@ -1,0 +1,17 @@
+Title: Linux 学习笔记: Bash Script 入门
+Date: 2018-12-23 21:37
+Modified: 2018-12-23 21:37
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: Bash Script 入门
+
+## 什么是脚本 ##
+
+* 一个记录了shell命令的文本文件（文件扩展名是.sh）（在linux下，文件扩
+  展名的意义和Windows不同，文件扩展名更多是给人看的）
+* 拥有编程语言的基本特性，可以认为是一个语言
+* 协调不同软件的工作
+* 自动化，减轻工作量
+
+

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>抽样方法</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2015/chou-yang-fang-fa.html">
+<meta name="twitter:title" content="Wolf Cave ~ 抽样方法">
+<meta name="twitter:description" content="几种抽样方法说明。">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ 抽样方法" />
+<meta property="og:description" content="几种抽样方法说明。" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2015/chou-yang-fang-fa.html" rel="bookmark" title="Permalink to 抽样方法">抽样方法</a></h2>
+        <div class="entry-content blog-post">
+            <p>我把计算 MAPK 的常微分方程的计算函数写好了，需要上不同的参数去跑程序，各种可能的参数去跑就太多了。这就遇到了需要对参数进行抽样的问题。看了点介绍抽样方法的文献，<a href="http://dx.doi.org/10.1080/00401706.1979.10489755">McKay等人的文章</a>和 <a href="http://www.sciencedirect.com/science/article/pii/S0951832003000589">Helton等人的文章</a>，做一点总结。在 McKay 等人的文章中提到了三种抽样方法：Random Sampling；Stratified Sampling；Latin Hypercube Sampling。其中，Latin Hypercube Sampling 是学长告诉我需要使用的，我需要特别关注。</p>
+<h4>随机抽样 Random Sampling</h4>
+<p>对于一系列的 X ，从 1 到 n，从中抽取 m 个样本。随机抽样就是简单地使用随机数生成器，产生 m 个随机数，从 X 的集合中选择对应编号的 X 的值构成抽样集合。对于简单随机抽样的集合，每个变量应该是不相关的，每个样本的抽取独立于其他的抽取。经过随机抽样获得的某个样本来自于某个子集的概论就和该子集与整个集合的比例一致。</p>
+<h4>分层抽样 Stratified Sampling</h4>
+<p>对于一系列的 X， 从中使用分层抽样抽取 m 个样本。需要先将所需要抽取的样本序列 X 进行均等划分成 m 个部分，从每个部分中随机抽取 1 个。用所有抽取的值来作为样本。分层抽样可以强制要求抽样结果包含特定的集合，同时又能保证抽样的随机性。分层抽样使得抽样集合更有代表性。不过，对于集合的子集的划分标准对于分层抽样是需要考虑的事情。</p>
+<h4>拉丁超立方抽样 Latin Hypercube Sampling</h4>
+<p>对于一系列同样长度的值的集合，这里假设有 A，B 两个，每个有 n 个值，从中需要抽出 m 组，每组均包含 A B 集合中的值。这个时候就需要使用拉丁超立方抽样来保证抽样不重复不遗漏。那么就把 A 和 B 都分成 m 个部分，于是就相当于划分出 m * m 的正方形，然后选择其中的 m 个方框，从中随机抽取点。那么选择方框的过程就要使用拉丁超立方抽样法。整个抽样的过程有点类似填数独，每行每列没有重复的值。选择出来 m 个方框，再从方框中随机抽数。如果是 3 个或更多的集合，就从平方成为了立方，甚至超立方。</p>
+<p>拉丁超立方抽样的一个好处是，如果所需要的样本量发生变化，依然可以使用拉丁超立方的方法来进行抽样，只要简单修改抽样数量即可。</p>
+<p>在具体实现上面，可以有以下三种方法：</p>
+<ol>
+<li>使用数组记录下来已经产生的每一维度的序号；</li>
+<li>先产生序号，随机打乱，抽取第一个序号，然后再打乱，再抽取；</li>
+<li>直接随机打乱所有维度的值，然后按顺序取配对的值。</li>
+</ol>
+<p>其中第三种方法是最为简洁的。</p>
+<h4>相同与差异</h4>
+<p>拉丁超立方抽样借用了拉丁平方 Latin Squre 的思想。拉丁平方是使用 n 个不同的值去填 n * n 的矩阵，每行每列，值不能重复。数独游戏 Sudoku 就是特别的拉丁平方。而三维的就是拉丁立方，多维的就是拉丁超立方。实际上在我和茂茂师兄理解拉丁超立方抽样的时候发现，如果对于一维的拉丁超立方抽样，没有随机排序的过程，就是分层抽样。</p>
+<p>根据 MacKay 的测试，三种抽样方式得到的平均值的差异很小，而平均值的标准差中，随机抽样最大，分层抽样其次，拉丁超立方抽样最小。实际上，这三种抽样方法是相互联系的。随机抽样是基础，分层抽样和拉丁超立方抽样的具体部分也都用到了随机抽样，而拉丁超立方抽样也同样用到了分层抽样的思想。拉丁超立方抽样解决了多个集合共同抽样的问题，分层抽样解决了一个集合中抽样结果具有代表性的问题，随机抽样解决了小的集合中抽样的问题。</p>
+<p>Hammersley design</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 01 December 2015</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/algorithm.html">#algorithm, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2015/chou-yang-fang-fa.html&text=抽样方法&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2015/chou-yang-fang-fa.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2015/chou-yang-fang-fa.html&t=抽样方法"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2015/chou-yang-fang-fa.html&title=抽样方法" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=抽样方法&amp;body=Viens découvrir un article à propos de [抽样方法] sur le site de Wolfson Liu. ../../archive/2015/chou-yang-fang-fa.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2015/chou-yang-fang-fa.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

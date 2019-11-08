@@ -1,0 +1,51 @@
+Title: Linux 学习笔记: 计算机简介与Linux系统
+Date: 2018-12-14 19:38
+Modified: 2018-12-14 19:38
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: 计算机简介与Linux系统
+
+## 计算机硬件 ##
+
+  * CPU
+    * 精简指令集（RISC）：ARM
+    * 复杂指令集（CISC）：x86，x86_64（Intel，AMD）
+  * 内存
+  * 硬盘
+  * 主板
+  * 显卡
+  * 各种接口设备
+  * 电源
+
+## 数据存储 ##
+  * 二进制
+  * 文字编码
+    * ASCII：2^8 256
+    * UTF-8
+
+| Number of bytes | Bits for code point | First code point | Last code point | Byte 1 | Byte 2 | Byte 3 | Byte 4 |
+| --------------- | ------------------- | ---------------- | --------------- | ------ | ------ | ------ | ------ |
+| 1   |   7    | U+0000 | U+007F | 0xxxxxxx | | | |
+| 2   |   11   | U+0080 | U+07FF | 110xxxxx | 10xxxxxx | | |
+| 3   |   16   | U+0800 | U+FFFF | 1110xxxx | 10xxxxxx | 10xxxxxx | |
+| 4   |   21   | U+10000| U+10FFFF | 11110xxx | 10xxxxxx | 10xxxxxx | 10xxxxxx |
+
+## 软件运行 ##
+
+  * 操作系统
+    * 系统内核：linux，XNU（darwin）
+      * 系统调用
+      * 程序管理
+      * 内存管理
+      * 文件系统
+      * 设备驱动
+    ![操作系统示意](https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Kernel_Layout.svg/220px-Kernel_Layout.svg.png)
+  * 应用程序
+  * Android
+  ![安卓系统示意](https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Android-System-Architecture.svg/1280px-Android-System-Architecture.svg.png)
+  * [Linux Distribution](http://distrowatch.com/)
+    * Linux Distribution = Linux Kernel + Applications
+    * Debian
+    * Ubuntu
+    * Redhat/Centos/Fedora

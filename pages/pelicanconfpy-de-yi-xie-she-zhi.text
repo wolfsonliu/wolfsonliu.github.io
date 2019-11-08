@@ -1,0 +1,93 @@
+Title: pelicanconf.py 的一些设置
+Date: 2016-02-16 23:31
+Modified: 2016-02-17 00:06
+Category: 壹零零壹
+Tags: pelican
+Authors: Wolfson Liu
+Summary: 使用 Pelican 生成静态博客的一些设置.
+
+pelicanconf.py 是 Pelican 的设置文件, 可以设置的内容太多了, 学一点就记录一点吧.
+
+###基本信息设置###
+
+基本信息可以设置网站名称, 网站小标题, 时区, 语言, 作者等.
+
+```
+SITENAME     = u"Wolf Cave"
+SITESUBTITLE = "一个记录 Wolfson Liu 生活的地方"
+SITEURL      = "https://wolfsonliu.github.io"
+#SITEURL      = "http://localhost:8000"
+TIMEZONE     = "Asia/Shanghai"
+DEFAULT_LANG = u"zh"
+AUTHOR       = u"Wolfson Liu"
+```
+
+需要注意的是 SITEURL 的设置, 这个相当于 HTML 文件中的 base, 当在本地调试的时候需要设置成本地端口, 而在发布的时候转换成博客地址.
+
+
+###路径设置###
+
+路径设置是很重要的, 涉及到不同页面之间的跳转. 可以自己去u规划不同类型的页面怎样放置在不同的文件夹中. 带有 PATH 的变量指本地的 Markdown, 图片等文件存放文件夹, 而带有 URL 的变量则是网页相关内容.
+
+```
+PATH               = "content"
+STATIC_PATHS       = ["pages","images"]
+ARTICLE_PATHS      = ["pages"]
+ARTICLE_URL        = "archive/{slug}.html"
+ARTICLE_SAVE_AS    = ARTICLE_URL
+AUTHOR_URL         = "author/wolfson-liu.html"
+AUTHOR_SAVE_AS     = AUTHOR_URL
+AUTHORS_URL        = ""
+AUTHORS_SAVE_AS    = ""
+TAG_URL            = "tag/{slug}.html"
+TAG_SAVE_AS        = TAG_URL
+TAGS_URL           = "tags.html"
+TAGS_SAVE_AS       = TAGS_URL
+CATEGORY_URL       = "category/{slug}.html"
+CATEGORY_SAVE_AS   = CATEGORY_URL
+CATEGORIES_URL     = "categories.html"
+CATEGORIES_SAVE_AS = CATEGORIES_URL
+ARCHIVES_URL       = "archives.html"
+ARCHIVES_SAVE_AS   = ARCHIVES_URL
+```
+
+* PATH 指明了 Pelican 去哪个文件夹寻找 Markdown 文件, 该文件夹应该和 pelicanconf.py, Makefile 等文件在同一目录下.
+* STATIC_PATHS 是 Markdown 文件中使用的图片等静态资源的存放地点, 应该位于 PATH 所指明的文件夹中.
+* ARTICLE_PATHS 是文章的存放目录, 在 PATH 目录下.
+* 以 URL 结尾的是说所指明的类型的页面的存放地点, 这个是和网站或者本地 Pelican 输出文件夹中对应的, 这个一般可以直接设置为相对路径. 如果指明的文件夹不存在, Pelican 将会自动建立文件夹.
+* 以 SAVE_AS 结尾的变量指的是把相应 Markdown 文件转为 HTML 后存放的相对位置, 应该和相应的 URL 一致.
+* AUTHOR, TAG, CATEGORY 指的是特定的一个类型的页面, 如对于 TAG: python 来说, 就是 python 这个 TAG 的相关文章的页面.
+* AUTHORS, TAGS, CATEGORIES 指的是相关类型的所有集合的目录文献, 如 TAGS 页面上显示出的是所有的 TAG 的 list.
+
+
+###显示设置###
+
+对于不同的主题应该有相应合适的显示设置, 这样才能使得相应主题显示正常. 我曾经一直不知道为什么在菜单栏中有所有地文章的标题, 最后发现是相应的变量设置的问题, 这个小小的设置可折腾坏我了.
+
+```
+DISPLAY_PAGES_ON_MENU          = False
+DISPLAY_HEADER                 = True
+DISPLAY_FOOTER                 = True
+DISPLAY_HOME                   = True
+DISPLAY_MENU                   = True
+DISPLAY_CATEGORIES_ON_MENU     = True
+DISPLAY_CATEGORIES_ON_SUBMENU  = False
+DISPLAY_CATEGORIES_ON_POSTINFO = False
+DISPLAY_AUTHOR_ON_POSTINFO     = False
+DISPLAY_SEARCH_FORM            = False
+```
+
+相应的用法已经在名称里面简要说明了, 根据相应的主题去调整就好.
+
+###菜单设置###
+
+有的主题会有菜单, 相应也可以设置菜单栏中的项目.
+
+```
+# pelican-blue setting
+# 第一个是菜单的名称, 第二个是点击菜单后跳转的页面
+MENUITEMS = (("文章", SITEURL+"/"+ARCHIVES_URL),
+             ("类别", SITEURL+"/"+CATEGORIES_URL),
+             ("标签", SITEURL+"/"+TAGS_URL),
+             ("关于", SITEURL+"/about.html"),)
+```

@@ -1,0 +1,262 @@
+Title: C++ 学习笔记：iostream
+Date: 2015-11-15 23:36
+Modified: 2015-12-31 21:16
+Category: 壹零零壹
+Tags: c/c++
+Authors: Wolfson Liu
+Summary: C++ iostream 标准库学习。
+
+### IO 标准库头文件 ###
+
+IO 标准库有三个头文件：iostream 负责窗口输入输出；fstream 负责文件输入输出，f 就是 file；sstream 负责内存输入输出，s 就是 string。fstream 和 sstream 是从 iostream 中派生过来的。
+
+* iostream
+    - istream：从流中读取，`#include <istream>`；
+    - ostream：写入到流中，`#include <ostream>`；
+    - iostream：对流进行读写，从以上两个派生，`#include <iostream>`，当 <iostream> 被 include 后，<ios>，<streambuf>，<istream>，<ostream>，<iosfwd> 等也会被包括其中。
+
+* fstream
+    - ifstream：从文件中读取，由 istream 派生，`#include <fstream>`；
+    - ofstream：写入到文件中，由 ostream 派生，`#include <fstream>`；
+    - fstream：对文件进行读写，从 iostream 派生，`#include <fstream>`。
+
+* sstream
+    - istringstream：从 string 中读取，由 istream 派生，`#include <sstream>`；
+    - ostringstream：写入到 string 中，由 ostream 派生，`#include <sstream>`；
+    - stringstream：对 string 进行读写，从 iostream 派生，`#include <sstream>`。
+
+可以看一下 <ios> <istream> <ostream> <iostream> <fstream> <sstream> <streambuf> 相互关系。
+![iostream](../images/iostream.gif)
+
+--------------------
+
+### 输入输出状态 ###
+
+IO 标准库中有一系列条件状态（Condition State）成员，类型为`strm::iostate`，值如下所列四个：
+
+1. goodbit：没有错误，`strm::goodbit`；
+2. badbit：不能恢复的 stream error，`strm::badbit`；
+3. failbit：失败的 input/output operation （formatting or extraction error），`strm::failbit`；
+4. eofbit：输入输出结束，`strm::eofbit`。
+
+ 
+来自[cplusplus](http://www.cplusplus.com/reference/ios/ios/good/)的例子如下。
+
+```
+// error state flags
+#include <iostream>     // std::cout, std::ios
+#include <sstream>      // std::stringstream
+
+void print_state (const std::ios& stream) {
+    std::cout << " good()=" << stream.good();    // 判断是否是 goodbit，是的话返回 true。
+    std::cout << " eof()=" << stream.eof();    // 判断是否是 eofbit，是的话返回 true。 
+    std::cout << " fail()=" << stream.fail();    // 判断是否是 failbit，是的话返回 true。 
+    std::cout << " bad()=" << stream.bad();    // 判断是否是 streambit，是的话返回 true。 
+}
+
+int main () {
+    std::stringstream stream;
+
+    stream.clear (stream.goodbit);    // 把该状态认为是有效的，不让程序终止。
+    std::cout << "goodbit:"; print_state(stream); std::cout << '\n';
+
+    stream.clear (stream.eofbit);
+    std::cout << " eofbit:"; print_state(stream); std::cout << '\n';
+
+    stream.clear (stream.failbit);
+    std::cout << "failbit:"; print_state(stream); std::cout << '\n';
+
+    stream.clear (stream.badbit);
+    std::cout << " badbit:"; print_state(stream); std::cout << '\n';
+
+    return 0;
+}
+```
+
+相应的有一些函数可以帮助判断和操作，其中 stream 可以为 cin cout 等：
+
+* stream.eof()：遇到 eofbit 返回 true；
+* stream.fail()：遇到 failbit 和 badbit 返回 true；
+* stream.bad()：遇到 badbit 返回 true；
+* stream.good()：遇到 goodbit 返回 true；
+* stream.clear()：把所有状态设置为有效；
+* stream.clear(flag)：把 flag 状态设置为有效，flag 类型为 _strm_::iostate，可以取 goodbit badbit failbit eofbit 四种值；
+* stream.setstate(flag)：给 stream 设定特定的 flag；
+* stream.rdstate()：返回 stream 当前的状态，返回值为 _strm_::iostate；
+* stream.ignore(streamsize n = 1, int delim = EOF)：第一个参数是要忽视起始位置，第二个参数为终止标示，可以是空格等；
+* stream.tie()： 
+
+--------------------
+
+### 文件输入输出 ###
+
+可以通过以下代码打开输入输出文件：
+
+```
+// 定义的时候打开文件.
+ifstream infile(filename);
+ofstream onfile(filename);
+
+// 或者定义之后打开文件.
+ifstream ifile;
+ofstream ofile;
+ifile.open(filename);
+ofile.open(filename);
+```
+其中 filename 应该是 char *，如果把 filename 存入 string 类型的话应该记得使用 filename.c_str() 函数转换类型。
+
+在文件使用完后需要关闭文件，如果需要重新使用变量名还需要清空状态。
+
+```
+ifile.close();
+ifile.clear();    // 必须要有，因为上一个文件读到了 eof.
+ifile.open(anotherfile);
+```
+
+文件打开有模式的区别，ifstream 和 ofstream 定义的变量都有默认的模式，也可以自己设置。
+
+* in：对文件做读的操作，只能用于 ifstream 或 fstream；
+* out；对文件做写的操作，只能用于 ofstream 或 fstream；
+* app：对文件做写的操作，只能用于 ofstream 或 fstream；
+* ate：打开文件时定位到文件末尾；
+* trunc：清空文件，只能用于 ofstream 或 fstream；
+* binary：以二进制进行 IO 操作。
+
+对模式的设置如下：
+```
+ofstream outfile("file", ofstream::out | ofstream::trunc);
+```
+
+不同的组合如下：
+
+* out：打开文件写操作，清除有的数据；
+* out | app：打开文件，在文件末尾写入；
+* out | trunc：同 out；
+* in：打开文件读操作；
+* in | out：打开文件做读写操作，定位在文件开头；
+* in | out | trunc：打开文件做读写操作，清除以有数据；
+
+#### 示例 ####
+
+如果想要检测是否存在文件, 可以使用 std::ifstream::good().
+```
+bool isFileExist(const char* file_name)
+{
+    ifstream in_file(file_name);
+    return in_file.good();
+}
+```
+
+--------------------
+
+### 字符串输入输出 ###
+
+在头文件 <sstream> 中定义了对内存的 string 的输入输出。当同时需要对行的输入输出和对单词的输入输出的时候使用 stringstream 和其他的流的配合可以很好地完成任务。
+
+* istringstream：从 string 中读取，由 istream 派生，`#include <sstream>`；
+* ostringstream：写入到 string 中，由 ostream 派生，`#include <sstream>`；
+* stringstream：对 string 进行读写，从 iostream 派生，`#include <sstream>`。
+
+strm.str() 返回 strm 中的值；strm.str(s) 用来使用 string 类型的 s 复制给 strm，返回 void。
+
+```
+string line, word;
+while (getline(cin, line)) {    // read a line from cin.
+    istringstream stream(line);
+    while (stream >> word) {
+        ；// some work on word.
+    }
+}
+```
+
+stringstream 也可以用来进行格式转换；
+
+```
+int val1 = 512, val2 = 024;
+ostringstream format_message;
+format_message << "val1: " << val1 << "\n"
+               << "val2: " << val2 << "\n";
+istringstream input_istring(format_message.str())；
+string dump;
+input_istring >> dump >> val1 >> dump >> val2;    // "val1:" 和 "val2:" 被输入 dump，空格和换行符被忽略.
+```
+
+--------------------
+
+### 格式 ###
+
+在 c 中, 使用 printf 进行输出, 使用 c 的格式说明 % 来输出特定的精度. Python 中也可以使用 c 风格的格式. 在 c++ 中, 如果使用 iostream 的话, 格式说明和 c 不一样. 在 头文件 <ios> 和 <iomanip> 中有相关的声明和定义. <iomanip> 中的函数是对 <ios> 中的 flag 的补充.
+
+在改变格式状态之前, 应该知道怎么恢复默认格式状态. 一种方法是在使用完一个操作符之后就设置取消该操作符的相应操作符. 另一种方法是使用 flag.
+
+```
+ostream::fmtflags current_fmt = os.flags();
+// some thing changed.
+os.flags(current_fmt);
+```
+
+#### iostream 操作符 ####
+
+在 iostream 中定义了一些操作符, 可以用来改变格式状态, 有些是默认的设置, 另一些可以选择改变. 斜体的为默认设置.
+
+设置方法均为:
+```
+cout << boolalpha << something;
+cin >> noskipws;
+```
+
+* boolalpha: 把 true 和 false 显示为字符串.
+* _noboolalpha_: 把 true 和 false 显示为 1 和 0.
+* showbase: 产生指出数字基数的前缀, 十六进制前面加 0x, 八进制前面加 0.
+* _noshowbase_: 不产生指出数字基数的前缀.
+* showpoint: 总是显示小数点.
+* _noshowpoint_: 有小数部分才显示小数点.
+* showpos: 显示非负数前面的 +.
+* _noshowpos_: 不显示非负数前面的 +.
+* uppercase: 十六进制数自中显示 0X, 科学记数法中显示 E.
+* _nouppercase_: 十六进制数自中显示 0x, 科学记数法中显示 e.
+* _dec_: 用十进制显示.
+* hex: 用十六进制显示, int 15 会输出为 f.
+* oct: 用八进制显示.
+* left: 左对齐, 在值的右边增添填充字符.
+* right: 右对齐, 在值的左边增加填充字符.
+* internal: 左对齐正负号, 右对齐数字, 在符号和值之间增加填充字符.
+* fixed: 用小数形式显示浮点数, 固定显示小数点后的个数.
+* scientific: 用科学记数法显示浮点数.
+* flush: 刷新 ostream 缓冲区.
+* ends: 插入空字符, 然后刷新缓冲区, 相当于增加空格在加入 flush.
+* endl: 插入换行符, 然后刷新缓冲区, 相当于增加 \n 然后再 flush.
+* unitbuf: 在每个输出之后刷新缓冲区.
+* _nounitbuf_: 恢复常规缓冲区刷新.
+* _skipws_: 为输入操作后跳过空白, 可以直接读取下一个字符.
+* noskipws: 不为输入操作后跳过空白.
+* ws: 吃掉空白.
+
+#### iomanip 操作符 ####
+
+* setfill(m): 用 m 填充空白, 可以和对齐操作符一起用.
+* setprecision(n): 浮点精度设置为 n, 默认为6, 也可以使用成员函数如 cout.precision(n).
+* setw(w): 指定下个数字和字符的最小间隔为 w 个字符, 设置宽度.
+* setbase(b): 按照 b 基数输出整数.
+
+
+#### 单字节操作 ####
+
+还可以对流的单个字节进行操作. 注意, 无参数的 get 等返回的是 int.
+
+* is.get(ch): 把 is 的下一个字节放入 ch, 返回改变后的 is.
+* is.get(): 返回 is 的下一个字节作为 int, int 可以返回文件结束, 要用 int 来保存.
+* os.put(ch): 把 ch 放入 os, 返回改变后的 os.
+* is.putback(ch): 把字符 ch 放回 is, 返回 is.
+* is.unget(): 让 is 退回一个字符, 返回 is.
+* is.peak(): 把下一个字节作为 int 返回, 但不移出 is.
+
+#### 多字节操作 ####
+
+* is.get(sink, size, delim): sink 为用来保存 size 个字符的字符数组, 遇到文件结束或者 delim 指明的分隔符将提前结束, delim 指明分隔符, 会被留在流中.
+* is.getline(sink, size, delim): 和三个参数的 get 类似, 但是会读取 delim 并丢弃.
+* is.read(sink, size): 读取 size 个字节到 sink 中.
+* is.gcount(): 返回最后一个未格式化读操作的字节数.
+* is.ignore(size, delim): 读并忽视最多 size 个字符, 直到但不包括 delim, 默认 size 为1, delim 为 EOF.
+* os.write(source, size): 从 source 纵读取 size 个字符放入 os, 返回 os.
+

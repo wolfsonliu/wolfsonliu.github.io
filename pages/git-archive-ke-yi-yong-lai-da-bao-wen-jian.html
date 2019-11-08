@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git archive 可以用来打包文件</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>当需要把代码打包传输和发布的时候，可以使用 <code>git archive</code> 命令。</p>
+<h2>打包格式</h2>
+<p><code>git archive</code> 支持两种打包方式：tar 和 zip。<code>git archive</code> 默认使用 tar
+打包，可以使用 <code>--format</code> 来指定格式。tar 格式打包完并未压缩，所以需要
+借助如 <code>gzip</code> 等软件进行压缩，而 zip 格式是打包并压缩。</p>
+<div class="highlight"><pre><span></span>git archive --format<span class="o">=</span>tar master <span class="p">|</span> gzip &gt; v1.tar.gz
+ls *.tar.gz
+<span class="c1"># v1.tar.gz</span>
+</pre></div>
+
+
+<p>或者使用 zip 格式：</p>
+<div class="highlight"><pre><span></span>git archive --format<span class="o">=</span>zip master &gt; v1.zip
+ls *.zip
+<span class="c1"># v1.zip</span>
+</pre></div>
+
+
+<h2>打包入文件夹</h2>
+<p>当前打包文件如果解压是和 git 项目文件夹中结构一样的，也可以将所有的文
+件打包到一个子文件夹中，使用 <code>--prefix=&lt;dirname&gt;</code> 参数：</p>
+<div class="highlight"><pre><span></span>git archive master --format<span class="o">=</span>tar --prefix<span class="o">=</span>v1 <span class="p">|</span> gzip &gt; v1.tar.gz
+</pre></div>
+
+
+<p>这样当 tar.gz 文件被解压后，所有文件将位于 v1 文件夹下面。</p>
+<h2>git archive 其他参数</h2>
+<ul>
+<li><code>-o &lt;file&gt;</code> 或者 <code>--output=&lt;file&gt;</code>：指定输出的文件名。</li>
+<li><code>--remote=&lt;url&gt;</code>: 如果想要打包的是远程的分支，则应该使用 参数。</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

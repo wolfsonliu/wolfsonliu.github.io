@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>最大公约数和最小公倍数</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html">
+<meta name="twitter:title" content="Wolf Cave ~ 最大公约数和最小公倍数">
+<meta name="twitter:description" content="计算最大公约数和最小公倍数的方法">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ 最大公约数和最小公倍数" />
+<meta property="og:description" content="计算最大公约数和最小公倍数的方法" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html" rel="bookmark" title="Permalink to 最大公约数和最小公倍数">最大公约数和最小公倍数</a></h2>
+        <div class="entry-content blog-post">
+            <p>看书的时候，我看到了关于求最大公约数的算法，不妨就做个笔记。</p>
+<hr>
+<h4>最大公约数 Greatest Common Divisor</h4>
+<p>求最大公约数有多种方法，如质数分解法、短除法、辗转相除法（欧几里德算法）和更相减损法等。</p>
+<h5>质数分解法</h5>
+<p>质数分解法是小学学过的第一种求最大公约数的算法（那个时候还没有算法的概念）。就是求出两个数各自的质数，然后求共有的质数的乘积。</p>
+<h5>短除法</h5>
+<p>短除法本质上也是质数分解法，使用短除号来计算。</p>
+<h5>更相减损法</h5>
+<p>更相减损法出自刘徽的《九章算术》：可半者半之，不可半者，副置分母、子之数，以少减多，更相减损，求其等也。以等数约之。</p>
+<p>计算步骤：
+1. 任意给定两个正整数；判断它们是否都是偶数。若是，则用2约简；若不是则执行第二步。
+2. 以较大的数减较小的数，接着把所得的差与较小的数比较，并以大数减小数。继续这个操作，直到所得的减数和差相等为止。</p>
+<p>则第一步中约掉的若干个2与第二步中等数的乘积就是所求的最大公约数。</p>
+<h5>辗转相除法（欧几里德算法）</h5>
+<p>我在学习编程的时候，看到的就是这个算法。具体就是：对任意 m, n 属于 N, 有 gcd(m, n) = gcd(n, m mod n)。这个方法可以很好通过递归实现。</p>
+<p>证明：</p>
+<blockquote>
+<p>设 k 为 a, b 的公约数, 即有 a = pk, b = qk 其中 a, b 均为自然数, 另 p, q, x, y 为任意整数.</p>
+<p>有 xa + yb = xpk + yqk = (xp + yq)k.</p>
+<p>那么, 我们可以令 m = ha + b, n = a, m mod n = b 所以, h 为任意整数 k 就是 m, n 的公约数.</p>
+<p>接着证明 k 为最大公约数, 令 gcd() 为求最大公约数.</p>
+<p>令 k = gcd(m, n), j = gcd(n, m mod n), 其中 m = hn + b.</p>
+<p>由于 m = hn + (m mod n), j 是 n 和 (m mod n) 的最大公约数，所以 j 也是 m 和 n 的公约数.</p>
+<p>又由于 k 为 m 和 n 的最大公约数, 所以, k &gt;= j.</p>
+<p>又有 (m mod n) = m - hn, k 是 m 和 n 的最大公约数, 所以 k 也是 (m mod n) 和 n 的公约数.</p>
+<p>又由于 j 为 (m mod n) 和 n 的最大公约数, 所以, j &gt;= k.</p>
+<p>因为 k &gt;= j, j &gt;= k, 所以 k = j.</p>
+<p>由此得证.</p>
+</blockquote>
+<p>可以通过 C++ 来实现：</p>
+<div class="highlight"><pre><span></span>#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">iostream</span><span class="o">&gt;</span>
+<span class="nv">int</span> <span class="nv">gcd</span><span class="ss">(</span><span class="nv">int</span> <span class="nv">a</span>,<span class="nv">int</span> <span class="nv">b</span><span class="ss">)</span>
+{
+    <span class="k">return</span> <span class="nv">a</span><span class="o">%</span><span class="nv">b</span> ? <span class="nv">gcd</span><span class="ss">(</span><span class="nv">b</span>,<span class="nv">a</span><span class="o">%</span><span class="nv">b</span><span class="ss">)</span> : <span class="nv">b</span><span class="c1">;</span>
+}
+<span class="nv">int</span> <span class="nv">main</span><span class="ss">()</span>
+{
+    <span class="nv">int</span> <span class="nv">x</span>, <span class="nv">y</span><span class="c1">;</span>
+    <span class="nv">cin</span> <span class="o">&gt;&gt;</span> <span class="nv">x</span>, <span class="nv">y</span>
+    <span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="nv">gcd</span><span class="ss">(</span><span class="nv">x</span>, <span class="nv">y</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="c1">;</span>
+}
+</pre></div>
+
+
+<h4>最小公倍数 Lowest Common Multiple</h4>
+<p>当有了最大公约数就好求最小公倍数了。若以 (a,b) 来记 a 和 b 的最大公约数，以 [a,b] 来记 a 和 b 的最小公倍数，那么有 (a, b)[a, b] = ab。所以，只需要用 a 和 b 的乘积除以 a 和 b 的最大公约数就可以了。</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sun 15 November 2015</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/algorithm.html">#algorithm, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html&text=最大公约数和最小公倍数&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html&t=最大公约数和最小公倍数"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html&title=最大公约数和最小公倍数" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=最大公约数和最小公倍数&amp;body=Viens découvrir un article à propos de [最大公约数和最小公倍数] sur le site de Wolfson Liu. ../../archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2015/zui-da-gong-yue-shu-he-zui-xiao-gong-bei-shu.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

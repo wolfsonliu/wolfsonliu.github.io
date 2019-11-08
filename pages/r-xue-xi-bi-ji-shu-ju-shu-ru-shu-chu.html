@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：数据输入输出</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>一般文件</h2>
+<h3>手动输入数据</h3>
+<p>如果数据量不大, 可以手动输入数据, 除了通过变量赋值的方法来输入数据外, 还可以通过编辑器或调用的窗口来输入数据.</p>
+<div class="highlight"><pre><span></span><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">age</span> <span class="o">=</span> <span class="nf">numeric</span><span class="p">(</span><span class="m">0</span><span class="p">),</span> <span class="n">gender</span> <span class="o">=</span> <span class="nf">character</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">edit</span><span class="p">(</span><span class="n">mydata</span><span class="p">)</span>  <span class="c1"># 使用edit必须要重新赋给变量</span>
+
+<span class="nf">fix</span><span class="p">(</span><span class="n">mydata</span><span class="p">)</span>  <span class="c1"># 使用fix直接修改变量</span>
+</pre></div>
+
+
+<p>scan 函数如果不加 file 的参数, 则直接从终端读取数据, 需要使用 what 来指明数据类型: <code>what=""</code> 读字符, <code>what=0</code> 读数字, <code>what=list(a=0, b="")</code> 把读的结果按相应类型保存成 list. scan 函数也可以放在其他的函数中, 如 matrix, 然后在终端输入值.</p>
+<div class="highlight"><pre><span></span><span class="nf">scan</span><span class="p">()</span>
+
+<span class="n">mymat</span> <span class="o">&lt;-</span> <span class="nf">matrix</span><span class="p">(</span><span class="nf">scan</span><span class="p">(),</span><span class="n">ncol</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>读取文本文件</h3>
+<div class="highlight"><pre><span></span><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="n">file</span>   <span class="o">=</span> <span class="n">THEFILE</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+
+
+<p>除了 read.table 直接把 scan 函数封装好的函数外, 还有 read.csv, read.csv2, read.delim, read.delim2 等对 read.table 进行了按照文件类型进行特别设置的函数可以使用.</p>
+<ul>
+<li>read.csv: 以 "," 分隔的 CSV 文件, 默认第一行为表头, 以 "." 作为小数点.</li>
+<li>read.csv2: 以 ";" 分隔的 CSV 文件, 默认第一行为表头, 以 "," 作为小数点.</li>
+<li>read.delim: 以 "\t" 分隔的 TSV 文件, 默认第一行为表头, 以 "." 作为小数点.</li>
+<li>read.delim2: 以 "\t" 分隔的 TSV 文件, 默认第一行为表头, 以 "," 作为小数点.</li>
+<li>read.fwf: 按照固定长度去读取文件.</li>
+</ul>
+<h3>读取 Excel 文件</h3>
+<p>对于 Excel 文件, 可以像连接数据库一样进行连接, 使用 RODBC 包 (限于 Windows).</p>
+<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">RODBC</span><span class="p">)</span>
+<span class="n">channel</span> <span class="o">&lt;-</span> <span class="nf">odbcConnectExcel</span><span class="p">(</span><span class="s">&quot;myfile.xls&quot;</span><span class="p">)</span>
+<span class="n">mydata</span>  <span class="o">&lt;-</span> <span class="nf">sqlFetch</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s">&quot;mysheet1&quot;</span><span class="p">)</span>
+<span class="nf">odbcClose</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Excel 2007 采用的 xlsx 文件实际上相当于 xls 的压缩文件. 对于 xlsx 文件, 可以使用 xlsx 包, 来读取和操作 xlsx 文件.</p>
+<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">xlsx</span><span class="p">)</span>
+<span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.xlsx</span><span class="p">(</span><span class="s">&quot;myfile.xlsx&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="c1"># 1 指的是要读取的表单.</span>
+</pre></div>
+
+
+<p>也可以在所有的平台上使用 gdata 包的 read.xls 来读取 Excel 文件.</p>
+<h3>读取关系数据库数据</h3>
+<h4>ODBC 数据库接口</h4>
+<p>在系统安装有合适的 ODBC 驱动的情况下, 使用 RODBC 包可以连接关系数据库.</p>
+<div class="highlight"><pre><span></span><span class="n">odbcConnect</span><span class="p">(</span><span class="n">dsn</span><span class="p">,</span><span class="n">uid</span><span class="o">=</span><span class="ss">&quot;&quot;</span><span class="p">,</span><span class="n">pwd</span><span class="o">=</span><span class="ss">&quot;&quot;</span><span class="p">)</span>  <span class="o">#</span> <span class="err">建立一个到</span><span class="n">ODBC数据库的连接</span>
+<span class="n">sqlFetch</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">sqltable</span><span class="p">)</span>  <span class="o">#</span> <span class="err">读取</span><span class="n">ODBC数据库中的某个表到一个数据框中</span>
+<span class="n">sqlQuery</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">query</span><span class="p">)</span>  <span class="o">#</span> <span class="err">向</span><span class="n">ODBC数据库提交一个查询并返回结果</span>
+<span class="n">sqlSave</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">mydf</span><span class="p">,</span><span class="n">tablename</span><span class="o">=</span><span class="n">sqtable</span><span class="p">,</span><span class="n">append</span><span class="o">=</span><span class="k">FALSE</span><span class="p">)</span>  <span class="o">#</span> <span class="err">将数据框写入或更新</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="k">TRUE</span><span class="p">)</span><span class="err">到</span><span class="n">ODBC数据库的</span>
+<span class="err">某个表中</span>
+<span class="n">sqlDrop</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">sqtable</span><span class="p">)</span>  <span class="o">#</span> <span class="err">删除</span><span class="n">ODBC数据库中的某个表</span>
+<span class="k">close</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>  <span class="o">#</span> <span class="err">关闭连接</span>
+</pre></div>
+
+
+<h4>DBI 数据库接口</h4>
+<p>DBI 提供数据库通用接口. 相关 R 包有 RJDBC, RMySQL, RPostgreSQL, ROracle, RSQLite 等.</p>
+<h2>链接 Connection</h2>
+<p>有的时候不需要直接把所有的文件读入内存, 这种情况下可以使用链接 (connection) 的方法读取文件. 需要注意的是, 建立链接并不读取文件, 当使用结束后还应该关闭链接.</p>
+<h3>connections</h3>
+<p>connections 的函数都是在 base 包中的, 包括 open, close 等. 链接可以用到之前需要使用文件名作为参数的地方, 如在 write.table 的参数中可以把一个链接赋值给 file 参数. 创建的链接默认不会打开, 需要使用包括 open 在内的其他函数打开链接.</p>
+<h4>创建链接</h4>
+<ul>
+<li>file: 创建文件链接.</li>
+<li>url: 创建 url 链接.</li>
+<li>gzfile: 创建 gz 压缩文件链接.</li>
+<li>bzfile: 创建 bz 压缩文件链接.</li>
+<li>xzfile: 创建 bz 压缩文件链接.</li>
+<li>unz: 创建只读的 zip 压缩文件链接.</li>
+<li>pipe: 创建管道链接.</li>
+<li>fifo: 按先进先出的队列打开.</li>
+<li>socketConnection: 创建需要账号等信息的 socket 链接.</li>
+<li>textConnection: 使用变量等对象建立链接.</li>
+</ul>
+<p>创建链接的函数有 open 选项, 可以选择链接类型, 其中 "t" 是创建 text 链接, "b" 是创建 binary 链接.</p>
+<ul>
+<li>"r" 或者 "rt" 创建只读的 text 链接.</li>
+<li>"w" 或者 "wt" 创建重新写的 text 链接.</li>
+<li>"a" 或者 "at" 创建续写的 text 链接.</li>
+<li>"rb" 创建只读的 binary 链接.</li>
+<li>"wb" 创建重新写的 binary 链接.</li>
+<li>"ab" 创建续写的 binary 链接.</li>
+<li>"r+", "r+b" 创建读写的链接.</li>
+<li>"w+", "w+b" 创建读写的链接, 在起始时先清除链接.</li>
+<li>
+<p>"a+", "a+b" 创建附加读写的链接.</p>
+</li>
+<li>
+<p>seek: 用来改变链接指针的位置.</p>
+</li>
+</ul>
+<h4>打开和关闭链接</h4>
+<p>当链接被打开并被操作之后, 链接的位置指针会从头向后移动, 一定读取等操作之后会移动到链接末尾.</p>
+<ul>
+<li>open: 打开创建的链接.</li>
+<li>close: 关闭打开的链接.</li>
+<li>isOpen: 判断链接是否打开.</li>
+<li>isIncomplete: 判断链接是否被阻断.</li>
+</ul>
+<p>一些函数可以直接打开链接, 有的以文本形式打开, 有的以二进制形式打开.</p>
+<p>文本</p>
+<ul>
+<li>readLines: 从链接中读取一定的行数 (n, 如果 n 为负数则读取整个文件).</li>
+<li>writeLines: 把一定的内容以文本形式写入一个链接.</li>
+<li>cat: 把一些对象连接并输出到文件或者链接.</li>
+<li>sink: 把 R 的输出导向文件 (名) 或链接.</li>
+<li>scan: 从文件或链接读取, what 参数可以指定读取数据的保存类型.</li>
+<li>parse: 接受文件名或者链接做为解析参数.</li>
+<li>read.dcf, write.dcf: debian control file.</li>
+<li>dput, dget: 以 ASCII 码形式保存或读取 R object.</li>
+<li>dump: 把一系列以变量名标示的 R object 解析为文本保存到文件或链接, 会把相应的 R 代码保存.</li>
+</ul>
+<p>二进制</p>
+<ul>
+<li>readBin </li>
+<li>readChar</li>
+<li>writeBin</li>
+<li>writeChar</li>
+<li>load</li>
+<li>save</li>
+</ul>
+<h3>大数据量</h3>
+<p>如果数据的量十分大, 也许不太适合把所有数据都读入内存, 这样就需要能够每次只按照需要从硬盘上读取需要的数据量.</p>
+<ul>
+<li>readLines: 从文件读取一定数量的行.</li>
+</ul>
+<h2>R 数据对象的存储和读取</h2>
+<p>有的时候需要把 R 中的对象存储下来, 以便下次直接使用或者换计算机使用. R 可以存储和读取特定的文件直接到内存中, 相应的 R 对象都会被保存.</p>
+<ul>
+<li>save.image: 把 R 中所有的对象 (ls 显示的对象) 都保存在文件中, 默认为 .RData</li>
+<li>save: 把特定的 R 对象保存在文件中.</li>
+<li>load: 把文件中保存的 R 对象读入内存.</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

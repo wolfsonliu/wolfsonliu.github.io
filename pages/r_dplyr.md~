@@ -1,0 +1,342 @@
+Title: R 学习笔记：dplyr 像操作数据库一样操作 R
+Date: 2017-09-15 10:50
+Modified: 2017-10-28 12:50
+Category: 壹零零壹
+Tags: R
+Authors: Wolfson Liu
+Summary: dplyr.
+
+[tidyverse](https://www.tidyverse.org/) 中包括一个包 [dplyr](http://dplyr.tidyverse.org/).
+正如其描述所说: 操作数据的语法 (a grammar of data manipulation).
+dplyr 融合了很多在 SQL 数据库中对数据操作的思想,
+使得对于数据表 (tibble) 的操作有逻辑且一致.
+这样的好处在于, 如果是取用数据库中的分析,
+那么所采取的操作步骤并不会有太大的改变,
+使用 dbplyr 包就可以方便的用同样的函数去处理数据库中的表格.
+
+### 选取数据 ###
+
+在 SQL 数据库中, 我们做任何的操作首先需要选择数据, 在 R 中同样也是.
+
+例如我们还拿 iris 的数据来做例子. iris 数据长下面这样:
+
+```{r}
+head(iris)
+
+#   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+# 1          5.1         3.5          1.4         0.2  setosa
+# 2          4.9         3.0          1.4         0.2  setosa
+# 3          4.7         3.2          1.3         0.2  setosa
+# 4          4.6         3.1          1.5         0.2  setosa
+# 5          5.0         3.6          1.4         0.2  setosa
+# 6          5.4         3.9          1.7         0.4  setosa
+```
+
+如果我们想要选择 Species 列的数据. 在 R 中可以用 data.frame 的选择数据的方法.
+
+```{r}
+iris$Species
+
+iris[['Species']]
+
+iris[, 'Species']
+```
+
+那么假如 iris 是 SQL 数据库中的一个表呢? 我们大概有以下的办法:
+
+```{SQL}
+SELECT Species FROM iris;
+```
+
+dplyr 中提供了 select 函数具有和 SQL 语法逻辑类似的函数 select.
+
+```{r}
+select(iris, Species)
+```
+
+还可以使用很有特色的 `%>%` 导管运算符.
+
+```{r}
+iris %>% select(Species)
+```
+
+我们可以知道 Species 列中所包含的物种种加词有如下几个:
+
+```{r}
+table(iris %>% select(Species))
+#     setosa versicolor  virginica
+#         50         50         50
+```
+
+下面我们想要只选择 setosa 物种的数据.
+使用 R 默认方法我们会如下做.
+
+```{r}
+setosa <- iris[iris$Species == 'setosa', ]
+```
+
+如果使用 SQL 去选择, 我们可能会写下如下类似的代码.
+
+```{r}
+SELECT * FROM iris WHERE Species = 'setosa';
+```
+利用 dplyr 的 select 函数我们会有如下的代码.
+
+
+```{r}
+iris %>% select(everything()) %>% filter(Species == 'setosa')
+
+#   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+# 1          5.1         3.5          1.4         0.2  setosa
+# 2          4.9         3.0          1.4         0.2  setosa
+# 3          4.7         3.2          1.3         0.2  setosa
+```
+
+这里 select 实际上没有起到任何作用, 但是显示出来如果我们要进行多步骤的操作, `%>%` 运算符会让代码很清晰简介.
+如果我们没有使用 `%>%` 则会有下面的代码.
+
+```{r}
+filter(select(iris, everything()), Species == 'setosa')
+```
+
+这样看起来代码就多了好多层, 不如一层清晰.
+
+那么, 我们且用起来 select 函数, 假如我们只需要 setosa 花瓣的信息, 我们可以这么做.
+
+```{r}
+iris %>% select(Species, starts_with('Petal')) \
+     %>% filter(Species == 'setosa')
+
+#   Species Petal.Length Petal.Width
+# 1  setosa          1.4         0.2
+# 2  setosa          1.4         0.2
+# 3  setosa          1.3         0.2
+```
+
+又如果, 我们先要看 setosa 所有特征的宽度, 我们可以这么做.
+
+```{r}
+iris %>% select(Species, ends_with('Width')) \
+     %>% filter(Species == 'setosa')
+
+#   Species Sepal.Width Petal.Width
+# 1  setosa         3.5         0.2
+# 2  setosa         3.0         0.2
+# 3  setosa         3.2         0.2
+```
+
+我们也可以使用 select 对列进行重命名, 相当于 SQL 的 AS.
+SQL 中代码类似如下:
+
+```{SQL}
+SELECT Species AS sp.name FROM iris;
+```
+select 函数的代码可以如下写.
+
+```{r}
+iris %>% select(sp.name = Species)
+
+#   sp.name
+# 1  setosa
+# 2  setosa
+# 3  setosa
+```
+
+这里需要注意的是, 我们使用 select 函数则在结果中只会保留选择的列.
+如果我们只是需要对特定列进行重命名, 而需要保留原来其他的列, 则可以使用 rename 函数.
+
+```{r}
+iris %>% rename(sp.name = Species)
+
+#   Sepal.Length Sepal.Width Petal.Length Petal.Width sp.name
+# 1          5.1         3.5          1.4         0.2  setosa
+# 2          4.9         3.0          1.4         0.2  setosa
+# 3          4.7         3.2          1.3         0.2  setosa
+```
+
+上面我们看到了 `everything` 等函数, 还有如下函数在 select 函数中使用.
+
+* `starts_with(match, ignore.case = TRUE, vars = current_vars())`: 列名以前缀开始;
+* `ends_with(match, ignore.case = TRUE, vars = current_vars())`: 列名以后缀结束;
+* `contains(match, ignore.case = TRUE, vars = current_vars())`: 列名中包含指定字符串;
+* `matches(match, ignore.case = TRUE, vars = current_vars())`: 列名匹配正则表达式;
+* `num_range(prefix, range, width = NULL, vars = current_vars())`: prefix 接受一个前缀, range 接受数字序列;
+* `one_of(..., vars = current_vars())`: 列名包含在其中;
+* `everything(vars = current_vars())`: 所有的列名.
+
+### 改变列值 ###
+
+有的时候, 当前的列值并不满足我们的使用, 我们需要对当前列的值进行处理,例如求 log, 绝对值等,
+也可能对多列同时进行处理获得对应的值来进行下游的分析.
+这种情况下我们可以使用 dplyr 中的 mutate 函数和 transmutate 函数.
+这两个函数的区别在于, mutate 函数会保留修改后的列和修改之前的列,
+而 transmute 函数则会保留修改后的列而丢弃修改之前的列.
+
+例如, 我们要求鸢尾花的萼片和花瓣的 "面积", 可以假设是椭圆形.
+
+```{r}
+iris %>% mutate(
+    Sepal.area = pi * Sepal.Length * Sepal.Width
+) %>% select(Species, starts_with('Sepal'))
+
+#   Species Sepal.Length Sepal.Width Sepal.area
+# 1  setosa          5.1         3.5   56.07743
+# 2  setosa          4.9         3.0   46.18141
+# 3  setosa          4.7         3.2   47.24955
+
+iris %>% transmute(
+    Sepal.area = pi * Sepal.Length * Sepal.Width
+)
+
+# Sepal.area
+#   56.07743
+#   46.18141
+#   47.24955
+```
+
+可以用于 mutate 和 transmute 函数还有许多辅助函数, 有些是 base 包中的常规函数, 有些是 dplyr 包中的提供的函数.
+
+* `log()`, `log2()`, `log10()`: 对值求 log;
+* `lead()`, `lag()`: 返回序列中当前位置前第几个值或后第几个值;
+* `row_number()`: 结果等于 `rank(ties.method = "first")`, 即对于相同的数值的排名按照先后顺序排;
+* `min_rank()`: 结果等于 `rank(ties.method = "min"), 即对于相同的数值的排名都取最小的排名;
+* `dense_rank()`: 结果类似于 `min_rank()`, 差别在于填充了由于 `min_rank` 造成的排名空隙;
+* `percent_rank()`: 把 `min_rank()` 的值转换为 0 到 1 区间;
+* `cume_dist()`: 计算比当前值还小的值的比例, 相当于计算 density;
+* `ntile()`: 把数据分成若干块, 看每个数据在具体拿一个块;
+* `cumsum()`, `cummean()`, `cummin()`, `cummax()`, `cumany()`, `cumall()`: 累积地 (cumulative) 计算和 (sum), 均值 (mean), 最小值 (min), 最大值 (max), 任何为真 (any), 所有为真 (all);
+* `na_if()`: 把特定地值转换为 NA;
+* `coalesce()`: 找出若干列中第一个不为 NA 的值;
+* `if_else()`: 向量化的 ifelse 函数的效果.
+* `recode`: 把一系列值转换为其他值
+* `case_when`: 多条件选择.
+
+```{r}
+theseq <- c(5, 1, 3, 2, 2, NA)
+
+lead(theseq, 1) # 最后一位缺少的补 NA
+
+#  [1]  1  3  2  2 NA NA
+
+lag(theseq, 1) # 第一位缺少的补 NA
+
+#  [1] NA  5  1  3  2  2
+
+row_number(theseq)
+
+# [1]  5  1  4  2  3 NA
+
+min_rank(theseq)
+
+# [1]  5  1  4  2  2 NA
+
+dense_rank(theseq)
+
+# [1]  4  1  3  2  2 NA
+
+cume_dist(theseq)
+
+# [1] 1.0 0.2 0.8 0.6 0.6  NA
+
+ntile(theseq, 3)
+
+# [1]  3  1  2  1  2 NA
+
+cumsum(theseq)
+
+# [1]  5  6  9 11 13 NA
+
+na_if(theseq, 2)
+
+# [1]  5  1  3 NA NA NA
+
+coalesce(theseq, c(NA, 1, 2, NA, 4, 5))
+
+# [1] 5 1 3 2 2 5
+
+recode(theseq, '2' ='two', '5'='five')
+
+# [1] "five" NA     NA     "two"  "two"  NA
+
+case_when(
+    theseq %% 2 == 0 ~ 'even',
+    theseq %% 2 == 1 ~ 'odd'
+)
+
+# [1] "odd"  "odd"  "odd"  "even" "even" NA
+```
+
+### 分割-应用-整合 ###
+
+Hadley Wickham 在其关于 [plyr](http://plyr.had.co.nz/) 包的[文章](http://www.jstatsoft.org/v40/i01)中抽象出了数据分析中的范式:
+分割-应用-整合 (split-apply-combine).
+这个范式在 dplyr 包中的实现就是 group_by 和 summarize 函数.
+
+拿我们的 iris 数据来说, 如果我想要知道每个物种的每一种属性的均值,
+就可以使用 `group_by` 和 `summarize` 函数来获得.
+
+```{r}
+iris %>% group_by(Species) \
+     %>% summarize(
+         Sepal.Width=mean(Sepal.Width),
+         Sepal.Length=mean(Sepal.Length),
+         Petal.Length=mean(Petal.Length),
+         Petal.Width=mean(Petal.Width)
+     )
+
+#      Species Sepal.Width Sepal.Length Petal.Length Petal.Width
+#       <fctr>       <dbl>        <dbl>        <dbl>       <dbl>
+# 1     setosa       3.428        5.006        1.462       0.246
+# 2 versicolor       2.770        5.936        4.260       1.326
+# 3  virginica       2.974        6.588        5.552       2.026
+```
+
+同样, 也有众多的函数可以用于 summarize 函数.
+
+* `mean()`, `median()`, `max()`, `min()`, `sd()`,
+  `IQR()`, `mad()` 等统计函数.
+* `first()`, `last()`, `nth()`: 返回第几位的值.
+* `n()`: 计算数据的数量, 相当于 `length()` 函数.
+* `n_distinct()`: 计算非重复数据的数量, 相当于 `length(unique(x))`.
+* `any()`, `all()`: 逻辑计算函数.
+
+### 排序 ###
+
+在分析的时候需要对数据进行排序, dplyr 提供了 arrange 函数.
+
+例如我们按照 Petal.Width 对数据进行从小到大排序.
+
+```{r}
+iris %>% arrange(Petal.Width)
+
+#   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+# 1          4.9         3.1          1.5         0.1  setosa
+# 2          4.8         3.0          1.4         0.1  setosa
+# 3          4.3         3.0          1.1         0.1  setosa
+```
+
+配合 desc 函数可以实现从大到小排序.
+
+```{r}
+iris %>% arrange(desc(Petal.Length), Petal.Width)
+
+#   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+# 1          7.7         2.6          6.9         2.3 virginica
+# 2          7.7         2.8          6.7         2.0 virginica
+# 3          7.7         3.8          6.7         2.2 virginica
+```
+
+### 总结 ###
+
+综上, 我们了解到 dplyr 包提供了众多规范地对数据表格进行操作的函数,
+这些函数一方面方便了我们达到数据处理的目的,
+另一方面使得代码逻辑清晰.
+
+* 选择数据表的列: `select`, `rename`
+  * `select` 只会选择你指定的列
+  * `rename` 则会改变列名, 并选择其他所有的列
+* 选择数据表的行: `filter`
+* 改变数据表的列: `mutate`, `transmute`
+  * `mutate` 会保留改变前和改变后的列
+  * `transmute` 则只会保留改变后的列, 而扔掉改变前的列
+* 通过 `group_by` 和 `summarize` 函数可以把数据进行分组进行分析

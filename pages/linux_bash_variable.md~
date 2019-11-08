@@ -1,0 +1,525 @@
+Title: Linux 学习笔记: Bash 脚本变量操作
+Date: 2018-07-01 14:19
+Modified: 2018-07-01 14:19
+Category: 壹零零壹
+Tags: linux shell
+Authors: Wolfson Liu
+Summary: Bash 变量替换与修改
+
+
+bash脚本中加入变量有助于快速自动化项目。此处主要总结bash脚本中对变量的
+操作，以便学习和记忆。
+
+### 创立变量 ###
+
+bash中的变量有一般的字符变量也有数组变量。
+对于一般字符变量的设置如下：
+
+```{bash}
+var1='this is variable 1'
+echo ${var1}
+# this is variable 1
+
+var2=/home/yxy
+echo $var2
+# /home/yxy
+```
+
+对于字符可以选择使用单引号或者双引号括起来，也可以直接使用字符。需要注
+意的是，如果在变量的值中有空格等符号的话，则需要使用引号括起来。
+
+在引用变量的时候，可以直接在$符号接变量名，也可以在$符号后面接大括号，
+在大括号里面放上变量名。两种方式的采用主要以不产生歧义为主，但凡容易产
+生歧义的地方都需要大括号。
+
+```{bash}
+var1='this is variable 1'
+var2=/home/yxy
+var3=$var2/tmp
+echo $var3
+# /home/yxy/tmp
+
+var4=${var2}/tmp2
+echo $var4
+# /home/yxy/tmp
+
+var5=${var3}3
+echo $var5
+# /home/yxy/tmp3
+```
+
+
+如果要创立数组变量则需要使用小括号括起来所有元素，每个元素之间用空格进
+行区分。
+
+```{bash}
+array=(one two three)
+```
+
+引用数组元素名本身只会获得第一个元素的值，如果需要引用数组元素的特定的
+元素，则应该在数组元素名后跟方括号，其中指定元素位置，需要注意数组元素
+的编码是从0开始的。
+
+```{bash}
+array=(one two three)
+echo ${array}
+# one
+
+echo ${array[0]}
+# one
+
+echo ${array[1]}
+# two
+```
+
+在引用数组元素中的元素时，数组名和方括号都应该放在
+大括号中避免歧义。对比如下代码：
+
+```{bash}
+array=(one two three)
+echo ${array[0]}
+# one
+
+echo $array[0]
+# one[0]
+```
+
+如果需要获取整个数组的值，则可以在方括号中加上`*`或者`@`。
+
+```{bash}
+array=(one two three)
+echo ${array[*]}
+# one two three
+
+echo ${array[@]}
+# one two three
+```
+
+这里 `${array[*]}`返回的是一个变量，而`${array[@]}`返回的是一个数组变量，两者异同如下：
+
+```{bash}
+array=(one two three)
+for x in ${array[*]}; do
+    echo $x
+done
+# one
+# two
+# three
+
+for x in "${array[*]}"; do
+    echo $x
+done
+# one two three
+
+for x in '${array[*]}'; do
+    echo $x
+done
+# ${array[*]}
+
+for x in ${array[@]}; do
+    echo $x
+done
+# one
+# two
+# three
+
+for x in "${array[@]}"; do
+    echo $x
+done
+# one
+# two
+# three
+
+for x in '${array[@]}'; do
+    echo $x
+done
+# ${array[@]}
+```
+
+
+如果不是特别声明，bash中的变量均是全局变量，如果想要设置局部变量，则应
+该使用local进行声明。
+
+```{bash}
+x=1
+echo global x:${x}
+# global x:1
+
+y=1
+echo global y:${y}
+# global y:1
+
+function myfunc {
+    x=2
+    echo myfunc global x:${x}
+    local y=2
+    echo myfunc local y:${y}
+}
+myfunc
+# myfunc global x: 2
+# myfunc local y: 2
+
+echo global x:${x}
+# global x:2
+
+echo global y:${y}
+# global y: 1
+```
+
+如果想要删除创建的变量，则可以使用unset命令。
+
+```{bash}
+x=1
+echo ${x}
+# 1
+
+unset x
+echo ${x}
+#
+```
+
+#### 脚本特殊变量 ####
+
+在写bash脚本中，可以传入一些参数，判断运行情况等，这些信息都存在特殊变量中。
+
+* `$0`：当前脚本名，也可以理解为第0个传入参数，如果是交互式bash，则可能是'/bin/bash`
+* `$n`：n为数字，是第n个传入参数，如果没有第n个参数则为空
+* `$#`：传入脚本或者函数的参数个数
+* `$*`：传入脚本或函数的所有参数，存为一个变量
+* `$@`：传入脚本或函数的所有参数，存为一个数组
+* `$?`：上个命令的退出状态，或函数的返回值，对于多数函数或命令，成功执
+  行会返回0，而错误会返回相应的错误编号
+* `$$`：当前shell进程ID
+
+### 变量存在检查 ###
+
+在脚本中有时候需要确定一个变量是否存在，而对于其是否存在可以采取不同的行为。
+如果一个变量不存在，引用的话默认是null，如果用echo，则反应的是没有输出。
+
+```{bash}
+echo ${notexist}
+#
+```
+
+#### 若变量不存在引用默认值 ####
+
+如果只需要在引用的时候得到一个值（设定的默认值或者null），而不需要改变变量是否存在的事实，可以使用如下代码：
+
+```{bash}
+exist=1
+echo ${exist:-'exist'}
+# 1
+
+echo ${exist-'exist'}
+# 1
+
+unset notexist
+notexist=
+echo ${notexist-'not set value yet'}
+#
+
+echo ${notexist:-'not set value yet'}
+# not set value yet
+
+unset notexist2
+echo ${notexist2-'not exist yet'}
+# not exist yet
+
+echo ${notexist2:-'not exist yet'}
+# not exist yet
+```
+
+从上面例子可知道，如果变量存在，则返回相应的变量的值，如果不存在，则根
+据情况返回空值或者默认值。`-`和`:-`的差别在于如果变量已经声明而没有赋
+值（`notexist=`），则`${notexist-'not'}`返回的也是null，即空行，而
+`${notexist:-'not'}`则返回默认值。而对于没有声明的变量而言，两者表现一
+致。
+
+#### 若变量存在则返回默认值 ####
+
+上面的例子是在变量不存在的时候引用默认值，也可以设置变量存在引用默认值，
+而如果变量不存在则引用空值。
+
+```{bash}
+exist=1
+echo ${exist:+'exist'}
+# exist
+
+echo ${exist+'exist'}
+# exist
+
+unset notexist
+notexist=
+echo ${notexist+'not set value yet'}
+# not set value yet
+
+echo ${notexist:+'not set value yet'}
+#
+
+unset notexist2
+echo ${notexist2:+'not exist yet'}
+echo ${notexist2+'not exist yet'}
+```
+
+同样，`+`和`:+`的差别在于如果变量已经声明而没有赋值（`notexist=`），则
+`${notexist+'not'}`返回的是变量存在的默认值，而`${notexist:+'not'}`则
+返回空。而对于没有声明的变量而言，两者表现一致。从这里可以看出来，
+`:`在这里起到的作用和上小节例子中类似，可以理解为`-`和`+`检查的是变量
+是否声明（`var=`），而`:-`和`:+`检查的是变量值是否为空（null），变量声
+明而未赋值的话则变量值为空，变量未声明值也为空。
+
+
+#### 设置变量默认值 ####
+
+如果变量不存在需要对变量进行赋值的话，则可以使用如下代码：
+
+```{bash}
+unset notexist
+notexist=
+echo ${notexist='now set value'}
+#
+
+echo ${notexist}
+#
+
+unset notexist2
+notexist2=
+echo ${notexist2:='now set value'}
+# now set value
+
+echo ${notexist2}
+# now set value
+
+unset notexist3
+echo ${notexist3='now exist'}
+# now exist
+
+echo ${notexist3}
+# now exist
+
+unset notexist4
+echo ${notexist4:='now exist'}
+# now exist
+
+echo ${notexist4}
+# now exist
+```
+
+在这里的`:`的差别和上面一样，`=`检查的是变量是否存在，而`:=`检查的是变量的值是否为空。
+
+
+#### 若变量不存在则报错 ####
+
+有时候需要给出变量不存在的提醒，而如果变量存在则返回变量的值。如下代码可以实现：
+
+```{bash}
+exist=1
+echo ${exist?'Error, not exist'}
+# 1
+
+echo ${exist:?'Error, not exist'}
+# 1
+
+unset notexist
+notexist=
+echo ${notexist?'Error, not exist'}
+#
+
+echo ${notexist:?'Error, not exist'}
+# bash: notexist: Error, not exist
+
+unset notexist2
+echo ${notexist2?'Error, not exist'}
+# bash: notexist2: Error, not exist
+
+echo ${notexist2:?'Error, not exist'}
+# bash: notexist2: Error, not exist
+```
+
+对于声明而未赋值的变量来说`?`返回的是空值，而`:?`则报错，对于未声明的
+变量来说`?`和`:?`都会报错。
+
+
+### 变量的长度 ###
+
+对于变量的值，我们可以获取变量的字符的数量，对于数组变量，我们也可以获
+取数组变量元素的个数。
+
+```{bash}
+x=one
+echo ${#x}
+# 3
+
+y=(one two)
+echo ${#y}
+# 3
+```
+
+如果y是一个数组，上面的代码返回的会是数组第一个元素的长度，而非数组的长
+度。需要注意的是数组是从0开始计数的。
+
+而如果要获取数组元素的数量则应该使用如下的代码：
+
+```{bash}
+y=(one two)
+echo ${#y[*]}
+# 2
+
+echo ${#y[@]}
+# 2
+```
+
+### 编辑变量的输出值 ###
+
+对于变量的输出值我们可以直接进行改变，这是是说引用变量时候的输出值，因为变量本身存储的值并不会发生改变。
+
+#### 依照匹配模式从前删除字符串 ####
+
+`${var#Pattern}` 或者 `${var##Pattern}`可以删去符合Pattern的字符串，区
+别在于，`${var#Pattern}`删去的是从变量值起始的最短匹配，而
+`${var##Pattern}`删去的是从变量值起始的最长匹配。
+
+```{bash}
+var=/one/two/three
+echo ${var#*/}
+# one/two/three
+
+echo ${var##*/}
+# three
+```
+
+Pattern可以是正则表达式字符串，也可以是存有需要匹配的字符串的变量。
+
+#### 依照匹配模式从后删除字符串 ####
+
+`${var%Pattern}` 或者 `${var%%Pattern}`可以删去符合Pattern的字符串，区
+别在于，`${var%Pattern}`删去的是从变量值末尾的最短匹配，而
+`${var%%Pattern}`删去的是从变量值末尾开始的最长匹配。这与`#`从前删除正
+好相反。
+
+```{bash}
+var=/one/two/three
+echo ${var%/*}
+# /one/two
+
+echo ${var%%/*}
+#
+```
+
+从 `#` 和 `%` 的例子可以看出来，一个符号对应的只删除最短匹配，而两个符
+号对应的删除最长匹配。
+
+
+#### 按照位置提取变量值中的字符串 ####
+
+对于变量值中的字符串，也可以按照其位置输出。变量值字符串是从0开始编码
+的，`${var:start:length}`或者`${var:start}`即可以输出相应位置的字符串。
+第一个冒号后面是字符串起始位置，第二个冒号后面是输出的字符串长度，如果
+省略长度，则默认输出剩下所有字符串。
+
+```{bash}
+var=012345678
+echo ${var:0}
+# 012345678
+
+echo ${var:5}
+# 5678
+
+echo ${var:5:2}
+# 56
+```
+
+#### 替换 ####
+
+引用变量的返回值可以直接根据Pattern进行替换，
+`${var/Pattern/Replacement}`和`${var//Pattern/Replacement}`均可以把字
+符串中符合Pattern的部分替换为Replacement代表的字符，如果Replacement为
+空的话，起到的效果相当于删除相应的字符串。
+`${var/Pattern/Replacement}`是替换从变量字符串起始找到的第一个匹配，而
+`${var//Pattern/Replacement}`则是替换找到的所有匹配。
+
+```{bash}
+var=one-two-thre-one-two-three
+echo ${var/one/1}
+# 1-two-thre-one-two-three
+
+echo ${var//one/1}
+# 1-two-thre-1-two-three
+
+echo ${var/o*o/1}
+# 1-three
+
+echo ${var//o*o/1}
+# 1-three
+```
+
+从上面代码的输出结果可以知道，对于没有通配符的字符串的匹配，`/`和
+`//`的结果很明确不同，而如果使用了通配符，则结果会变得相同，符合程序的
+一致性逻辑，而于直觉略不同，这里需要稍稍注意。
+
+如果只想要替换字符串中匹配的开头或者结尾，而不替换中间的部分，则可以使
+用`${var/#Pattern/Replacement}`和`${var/%Pattern/Replacement}`。`/#`用
+于匹配开头，`/%`用于匹配结尾。
+
+```{bash}
+var=one-two-thre-one-two-three
+echo ${var/#one/1}
+# 1-two-thre-one-two-three
+
+echo ${var/%one/1}
+# one-two-thre-one-two-three
+
+echo ${var/#three/3}
+# one-two-thre-one-two-three
+
+echo ${var/%three/3}
+# one-two-thre-one-two-3
+```
+
+从这个例子可以看出来，用于替换的字符`/#`和`/%`与用于删除的字符`#`和`%`的功能有一致性，`#`均指代从字符串开头开始，而`%`指代从字符串末尾开始。
+
+
+### 输出符合一定规律的变量名 ###
+
+如果我们只需要获取符合一定规律的所有变量的变量名，可以使用`${!nameprefix*}`和`${!nameprefix@}`。
+
+```{bash}
+var1=1
+var2=2
+var3=3
+varnames=${!var*}
+echo variable names: ${varnames}
+# variable names: var1 var2 var3
+
+echo length: ${#varnames}
+# length: 14
+```
+
+需要注意的`${!nameprefix*}`是返回的均是一个字符串，而`${!nameprefix@}`返回的是一个数组。如下面的例子：
+
+```{bash}
+var1=1
+var2=2
+var3=3
+for x in '${!var*}'; do
+    echo $x
+done
+# ${!var*}
+
+for x in "${!var*}"; do
+    echo $x
+done
+# var1 var2 var3
+
+for x in '${!var@}'; do
+    echo $x
+done
+# ${!var@}
+
+for x in "${!var@}"; do
+    echo $x
+done
+# var1
+# var2
+# var3
+```

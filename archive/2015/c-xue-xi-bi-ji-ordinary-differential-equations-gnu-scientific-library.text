@@ -1,0 +1,227 @@
+Title: C++ 学习笔记：Ordinary Differential Equations (GNU Scientific Library)
+Date: 2015-11-19 23:32
+Modified: 2015-12-02 09:38
+Category: 壹零零壹
+Tags: c/c++
+Authors: Wolfson Liu
+Summary: C++ gsl 库 Ordinary Differential Equations 计算。
+
+GNU Scientific Library 中有求解常微分方程（Oridinary Differential Equations）的函数，可以用来求解复杂的 ODE。详细的内容参看 [gsl 手册](https://www.gnu.org/software/gsl/manual/html_node/)。在参考说明中，给出了例子，参看例子就可以很好理解，先让程序跑起来，之后细看内容。
+
+####例子
+
+我写的计算 MAPK 的代码部分如下，是封装在一个 class 中的，有多个不同的拓扑结构的函数，在 odeRun 完成不同函数的选择。
+```
+//// Member-Function
+//// odeFunction1s1p: needed by <gsl/gsl_odeiv2.h>, 1 stage, 1 phosphorylation.
+int ReactantConcentration::odeFunction1s1p(double t, const double y[], double f[], void *para)
+{
+    static_cast<void>(t);    // convert type to avoid unused parameter warning
+    Parameter params = *static_cast<Parameter *>(para);
+    // use ras as the kinase for map3k, m3kp as the phosphatase for map3kp.
+    double map3k       = y[0];    // MAPKKK
+    double map3kp      = y[1];    // MAPKKK-phosphoryl
+    double map3k_ras   = y[2];    // intermedia product
+    double map3kp_m3kp = y[3];    // intermedia product
+    double ras         = y[4];    // MAPKKK kinase
+    double m3kp        = y[5];    // MAPKKK-p phosphatase 
+    
+    // map3k + ras <b0==f0> map3k_ras <kb0-=kf0> map3kp + ras
+    // map3kp + m3kp <b1==f1> map3kp_m3kp <kb1-=kf1> map3k + m3kp
+    // map3k
+    f[0] = -params.f[0] * map3k * ras + params.b[0] * map3k_ras +
+	params.kf[1] * map3kp_m3kp - params.kb[1] * map3k * m3kp;
+    // map3kp
+    f[1] = -params.f[1] * map3kp * m3kp + params.b[1] * map3kp_m3kp +
+	params.kf[0] * map3k_ras - params.kb[0] * map3kp * ras;
+    // map3k_ras
+    f[2] = params.f[0] * map3k * ras - params.b[0] * map3k_ras -
+	params.kf[0] * map3k_ras + params.kb[0] * map3kp * ras;
+    // map3kp_m3kp
+    f[3] = params.f[1] * map3kp * m3kp - params.b[1] * map3kp_m3kp -
+	params.kf[1] * map3kp_m3kp + params.kb[1] * map3k * m3kp;
+    // ras: dras = -dmap3k_ras
+    f[4] = -params.f[0] * map3k * ras + params.b[0] * map3k_ras +
+	params.kf[0] * map3k_ras - params.kb[0] * map3kp * ras;
+    // m3kp: dm3kp = -dmap3kp_m3kp
+    f[5] = -params.f[1] * map3kp * m3kp + params.b[1] * map3kp_m3kp +
+	params.kf[1] * map3kp_m3kp - params.kb[1] * map3k * m3kp;    
+    
+    return GSL_SUCCESS;    // in gsl header.
+}
+
+//// Member-Function
+//// odeJacobian1s1p: needed by <gsl/gsl_odeiv2.h>, 1 stage, 1 phosphorylation.
+int ReactantConcentration::odeJacobian1s1p(double t, const double y[], double *dfdy, double dfdt[], void *para)
+{
+    static_cast<void>(t);    // convert type to avoid unused parameter warning
+    // initiate.
+    Parameter params = *static_cast<Parameter *>(para);
+    // use ras as the kinase for map3k, m3kp as the phosphatase for map3kp.
+    double map3k       = y[0];    // MAPKKK
+    double map3kp      = y[1];    // MAPKKK-phosphoryl
+    double map3k_ras   = y[2];    // intermedia product
+    double map3kp_m3kp = y[3];    // intermedia product
+    double ras         = y[4];    // MAPKKK kinase
+    double m3kp        = y[5];    // MAPKKK-p phosphatase 
+
+    gsl_matrix_view dfdy_mat = gsl_matrix_view_array(dfdy, 6, 6);
+    gsl_matrix *m = &dfdy_mat.matrix;
+    
+    // calculate matrix.
+    // map3k.
+    gsl_matrix_set(m, 0, 0, -params.f[0] * ras -
+		   params.kb[1] * m3kp);
+    gsl_matrix_set(m, 0, 1, 0.0);
+    gsl_matrix_set(m, 0, 2, params.b[0]);
+    gsl_matrix_set(m, 0, 3, params.kf[1]);
+    gsl_matrix_set(m, 0, 4, -params.f[0] * map3k);
+    gsl_matrix_set(m, 0, 5, -params.kb[1] * map3k);
+    // map3kp.
+    gsl_matrix_set(m, 1, 0, 0.0);
+    gsl_matrix_set(m, 1, 1, -params.f[1] * m3kp -
+		   params.kb[0] * ras);
+    gsl_matrix_set(m, 1, 2, params.kf[0]);
+    gsl_matrix_set(m, 1, 3, params.b[1]);
+    gsl_matrix_set(m, 1, 4, -params.kb[0] * map3kp);
+    gsl_matrix_set(m, 1, 5, -params.f[1] * map3kp);
+    // map3k_ras.
+    gsl_matrix_set(m, 2, 0, params.f[0] * ras);
+    gsl_matrix_set(m, 2, 1, params.kb[0] * ras);
+    gsl_matrix_set(m, 2, 2, -params.b[0] - params.kf[0]);
+    gsl_matrix_set(m, 2, 3, 0.0);
+    gsl_matrix_set(m, 2, 4, params.f[0] * map3k +
+		   params.kb[0] * map3kp);
+    gsl_matrix_set(m, 2, 5, 0.0);
+    // map3kp_m3kp.
+    gsl_matrix_set(m, 3, 0, params.kb[1] * m3kp);
+    gsl_matrix_set(m, 3, 1, params.f[1] * m3kp);
+    gsl_matrix_set(m, 3, 2, 0.0);
+    gsl_matrix_set(m, 3, 3, -params.b[1] - params.kf[1]);
+    gsl_matrix_set(m, 3, 4, 0.0);
+    gsl_matrix_set(m, 3, 5, params.f[1] * map3kp +
+		   params.kb[1] * map3k);
+    // ras.
+    gsl_matrix_set(m, 4, 0, -params.f[0] * ras);
+    gsl_matrix_set(m, 4, 1, -params.kb[0] * ras);
+    gsl_matrix_set(m, 4, 2, params.b[0] + params.kf[0]);
+    gsl_matrix_set(m, 4, 3, 0.0);
+    gsl_matrix_set(m, 4, 4, -params.f[0] * map3k -
+		   params.kb[0] * map3kp);
+    gsl_matrix_set(m, 4, 5, 0.0);
+    // m3kp.
+    gsl_matrix_set(m, 5, 0, -params.kb[1] * m3kp);
+    gsl_matrix_set(m, 5, 1, -params.f[1] * m3kp);
+    gsl_matrix_set(m, 5, 2, 0.0);
+    gsl_matrix_set(m, 5, 3, params.b[1] + params.kf[1]);
+    gsl_matrix_set(m, 5, 4, 0.0);
+    gsl_matrix_set(m, 5, 5, -params.f[1] * map3kp -
+		   params.kb[1] * map3k);
+
+    for (int i = 0; i != 6; ++i) {
+	dfdt[i] = 0.0;
+    }
+
+    return GSL_SUCCESS;
+}
+
+
+//// Member-Function
+//// odeRun: using gsl to solve ode.
+void ReactantConcentration::odeRun(double start_t, double end_t, Parameter *params, double reactant[], double pacelen)
+{
+    // initiate.
+    double *y = reactant;
+    double time_span = end_t - start_t;    // used to reset start_t and end_t.
+    
+    typedef int (* Func)(double t, const double y[], double f[], void *para);
+    typedef int (* Jac)(double t, const double y[], double *dfdy, double dydt[], void *para);
+
+    Func odeFunction;    // function pointer.
+    Jac odeJacobian;    // function pointer.
+    
+    if (reaction_type == 1) {
+	odeFunction = odeFunction1s1p;
+	odeJacobian = odeJacobian1s1p;
+    } else if (reaction_type == 2) {
+	odeFunction = odeFunction1s2p;
+	odeJacobian = odeJacobian1s2p;
+    } else if (reaction_type == 3) {
+	odeFunction = odeFunction2s1p;
+	odeJacobian = odeJacobian2s1p;
+    } else if (reaction_type == 4) {
+	odeFunction = odeFunction2s2p;
+	odeJacobian = odeJacobian2s2p;
+    } else if (reaction_type == 5) {
+	odeFunction = odeFunction3s1p;
+	odeJacobian = odeJacobian3s1p;
+    } else if (reaction_type == 6) {
+	odeFunction = odeFunction3s2p;
+	odeJacobian = odeJacobian3s2p;
+    }// HERE!!!!!!!!!!!!!!!!!!!!!!signal handler.
+    gsl_odeiv2_system sys = {odeFunction, odeJacobian, reactant_num, &*params};
+    gsl_odeiv2_driver *d = gsl_odeiv2_driver_alloc_y_new(&sys, gsl_odeiv2_step_rk8pd, 1e-6, 1e-6, 0.0);
+
+    Concentration reaction;    // temporary store y.
+
+    // calculate.
+    do {
+	long times = static_cast<long>((end_t - start_t)/pacelen);
+	for (long i = 0; i != times; ++i) {
+	    double ti = pacelen + start_t;
+	    int status = gsl_odeiv2_driver_apply(d, &start_t, ti, y);
+	    if (status != GSL_SUCCESS) {
+		printf("Error, return value = %d\n", status);
+		break;
+	    }
+	    reaction.setTime(ti);    // set the time of reaction to ti.
+	    reaction.setConcentration(reactant_num, y);    // set the concentrate of reactant to y[]
+	    //outfile << reaction.time;
+	    //for (int i = 0; i != reactant_num; ++i) {
+	    //	outfile << "," << reaction.reactant[i];
+	    //}
+	    //outfile << "\n";
+
+	    //reaction.printConcentration();
+	    list.push_back(reaction);    // record the situation at ti.
+	}
+	//std::cout << start_t << std::endl;
+	end_t = start_t + time_span;
+	//std::cout << end_t << std::endl;
+    } while (!isStable());
+
+    //outfile.close();
+    //outfile.clear();
+    gsl_odeiv2_driver_free (d);
+}
+////////////////////
+
+```
+
+####头文件
+
+新版本的相关的函数都在 `gsl_odeiv2.h` 中，所有的函数都以 `gsl_odeiv2` 开头。至少需要使用下面的三个头文件，在使用 g++ 编译的时候加上 `-lgsl -lgslcblas`。
+```
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_odeiv2.h>
+```
+
+####定义 ODE 系统
+
+常微分方程：`dy_i(t)/dt = f_i(t, y_1(t), ..., y_n(t))`
+
+使用 gsl 的 ode 模块需要写出来一个含有所有计算的常微分方程的函数，以供调用，具体例子是 odeFunction1s1p。函数的形参应该参照 gsl 的说明文档中的给出，这样才能被 gsl 库正确调用。
+
+除了对方程的定义之外，还需要写出其 Jacobian 矩阵，gsl 在计算过程中的部分过程可能会用到。
+
+需要注意的是，如果这些函数都是定义在 class 中，需要定义为 static ，这样才能被运行 ode 的函数正确调用。
+
+####运行 ODE
+
+前面的东西写好后，就要写跑 ode 计算的函数，按照手册和例子写就好。
+
+
+####总结
+
+现在我只是能够使用了，但还不够了解 gsl 的 ode 计算部分，需要未来继续学习。

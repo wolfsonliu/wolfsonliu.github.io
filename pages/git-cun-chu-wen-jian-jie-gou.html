@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git 存储文件结构</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>Git 的文件都存储在项目目录下面的 .git 文件夹中，其一般具有如下一些文件和文件夹（可以参考下面给出的例子）：</p>
+<h3>COMMIT EDITMSG</h3>
+<p>文本文件，存储上一个 commit （提交） 的 comment （注释）信息。如例子中：
+<code>cat .git/COMMIT_EDITMSG</code> 输出结果为 <code>add markdown notes</code>。</p>
+<h3>HEAD</h3>
+<p>文本文件，存储当前的 head 的 ref 文件的路径，具体的 head 的 SHA-1 值保
+存在 ref 文件中。如例子中：<code>cat .git/HEAD</code> 输出结果为 <code>ref:
+refs/heads/master</code>。具体的 head 对应的 commit 的文件 SHA-1 需要在
+<code>refs/heads/master</code> 中获取。Git 的下一次 commit 将以 HEAD 中给出的 ref
+文件对应的 commit 作为 parent commit。</p>
+<h3>branches</h3>
+<p>过时的存储 <code>git pull</code>， <code>git push</code> 等所需 URL 的办法。</p>
+<h3>config</h3>
+<p>当前 Git 的配置文件。<code>git config --local</code> 的配置信息将存在该文件中，如
+user 信息，remote 的信息，branch 的信息等。如例子中：</p>
+<div class="highlight"><pre><span></span>cat .git/config
+
+<span class="o">[</span>core<span class="o">]</span>
+      <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span>
+      <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">false</span>
+      <span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+      <span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+      <span class="nv">editor</span> <span class="o">=</span> emacs
+<span class="o">[</span>user<span class="o">]</span>
+      <span class="nv">name</span> <span class="o">=</span> Wolfson Liu
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+      <span class="nv">url</span> <span class="o">=</span> https://github.com/wolfsonliu/learngit.git
+      <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+      <span class="nv">remote</span> <span class="o">=</span> origin
+      <span class="nv">merge</span> <span class="o">=</span> refs/heads/master
+</pre></div>
+
+
+<h3>description</h3>
+<p>文本文件，记录该仓库的名称和描述信息。<code>description</code> 文件只被 GitWeb 软
+件使用，在网页上呈现其描述信息。</p>
+<h3>hooks</h3>
+<p>文件夹，包含有在执行一些 Git 命令后，git 命令调用的脚本。</p>
+<h3>index</h3>
+<p>二进制文件，作为 Git 存储 staging 信息的部分存在。</p>
+<h3>info</h3>
+<p>文件夹，存储有一些该仓库中记录的其他信息。例如，<code>exclude</code> 文件中要存储
+需要被排除在外的文件名，类似于 <code>.gitignore</code> 文件。</p>
+<h3>logs</h3>
+<p>文件夹，存储对于 refs 文件中的所有的改动的记录信息。</p>
+<h3>objects</h3>
+<p>文件夹，<code>git commit</code> 命令建立的所有 commit 和文件快照的信息的存储空间。</p>
+<p>该文件夹下有子文件夹：
+  * <code>objects/[0-9a-f][0-9a-f]</code>：存储对象的文件夹，以 SHA-1 的前两个字母命名
+  * <code>objects/info</code>：文件夹，关于存储在该文件下中的对象的其他信息
+  * <code>objects/pack</code>：文件夹，存储压缩的对象文件</p>
+<p>存储对象的子文件夹下面存储有所有 SHA-1 前两个字符与子文件夹名相同的所
+有 commit 文件，tree 文件和具体的 blob 文件，以原 SHA-1 除去前两个字
+符剩下的字符命名。例如例子中，</p>
+<div class="highlight"><pre><span></span>  <span class="err">│</span>   <span class="err">├──</span> <span class="n">objects</span>
+  <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">02</span>
+  <span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a5f419fa69f1df550172be067237223b246d36</span>
+  <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">0</span><span class="n">f</span>
+  <span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
+</pre></div>
+
+
+<p><code>02a5f419fa69f1df550172be067237223b246d36</code> 文件存储路径为 <code>objects/02/a5f419fa69f1df550172be067237223b246d36</code></p>
+<h3>refs</h3>
+<p>文件夹，存储所有的参考信息。</p>
+<p>有如下子文件夹：
+  * <code>refs/heads</code>：文件夹，存储所有的本地的 heads 信息，例子中只有一个
+    master一个head，所以只有 master 一个文件。head 文件中存储有 head
+    对应的 commit 文件的 SHA-1 值。如例子中：<code>cat
+    .git/refs/heads/master</code> 返回的信息为
+    <code>d144d896cc3a57a21f1fdd443b2b76620584fd76</code>。在 <code>.git/HEAD</code> 中存储
+    的就是当前 head 的相对路径，如: <code>cat .git/HEAD</code> 得到的就是 <code>ref:
+    refs/heads/master</code>。
+  * <code>refs/remotes</code>：文件夹，存储所有的 remotes 的 heads 信息。
+  * <code>refs/tags</code>：文件夹，存储所有的 tags 的信息。</p>
+<h2>一个例子</h2>
+<p>假如我们的项目有.gitignore 和 file1 这样两个文件和保存 markdown 笔记的 md 文件夹， .git 文件夹下面有如下的内容</p>
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">git</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">COMMIT_EDITMSG</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">HEAD</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">branches</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">config</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">description</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">hooks</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">applypatch</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="k">commit</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">fsmonitor</span><span class="o">-</span><span class="n">watchman</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">post</span><span class="o">-</span><span class="k">update</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">applypatch</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="k">commit</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">push</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">rebase</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">receive</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="k">prepare</span><span class="o">-</span><span class="k">commit</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="k">update</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="k">index</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">info</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">exclude</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">logs</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">HEAD</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">refs</span>
+<span class="err">│</span>   <span class="err">│</span>       <span class="err">├──</span> <span class="n">heads</span>
+<span class="err">│</span>   <span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>   <span class="err">│</span>       <span class="err">└──</span> <span class="n">remotes</span>
+<span class="err">│</span>   <span class="err">│</span>           <span class="err">└──</span> <span class="n">origin</span>
+<span class="err">│</span>   <span class="err">│</span>               <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">objects</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">02</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a5f419fa69f1df550172be067237223b246d36</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">0</span><span class="n">f</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">16</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a63a284776906e0949a93567a0a35145e27067</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">2</span><span class="n">a</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">65</span><span class="n">a9ad4587f6c689dc66b77917ff96f5afe653</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">2</span><span class="n">b</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">548176</span><span class="n">ae75a1f62d6635409cc70c1ff6c2f25b</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">30</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">3</span><span class="n">ff981c488b812b6215f7db7920dedb3b59d9a</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">50</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">d4402de7d0bbcfae79a23cd910c2eb7e61db30</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">68</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">23658394</span><span class="n">fecca1415c17bccebf8dba3ed0cc54</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">7</span><span class="n">e</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">03</span><span class="n">b5bfc52c8e4cf3cb422ef802fa36254d20a5</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">9</span><span class="n">e</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">31</span><span class="n">cfc76e9ef587b6af3fd4b09e3d09afb6dd26</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">b2</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">5</span><span class="n">c15b81fae06e1c55946ac6270bfdb293870e8</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">bd</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">c705169c09f886182d5dfe731f241c3a4e0586</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">d1</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">44</span><span class="n">d896cc3a57a21f1fdd443b2b76620584fd76</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">4</span><span class="n">ca1be4beb6730ad33df72ceec1201692477c9</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">info</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">pack</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="n">refs</span>
+<span class="err">│</span>       <span class="err">├──</span> <span class="n">heads</span>
+<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>       <span class="err">├──</span> <span class="n">remotes</span>
+<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">origin</span>
+<span class="err">│</span>       <span class="err">│</span>       <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>       <span class="err">└──</span> <span class="n">tags</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">gitignore</span>
+<span class="err">├──</span> <span class="n">file1</span>
+<span class="err">├──</span> <span class="n">file1</span><span class="o">~</span>
+<span class="err">└──</span> <span class="n">md</span>
+    <span class="err">├──</span> <span class="n">git_config</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">├──</span> <span class="n">git_file_structure</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">├──</span> <span class="n">git_logic</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">├──</span> <span class="n">understand_git_index</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">└──</span> <span class="n">version_control_brief</span><span class="p">.</span><span class="n">md</span>
+</pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

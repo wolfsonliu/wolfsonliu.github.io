@@ -1,0 +1,356 @@
+Title: R 学习笔记：数据的重塑
+Date: 2016-04-19 16:03
+Modified: 2017-09-14 16:18
+Category: 壹零零壹
+Tags: R
+Authors: Wolfson Liu
+Summary: R 数据的重塑.
+
+对于许多 R 函数, 其要求的作为参数的数据类型是特定的, 而自己的数据的类型或着数据结构可能和函数所要求的不同, 这样的情况下就需要重塑数据, 使得数据符合函数的要求.
+
+
+## 常用函数 ##
+
+* cut
+* ifelse
+* stack
+* unstack
+* reshape
+* rbind
+* cbind
+
+
+## reshape2 包 ##
+
+
+## tidyr ##
+
+不得不说, 在处理数据的时候最让人抓狂的是杂乱无章的数据.
+那个时候, 我们总会想, 天啊, 给我钱, 让我雇佣几个临时工帮忙搞吧.
+这自然是玩笑话, 不过在数据分析中, 不规则数据的整理是消耗很多时间和精力的.
+对数据进行不同的分析的时候, 又需要对数据格式进行转换.
+长型的表, 宽型的表之间的转换啊, 数据的子集的获取啊等等会有大麻烦.
+R 作为数据分析的利器, 对于数据的整理就会有一些方便使用的函数, stack unstack 之流.
+而 tidyr 包则加强了 R 数据整理的功能, 正如其名称, 让数据变得更整洁.
+[tidyr](http://tidyr.tidyverse.org/) 同样也是 Hadley Wickham 大神的项目之一, 现已加入 [tidyverse](http://www.tidyverse.org/) 豪华套餐.
+[dplyr](http://dplyr.tidyverse.org/) 包可以很方便地对数据框 (tibble) 进行操作, 而 tidyr 则提供了若干可以方便地处理数据排列的函数.
+
+### 数据的结构 ###
+
+在我们整理数据之前, 我们会去考虑怎样的存储对于数据是合适的.
+生物信息学研究中, 我们在平时处理基因表达数据的时候, 拿到的往往是一张表,
+表的列是不同的重复, 而表的行则是不同的基因, 表中的值是基因的表达量.
+之所这么安排基因表达的数据是因为我们的重复的数量相对于关注的基因的数量是很小的,
+而一个长的表更方便去查看和分析.
+然而, 对于另外一些领域的研究, 也许重复的数量会比关注的具体的对象更多,
+这时候就会把重复作为列, 而把关注的不同的对象作为行.
+同样是长的表, 在不同的研究中, 行和列的信息有可能是不相同的.
+显然, 对于不同的数据采用不同的存储方式并不是一个很通用的方式,
+对于一类数据计算的函数没法方便地转换到另一类数据中.
+那么就需要有一个统一的数据结构的策略.
+
+我们可以想象一下一个矩阵,
+这个矩阵可以就是我们的基因表达的数据,
+矩阵是有两个维度的,
+对于基因表达数据就是代表重复的列和代表基因的行,
+那么这两个维度其实就是一个单元格的两个属性.
+所以对于一个单元格, 我们可以认为是一个观测值,
+而对于这个单元格的两个属性, 我们可以认为是其变量 (variable),
+意思是在这两个情况下才能得到该值 (value).
+推而广之, 我们的数据的每一个值都有其变量, 无论一维或多维.
+而这个值包括变量, 我们可以称为一个观测 (observation).
+所以, 我们可以把每一个观测作为一行, 而把值和属性做为列.
+这样我们就统一了数据的存储,
+几乎所有类型的数据都可以存成这样的一张表.
+如果一个值具有一个变量, 那么这个表就是两列, 例如人名和对应的分数两列.
+如果一个值具有多个变量, 那么这个表就有比变量数多一的维度,
+例如人名, 科目和分数三列.
+这样的数据结构会使得我们想到数据库.
+在建立一个关系数据库的时候, 我们往往会要求其满足第三范式.
+第三范式正要求我们的每一个表格是按照行作为观测, 列作为属性和值来存储的.
+数据的属性确定了唯一的值, 这些属性就相当于是数据库中的键值.
+
+```{r}
+(score <- data.frame(
+    person=c('王小二', '李中三', '张大四', '张大四'),
+    object=c('英语', '英语', '数学', '英语'),
+    score=c(94, 96, 90, 93)
+))
+
+#   person object score
+# 1 王小二   英语    94
+# 2 李中三   英语    96
+# 3 张大四   数学    90
+# 4 张大四   英语    93
+```
+
+### 规整数据 gather ###
+
+然而, 往往我们所获得的数据并不是像数据中数据那样的规整的数据.
+我们所得到的数据可能有若干情况:
+* 列名不是变量, 而是值
+* 一列中存了多种变量
+* 列和行都是变量
+* 不同类型的观测存在同一个表中
+* 一个观测被存在不同的表
+我们整理数据, 往往就是把上面的不整洁数据整理成符合之前提到的第三范式数据库所接受的数据结构.
+
+例如, 如果我们收到的是下面这样的数据.
+
+```{r}
+score.b
+#   person 数学 英语
+# 1 张大四   90   93
+# 2 李中三   NA   96
+# 3 王小二   NA   94
+```
+
+上面的表中列名也是一个变量.
+我们就需要把列对应的变量转换为上面我们提到的规整的数据结构.
+即把宽形的表转化为长型的表, 把每一个原表头作为长型表的一列的值,
+这里我们可以使用 'gather' 函数.
+
+```
+library(tidyr)
+
+(score.l <- gather(
+    score.b,
+    key=object,
+    value=score
+))
+
+#   person object score
+# 1 张大四   数学    90
+# 2 李中三   数学    NA
+# 3 王小二   数学    NA
+# 4 张大四   英语    93
+# 5 李中三   英语    96
+# 6 王小二   英语    94
+
+(score.l <- score.b %>% gather(
+    key=object, value=score, -person
+))
+
+#   person object score
+# 1 张大四   数学    90
+# 2 李中三   数学    NA
+# 3 王小二   数学    NA
+# 4 张大四   英语    93
+# 5 李中三   英语    96
+# 6 王小二   英语    94
+```
+
+`gather` 函数是用来把列名作为变量的数据转换为规整的格式.
+
+```{r}
+gather(data, key = "key", value = "value", ..., na.rm = FALSE,
+       convert = FALSE, factor_key = FALSE)
+```
+
+* data 为原来的数据, 可以是矩阵, 数据表 (`data.frame` 或者 dplyr 中的 `data_frame`) 等.
+* key 指定把原来的列作为 key 时的列名, 如我们上面例子中的 'object' 作为之前的 '数学' '英语' 的列名, 默认是 'key'.
+  如果我们不希望相应的列被列入其中,
+  如例子中我们不把 'person' 作为转换的列,
+  则应该在后面跟上 `-person`.
+* value 指定的是值对应的列名, 不指定的话, 相应的列名默认是 'value'
+
+上面例子中还有一个 `%>%` 符号, 这是管道函数,
+是把左面的值导入到右面的函数, 这样就不用在 gather 函数的 data 参数附值.
+当需要有若干操作的时候, 可以方便的把数据从一个函数传到到另一个函数,
+而避免了函数的层层嵌套, 主要是方便数入和理解,
+对运行效率并没有太大影响.
+
+假如说我们的数据比上面的数据还多一列班级信息:
+
+```{r}
+score2.b
+
+#   person class 数学 英语
+# 1 王小二     1   NA   94
+# 2 李中三     1   NA   96
+# 3 张大四     1   90   93
+# 4 王小二     2   92   NA
+```
+
+显然, person 和 class 两列的值才能确定一个人,
+这个时候我们的 gather 函数会有少量差别, 增加了一个 class.
+
+```{r}
+(score2.l <- score2.b %>% gather(
+    key=object,
+    value=score,
+    -c(person, class)
+))
+
+#   person class object score
+# 1 王小二     1   数学    NA
+# 2 李中三     1   数学    NA
+# 3 张大四     1   数学    90
+# 4 王小二     2   数学    92
+# 5 王小二     1   英语    94
+# 6 李中三     1   英语    96
+# 7 张大四     1   英语    93
+# 8 王小二     2   英语    NA
+```
+
+整理过的数据中, person class 和 object 三列作为变量, score 作为值,
+变量和值组成一个观测.
+
+### 扩展 spread ###
+
+当我们拥有了长形的规整的数据后, 处理数据就会变的很简单.
+有的时候我们需要某一个变量的值扩展为列, 方便分析.
+这样的情况下就需要展开 (spread) 数据.
+拿上面的 score2.l 为例, 我们把班级展开.
+
+```{r}
+score2.l %>% spread(key=class, value=score)
+
+#   person object  1  2
+# 1 张大四   数学 90 NA
+# 2 张大四   英语 93 NA
+# 3 李中三   数学 NA NA
+# 4 李中三   英语 96 NA
+# 5 王小二   数学 NA 92
+# 6 王小二   英语 94 NA
+```
+
+或者我们也可以把数据按照科目展开.
+
+```{r}
+score2.l %>% spread(key=object, value=score)
+
+#   person class 数学 英语
+# 1 张大四     1   90   93
+# 2 李中三     1   NA   96
+# 3 王小二     1   NA   94
+# 4 王小二     2   92   NA
+```
+
+### 分列 ###
+
+有的时候输入的一列数据实际上包括若干的信息,
+比如时间 '2017-09-14' 就包括了年月日的信息,
+我们在处理数据的时候希望能单独去处理年, 则应该分离出来.
+在 tidyr 中有相应的函数, 包括 separate 和 extract 两个函数.
+这两个函数都是把单一的列分成若干列, 不过有细微的差别.
+separate 是根据 sep 变量所指定的分隔符来分列,
+而 extract 则根据 regex 变量所指定的正则表达式去提取列信息.
+
+```{r}
+separate(data, col, into, sep = "[^[:alnum:]]+", remove = TRUE,
+         convert = FALSE, extra = "warn", fill = "warn", ...)
+```
+
+```{r}
+extract(data, col, into, regex = "([[:alnum:]]+)", remove = TRUE,
+        convert = FALSE, ...)
+```
+
+* data 是输入的数据表 (`data.frame` 或者 `data_frame`),
+  可以直接通过函数的 data 变量附值或者通过 `%>%` 管道函数传导.
+* col 是我们想要拆分的列
+* into 是我们想要拆分成的结果
+* sep 是 separate 函数指定分隔符的变量, 接受正则表达式
+* regex 是 extract 函数的分列的变量, 接受正则表达式, 每一列的值需要用括号表示为 group
+* remove bool 值, 如果为 TRUE, 则去除被拆分的列, 如果为 FALSE 则保留原列
+* convert bool 值, 如果为 TRUE 则会对分列的数据类型进行转换, 把数字转为 numeric 等.
+
+例如利用 extract 函数去分中文名的姓和名,
+这里我们所有的姓都是一个字, 所以对应正则表达式为 '.',
+而名可能是一个或多个, 所以对应正则表达式为 '.+'.
+相应的 regex 的值应为 '(.)(.+)'.
+
+```{r}
+score2.l %>% extract(col=person, into=c('姓', '名'), regex='(.)(.+)')
+
+#   姓   名 class object score
+# 1 王 小二     1   数学    NA
+# 2 李 中三     1   数学    NA
+# 3 张 大四     1   数学    90
+# 4 王 小二     2   数学    92
+# 5 王 小二     1   英语    94
+# 6 李 中三     1   英语    96
+# 7 张 大四     1   英语    93
+# 8 王 小二     2   英语    NA
+```
+
+我们也可以利用 separate 函数去分外国人的名, 比如 tidyr 中的 smiths 数据.
+
+```{r}
+smiths
+
+# # A tibble: 2 x 5
+#      subject  time   age weight height
+#        <chr> <dbl> <dbl>  <dbl>  <dbl>
+# 1 John Smith     1    33     90   1.87
+# 2 Mary Smith     1    NA     NA   1.54
+
+smiths %>% gather(
+    key=key,
+    value=value,
+    -subject
+) %>% separate(
+    col=subject,
+    into=c('First', 'Last'),
+    sep=' ',
+    remove=FALSE
+)
+
+# # A tibble: 8 x 5
+#      subject First  Last    key value
+# *      <chr> <chr> <chr>  <chr> <dbl>
+# 1 John Smith  John Smith   time  1.00
+# 2 Mary Smith  Mary Smith   time  1.00
+# 3 John Smith  John Smith    age 33.00
+# 4 Mary Smith  Mary Smith    age    NA
+# 5 John Smith  John Smith weight 90.00
+# 6 Mary Smith  Mary Smith weight    NA
+# 7 John Smith  John Smith height  1.87
+# 8 Mary Smith  Mary Smith height  1.54
+```
+
+上面的例子也体现出了管道函数的方便的地方.
+
+### 合列 unite ###
+
+我们可以把列分开, 就也能把列合起来.
+除了利用 lapply 和 paste 等函数, 还可以使用 unite 函数.
+
+```{r}
+unite(data, col, ..., sep = "_", remove = TRUE)
+```
+
+* data 是输入的数据表 (`data.frame` 或者 `data_frame`),
+  可以直接通过函数的 data 变量附值或者通过 `%>%` 管道函数传导.
+* col 是最后合并的列名
+* sep 是合并列后, 两列之间的分隔符.
+  `unite_` 相当于 `unite` 函数设置 sep 为 '_'
+* ... 合并的列要用 c 函数连接起来
+* remove bool 值, 如果为 TRUE, 则去除被拆分的列, 如果为 FALSE 则保留原列
+
+```{r}
+score2.l %>% extract(
+    col=person,
+    into=c('姓', '名'),
+    regex='(.)(.+)'
+) %>% unite(col='姓名', c('姓', '名'), sep='.')
+
+#      姓名 class object score
+# 1 王.小二     1   数学    NA
+# 2 李.中三     1   数学    NA
+# 3 张.大四     1   数学    90
+# 4 王.小二     2   数学    92
+# 5 王.小二     1   英语    94
+# 6 李.中三     1   英语    96
+# 7 张.大四     1   英语    93
+# 8 王.小二     2   英语    NA
+```
+
+
+
+## 集合操作 ##
+
+* intersect
+* union
+* merge

@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Sed 快餐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/sed-kuai-can.html">
+<meta name="twitter:title" content="Wolf Cave ~ Sed 快餐">
+<meta name="twitter:description" content="sed 命令的基础使用">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Sed 快餐" />
+<meta property="og:description" content="sed 命令的基础使用" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/sed-kuai-can.html" rel="bookmark" title="Permalink to Sed 快餐">Sed 快餐</a></h2>
+        <div class="entry-content blog-post">
+            <p>sed 是一个流编辑器（<strong>s</strong>tream <strong>ed</strong>iter）。不同于平时我们常常使用 的
+“所见即所得”的编辑器，sed的操作对象不是文本文件本身，而是从标准输入或
+者管道导入 sed 命令的输入流。sed 的操作是针对于每一行进行的，所以我们
+只要想好对于输入的每一行会有怎样的操作，就能去推测对于全部的行的操作。</p>
+<h2>替换命令 s</h2>
+<p>替换 s 是最常使用的 sed 的命令，据说不少人使用sed只去使用替换命令。替
+换命令是根据正则表达式把旧的字符串进行替换为新的字符串。</p>
+<p>例如我们把 monday 替换成 sunday 实际上非常容易。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> monday <span class="p">|</span> sed s/mon/sun/
+sunday
+</pre></div>
+
+
+<p>对于 sed 的替换命令有四部分：</p>
+<ol>
+<li>s：替换命令</li>
+<li>/old/new/：分隔符，也可以使用其他符号，例如 <code>s:old:new:</code>，或者
+   <code>s|/bin/bash|/usr/bin/bash|</code></li>
+<li>old：需要替换的字符串模式</li>
+<li>new：替换为的字符串模式</li>
+</ol>
+<p>除了四部分必须要有的，还可以在替换命令后面加上旗标（flag），来完成特殊的功能。</p>
+<h3>使用 &amp; 去表示匹配字符串</h3>
+<p>我们可以在新字符串中使用<code>&amp;</code>字符串去代替匹配到的字符串。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/sunday/&amp; &amp; &amp;/&quot;</span>
+sunday sunday sunday monday tuesday
+$ <span class="nb">echo</span> <span class="s1">&#39;sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/s[a-z]*day/&amp; &amp; &amp;/&quot;</span>
+sunday sunday sunday monday tuesday
+</pre></div>
+
+
+<h3>使用小括号去匹配分组并选择分组</h3>
+<p>使用 <code>&amp;</code> 代表被匹配的所有字符，而如果在正则表示中加入小括号作为分组，
+我们可以使用 <code>\1</code> <code>\2</code>直到 <code>\9</code> 来代表匹配到第一到第九个括号中正则表达
+式的字符串。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/&quot;</span>
+saturday sunday saturday sunday monday tuesday
+</pre></div>
+
+
+<h3>flag</h3>
+<p>上面的栗子是否注意到了，其实仅仅按照正则表达式匹配结果并不唯一，如果我
+们想要匹配的是所有的情况，而不是第一个匹配的情况，或者想要匹配的是第二
+种情况则需要使用旗标（flag）来指定。flag是加在 s 命令后面的若干字符，
+用来表示需要进行的特殊操作。</p>
+<ul>
+<li>/g：用于匹配所有符合正则表达式的字符串，默认只会匹配第一个匹配到的。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[0-9][a-z]/ha ha/&quot;</span>
+ha ha 2b 3c
+$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[0-9][:lower:]/ha ha/g&quot;</span>
+ha ha ha ha ha ha
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/&quot;</span>
+saturday sunday saturday sunday monday tuesday
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/g&quot;</span>
+saturday sunday saturday sunday monday tuesday monday tuesday
+</pre></div>
+
+
+<ul>
+<li>/1：诸如 1，2，3用于指定是第几个匹配。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[:digit:][:lower:]/ha ha/&quot;</span>
+ha ha 2b 3c
+$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[:digit:][:alpha:]/ha ha/2&quot;</span>
+1b ha ha 3c
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/&quot;</span>
+saturday sunday saturday sunday monday tuesday
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2&quot;</span>
+saturday sunday monday tuesday monday tuesday
+</pre></div>
+
+
+<ul>
+<li>/p：输出符合匹配的序列。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
+saturday sunday monday tuesday
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -n -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/p&quot;</span>
+saturday sunday monday tuesday
+saturday sunday monday tuesday
+$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -n -E <span class="s2">&quot;s/([a-z]*day)/&amp;/p&quot;</span>
+saturday sunday monday tuesday
+$ cat lib.1.fq <span class="p">|</span> sed -n -E <span class="s2">&quot;s/ACCG([ATCG]{19,20})GTTT/\1/p&quot;</span> &gt; sgRNAs.seq
+$ cat sgRNAs.seq <span class="p">|</span> sort <span class="p">|</span> uniq -c &gt; sgRNA.count
+</pre></div>
+
+
+<ul>
+<li>/w：输出到文件</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2 w tmp&quot;</span>
+saturday sunday monday tuesday monday tuesday
+$ cat tmp
+saturday sunday monday tuesday monday tuesday
+</pre></div>
+
+
+<h2>选择特定的列</h2>
+<p>sed 可以根据位置（即行数），正则表达式去选择特定的行进行操作，而忽略其他的行。</p>
+<ul>
+<li>指定行数：</li>
+<li><code>n</code>: 只对特定的行操作，如 <code>sed '1 s/new/old/'</code> 只会对第1行进行替换操
+    作，其他行不会操作。</li>
+<li><code>min,max</code>：只对从第min到第max的行进行操作，如 <code>sed '1,20 s/new/old/'</code>
+    只会对第1行到第20行进行替换操作，其他行不会操作。</li>
+<li><code>n,$</code>：对从第n行到最后一行进行操作，如 <code>sed '100,$ s/new/old/'</code>
+    只会对第100行到最后进行替换操作，其他行不会操作。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;1, 20 s/.*bin.*/BIN/&#39;</span> /etc/passwd
+</pre></div>
+
+
+<ul>
+<li>匹配正则表达式：</li>
+<li><code>/pattern/</code>：只对匹配正则表达式的行进行操作。</li>
+<li><code>/pattern1/,/pattern2/</code>：对在所有匹配两个正则表达式的行进行操作。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;/@.*/,/\+/&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;/@.*/,/\+/ {</span>
+<span class="s1">    /@.*/n</span>
+<span class="s1">    /\+/!p</span>
+<span class="s1">}&#39;</span> lib.1.fq <span class="p">|</span> less
+</pre></div>
+
+
+<h2>输出命令 p</h2>
+<p>前面已经见到过输出命令 p 如何使用，我们可以根据各种符合匹配的情况使用
+输出命令，可以是替换命令，可以是指定特定的行，或者符合一定正则表达式的
+行等等。输出命令 p 会把符合要求的行或者修改后的行重新输出一遍，如果没
+有配合 <code>-n</code>，则会使得符合要求的行输出两遍。而sed加上 <code>-n</code> 参数后，则默
+认不输出任何东西，所有只有符合一定规则的有输出命令 p 的行才会输出。在
+p 前面加感叹号，就是不输出的意思。</p>
+<div class="highlight"><pre><span></span>$ sed -n <span class="s1">&#39;/^@.*/ p&#39;</span> lib.1.fq <span class="p">|</span> less
+$ egrep <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;/^@.*/ !p&#39;</span> lib.1.fq <span class="p">|</span> less
+$ egrep -v <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;/^@.*/ !p&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed -n <span class="s1">&#39;1,16 p&#39;</span> lib.1.fq <span class="p">|</span> less
+$ head -16 lib.1.fq
+</pre></div>
+
+
+<h2>删除命令 d</h2>
+<p>删除命令可以指定符合要求的行从结果中删除，在一定程度上 <code>d</code> 相当于 <code>!p</code>。</p>
+<p>关于 d，p 和 ! 的关系如下(<a href="http://www.grymoire.com/Unix/Sed.html#uh-35a">sed 教程</a>)：</p>
+<table>
+<thead>
+<tr>
+<th align="center">Sed</th>
+<th align="center">Range</th>
+<th align="center">Command</th>
+<th align="center">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">1,10</td>
+<td align="center">p</td>
+<td align="center">Print first 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">11,$</td>
+<td align="center">!p</td>
+<td align="center">Print first 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">1,10</td>
+<td align="center">!d</td>
+<td align="center">Print first 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">11,$</td>
+<td align="center">d</td>
+<td align="center">Print first 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">1,10</td>
+<td align="center">!p</td>
+<td align="center">Print last 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">11,$</td>
+<td align="center">p</td>
+<td align="center">Print last 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">1,10</td>
+<td align="center">d</td>
+<td align="center">Print last 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">11,$</td>
+<td align="center">!d</td>
+<td align="center">Print last 10 lines</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">1,10</td>
+<td align="center">d</td>
+<td align="center">Nothing printed</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">1,10</td>
+<td align="center">!d</td>
+<td align="center">Nothing printed</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">11,$</td>
+<td align="center">d</td>
+<td align="center">Nothing printed</td>
+</tr>
+<tr>
+<td align="center">sed -n</td>
+<td align="center">11,$</td>
+<td align="center">!d</td>
+<td align="center">Nothing printed</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">1,10</td>
+<td align="center">p</td>
+<td align="center">Print first 10 lines twice, then next 10 lines once</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">11,$</td>
+<td align="center">!p</td>
+<td align="center">Print first 10 lines twice, then last 10 lines once</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">1,10</td>
+<td align="center">!p</td>
+<td align="center">Print first 10 lines once, then last 10 lines twice</td>
+</tr>
+<tr>
+<td align="center">sed</td>
+<td align="center">11,$</td>
+<td align="center">p</td>
+<td align="center">Print first 10 lines once, then last 10 lines twice</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;/^@.*/ !d&#39;</span> lib.1.fq <span class="p">|</span> less
+$ egrep <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;/^@.*/ d&#39;</span> lib.1.fq <span class="p">|</span> less
+$ egrep -v <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed -n <span class="s1">&#39;/^@.*/ !d&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;1,16 !d&#39;</span> lib.1.fq <span class="p">|</span> less
+$ head -16 lib.1.fq
+</pre></div>
+
+
+<h2>附加命令 a，改变命令 c，插入命令 i</h2>
+<p>sed 也可以利用附加命令a，改变命令c，插入命令i来改变流的内容。</p>
+<ul>
+<li>a：在目标行后面增加新行。</li>
+<li>c：把目标行替换内容。</li>
+<li>i：在目标行前面增加新行。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;/@.*/ a haha&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;/@.*/ c haha&#39;</span> lib.1.fq <span class="p">|</span> less
+$ sed <span class="s1">&#39;/@.*/ i haha&#39;</span> lib.1.fq <span class="p">|</span> less
+</pre></div>
+
+
+<h2>输出行号</h2>
+<p><code>=</code> 可以用来输出行号。</p>
+<div class="highlight"><pre><span></span>$ sed -n <span class="s1">&#39;/@.*/ =&#39;</span> lib.1.fq <span class="p">|</span> less
+</pre></div>
+
+
+<h2>转换命令 y</h2>
+<p>除了替换命令，sed 还支持字符转换命令 y，实现类似于 <code>tr</code> 的命令。转换命
+令的语法很接近替换命令，只是要求转换前和转换后的字符串一一匹配。</p>
+<p>例如，我们要实现DNA序列的互补配对，我们可以利用转换命令：</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> sed y/ATCG/TAGC/
+ATATCCGATCTCCTAATCTC
+$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> tr ATCG TAGC
+ATATCCGATCTCCTAATCTC
+</pre></div>
+
+
+<p>从上面的栗子，我们可以看到转换命令和替换命令的相似性，其在flag使用上也
+是类似的。</p>
+<p>如果我们需要的是反向互补序列呢？只需要使用shell下的管道，把sed的结果导
+向 rev 命令即可。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> sed y/ATCG/TAGC/ <span class="p">|</span> rev
+CTCTAATCCTCTAGCCTATA
+$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> tr ATCG TAGC <span class="p">|</span> rev
+CTCTAATCCTCTAGCCTATA
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Fri 28 December 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/linux.html">#linux, </a></span>
+                <span><a href="../../tag/sed.html">#sed, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/sed-kuai-can.html&text=Sed 快餐&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/sed-kuai-can.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/sed-kuai-can.html&t=Sed 快餐"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/sed-kuai-can.html&title=Sed 快餐" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Sed 快餐&amp;body=Viens découvrir un article à propos de [Sed 快餐] sur le site de Wolfson Liu. ../../archive/2018/sed-kuai-can.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/sed-kuai-can.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

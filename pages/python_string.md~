@@ -1,0 +1,35 @@
+Title: Python 学习笔记: 字符串操作和 string 包
+Date: 2016-08-17 00:26
+Modified: 2016-08-17 00:26
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: 使用 string 包和字符串操作.
+
+## str 类 ##
+
+## string 包 ##
+
+string 包中有一些有用的字符串集, 可以在进行字符串判断或者生成字符串等方面使用.
+
+### 字符集 ###
+
+在 string 包中有有用的字符串集, 包括大小写字母, 数字, 标点等(下面的集合供参考, 可能和 python 输出结果不同).
+
+* string.ascii_letters: 26 个英文字母包括大小写, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.
+* string.ascii_lowercase: 26 个小写英文字母, 'abcdefghijklmnopqrstuvwxyz'.
+* string.ascii_uppercase: 26 个大写英文字母, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.
+* string.digits: 0-9 十个数字, '0123456789'.
+* string.hexdigits: 十六进制的数字, '0123456789abcdefABCDEF'.
+* string.octdigits: 八进制的数字, '01234567'.
+* string.printable: 可以打印和显示出来的数字, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_\`{|}~ \t\n\r\x0b\x0c'.
+* string.punctuation: 标点符号, '!"#$%&\()*+,-./:;<=>?@[\\]^_\`{|}~'.
+* string.whitespace: 空白字符串, ' \t\n\r\x0b\x0c'.
+
+### 函数和方法 ###
+
+* string.capwords: 用于单词首字母大写.
+
+
+
+

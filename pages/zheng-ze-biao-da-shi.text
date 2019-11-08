@@ -1,0 +1,119 @@
+Title: 正则表达式
+Date: 2018-12-14 20:38
+Modified: 2018-12-27 23:42
+Category: 壹零零壹
+Tags: regular expression
+Authors: Wolfson Liu
+Summary: 正则表达式
+
+正则表达式（regular expression）是用一系列字符串去表示一个搜索的模式（pattern）的，
+符合该匹配的字符串将被作为搜索结果。使用正则表达式可以完成复杂的文本处理任务。
+
+寻找字符串的模式及找规律，例如，sunday，monday，tuesday的规律是若干个
+字符后面有三个一样的字符“day”，那么模式可以表示为`(sun | mon |
+tues)day`。
+
+## 正则表达式基本概念 ##
+
+正则表达式在不同的语言有相同或者相似的实现，也有不同语言的特色，同时
+POSIX规定的正则表达式有基础正则表达式和扩展正则表达式之分，但是大多数
+的正则表达式都包括：或（or），分组（group），数量（quantification），
+通配符（wildcard）等。
+
+`grep` 默认支持的是基础正则表达式，`grep -E` 或者 `egrep` 支持的是扩展
+正则表达式。两者有一定区别，使用时需要稍稍注意。
+
+* 或：字符串符合若干模式中的一种，在正则表达式中一般以 `pattern1 |
+  pattern2` 来表示。例如：`sunday | saturday` 可以用来匹配 “sunday” 或
+  者 “saturday”。在基础正则表达式中是使用 `\|` 来表示或的，`|`则表示该符
+  号本身。在扩展正则表达式中则反过来，`|`是表示或的，`\|`表示该符号。
+
+```{shell}
+$ echo sunday | grep "sunday\|saturday"
+sunday
+$ echo sunday | grep "sunday|saturday"
+$ echo "sunday|" | grep "sunday|saturday"
+$ echo monday | grep "sunday\|saturday"
+$ echo sunday | egrep "sunday\|saturday"
+$ echo sunday | egrep "sunday|saturday"
+sunday
+```
+
+* 分组：对于一个表达式中的一部分进行分组，可以在后面只输出分组中
+  的内容，一般用小括号`(pattern)`表示分组。例如：`(sun|mon|tues)day`，
+  使用分组可以把要匹配的可变部分和后面不可变的部分进行区分。许多语言也
+  支持把小括号中的匹配单独输出，例如去匹配 “sunday” 并输出分组中的内容
+  的时候就可以输出 “sun”，而去匹配 “tuesday” 的时候可以输出分组内容
+  “tues”。一个正则表达式中可以有多个分组，一些语言也支持把多个分组选择
+  性输出。在基础正则表达式中是使用 `\(\)` 来表示分组的，`()`则表示小括
+  号本身。在扩展正则表达式中则反过来，`()`是表示分组的，`\(\)`表示小括
+  号。
+
+```{shell}
+$ echo sunday | grep "\(sun\|satur\)day"
+sunday
+$ echo "sunday" | egrep "(sun|satur)day"
+sunday
+$ echo "sunday" | grep "(sun|satur)day"
+$ echo "monday" | egrep "(sun|satur)day"
+```
+
+* 数量：使用数量匹配符号，可以对其前面的字符指定匹配的数量。
+  * `?`：匹配零个或一个字符，例如 “ab?c” 匹配的只会是 “ac”，“abc”
+  * `*`：匹配零个或多个字符，例如 “ab*c” 匹配的会是 “ac”，“abc”，“abbc”，“abbbc”等等。
+  * `+`：匹配一个或多个字符，例如 “ab+c” 匹配的会是 “abc”，“abbc”，“abbbc”，“abbbbc”等等
+  * `{n}`：匹配 n 个字符，例如 “a{3}bc” 只会匹配 “aaabc”
+  * `{min,}`：匹配最少 min 个字符，例如 “ab{3,}c” 会匹配 “abbbc”，“abbbbc”，“abbbbbc” 等等。
+    “ab{0,}c” 相当于 “ab*c”；“ab{1,}c” 相当于“ab+c”。
+  * `{min,max}`：匹配最少 min 个字符，最多 max 个字符，例如 “ab{3,6}c”
+    只会匹配 “abbbc”，“abbbbc”，“abbbbbc”，“abbbbbbc”。“ab{0,1}c”相当
+    于“ab?c”。
+  * 类似前面，在基础正则表达式中，`\{\}` 用来作为正则表达式。在扩展正则表达式中则相反，使用 `{}`。
+
+```{shell}
+$ echo "AGCGTTTTGT" | egrep "T{4,}"
+AGCGTTTTGT
+$ echo "AGCGTTTTGT" | egpre "GT+G"
+AGCGTTTTGT
+```
+
+* 通配符：有的时候我们需要抓取的字符的组合非常多，这个时候就需要使用通
+  配符，而不需要把所有组合都自己打出来。利用通配符，我们可以使用一个记
+  号去表示多种字符。需要注意的是，不管通配符本身包含多少字符，通配符自
+  己只会匹配一个字符。
+  * `.`：可以匹配任何单个字符。
+  * `[]`：匹配中括号中包括的所有字符，例如 `[a123.]`，可以匹配 “a”，
+    “1”，“2”，“3”，“.”。`[a-z]`匹配所有的小写字母，`[A-Z]`匹配所有的大
+    写字母，`[0-9]`匹配所有的数字。
+  * `[^]`：匹配不在中括号中的其他字符，例如 `[^a1]`，匹配除了 “a” 和 “1” 之外的其他字符。
+  * `[:upper:]`：匹配所有大写字母，相当于 `[A-Z]`。
+  * `[:lower:]`：匹配所有小写字母，相当于 `[a-z]`。
+  * `[:alpha:]`：匹配所有大写和小写字母，相当于 `[[:upper:][:lower:]]`。
+  * `[:alnum:]`：匹配所有的大小写字母和数字，相当于 `[[:alpha:][:digit:]]`。
+  * `[:digit:]`：匹配所有的数字 `[0-9]`。
+  * `[:xdigit:]`：匹配十六进制数字 `[0-9A-Fa-f]`。
+  * `[:punct:]`：匹配标点符号 `[.,!?:…]`。
+  * `[:blank:]`：匹配空格和制表符 `[ \t]`。
+  * `[:space:]`：匹配空白字符，空格，制表符，回车，新行，新页等，相当于`[ \t\n\r\f\v]`。
+  * `[:cntrl:]`：控制字符。
+  * `[:graph:]`：能看得到的字符，相当于`[^ \t\n\r\f\v]`
+  * `[:print:]`：可打印字符，能看得到的字符和空格 `[^\t\n\r\f\v]`。
+
+```{shell}
+$ cat sample.fq | grep "ACCG([ATCG]{20})GTTT" > reads_with_sgRNA.txt
+```
+
+对于字符串开头和结尾，可以使用 `^` `$` 来进行定位。
+
+ * `^`：指定字符串起始位置
+ * `$`：指定字符串结束位置
+
+```{shell}
+$ echo "one two three" | grep "two"
+one two three
+$ echo "one two three" | grep "^two"
+$ echo "one two three" | grep "^one"
+one two three
+$ echo "one two three" | grep "three$"
+one two three
+```

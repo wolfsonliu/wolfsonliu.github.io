@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Emacs 学习笔记：LaTeX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/emacs-xue-xi-bi-ji-latex.html">
+<meta name="twitter:title" content="Wolf Cave ~ Emacs 学习笔记：LaTeX">
+<meta name="twitter:description" content="Emacs 中编辑 LaTeX .">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Emacs 学习笔记：LaTeX" />
+<meta property="og:description" content="Emacs 中编辑 LaTeX ." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/emacs-xue-xi-bi-ji-latex.html" rel="bookmark" title="Permalink to Emacs 学习笔记：LaTeX">Emacs 学习笔记：LaTeX</a></h2>
+        <div class="entry-content blog-post">
+            <h2>mode</h2>
+<ul>
+<li>latex-electric-env-pair-mode: 自动匹配的 mode, 如果修改一个 begin 或者一个 end 大括号中的环境名称, 那么对应的 end 或者 begin 中的环境名称也会同时改变.</li>
+</ul>
+<hr>
+<h2>配对符号</h2>
+<ul>
+<li>插入配对的大括号: <strong>M-c {</strong>, 输入一个配对的大括号.</li>
+<li>跳转到本对括号的末尾: <strong>M-c }</strong>, 跳转到光标所在括号的最后.</li>
+<li>缓冲检查匹配 (tex-validate-buffer): 检查整个缓冲是否有没有匹配的大括号或者美元符号等.</li>
+<li>区域检查匹配 (tex-validate-region): 检查选择的区域否有没有匹配的大括号或者美元符号等.</li>
+<li>插入环境 (latex-insert-block): <strong>C-c C-o</strong>, 输入后开启匹配的环境, 会跳出提示符输入环境的名称, 然后自动补全相关的 begin 和 end.</li>
+<li>关闭环境 (latex-close-block): <strong>C-c C-e</strong>, 如果之前有手动输入的环境, 该命令可以自动补全没有完成匹配的环境.</li>
+<li>跳转到最后一个没有关闭的环境 (tex-goto-last-unclosed-latex-block): <strong>C-c C-u</strong>, 寻找并跳转到最后一个没有匹配的环境.</li>
+<li>自动插入引号 (tex-insert-quote): <strong>\"</strong>, 自动向 LaTeX 文件中插入匹配的引号, 如果没有前引号则自动插入两个 <strong>`</strong>, 如果有前引号则自动插入两个后引号 <strong>\'</strong>, 如果按两次则插入 <strong>\"</strong>.</li>
+<li>插入 item (latex-insert-item): <strong>M-ENTER</strong>, 插入 <code>\item</code>.</li>
+</ul>
+<hr>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Thu 10 March 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/emacs.html">#emacs, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/emacs-xue-xi-bi-ji-latex.html&text=Emacs 学习笔记：LaTeX&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/emacs-xue-xi-bi-ji-latex.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/emacs-xue-xi-bi-ji-latex.html&t=Emacs 学习笔记：LaTeX"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/emacs-xue-xi-bi-ji-latex.html&title=Emacs 学习笔记：LaTeX" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Emacs 学习笔记：LaTeX&amp;body=Viens découvrir un article à propos de [Emacs 学习笔记：LaTeX] sur le site de Wolfson Liu. ../../archive/2016/emacs-xue-xi-bi-ji-latex.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/emacs-xue-xi-bi-ji-latex.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

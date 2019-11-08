@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git 分支</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/git-fen-zhi.html">
+<meta name="twitter:title" content="Wolf Cave ~ Git 分支">
+<meta name="twitter:description" content="Git 分支上手">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Git 分支" />
+<meta property="og:description" content="Git 分支上手" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/git-fen-zhi.html" rel="bookmark" title="Permalink to Git 分支">Git 分支</a></h2>
+        <div class="entry-content blog-post">
+            <p>Git 相对于其他的版本控制软件的“大杀器”是分支，因为 Git 进行分支速度很
+快且很方便。使用 Git 做版本控制是非常鼓励多使用分支的。与分支相关的三
+个重要的命令分别是：branch，checkout 和 merge。branch 用来创建分支，
+checkout 用来切换不同的分支，merge 用于合并分支。</p>
+<p>基本的分支操作有：</p>
+<ol>
+<li>创建分支：<code>git branch</code> 来创建新分支。</li>
+<li>切换分支：<code>git checkout</code> 来切换到新的分支。</li>
+<li>在新分支提交修改：<code>git add</code> 和 <code>git commit</code> 来提交记录对代码的改变。</li>
+<li>切换到原分支：<code>git merge</code> 来合并分支。这种情况只会简单地去移动分支
+   指针，如果有第三个分支需要合并，则需要去对比分支的不同（可能会用到
+   <code>git diff</code>）。</li>
+</ol>
+<h2>创建分支</h2>
+<p>使用 <code>git branch &lt;branchname&gt;</code> 就可以创建一个新的分支，例如创建一个叫
+做 dev 的分支：</p>
+<div class="highlight"><pre><span></span>git branch dev
+</pre></div>
+
+
+<p>创建一个分支，可以简单理解为创建了一个指针，该指针指向了一个 commit，
+而 commit 中有其 parent commit 的 SHA-1 值，从而形成了一个分支链条。创
+建一个分支并不会切换到新分支，而是依然保留在原来的分支。新创建一个分支，
+没有做任何修改的时候，相当于新的分支和当前分支同时指向同一个 commit。</p>
+<h2>切换分支</h2>
+<p>如果要切换到新的分支来进行下一步开发，则需要使用 <code>git checkout</code> 命令，如：</p>
+<div class="highlight"><pre><span></span>git checkout dev
+<span class="c1"># Switched to branch &#39;dev&#39;</span>
+</pre></div>
+
+
+<p>也可以使用 <code>git checkout -b &lt;branch&gt;</code> 来直接创建并切换分支。</p>
+<h2>合并分支</h2>
+<p>当我们在新的分支上对于代码做了修改，并进行了新的 commit，这样新的分支
+就和原来的 master 分支有所不同了。在调试完毕，确认要把新的代码加入到
+master 分支中，可以使用 <code>git merge</code> 命令来合并分支。</p>
+<p>要合并代码，首先切换到被合并的分支上，如我们要把分支合并到 master，则
+要先切换到master分支：</p>
+<div class="highlight"><pre><span></span>git checkout master
+<span class="c1"># M       md/git_command_commit.md</span>
+<span class="c1"># Switched to branch &#39;master&#39;</span>
+</pre></div>
+
+
+<p>然后执行 merge 命令：</p>
+<div class="highlight"><pre><span></span>git merge dev
+</pre></div>
+
+
+<p>如果只有两个分支，并且在切换到一个分支后并未对原分支进行新的 commit ，
+那么 merge 将会非常容易，因为是线性的。而如果切换分支后，原分支又又了
+新的分支或者新的 commit，那么就会在 merge 的时候遇到冲突。这时候应该先
+解决冲突才能进一步合并分支。</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 06 November 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/git.html">#git, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/git-fen-zhi.html&text=Git 分支&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/git-fen-zhi.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/git-fen-zhi.html&t=Git 分支"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/git-fen-zhi.html&title=Git 分支" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Git 分支&amp;body=Viens découvrir un article à propos de [Git 分支] sur le site de Wolfson Liu. ../../archive/2018/git-fen-zhi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/git-fen-zhi.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

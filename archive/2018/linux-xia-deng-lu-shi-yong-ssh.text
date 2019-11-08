@@ -1,0 +1,68 @@
+Title: linux 下登陆使用 SSH
+Date: 2018-08-02 10:49
+Modified: 2018-08-02 10:49
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: SSH
+
+### 设置 SSH KEY ###
+
+可以使用 ssh-keygen 产生和设置 key。
+
+### 登陆 SSH ###
+
+### 设置服务器端 SSH KEY file ###
+
+设置服务器端的 SSH KEY 很简单，关键问题在文件与文件夹的设置上，如果文
+件夹或文件权限不对则不能正常使用 KEY 进行登陆。
+
+SSH 登陆相关的文件在 $HOME 下的 .ssh 文件夹中。.ssh 文件夹的权限应该设
+置为 700。
+
+```{shell}
+cd $HOME
+chmod 700 .ssh
+ls -al | grep .ssh
+# drwx------   2 User User  4096 Aug  1 20:43 .ssh
+```
+
+
+### 登录时直接进入上一次登出时候的目录 ###
+
+有时候工作没有做完就先登出了，下次登陆还想继续做，但是需要走很长的路径
+才能回去，太麻烦了。所以，就需要每次登陆的时候回到上次登出的地方。
+
+首先，要设置 `.bash_logout` 文件去记录最后的目录位置，具体就是把登出时
+所处的目录地址保存下来：
+
+```
+echo $PWD >> ~/.cd_stack
+```
+
+然后在 `.bashrc` 中设置每次登录时自动前往上次存储的地址：
+
+```
+cd $(tail -1 $HOME/.cd_stack)
+
+head -n -1 $HOME/.cd_stack > $HOME/.cd_stack.tmp && mv $HOME/.cd_stack.tmp $HOME/.cd_stack
+```
+
+### 存储常用登陆信息 ###
+
+在 `~/.ssh/config` 文件中可以存储经常登陆的服务器信息：
+
+```{shell}
+Host fwq
+    HostName 8.8.8.8
+    Port 22
+    User yonghu
+    IdentityFile ~/.ssh/id_rsa
+```
+
+这样之后使用ssh登陆该地址或者使用scp传输数据的时候就可以打服务器名称了：
+
+```{shell}
+ssh fwq
+scp myfile fwq:~/
+```

@@ -1,0 +1,36 @@
+Title: R 学习笔记: Cross validation
+Date: 2017-08-27 15:13
+Modified: 2017-08-27 15:13
+Category: 壹零零壹
+Tags: r, data
+Authors: Wolfson Liu
+Summary: 利用 R 进行 cross validation
+
+在实际分析数据的时候, 并没有足够多的数据去建模并对模型进行测试.
+而测试误差 (test error) 和训练误差 (training error) 是有差距的.
+为了能够估计测试误差, 可以使用交叉验证的方法.
+
+所谓交叉验证, 简单讲就是从数据中抽取一部分的数据作为训练数据,
+然后另一部分数据作为测试数据,
+然后再抽取一部分的数据作为训练数据,
+另一部分作为测试数据, 循环往复.
+如此就能得到训练误差和测试误差, 从而能够去评判模型的好坏.
+
+常用的交叉验证方法有留下一个交叉验证 (leave one out cross validation)
+和 k 倍 交叉验证 (k fold cross validation).
+LOOCV 是每次取一个数据作为测试数据, 而其他数据作为训练数据.
+k-fold CV 是把数据分为 k 份, 然后每次取其中一份作为测试数据,
+其他作为测试数据.
+实际上 LOOCV 可以看作是 k 为样本数的 k-fold CV.
+
+### R 例子 ###
+
+使用 iris 数据来举例.
+
+
+
+
+### Reference ###
+
+* G. James et al., *An Introduction to Statistical Learning: with Applications in R*,
+Springer Texts in Statistics, DOI 10.1007/978-1-4614-7138-7 5

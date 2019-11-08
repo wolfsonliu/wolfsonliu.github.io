@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>JavaScript 学习笔记：表达式和运算符</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html">
+<meta name="twitter:title" content="Wolf Cave ~ JavaScript 学习笔记：表达式和运算符">
+<meta name="twitter:description" content="JavaScript 的表达式.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ JavaScript 学习笔记：表达式和运算符" />
+<meta property="og:description" content="JavaScript 的表达式." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html" rel="bookmark" title="Permalink to JavaScript 学习笔记：表达式和运算符">JavaScript 学习笔记：表达式和运算符</a></h2>
+        <div class="entry-content blog-post">
+            <h3>Primary Expression</h3>
+<p>最简单的 JavaScript 表达式中只包含常量, 语义值, 一些保留词和变量引用等.
+最简单的表达式是直接嵌入到语言中的.</p>
+<div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">.</span><span class="mi">23</span><span class="p">;</span>  <span class="o">//</span> <span class="err">常数</span>
+<span class="s1">&#39;hello&#39;</span><span class="p">;</span>  <span class="o">//</span> <span class="err">常量</span>
+<span class="o">/</span><span class="n">pattern</span><span class="o">/</span><span class="p">;</span>  <span class="o">//</span> <span class="err">正则表达式</span>
+<span class="k">true</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
+<span class="k">false</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
+<span class="k">null</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
+<span class="n">this</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
+<span class="n">undefined</span><span class="p">;</span> <span class="o">//</span> <span class="err">全局变量</span><span class="p">,</span> <span class="err">变量引用</span>
+</pre></div>
+
+
+<h3>Function Definition Expression</h3>
+<h3>Property Access Expression</h3>
+<p>引用属性有两种办法, 一个是使用句点, 另一个是使用方括号.
+一个对象的属性可以使用对象名加句点加属性名来引用.
+而对于使用方括号的方法, 方括号里面可以是一个表达式, 可以是属性名的字符串, 对于 array 还可以是数字或者数字字符串.</p>
+<div class="highlight"><pre><span></span><span class="n">expression</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
+<span class="n">expression</span><span class="o">[</span><span class="n">expression</span><span class="o">]</span><span class="w"></span>
+</pre></div>
+
+
+<p>如果对象并不含有相应的属性, 则会返回 undefined.</p>
+<h3>Invocation Expression</h3>
+<p>调用函数是函数名跟着一个括号, 括号中可以是空的, 或者是由逗号分隔的参数列表.</p>
+<h2>Operator Overview</h2>
+<p>delete
+typeof
+void
+instanceof
+in</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sun 08 October 2017</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/javascript.html">#javascript, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html&text=JavaScript 学习笔记：表达式和运算符&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html&t=JavaScript 学习笔记：表达式和运算符"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html&title=JavaScript 学习笔记：表达式和运算符" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=JavaScript 学习笔记：表达式和运算符&amp;body=Viens découvrir un article à propos de [JavaScript 学习笔记：表达式和运算符] sur le site de Wolfson Liu. ../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

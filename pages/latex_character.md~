@@ -1,0 +1,64 @@
+Title: LaTeX 学习笔记：字符
+Date: 2016-01-05 12:26
+Modified: 2016-01-05 12:26
+Category: 壹零零壹
+Tags: LateX
+Authors: Wolfson Liu
+Summary: LaTeX 保留字符和特殊字符.
+
+## 保留字符 ##
+
+在 LaTex 里面有很多有特殊用途的保留字符, 需要留意.
+
+保留字符主要有: # $ % ^ & _ { } ~ \
+
+输入方法为:
+```
+\# \$ \% \^{} \& \_ \{ \} \~{} \textbackslash{}
+```
+其中, \ 除了可以使用 `\textbackslash` 输入外, 也可以 `\backslash`. ~ 可以使用 `\textasciitilde`, ^ 可以使用 `\textasciicircum` 来输入.
+
+如果使用 \verb 或者 verbatim environment 则可以不使用 escape 的方式.
+
+## 符号 ##
+
+* 引号: 如果使用英文的引号 (quotation mark), 则需要使用一个和 ~ 在一起的那个反引号 (Backtick) 来作为一个前引号, 一个撇号 (Apostrophe) 作为后引号, 两个反引号做前双引号, 两个撇号做后双引号. 
+* 波浪号: 西文波浪号 (tilde) 是保留符号, 需要转义. 中文波浪号需要使用数学中符号 `$\sim$`. `~` 本身代表的是不能断开的空格, 两侧的字符不会因为排版而分割两行.
+* 省略号: 西文省略号 (ellipsis) 需要特别的命令来输出 `\ldots` 或者 `\dots`, 为了排版需要也可以放入数学环境中. 中文六个点的省略号可以直接用输入法输入.
+* 减号 连字符 破折号: 单用一个 `-` 在数学环境下是减号, 数学环境外使用一个 `-` 是连字符 (hyphen), 使用两个 `--` 是短连接 (en dash) 用来表示数字范围, 使用三个 `---` 是破折号 (em dash). 中文的破折号可以直接用输入法输入.
+
+### 特殊符号 ###
+
+有的时候需要使用一些特殊符号, 除了 LaTex 自带的一些之外, 在 textcomp 包中有较多的特殊符号使用. 也可以查阅 《texdoc The Comprehensive LaTeX Symbol List》 其中列出了很多的符号和对应的包. 有的时候输入法可以输出一些特殊字符, 如果系统支持, 也可以直接输出.
+
+* 小节标志: `\S`
+* 版权标志: `\copyright` 圆圈中的 C.
+* 注册标志: `\textregistered` 圆圈中的 R.
+* 商标标志: `\texttrademark` TM 标志.
+* 分隔圆点: `\textbullet` 可以在中文中连接外国名字的名和姓.
+
+
+## 希腊字母 ##
+
+有些希腊字母和英文一样, 所以就没有单独的命令.
+
+|   Name  | LaTex Upper | LaTex Lower | LaTex Variable |   Name  | LaTex Upper | LaTex Lower | LaTex Variable |
+|:-------:|:-----------:|:-----------:|:--------------:|:-------:|:-----------:|:-----------:|:--------------:|
+|  alpha  |     `A`     |   `\alpha`  |                |    nu   |     `N`     |    `\nu`    |                |
+|   beta  |     `B`     |   `\beta`   |                |    xi   |    `\Xi`    |    `\xi`    |                |
+|  gamma  |   `\Gamma`  |   `\gamma`  |                | omicron |     `O`     |     `o`     |                |
+|  delta  |   `\Delta`  |   `\delta`  |                |    pi   |    `\Pi`    |    `\pi`    |    `\varpi`    |
+| epsilon |     `E`     |  `\epsilon` |  `\varepsilon` |   rho   |     `P`     |    `\rho`   |    `\varho`    |
+|   zeta  |     `Z`     |   `\zeta`   |                |  sigma  |   `\Sigma`  |   `\sigma`  |   `\varsigma`  |
+|   eta   |     `H`     |    `\eta`   |                |   tau   |     `T`     |    `\tau`   |                |
+|  theta  |   `\Theta`  |   `\theta`  |                | upsilon |  `\Upsilon` |  `\upsilon` |                |
+|   iota  |     `I`     |   `\iota`   |                |   phi   |    `\Phi`   |    `\phi`   |    `\varphi`   |
+|  kappa  |     `K`     |   `\kappa`  |   `\varkappa`  |   chi   |     `X`     |    `\chi`   |                |
+|  lambda |  `\Lambda`  |  `\lambda`  |                |   psi   |    `\Psi`   |    `\psi`   |                |
+|    mu   |     `M`     |    `\mu`    |                |  omega  |   `\Omega`  |   `\omega`  |                |
+
+--------------------------------------------------------------------------------
+
+## 注意 ##
+
+默认认为以小写字母和句号 (.) 作为一句的结尾, 所以如果一个句子结尾是大写字母则应该显式地指明结尾, `THE LAST\@.` 或者 `THE LAST\ .`.

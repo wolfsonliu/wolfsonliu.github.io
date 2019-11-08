@@ -1,0 +1,267 @@
+Title: R 学习笔记：R 色彩
+Date: 2016-02-28 22:42
+Modified: 2016-11-19 21:50
+Category: 壹零零壹
+Tags: r
+Authors: Wolfson Liu
+Summary: R 色彩相关.
+
+
+## 色彩理论 ##
+
+色彩本身所含有很多信息, 对色彩的研究可以称为色彩学. 对于绘图选择颜色, 不需要掌握色彩学的知识, 但也应该了解基本的色彩和色彩空间 (color space) 的知识.
+
+色彩空间 (color space) 是计算机上颜色的组成形式. 常见的如 RGB, HSV, HCL 等. 不同的色彩空间可以相互转换.
+
+### RGB ###
+
+RGB (Red Green Blue) 的色彩空间参考了人眼所能察觉的自然光的搭配方式, 红绿蓝做为三基色, 可以按照一定的比例搭配出来各种色彩, 其色彩空间是以红绿蓝三个颜色的比例作为坐标轴的坐标系. 红蓝绿的一样的情况下产生白光, 全都没有的情况下是黑色, 而剩下的情况则根据颜色的比例不同显示不同的光. 这样的颜色显示方式也是三基色显示屏显示颜色的原理.
+
+![RGB](https://commons.wikimedia.org/wiki/File:RGB_Cube_Show_lowgamma_cutout_b.png#/media/File:RGB_Cube_Show_lowgamma_cutout_b.png)
+
+### HSV ###
+
+HSV (Hue Saturation Value/Brighness, 色调 饱和度 亮度) 的色彩空间实际上是对 RGB 的色彩空间做了坐标变换, HSV 是一个圆柱坐标系, H 为角度, S 为半径, V 为高度. 对于 HSV (假设 S 最大为 1, V 最大为 1), 纯色的饱和度为 1, 亮度为 1. HSV 色彩空间更符合我们人对颜色的直觉认知. 使用 HSV 色彩空间, 我们就会趋向于使用饱和度较高的色彩.
+
+### HSL ###
+
+HSL (Hue Saturation Luminance/Lightness, 色调 饱和度 明度) 的色彩空间和 HSV 很像, 也是对 RGB 色彩空间的坐标变换, 是一个圆柱坐标系, H 为角度, S 为半径, L 为高度. 而在 HSL 中, 饱和度的定义和 HSV 的饱和度的定义不太一样, 同时明度和亮度的定义也不同. 对于我们通常认为的纯色, 就是红色等, 其饱和度在两种色彩空间中都是 1, 但是对于 HSL, 其明度为 1/2, 而在 HSV 中其亮度为 1. 因为 HSL 中的饱和度和我们所认为的颜色的饱和度不太一样, 所以也被称为色品 (chroma) 来和 HSV 中的饱和度进行区分.
+
+![HSL and HSV](https://commons.wikimedia.org/wiki/File:Hsl-hsv_models.svg#/media/File:Hsl-hsv_models.svg)
+
+
+### 坐标转换 ###
+
+RGB 和 HSV, HSL 坐标系可以进行坐标转换. 即把直角坐标系转换为相应的圆柱坐标系.
+
+![RGB HSL HSV](https://commons.wikimedia.org/wiki/File:Hsl-and-hsv.svg#/media/File:Hsl-and-hsv.svg)
+
+### CMYK ###
+
+CMYK 代表青色 (cyan), 品红 (magenta), 黄色 (yellow) 和黑色 (key, black). CMYK 和 RGB 靠颜色相加搭配颜色不同, CMYK 采用的是相减的办法, CMY 三种颜色配合起来是黑色, 而减少其中一种或几种颜色的量就会产生其他颜色, 如果一种颜色也没有则是白色. CMYK 是印刷业中采用的方法, 为了节约成本和取得更好的印刷效果, 直接搭配黑色, 而不使用三种颜色来组合为黑色. 
+
+
+## R 中的色彩与调色板包和函数 ##
+
+在绘制统计图的时候, 选择合适的颜色会对最后的呈现效果产生巨大的影响. 对于选择颜色, 有很多需要注意的细节, 自己一个个颜色去调选, 毕竟是费时费力, 而结果又不见得好的事情. R 中定义了很多颜色, 同时, R 中也有很多帮助调选颜色和调色板的颜色, 可以方便地获得所需要的颜色或者调色板. 
+
+### grDevices ###
+
+grDevices 是 R core 维护的包, 提供了对于 R 基本绘图的设备色彩和字体的支持, 其中有一些方便操作色彩的函数.
+
+colors 函数可以返回一个在 R 中已经定义名称的色彩的向量, 共有 657 个[色彩](http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf). R 使用十六进制的数字去表示颜色, 例如 "#FF0000" 代表 "red" 和 `rgb(1,0,0)`. rgb 函数, hsv 函数和 hcl 函数分别采用 RGB HSV 和 CIELUV 的色彩空间去定义颜色, 这三个函数会返回十六进制的代表颜色的代码. rgb 函数和 hsv 函数的三个维度的取值范围均是 0 到 1, 而 hcl 函数的参数相对复杂, h 的取值范围在 0 到 360, 其中 0 为 red, l 的取值在 0 到 100, c 的取值依赖于 h 和 l.
+
+```
+rgb(1,0,0)
+#[1] "#FF0000"
+hsv(0,1,1)
+#[1] "#FF0000"
+hcl(h = 0, l = 50, c = 500)
+[1] "#FF0000"
+```
+
+如果知道 R 中定义的颜色的名称或者, 可以使用 col2rgb 把名称或者十六进制代码转换为 RGB 色彩. 也可以使用 rgb2hsv 把 RGB 转换为 HSV 色彩空间. 另外 convertColor 是更为通用的转换色彩空间的函数, 支持 colorspaces 对象中所列出的色彩空间.
+
+```
+col2rgb("red")
+#      [,1]
+#red    255
+#green    0
+#blue     0
+col2rgb("#FF0000")
+#      [,1]
+#red    255
+#green    0
+#blue     0
+rgb2hsv(r = 255, g = 0, b = 0)
+#  [,1]
+#h    0
+#s    1
+#v    1
+rgb2hsv(col2rgb("#FF0000"))
+#  [,1]
+#h    0
+#s    1
+#v    1
+```
+
+在 grDevices 中有一些定义好的函数可以方便地输出特定类型的颜色序列.
+
+* rainbow: 输出各种彩虹色.
+* heat.colors: 输出热图色, 为红色经过黄色到白色的渐变色.
+* terrain.colors: 输出地形图中会出现的颜色, 为绿色经过黄褐色到白色的渐变色.
+* topo.colors: 输出蓝色经过绿色到黄褐色的渐变色.
+* cm.colors: 输出从青色经过白色到品红的渐变色.
+* gray: 或者 grey. 输出一系列的灰色, 参数 level 代表亮度, 0 为 black, 1 为 white.
+* gray.colors: 或者 grey.colors. 输出一个灰色向量.
+
+方便使用的色彩生成函数限制了其使用地灵活性, 如果上面的函数不能满足需求, 还可以使用 colorRamp 和 colorRampPalette 函数. 这两个函数会接受一个色彩向量作为输入, 指定颜色变换的节点, 其返回值均是一个函数, 该返回的函数可以根据需要返回计算出的位于指定的颜色节点之间的过渡颜色. 区别在于, colorRamp 的返回函数接受的输入值为 0 到 1 的数字, 返回相对应的 RGB 颜色, 而 colorRampPalette 则接受一个整数, 返回相应数量的颜色作为调色板.
+
+```
+myReds <- colorRamp(c("red", "white"))
+myReds(c(0, 0.5, 1))
+#     [,1]  [,2]  [,3]
+#[1,]  255   0.0   0.0
+#[2,]  255 127.5 127.5
+#[3,]  255 255.0 255.0
+myBlues <- colorRampPalette(c("blue", "white")) 
+myBlues(5)
+#[1] "#0000FF" "#3F3FFF" "#7F7FFF" "#BFBFFF" "#FFFFFF"
+```
+
+### RColorBrewer ###
+
+RColorBrewer 包中设置好的固定的调色板是来自于 [colorbrewer](colorbrewer.org) 网站的. 可以使用 `RColorBrewer::display.brewer.all()` 函数来绘制出该包中设置好的调色板.
+
+而在 brewer.pal.info 变量中保存了这些调色板的信息, 包括名称, 颜色数量类型和是否是色盲友好型. 
+
+brewer.pal.info 的结果如下:
+
+|  PALETTE | MAXCOLORS | CATEGORY | COLORBLIND |
+|:--------:|:---------:|:--------:|:----------:|
+|   BrBG   |     11    |    div   |    TRUE    |
+|   PiYG   |     11    |    div   |    TRUE    |
+|   PRGn   |     11    |    div   |    TRUE    |
+|   PuOr   |     11    |    div   |    TRUE    |
+|   RdBu   |     11    |    div   |    TRUE    |
+|   RdGy   |     11    |    div   |    FALSE   |
+|  RdYlBu  |     11    |    div   |    TRUE    |
+|  RdYlGn  |     11    |    div   |    FALSE   |
+| Spectral |     11    |    div   |    FALSE   |
+|  Accent  |     8     |   qual   |    FALSE   |
+|   Dark2  |     8     |   qual   |    TRUE    |
+|  Paired  |     12    |   qual   |    TRUE    |
+|  Pastel1 |     9     |   qual   |    FALSE   |
+|  Pastel2 |     8     |   qual   |    FALSE   |
+|   Set1   |     9     |   qual   |    FALSE   |
+|   Set2   |     8     |   qual   |    TRUE    |
+|   Set3   |     12    |   qual   |    FALSE   |
+|   Blues  |     9     |    seq   |    TRUE    |
+|   BuGn   |     9     |    seq   |    TRUE    |
+|   BuPu   |     9     |    seq   |    TRUE    |
+|   GnBu   |     9     |    seq   |    TRUE    |
+|  Greens  |     9     |    seq   |    TRUE    |
+|   Greys  |     9     |    seq   |    TRUE    |
+|  Oranges |     9     |    seq   |    TRUE    |
+|   OrRd   |     9     |    seq   |    TRUE    |
+|   PuBu   |     9     |    seq   |    TRUE    |
+|  PuBuGn  |     9     |    seq   |    TRUE    |
+|   PuRd   |     9     |    seq   |    TRUE    |
+|  Purples |     9     |    seq   |    TRUE    |
+|   RdPu   |     9     |    seq   |    TRUE    |
+|   Reds   |     9     |    seq   |    TRUE    |
+|   YlGn   |     9     |    seq   |    TRUE    |
+|  YlGnBu  |     9     |    seq   |    TRUE    |
+|  YlOrBr  |     9     |    seq   |    TRUE    |
+|  YlOrRd  |     9     |    seq   |    TRUE    |
+
+
+brewer.pal 函数可以用来返回所需要的若干数量的颜色. 因为 RColorBrewer 定义好了许多不同类型的调色板, 通过 brewer.pal 函数得到的颜色往往搭配很好. 使用 display.brewer.pal 函数可以用图像显示出所选择的颜色. 每个调色板有颜色数量的限制, 所选择的颜色数量应该在 3 到最大值之间.
+
+### colorspace ###
+
+colorspace 包专注于不同的色彩空间的颜色选择和相互转换. colorspace 包中有 RGB, sRGB, HSV, HLS, XYZ, LUV, LAB 等多种色彩空间的创建函数可以用来创建色彩对象, 其返回值是一个 S4 的对象. 同时也有 hex 函数来把 S4 色彩对象转换为 R 中的十六进制色彩代码. hex2RGB 则可以把十六进制色彩代码转换为 RGB 对象.
+
+对于不同的色彩空间的对象, 可以通过 as 函数来转换. 可以使用 coords 函数获得色彩对象在对应色彩空间的具体的值.
+
+```
+myred.rgb  <- RGB(1, 0, 0)
+(myred.hls <- as(myred.rgb, "HLS"))
+#     H   L S
+#[1,] 0 0.5 1
+isS4(myred.hls)
+#[1] TRUE
+(myred.hls.coord <- coords(myred.hls))
+#     H   L S
+#[1,] 0 0.5 1
+class(myred.hls.coord)
+#[1] "matrix"
+```
+mixcolor 函数可以计算两个颜色调配出的颜色. desaturate 函数可以在 HCL 色彩空间内把输入的颜色 (十六位进制代码) 转换为相应亮度的灰度.
+
+```
+mixcolor(
+    alpha  = 0.5,
+    color1 = hex2RGB("#FF0000"),
+    color2 = hex2RGB("#0000FF")
+)
+#       R G   B
+#[1,] 0.5 0 0.5
+desaturate("#FF0000")
+#[1] "#7F7F7F"
+```
+
+choose_palette 函数提供了一个图形化的选择调色板的界面, 可以直观地选择颜色和设置调色板.
+
+
+## Palette ##
+
+### [ColorBrewer](http://colorbrewer2.org/) ###
+
+BrBG:
+|   PiYG   
+|   PRGn   
+|   PuOr   
+|   RdBu   
+|   RdGy   
+|  RdYlBu  
+|  RdYlGn  
+| Spectral 
+|  Accent  
+|   Dark2  
+|  Paired  
+|  Pastel1 
+|  Pastel2 
+|   Set1   
+|   Set2   
+|   Set3   
+|   Blues  
+|   BuGn   
+|   BuPu   
+|   GnBu   
+|  Greens  
+|   Greys  
+|  Oranges 
+|   OrRd   
+|   PuBu   
+|  PuBuGn  
+|   PuRd   
+|  Purples 
+|   RdPu   
+|   Reds   
+|   YlGn   
+|  YlGnBu  
+|  YlOrBr  
+YlOrRd
+
+
+
+
+
+
+
+
+### Multi Color System ###
+
+```
+tropical    <- c("darkorange","dodgerblue","hotpink","limegreen","yellow")
+springtime  <- c("#f6eb7b", "#e5769e", #b3f281", "#73a8e3", #c184ec")
+amy         <- c("#ee693f", "#b3de81", "#e8a735", "#3a5199", "#ffec5c")
+cbPalette   <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbbPalette  <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+```
+
+### Single Color System ###
+
+```
+springgreen <- c("#7aa14c", "#86b251", "#a3d468", "#b7ea7b", "#cff99e")
+cleanwater  <- c("#0669a5", "#0479c1", "#038de1", "#18a5fb", "#4cbbff")
+```
+
+#### Reference ####
+
+* [Wikipedia: RGB](https://en.wikipedia.org/wiki/RGB_color_space)
+* [Wikipedia: HSL and HSV](https://en.wikipedia.org/wiki/RGB_color_space)
+* [PDF: Escaping RGBland: Selecting Colors for Statistical Graphics](http://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf)
+* [PDF: CRAN-colorspace vignettes](https://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf)

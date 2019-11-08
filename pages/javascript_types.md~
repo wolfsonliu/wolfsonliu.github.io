@@ -1,0 +1,333 @@
+Title: JavaScript 学习笔记：数据类型, 值和变量
+Date: 2017-10-04 14:29
+Modified: 2017-10-04 14:29
+Category: 壹零零壹
+Tags: JavaScript
+Authors: Wolfson Liu
+Summary: JavaScript 数据类型和存储.
+
+JavaScript 中数据类型可以分为基本类型 (primitive types) 和对象类型 (object types).
+这两种类型还可以进一步被分为有方法 (method) 的和无方法的.
+
+JavaScript 的基本类型主要包括: 数字类型, 字符串类型, 布尔类型 (true false).
+另外, `null` 和 `undefined` 是特殊的基本值, 某种程度上也可以各自是单独的基本类型.
+
+而不是 JavaScript 的基本类型 (包括 `null` 和 `undefined`) 的值都是一个对象.
+一个对象是由若干属性构成的, 每个属性都有自己的变量名和值 (可以是基本类型的值, 也可以是一个对象).
+一个对象往往是没有顺序的属性的集合, JavaScript 定义了数组 (array) 这种特殊的对象, 其值是有顺序的.
+同时, 在 JavaScript 中, 函数 (function) 也是一类特殊的对象, 其属性包括可以被执行的代码.
+
+数据类型还能被分成可变类型 (mutable) 和不可变类型 (immutable).
+对象类型和数组类型是可变的, 而字符串类型, 数字类型, 布尔类型, `null`, `undefined` 都是不可变的.
+
+JavaScript 的变量 (variable) 是没有类型的限制的, 可以把不同的类型的值赋给同一个变量.
+变量的声名需要使用 `var` 来指示, 如 `var x = 1;`.
+变量是有其词法域 (lexical scope) 的, 有全局变量和局部变量, 例如在函数中定义的变量的词法域就在函数内部.
+
+### 数字类型 ###
+
+在 JavaScript 中, 数字类型中的整数和浮点数是没有明确的区分的, 所有的数值都被按照浮点数来存储和表示.
+JavaScript 使用 64 位的浮点数来存储数值, 数值大小在 ±1.7976931348623157e308 和 ±5e−324 之间.
+
+JavaScript 默认是以 10 为底来表示数字, 对于十六进制的数字可以表示为以 `0x` 开头,
+如 `0xff` 为十进制的 255, 对于八进制的数字可以表示为以 `0` 开头, 如 `0377` 为十进制的 255.
+
+数字类型有若干的转换为字符串的函数.
+
+转换为不同的底数.
+
+```
+var n = 17;
+n.toString(); // 默认为以 10 为底
+// '17'
+n.toString(2); // 以 2 为底
+// '10001'
+```
+
+转换小数点和表示等.
+
+```
+var m = 1234.5678;
+m.toFixed(0);
+// '1235'
+m.toFixed(2);
+// '1234.57'
+m.toExponential(1);
+// '1.2e+3'
+m.toExponential(4);
+// '1.2346e+3'
+m.toPrecision(4);
+// '1235'
+m.toPrecision(8);
+// '1234.5678'
+```
+
+
+### 字符串类型 ###
+
+JavaScript 的字符串是不可改变的, 字符串由 Unicode 字符构成, 每个字符长度为 16 个字 (bit), 字符串的长度就是 16-bit 的个数.
+字符串是用单引号或者双引号来包围, 如果用单引号包围,
+则可以在字符串中加入双引号, 反之亦然.
+对于 HTML 也可以用两种引号来表示字符串,
+因为 HTML 里面可能会有 JavaScript 代码,
+而 JavaScript 中也会包括 HTML 代码,
+所以一个好的建议是在 HTML 和 JavaScript 中分别使用不同的引号.
+虽然 JavaScript 的字符串不可变更, 但是可以获取其特定位置的字符,
+JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.
+
+```{javascript}
+var x = 'abc';
+x.length;
+// 3
+```
+使用字符串的属性 length, str.length 可以获得字符串的长度.
+需要注意的是, 有的字符在 UTF-16 中是用两个字符去编码的, 这个时候长度就是 2 而不是 1.
+
+在 JavaScript 中使用 '\' 来转义字符, 如 '\n' 代表的是新行.
+
+字符串相关的计算如下:
+
+'+' 可以用于连接两个字符串, 返回一个新的字符串.
+
+```
+var s = 'hello, world';
+s + ', ya';
+// 'hello, world, ya'
+```
+
+获取特定位置的字符.
+
+```
+s.charAt(0); // 第 0 个字符
+// 'h'
+s.charAt(s.length-1); // 最后一个字符
+// 'd'
+s[0];
+// 'h'
+```
+
+获取子字符串.
+
+```
+s.substring(1, 4); // 获取第 1, 2, 3 个字符
+// 'ell'
+s.slice(1, 4);
+// 'ell'
+s.slice(-3); // 获取最后三个字符
+// 'rld'
+```
+
+获取字符所在字符串的位置.
+
+```
+s.indexOf('o'); // 第一个 'o' 所在位置
+// 4
+s.lastIndexOf('o'); // 最后一个 'o' 所在的位置
+// 8
+s.indexOf('o', 5); // 在 5 或者之后第一个 'o' 所在的位置
+// 8
+```
+
+分割字符串.
+
+```
+s.split(', ');
+// [ 'hello', 'world' ]
+```
+
+替换字符.
+
+```
+s.replace('h', 'H');
+// 'Hello, world'
+```
+
+转换字符大小写.
+
+```
+s.toUpperCase();
+// 'HELLO, WORLD'
+s.toUpperCase().toLowerCase();
+// 'hello, world'
+```
+
+### 正则表达式类型 ###
+
+JavaScript 的正则表达式由两个 '/' 标记.
+而第二斜线后面可以跟字母表示特别含义, 如 i 代表大小写敏感.
+
+```
+/^HTML/ // 在字符串的开头匹配 HTML 四个字母, ^ 表示开头
+/\bjavascript\b/i // 大小写敏感匹配 javascript 单词, \b 代表空格
+```
+
+正则表达式变量具有一些用于匹配的方法.
+
+```
+var text = 'test: 1, 2, 3';
+var pattern = /\d+/g;
+pattern.test(text); // 判断字符串是否可以匹配正则表达式
+// true
+text.search(pattern); // 返回匹配的第一个位置
+// 6
+text.replace(pattern, '#'); // 替换匹配的值
+// 'test: #, #, #'
+text.match(pattern); // 返回包含所有的匹配的array
+// [ '1', '2', '3' ]
+```
+
+### 布尔类型 ###
+
+布尔类型的值就是 true 和 false.
+在 JavaScript 中, undefined, null, 0, -0, NaN, ''(空字符串)
+都被认为是 false 的, 出这些外都认为是 true 的.
+
+布尔值可以转换为字符串或者数字, true 为 1, false 为 0.
+
+```
+var bool = true;
+bool.toString();
+// 'true'
+bool + 2
+// 3
+```
+
+&& 是布尔值的与运算符, || 是布尔值的或运算符号, ! 是布尔值的非运算符号.
+
+```
+true && true;
+// true
+true || false;
+// true
+!false
+// true
+```
+
+### null 和 undefined ###
+
+null 代表没有值, 而 undefined 代表没有定义.
+从某种程度上可以理解为, null 为程序上的没有值,
+而 undefined 则是系统层面的没有定义.
+
+```
+null == undefined
+// true
+```
+
+### 对象类型 ###
+
+JavaScript 的对象是一系列属性的集合.
+其属性也是对象, 如果是函数, 则被成为方法.
+
+与基本类型的重要区别在于, 对象类型的属性是可以改变的.
+一个 array 中的每一个元素可以变成不同的值, 可以添加删除.
+
+
+### 封装对象类型 ###
+
+对于字符串, 其本身是一种类型, 而不是对象, 所以理应不具有属性,
+但是在运行的时候如果调用相应的方法,
+则会利用 new String(s) 创建一个临时的 String 对象, 完成后即被抛弃.
+
+```
+var s = 'hello.world'
+s.length // 临时创建的 String 对象具有 .length 属性
+// 12
+s.len = 4 // 临时创建的 String 对象被赋予值为 4 的 .len 属性
+// 4
+s.len // 因为上面临时创建的 String 对象被抛弃, 此处新创建的对象没有 .len 属性
+```
+
+同样, 数字类型和布尔类型都有如此特性.
+这类临时创建的类型被称为封装对象类型.
+
+除了基本类型自动的转换为封装对象类型之外, 也可以显式地去转换.
+可以使用相应的函数.
+
+```
+Number('3'); // 得到 3
+String(false);
+Boolean([]);
+Object('3'); // 得到 new Number('3')
+typeof Number('3');
+// 'number'
+typeof Object('3');
+// 'object'
+```
+
+### 类型转换 ###
+
+对于基本类型, JavaScript 会有隐式类型转换.
+如 0 和 '' 在条件判断的时候会被作为 false.
+数字和字符串相加则会把数字转换为字符串.
+
+```
+false + 1
+// 1
+undefined + 1
+// NaN
+1 + 'e'
+// '1e'
+```
+
+数字可以利用封装对象类型的 toString 等函数, 在前面也有提及.
+
+```
+var m = 1234.5678;
+m.toString();
+// '1234.5678'
+m.toFixed(0);
+// '1235'
+```
+
+使用 Number 函数把表示数字的字符串转换为数字则默认是转换为以 10 为底的整数或浮点数.
+也可以使用 parse 等函数来转换数字.
+
+```
+Number('3e2');
+// 300
+Number('3 dogs');
+// NaN
+parseInt('3 dogs');
+// 3
+parseFloat('3.14 pi');
+// 3.14
+parseInt('3.14');
+// 3
+Number('0xFF')
+// 255
+parseInt('0xFF');
+// 255
+parseInt('1010', 2); // 二进制
+// 10
+parseInt('1010', 8); // 八进制
+// 520
+parseInt('0.1');
+// 0
+parseInt('.1'); // 小数不能省略 0
+// NaN
+parseInt('$2.1'); // 数字不能以其他符号开头
+// NaN
+```
+
+对于对象类型, 其本身转换为基础类型都是转换为 true,
+同时它们大多数都有定义相应的 toString 函数.
+另外有的类型也有 valueOf 函数可以转换为基本类型.
+
+```
+[1, 2, 3].toString();
+// '1,2,3'
+/\d+/g.toString();
+// '/\\d+/g'
+var d = new Date(2010, 0, 1);
+d.valueOf()
+// 1262275200000
+```
+
+对于一个对象类型, 如果其具有 toString 的方法则会使用 toString 把对象转换为字符串基本类型.
+如果其没有 toString 的方法, 则去寻找其具有的 valueOf 方法把对象转换为相应基本类型,
+然后把相应的基本类型转换为字符串.
+如果都没有的话则报错 TypeError.
+如果调用一个对象的 valueOf, 则类似, 如果有 valueOf 方法则返回 valueOf 的值,
+如果没有则调用 toString, 否则则报错 TypeError.
+

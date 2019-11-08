@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Python 学习笔记: virtual environment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>virturalenv</h2>
+<p>有些 python 的包之间的相互依赖程度不一样, 有可能我所需要使用的一个包依
+赖于某个特定的包的一个版本, 而我所需要用的另一个包依赖于某个特定的包的
+另一个版本, 这样的情况下如果都是用 pip 来安装 python 包, 可能就使得依
+赖不合适. 所以, 我需要使得每个包都有自己独立的依赖环境, 每个包可以有一
+个自己的虚拟环境, 即 virtualenv. 下面主要提及的是在 Linux 下面的操作,
+可以使用 virtualenv 或者 virtualenv-3 创建 python2.7 或者 python3 环境.</p>
+<h3>创建环境</h3>
+<p>首先, 要建立一个文件夹, 用于保存一个独立的 python 环境. 比如说建立一个文件夹叫作 ENV.</p>
+<div class="highlight"><pre><span></span>$ mkdir ENV
+</pre></div>
+
+
+<p>然后在该文件夹起始一个独立的环境.</p>
+<div class="highlight"><pre><span></span>$ virtualenv ENV
+New python executable in ENV/bin/python
+Installing setuptools, pip, wheel...done.
+</pre></div>
+
+
+<p>可以看到在 ENV 文件夹下面创建了所必须的文件夹和文件或者文件链接.
+* bin: 用于保存独立环境下面的可执行文件, 其中有 activate 等启动镜像环
+  境所需要的脚本和 python 的链接等.
+* include: 用于保存独立环境下面所需要的头文件, 最开始只有一个文件夹
+  python2.7 是 python2.7 所需要的头文件所在的文件夹.
+* lib: 用于保存 python 相关的包.
+* lib64: 用于保存 64 位的 python 相关的包.</p>
+<h3>激活环境</h3>
+<p>在 Linux 的终端下去激活环境需要运行下面的脚本, 其会改变一些环境变量.</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">source</span> ENV/bin/activate
+<span class="o">(</span>ENV<span class="o">)</span>$
+</pre></div>
+
+
+<p>当环境激活之后, $PATH 的第一个路径就会变成 ENV/bin 的绝对路径. 而提示
+符参数 $PS1 的前面会加上 "(ENV)". 如果直接从 ENV/bin 去运行程序, 则不
+使用 activate 脚本去修改也可以.</p>
+<h3>关闭环境</h3>
+<p>如果想要把更改过的变量复原, 则使用 deactivate 命令.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">ENV</span><span class="p">)</span><span class="err">$</span> <span class="n">deactivate</span>
+<span class="err">$</span>
+</pre></div>
+
+
+<h3>移除环境</h3>
+<p>想要移除环境只需要将环境所在的文件夹删除.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">ENV</span><span class="p">)</span><span class="err">$</span> <span class="n">deactivate</span>
+<span class="err">$</span> <span class="n">rm</span> <span class="o">-</span><span class="n">r</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="k">to</span><span class="o">/</span><span class="n">ENV</span>
+</pre></div>
+
+
+<h3>参数设置</h3>
+<p>如果想要添加别的搜索路径到一个环境中, 可以设置参数
+<code>--extra-search-dir</code>.</p>
+<div class="highlight"><pre><span></span>$ virtualenv --extra-search-dir<span class="o">=</span>/path/to/other/dir ENV
+</pre></div>
+
+
+<h2>Conda</h2>
+<p>除了 virtualenv 包外, 如果使用 [Anaconda]{https://www.continuum.io }
+Python 发行版,其中有 conda 作为 virtual environment 管理软件.</p>
+<h3>创建环境</h3>
+<p>创建环境可以使用下面的命令创建环境.</p>
+<div class="highlight"><pre><span></span>$ conda create -n envname <span class="nv">python</span><span class="o">=</span>x.x anaconda
+</pre></div>
+
+
+<p><code>conda</code> 是 anaconda 管理软件的名称, <code>create</code> 说明创建环境.
+<code>-n envname</code> 指定要创建的环境的名称为 envname.
+<code>python=x.x</code> 指定环境中需要的 Python 的版本号.
+<code>anaconda</code> 指定该环境中需要安装的包, 可以有多个,
+例如如果是 <code>pandas scipy sympy</code> 则指定环境建立的时候安装这三个包,
+也可以在环境建立完成后再另外安装所需要的包和软件.</p>
+<h3>激活环境</h3>
+<p>conda 环境的激活命令和 virtualenv 相似却不同. 主要是因为 conda 的
+active 脚本的定义不同.</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">source</span> activate envname
+</pre></div>
+
+
+<h3>关闭环境</h3>
+<p>conda 环境的关闭也需要使用 source 命令</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">source</span> deactivate
+</pre></div>
+
+
+<h3>移除环境</h3>
+<div class="highlight"><pre><span></span>$ conda remove --name envname --all
+</pre></div>
+
+
+<p>然后可以使用 <code>conda info --env</code> 来查看剩下的环境.</p>
+<h2>Conda 使用简介</h2>
+<p>conda 命令是 anaconda 中带有的管理应用, 环境和包的软件, 功能比
+virtualenv要全面和强大的多。</p>
+<ul>
+<li><code>conda help</code>: 显示conda命令的帮助文档.</li>
+<li><code>conda info</code>: 显示当前 anaconda 安装的情况, 包括系统, python 版本,
+  默认下载地址, 各种默认地址等.</li>
+<li><code>conda list</code>: 列出一个 conda 环境中的包.</li>
+<li><code>conda search</code>: 搜索 python 包并显示相应的信息.</li>
+<li><code>conda create</code>: 创建 conda 环境.</li>
+<li><code>conda install</code>: 安装软件包.</li>
+<li><code>conda update</code>: 更新软件包.</li>
+<li><code>conda upgrade</code>: 更新软件包, 同 <code>update</code>.</li>
+<li><code>conda remove</code>: 删除软件包.</li>
+<li><code>conda uninstall</code>: 删除软件包, 同 <code>uninstall</code>.</li>
+<li><code>conda config</code>: 配制 conda 环境, 修改 .condarc 文件.</li>
+<li><code>conda clean</code>: 删除没用的包或者缓存.</li>
+</ul>
+<h3>conda info 环境与包的信息</h3>
+<p><code>conda info</code> 可以用来显示当前的环境信息.</p>
+<p>用法如下:</p>
+<div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">info</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="c1">--json] [--debug] [--verbose] [--offline] [-a] [-e]</span>
+           <span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="c1">--root] [--unsafe-channels]</span>
+           <span class="p">[</span><span class="n">packages</span> <span class="p">[</span><span class="n">packages</span> <span class="p">...]]</span>
+</pre></div>
+
+
+<p>如果 conda info 后面没有跟参数, 输出的是当前安装的 anaconda 整体的信息.</p>
+<div class="highlight"><pre><span></span>conda info
+
+<span class="c1">#                platform : linux-64</span>
+<span class="c1">#           conda version : 4.3.34</span>
+<span class="c1">#        conda is private : False</span>
+<span class="c1">#       conda-env version : 4.3.34</span>
+<span class="c1">#     conda-build version : not installed</span>
+<span class="c1">#          python version : 3.6.1.final.0</span>
+<span class="c1">#        requests version : 2.18.4</span>
+<span class="c1">#        root environment : /gpfs/share/software/anaconda3  (read only)</span>
+<span class="c1">#     default environment : /gpfs/share/software/anaconda3</span>
+<span class="c1">#        envs directories : /gpfs/share/home/1501111485/.conda/envs</span>
+<span class="c1">#                           /gpfs/share/software/anaconda3/envs</span>
+<span class="c1">#           package cache : /gpfs/share/software/anaconda3/pkgs</span>
+<span class="c1">#                           /gpfs/share/home/1501111485/.conda/pkgs</span>
+<span class="c1">#            channel URLs : https://repo.continuum.io/pkgs/main/linux-64</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/main/noarch</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/free/linux-64</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/free/noarch</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/r/linux-64</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/r/noarch</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/pro/linux-64</span>
+<span class="c1">#                           https://repo.continuum.io/pkgs/pro/noarch</span>
+<span class="c1">#             config file : None</span>
+<span class="c1">#              netrc file : None</span>
+<span class="c1">#            offline mode : False</span>
+<span class="c1">#              user-agent : conda/4.3.34 requests/2.18.4 CPython/3.6.1 Linux/3.10.0-514.el7.x86_64 Red Hat Enterprise Linux Server/7.3 glibc/2.17    </span>
+<span class="c1">#                 UID:GID : 66237:66338</span>
+</pre></div>
+
+
+<p>conda info 后面可以跟包的名字, 则会输出相应的包的名字:</p>
+<div class="highlight"><pre><span></span>conda info pandas
+
+<span class="c1"># pandas 0.23.2 py37h04863e7_0</span>
+<span class="c1"># ----------------------------</span>
+<span class="c1"># file name   : pandas-0.23.2-py37h04863e7_0.tar.bz2</span>
+<span class="c1"># name        : pandas</span>
+<span class="c1"># version     : 0.23.2</span>
+<span class="c1"># build string: py37h04863e7_0</span>
+<span class="c1"># build number: 0</span>
+<span class="c1"># channel     : defaults</span>
+<span class="c1"># size        : 10.0 MB</span>
+<span class="c1"># arch        : None</span>
+<span class="c1"># license     : BSD 3-clause</span>
+<span class="c1"># md5         : 5317d6f21fcfd23255891d3df62cd678</span>
+<span class="c1"># noarch      : None</span>
+<span class="c1"># platform    : None</span>
+<span class="c1"># subdir      : linux-64</span>
+<span class="c1"># timestamp   : 1531088501052</span>
+<span class="c1"># url         : https://repo.continuum.io/pkgs/main/linux-64/pandas-0.23.2-py37h04863e7_0.tar.bz2</span>
+<span class="c1"># dependencies:</span>
+<span class="c1">#     libgcc-ng &gt;=7.2.0</span>
+<span class="c1">#     libstdcxx-ng &gt;=7.2.0</span>
+<span class="c1">#     numpy &gt;=1.11.3,&lt;2.0a0</span>
+<span class="c1">#     python &gt;=3.7,&lt;3.8.0a0</span>
+<span class="c1">#     python-dateutil &gt;=2.5.*</span>
+<span class="c1">#     pytz</span>
+</pre></div>
+
+
+<p>上面的输出只有 0.23.2 版本的信息, 而实际上则会输出所有在库里的不同版本
+的 pandas 包的信息.</p>
+<p><code>conda info -a</code> 是输出所有的信息, 包括 <code>conda info</code> 输出的信息, 和所有
+的环境, 许可证, 系统信息等 (如环境变量等).</p>
+<p>如果只是想知道当前所有的环境, 可以使用 <code>-e</code> 或者 <code>--env</code> 参数, 只列出
+当前已有的环境:</p>
+<div class="highlight"><pre><span></span>conda info -e
+
+<span class="c1"># # conda environments:</span>
+<span class="c1"># #</span>
+<span class="c1"># root                  *  /gpfs/share/software/anaconda3</span>
+</pre></div>
+
+
+<p>如果只需要获取许可证的信息, 则可以使用 <code>-l</code> 参数:</p>
+<div class="highlight"><pre><span></span>conda info -l
+
+<span class="c1"># License directories:</span>
+<span class="c1">#     /gpfs/share/home/1501111485/.continuum</span>
+<span class="c1">#     /gpfs/share/software/anaconda3/licenses</span>
+<span class="c1"># License files (license*.txt):</span>
+<span class="c1"># Package/feature end dates:</span>
+</pre></div>
+
+
+<p>而如果只需要获取系统信息, 则应该使用 <code>-s</code> 参数.</p>
+<h3>conda list 列出环境中的包</h3>
+<p>conda list 可以列出环境的包, 用法如下:</p>
+<div class="highlight"><pre><span></span><span class="nv">conda</span> <span class="nv">list</span> [<span class="o">-</span><span class="nv">h</span>] [<span class="o">-</span><span class="nv">n</span> <span class="nv">ENVIRONMENT</span> <span class="o">|</span> <span class="o">-</span><span class="nv">p</span> <span class="nv">PATH</span>] [<span class="o">--</span><span class="nv">json</span>] [<span class="o">--</span><span class="nv">debug</span>]
+           [<span class="o">--</span><span class="nv">verbose</span>] [<span class="o">--</span><span class="k">show</span><span class="o">-</span><span class="nv">channel</span><span class="o">-</span><span class="nv">urls</span>] [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="nv">channel</span><span class="o">-</span><span class="nv">urls</span>]
+           [<span class="o">-</span><span class="nv">c</span>] [<span class="o">-</span><span class="nv">f</span>] [<span class="o">--</span><span class="nv">explicit</span>] [<span class="o">--</span><span class="nv">md5</span>] [<span class="o">-</span><span class="nv">e</span>] [<span class="o">-</span><span class="nv">r</span>] [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="nv">pip</span>]
+           [<span class="nv">regex</span>]
+</pre></div>
+
+
+<p><code>conda list [regex]</code> 后面的 <code>[regex]</code> 是包名称的正则表达式, 如果没有指
+定的话则默认列出所有的包.</p>
+<div class="highlight"><pre><span></span>conda list
+
+<span class="c1"># # packages in environment at /gpfs/share/software/anaconda3:</span>
+<span class="c1"># #</span>
+<span class="c1"># _license                  1.1                      py36_1</span>
+<span class="c1"># alabaster                 0.7.10                   py36_0</span>
+<span class="c1"># anaconda                  4.4.0               np112py36_0</span>
+<span class="c1"># ... (ignored many lines)</span>
+<span class="c1"># zict                      0.1.2                    py36_0</span>
+<span class="c1"># zlib                      1.2.8                         3</span>
+
+conda list tensor
+
+<span class="c1"># # packages in environment at /gpfs/share/software/anaconda3:</span>
+<span class="c1"># #</span>
+<span class="c1"># tensorflow-gpu            1.3.0                     &lt;pip&gt;</span>
+<span class="c1"># tensorflow-tensorboard    0.1.6                     &lt;pip&gt;</span>
+</pre></div>
+
+
+<p>正则表达式中 <code>^</code> 表示起始, <code>$</code> 表示末尾, 所以要搜索以 'tensor' 开头的
+包则最好写为 '^tensor' 要搜索以 'gpu' 结尾的包则应该写为 'gpu$'. 而如
+果要搜索全名为<code>pandas</code> 的包则应该写为 <code>^pandas$</code> 或者使用参数 <code>-f</code> 或
+者 <code>--full-name</code>.</p>
+<div class="highlight"><pre><span></span>conda list ^pandas$
+
+conda list -f pandas
+</pre></div>
+
+
+<p>conda list 默认输出当前的环境中的包, 使用 <code>-n ENVIRONMENT</code> 或者
+<code>--name ENVIRONMENT</code> 则可列出指定的 ENVIRONMENT 环境中的包.</p>
+<div class="highlight"><pre><span></span>conda list -n root ^lib
+
+<span class="c1"># # packages in environment at /gpfs/share/software/anaconda3:</span>
+<span class="c1"># #</span>
+<span class="c1"># libffi                    3.2.1                         1</span>
+<span class="c1"># libgcc                    4.8.5                         2</span>
+<span class="c1"># libgfortran               3.0.0                         1</span>
+<span class="c1"># libgpuarray               0.7.5                         0    conda-forge</span>
+<span class="c1"># libiconv                  1.14                          0</span>
+<span class="c1"># libpng                    1.6.27                        0</span>
+<span class="c1"># librosa                   0.6.0                    py36_0    conda-forge</span>
+<span class="c1"># libsodium                 1.0.10                        0</span>
+<span class="c1"># libtiff                   4.0.6                         3</span>
+<span class="c1"># libtool                   2.4.2                         0</span>
+<span class="c1"># libxcb                    1.12                          1</span>
+<span class="c1"># libxml2                   2.9.4                         0</span>
+<span class="c1"># libxslt                   1.1.29                        0</span>
+</pre></div>
+
+
+<p>除了可以使用 <code>-n</code> 指定环境的名称外, 也可以使用 <code>-p PATH</code> 或者
+<code>--prefix PATH</code> 指定环境的存储路径.</p>
+<h3>conda search 搜索包</h3>
+<p>conda search 和 conda list 的用法很相似：</p>
+<div class="highlight"><pre><span></span><span class="n">conda</span><span class="w"> </span><span class="k">search</span><span class="w"> </span><span class="o">[</span><span class="n">-h</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-n ENVIRONMENT | -p PATH</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--canonical</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-f</span><span class="o">]</span><span class="w"></span>
+<span class="w">             </span><span class="o">[</span><span class="n">--names-only</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--use-index-cache</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-o</span><span class="o">]</span><span class="w"></span>
+<span class="w">             </span><span class="o">[</span><span class="n">--platform {win-32,win-64,osx-64,linux-32,linux-64}</span><span class="o">]</span><span class="w"></span>
+<span class="w">             </span><span class="o">[</span><span class="n">--spec</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--reverse-dependency</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--offline</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-c CHANNEL</span><span class="o">]</span><span class="w"></span>
+<span class="w">             </span><span class="o">[</span><span class="n">--override-channels</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--json</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--debug</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">--verbose</span><span class="o">]</span><span class="w"></span>
+<span class="w">             </span><span class="o">[</span><span class="n">--use-local</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">-k</span><span class="o">]</span><span class="w"></span>
+<span class="w">             </span><span class="o">[</span><span class="n">regex</span><span class="o">]</span><span class="w"></span>
+</pre></div>
+
+
+<p>conda search 能够搜索没有安装的包, 而 conda list 主要搜索安装在环境中的包.</p>
+<h3>conda create 创建环境</h3>
+<p>conda 通过 conda create 命令来创建新的环境. 使用方法如下:</p>
+<div class="highlight"><pre><span></span><span class="nv">conda</span> <span class="nv">create</span> [<span class="o">-</span><span class="nv">h</span>] [<span class="o">-</span><span class="nv">y</span>] [<span class="o">--</span><span class="nv">dry</span><span class="o">-</span><span class="nv">run</span>] [<span class="o">-</span><span class="nv">f</span>] [<span class="o">--</span><span class="nv">file</span> <span class="nv">FILE</span>] [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="nv">deps</span>] [<span class="o">-</span><span class="nv">m</span>]
+             [<span class="o">--</span><span class="nv">use</span><span class="o">-</span><span class="nv">index</span><span class="o">-</span><span class="nv">cache</span>] [<span class="o">--</span><span class="nv">use</span><span class="o">-</span><span class="nv">local</span>] [<span class="o">--</span><span class="nv">offline</span>] [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="nv">pin</span>]
+             [<span class="o">-</span><span class="nv">c</span> <span class="nv">CHANNEL</span>] [<span class="o">--</span><span class="nv">override</span><span class="o">-</span><span class="nv">channels</span>]
+             [<span class="o">-</span><span class="nv">n</span> <span class="nv">ENVIRONMENT</span> <span class="o">|</span> <span class="o">-</span><span class="nv">p</span> <span class="nv">PATH</span>] [<span class="o">-</span><span class="nv">q</span>] [<span class="o">--</span><span class="nv">copy</span>] [<span class="o">--</span><span class="nv">clobber</span>] [<span class="o">-</span><span class="nv">k</span>]
+             [<span class="o">--</span><span class="nv">alt</span><span class="o">-</span><span class="nv">hint</span>] [<span class="o">--</span><span class="nv">update</span><span class="o">-</span><span class="nv">dependencies</span>]
+             [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="nv">update</span><span class="o">-</span><span class="nv">dependencies</span>] [<span class="o">--</span><span class="nv">channel</span><span class="o">-</span><span class="nv">priority</span>]
+             [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="nv">channel</span><span class="o">-</span><span class="nv">priority</span>] [<span class="o">--</span><span class="k">show</span><span class="o">-</span><span class="nv">channel</span><span class="o">-</span><span class="nv">urls</span>]
+             [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="k">show</span><span class="o">-</span><span class="nv">channel</span><span class="o">-</span><span class="nv">urls</span>] [<span class="o">--</span><span class="nv">json</span>] [<span class="o">--</span><span class="nv">debug</span>] [<span class="o">--</span><span class="nv">verbose</span>]
+             [<span class="o">--</span><span class="nv">clone</span> <span class="nv">ENV</span>] [<span class="o">--</span><span class="nv">no</span><span class="o">-</span><span class="nv">default</span><span class="o">-</span><span class="nv">packages</span>]
+             [<span class="nv">package_spec</span> [<span class="nv">package_spec</span> ...]]
+</pre></div>
+
+
+<p>如果要创建新的环境ENV, 则可以使用:</p>
+<div class="highlight"><pre><span></span>conda create -n ENV
+
+conda create --name ENV
+
+conda create -p ENV/PATH
+
+conda create --prefix ENV/PATH
+</pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

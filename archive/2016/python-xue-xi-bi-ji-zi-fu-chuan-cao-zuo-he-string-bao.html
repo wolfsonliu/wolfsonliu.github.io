@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Python 学习笔记: 字符串操作和 string 包</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html">
+<meta name="twitter:title" content="Wolf Cave ~ Python 学习笔记: 字符串操作和 string 包">
+<meta name="twitter:description" content="使用 string 包和字符串操作.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Python 学习笔记: 字符串操作和 string 包" />
+<meta property="og:description" content="使用 string 包和字符串操作." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html" rel="bookmark" title="Permalink to Python 学习笔记: 字符串操作和 string 包">Python 学习笔记: 字符串操作和 string 包</a></h2>
+        <div class="entry-content blog-post">
+            <h2>str 类</h2>
+<p>可以通过一个前置的标示来表示一个特定的字符串的性质, 如 "u", "r", "b".</p>
+<p>如果在一个字符串前面加上 "r", 如 <code>r'c:\dir'</code> 则代表 raw string, 其中没有转义字符, 所以 其中的 '\' 代表的意思就是 '\' 字符本身.</p>
+<p>如果在一个字符串前面加上 "u".</p>
+<h3>str 函数和方法</h3>
+<h2>string 包</h2>
+<p>string 包中有一些有用的字符串集, 可以在进行字符串判断或者生成字符串等方面使用.</p>
+<h3>字符集</h3>
+<p>在 string 包中有有用的字符串集, 包括大小写字母, 数字, 标点等(下面的集合供参考, 可能和 python 输出结果不同).</p>
+<ul>
+<li>string.ascii_letters: 26 个英文字母包括大小写, 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'.</li>
+<li>string.ascii_lowercase: 26 个小写英文字母, 'abcdefghijklmnopqrstuvwxyz'.</li>
+<li>string.ascii_uppercase: 26 个大写英文字母, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.</li>
+<li>string.digits: 0-9 十个数字, '0123456789'.</li>
+<li>string.hexdigits: 十六进制的数字, '0123456789abcdefABCDEF'.</li>
+<li>string.octdigits: 八进制的数字, '01234567'.</li>
+<li>string.printable: 可以打印和显示出来的数字, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&amp;\'()*+,-./:;&lt;=&gt;?@[\]^_`{|}~ \t\n\r\x0b\x0c'.</li>
+<li>string.punctuation: 标点符号, '!"#$%&amp;()*+,-./:;&lt;=&gt;?@[\]^_`{|}~'.</li>
+<li>string.whitespace: 空白字符串, ' \t\n\r\x0b\x0c'.</li>
+</ul>
+<h3>函数和方法</h3>
+<ul>
+<li>string.capwords: 用于单词首字母大写.</li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Wed 17 August 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/python.html">#python, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html&text=Python 学习笔记: 字符串操作和 string 包&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html&t=Python 学习笔记: 字符串操作和 string 包"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html&title=Python 学习笔记: 字符串操作和 string 包" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Python 学习笔记: 字符串操作和 string 包&amp;body=Viens découvrir un article à propos de [Python 学习笔记: 字符串操作和 string 包] sur le site de Wolfson Liu. ../../archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/python-xue-xi-bi-ji-zi-fu-chuan-cao-zuo-he-string-bao.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

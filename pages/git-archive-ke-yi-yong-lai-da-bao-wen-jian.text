@@ -1,0 +1,45 @@
+Title: Git archive 可以用来打包文件
+Date: 2018-11-06 09:12
+Modified: 2018-11-06 09:12
+Category: 壹零零壹
+Tags: git
+Authors: Wolfson Liu
+Summary: Git archive 命令
+
+当需要把代码打包传输和发布的时候，可以使用 `git archive` 命令。
+
+## 打包格式 ##
+
+`git archive` 支持两种打包方式：tar 和 zip。`git archive` 默认使用 tar
+打包，可以使用 `--format` 来指定格式。tar 格式打包完并未压缩，所以需要
+借助如 `gzip` 等软件进行压缩，而 zip 格式是打包并压缩。
+
+```{shell}
+git archive --format=tar master | gzip > v1.tar.gz
+ls *.tar.gz
+# v1.tar.gz
+```
+
+或者使用 zip 格式：
+
+```{shell}
+git archive --format=zip master > v1.zip
+ls *.zip
+# v1.zip
+```
+
+## 打包入文件夹 ##
+
+当前打包文件如果解压是和 git 项目文件夹中结构一样的，也可以将所有的文
+件打包到一个子文件夹中，使用 `--prefix=<dirname>` 参数：
+
+```{shell}
+git archive master --format=tar --prefix=v1 | gzip > v1.tar.gz
+```
+
+这样当 tar.gz 文件被解压后，所有文件将位于 v1 文件夹下面。
+
+## git archive 其他参数 ##
+
+* `-o <file>` 或者 `--output=<file>`：指定输出的文件名。
+* `--remote=<url>`: 如果想要打包的是远程的分支，则应该使用 参数。

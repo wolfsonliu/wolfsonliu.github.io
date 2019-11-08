@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>linux 系统验证文件方法</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html">
+<meta name="twitter:title" content="Wolf Cave ~ linux 系统验证文件方法">
+<meta name="twitter:description" content="linux 系统验证文件的方法.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ linux 系统验证文件方法" />
+<meta property="og:description" content="linux 系统验证文件的方法." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html" rel="bookmark" title="Permalink to linux 系统验证文件方法">linux 系统验证文件方法</a></h2>
+        <div class="entry-content blog-post">
+            <h2>验证下载文件</h2>
+<p>不管是从网上下载 distribution 还是下载软件的安装包, 都应该去考虑软件是
+不是被修改过了. 之前 Linux Mint 就曾报道过自己的安装包被黑客篡改了. 所
+以, 在下载完软件后应该养成验证软件的习惯.</p>
+<h3>MD5 验证</h3>
+<p>许多软件或者 distribution 在官网上提供 MD5 的验证码, 在下载软件的时候
+也应该把 MD5 的验证码下载下来并保存在文件中.
+拿 elementary theme 为例. 找到
+MD5 码并按照下面方式保存文件 (md5.txt). 该验证文件应和下载的文件在同一
+目录, 这样才能被找到.</p>
+<div class="highlight"><pre><span></span><span class="n">d2a39e5842dd157edbed00992090730c</span> <span class="n">elementary</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">xz</span>
+</pre></div>
+
+
+<p>之后就可以使用 md5sum 软件来验证.</p>
+<div class="highlight"><pre><span></span><span class="n">md5sum</span> <span class="o">-</span><span class="k">c</span> <span class="n">md5</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
+<p>所验证的文件列表中可以有多个文件及其 MD5 码, 每个文件一行, 同时进行验证. 如果验证成功, 则会给出结果.</p>
+<div class="highlight"><pre><span></span><span class="n">elementary</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">xz</span><span class="p">:</span> <span class="n">OK</span>
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sat 09 April 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/linux.html">#linux, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html&text=linux 系统验证文件方法&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html&t=linux 系统验证文件方法"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html&title=linux 系统验证文件方法" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=linux 系统验证文件方法&amp;body=Viens découvrir un article à propos de [linux 系统验证文件方法] sur le site de Wolfson Liu. ../../archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/linux-xi-tong-yan-zheng-wen-jian-fang-fa.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

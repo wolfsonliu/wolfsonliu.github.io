@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Linux 学习笔记: Linux 目录配置简介</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html">
+<meta name="twitter:title" content="Wolf Cave ~ Linux 学习笔记: Linux 目录配置简介">
+<meta name="twitter:description" content="Linux 目录配置简介">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Linux 学习笔记: Linux 目录配置简介" />
+<meta property="og:description" content="Linux 目录配置简介" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html" rel="bookmark" title="Permalink to Linux 学习笔记: Linux 目录配置简介">Linux 学习笔记: Linux 目录配置简介</a></h2>
+        <div class="entry-content blog-post">
+            <p><a href="http://www.pathname.com/fhs/">Filesystem Hierarchy Standard</a>
+提供了软件存放的标准</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>可分享的</th>
+<th>不可分享的</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>不可变的</td>
+<td>/usr：软件放置</td>
+<td>/etc：配置文件</td>
+</tr>
+<tr>
+<td></td>
+<td>/opt：第三方的软件，如chrome浏览器</td>
+<td>/boot：开机与核心配置文件</td>
+</tr>
+<tr>
+<td>可变动的</td>
+<td>/var/mail：用户的邮件信箱</td>
+<td>/var/run：程序相关</td>
+</tr>
+<tr>
+<td></td>
+<td>/var/spool/news：新闻</td>
+<td>/var/lock：程序相关</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>/：根目录，所有的目录都在根目录之下，系统启动也是从根目录开始</li>
+<li>/boot：系统开机所需要用到的各种软件和配置文件，linux内核文件</li>
+<li>/bin：单用户模式下依然能够使用的最为基本的命令，诸如：cat，chmod，chown，date，mv，mkdir，cp，bash等</li>
+<li>/dev：所有的接口都以文件形式保存在该文件夹中，有特殊的文件：
+  /dev/null，/dev/zero，/dev/lp<em>，/dev/sd</em>，/dev/usb*</li>
+<li>/etc：linux系统下的主要的配置文件存放处，个人配置文件存放在个人用户
+  的家目录下的若干文件夹中</li>
+<li>/home：默认的用户家目录，~，或者~1501111485代表该用户的家目录</li>
+<li>/lib：函数库存放处，动态链接库等</li>
+<li>/media：系统挂在的可移除的装置，软盘，光盘，U盘，移动硬盘等</li>
+<li>/mnt：和/media类似</li>
+<li>/opt：安装的第三方软件存放处，例如chrome等，也可以安装在/usr/local</li>
+<li>/root：管理员的家目录</li>
+<li>/sbin：管理员权限才能使用的一些命令，与系统管理相关：fdisk，fsck等</li>
+<li>/tmp：任何人可以读写的数据临时存放处</li>
+</ul>
+<p>/usr目录：usr是Unix  Software Resource的缩写，是放置众多软件的地方
+  * /usr/bin/：大多数的用户可以使用的命令存放于此
+  * /usr/include/：c/c++等的头文件和包的存放处，python的包
+  * /usr/lib/：共享对象(动态链接库)文件等
+  * /usr/local/：系统管理员安装的非发行版提供的软件，也可以安装到/opt，
+    用户自己安装的话可以安装到~/.local
+  * /usr/share/：共享文件的存放处，几乎都是文本文件，图片等。
+    /usr/share/man文件夹中存放帮助文档（使用man命令会查询此文件夹），
+    /usr/share/doc：存放文件说明。</p>
+<p>/var 目录：variable files
+  * /var/cache：应用的缓存数据
+  * /var/lib：应用状态信息，如数据库等
+  * /var/lock：当前正在使用的独占锁定文件
+  * /var/log：log文件
+  * /var/mail：邮箱文件
+  * /var/opt：安装在 /opt 中的软件的缓存
+  * /var/tmp：临时文件存放处</p>
+<p>DOS 系统是Disk Operating System 的简写，其是基于磁盘的。影响是，
+windows下，软件安装在C盘的 Program Files 文件夹下面Linux系统是
+Unix-like系统，是基于文件的。在linux下面，磁盘可以挂在在某一个文件下，
+从而磁盘的概念是弱化的。linux下的软件不需要去安装到C盘，没有这个概念的。</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Fri 14 December 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/linux.html">#linux, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html&text=Linux 学习笔记: Linux 目录配置简介&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html&t=Linux 学习笔记: Linux 目录配置简介"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html&title=Linux 学习笔记: Linux 目录配置简介" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Linux 学习笔记: Linux 目录配置简介&amp;body=Viens découvrir un article à propos de [Linux 学习笔记: Linux 目录配置简介] sur le site de Wolfson Liu. ../../archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/linux-xue-xi-bi-ji-linux-mu-lu-pei-zhi-jian-jie.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

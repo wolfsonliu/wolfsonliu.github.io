@@ -1,0 +1,75 @@
+Title: Python 学习笔记: itertools module
+Date: 2016-11-02 21:30
+Modified: 2016-11-02 21:30
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: itertools module.
+
+Python 的包 itertools 提供了众多的返回迭代器的函数. 这些迭代器函数能够帮助编写快速并且节省内存空间的函数.
+
+### 无限迭代器函数 ###
+
+无限迭代器函数顾名思义就是可以无限循环产生迭代的函数, 所以一定不要尝试使用 list 等函数来去迭代化, 否则会让计算机内存迅速用尽.
+
+* `count(start [, step])`: 按照 step (默认是 1) 从 start 开始叠加.
+
+```
+for x in count(1, 2):
+    print(x)
+    if x > 10:
+        break
+# 1
+# 3
+# 5
+# 7
+# 9
+```
+* `cycle(a_list_like)`: 在一个像 list 的变量中循环取元素.
+
+```
+i = 0
+for y in itertools.cycle('ABCD'):
+    print(y)
+    i += 1
+    if i > 5:
+        break
+# A
+# B
+# C
+# D
+# A
+# B
+```
+
+* `repeat(elem [, n])`: 重复返回 elem, 如果 n 有值, 则重复 n 次.
+
+```
+list(itertools.repeat('Sparrow', 4))
+# ['Sparrow', 'Sparrow', 'Sparrow', 'Sparrow']
+```
+
+### 有限迭代器函数 ###
+
+有限迭代器函数和无限迭代器函数的差别在于, 其输出的迭代的数量是有一定的限度的.
+
+* `accumulate(p [,func])`: 类似于 functools 里面的 reduce 函数, 将一个函数在 list 上做累积计算.
+
+```
+list(accumulate([1, 2, 3, 4], lambda x, y: x + y))
+# [1, 3, 6, 10]
+```
+
+* `chain(p, q [,...])`: 把两个变量的元素连起来生成迭代器.
+* `chain.from_iterable(iterable)`: 类似于 `chain()` 函数, 不过其接受的参数为一个, 是简化的 `chain` 形式.
+
+```
+list(chain('ABC', 'DEF'))
+# ['A', 'B', 'C', 'D', 'E', 'F']
+list(chain.from_iterable(['ABC', 'DEF']))
+# ['A', 'B', 'C', 'D', 'E', 'F']
+```
+
+
+
+

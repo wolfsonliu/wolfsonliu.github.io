@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：生成模拟数据</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html">
+<meta name="twitter:title" content="Wolf Cave ~ R 学习笔记：生成模拟数据">
+<meta name="twitter:description" content="R 生成模拟数据.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ R 学习笔记：生成模拟数据" />
+<meta property="og:description" content="R 生成模拟数据." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html" rel="bookmark" title="Permalink to R 学习笔记：生成模拟数据">R 学习笔记：生成模拟数据</a></h2>
+        <div class="entry-content blog-post">
+            <p>在处理数据或者建模的时候有时候需要对以有数据进行排列组合, 有的时候需要生成模拟数据, R 中有不少很方便的函数可以使用.</p>
+<h2>生成数据</h2>
+<h3>序列</h3>
+<ul>
+<li>seq: seq 函数或者分号 ":", 可以直接生成一段数字向量, seq 的 by 参数可以控制间距, length 参数控制长度.</li>
+<li>gl: 生成一系列 factor, n 为 level 的个数, k 为每个 level 的重复, length 为 整个 factor 的长度, labels 为 level 的标签.</li>
+<li>expand.grid: 生成一个没有重复行的数据框, 不同的行的参数进行组合, 相当于笛卡尔积.</li>
+</ul>
+<h3>随机数</h3>
+<p>R 中有很多按照一定分布生成随机数的函数, 这些函数也有对应的生成概率密度函数等相关函数. 生成随机数的函数往往以 "r" 开头, 后面跟着分布的简写, 也有开头为 "d" 的对应 density 函数, 开头为 "p" 的 probability 函数 和 开头为 "q" 的 quantile 函数.</p>
+<table>
+<thead>
+<tr>
+<th align="center">分布</th>
+<th align="right">随机数生成函数</th>
+<th align="right">概率密度</th>
+<th align="right">概率函数</th>
+<th align="right">值函数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Beta</td>
+<td align="right">rbeta</td>
+<td align="right">dbeta</td>
+<td align="right">pbeta</td>
+<td align="right">qbeta</td>
+</tr>
+<tr>
+<td align="center">Binomial</td>
+<td align="right">rbinom</td>
+<td align="right">dbinom</td>
+<td align="right">pbinom</td>
+<td align="right">qbinom</td>
+</tr>
+<tr>
+<td align="center">Cauchy</td>
+<td align="right">rcauchy</td>
+<td align="right">dcauchy</td>
+<td align="right">pcauchy</td>
+<td align="right">qcauchy</td>
+</tr>
+<tr>
+<td align="center">Chi-square</td>
+<td align="right">rchisq</td>
+<td align="right">dchisq</td>
+<td align="right">pchisq</td>
+<td align="right">qchisq</td>
+</tr>
+<tr>
+<td align="center">Exponential</td>
+<td align="right">rexp</td>
+<td align="right">dexp</td>
+<td align="right">pexp</td>
+<td align="right">qexp</td>
+</tr>
+<tr>
+<td align="center">F</td>
+<td align="right">rf</td>
+<td align="right">df</td>
+<td align="right">pf</td>
+<td align="right">qf</td>
+</tr>
+<tr>
+<td align="center">Gamma</td>
+<td align="right">rgamma</td>
+<td align="right">dgamma</td>
+<td align="right">pgamma</td>
+<td align="right">qgamma</td>
+</tr>
+<tr>
+<td align="center">Geometric</td>
+<td align="right">rgeom</td>
+<td align="right">dgeom</td>
+<td align="right">pgeom</td>
+<td align="right">qgeom</td>
+</tr>
+<tr>
+<td align="center">Hypergeometric</td>
+<td align="right">rhyper</td>
+<td align="right">dhyper</td>
+<td align="right">phyper</td>
+<td align="right">qhyper</td>
+</tr>
+<tr>
+<td align="center">Log Normal</td>
+<td align="right">rlnorm</td>
+<td align="right">dlnorm</td>
+<td align="right">plnorm</td>
+<td align="right">qlnorm</td>
+</tr>
+<tr>
+<td align="center">Logistic</td>
+<td align="right">rlogis</td>
+<td align="right">dlogis</td>
+<td align="right">plogis</td>
+<td align="right">qlogis</td>
+</tr>
+<tr>
+<td align="center">Multinomial</td>
+<td align="right">rmultinom</td>
+<td align="right">dmultinom</td>
+<td align="right">pmultinom</td>
+<td align="right">qmultinom</td>
+</tr>
+<tr>
+<td align="center">Negative Binomial</td>
+<td align="right">rnbinom</td>
+<td align="right">dnbinom</td>
+<td align="right">pnbinom</td>
+<td align="right">qnbinom</td>
+</tr>
+<tr>
+<td align="center">Normal</td>
+<td align="right">rnorm</td>
+<td align="right">dnorm</td>
+<td align="right">pnorm</td>
+<td align="right">qnorm</td>
+</tr>
+<tr>
+<td align="center">Poisson</td>
+<td align="right">rpois</td>
+<td align="right">dpois</td>
+<td align="right">ppois</td>
+<td align="right">qpois</td>
+</tr>
+<tr>
+<td align="center">Signed Rank</td>
+<td align="right">rsignrank</td>
+<td align="right">dsignrank</td>
+<td align="right">psignrank</td>
+<td align="right">qsignrank</td>
+</tr>
+<tr>
+<td align="center">Student’s t</td>
+<td align="right">rt</td>
+<td align="right">dt</td>
+<td align="right">pt</td>
+<td align="right">qt</td>
+</tr>
+<tr>
+<td align="center">Uniform</td>
+<td align="right">runif</td>
+<td align="right">dunif</td>
+<td align="right">punif</td>
+<td align="right">qunif</td>
+</tr>
+<tr>
+<td align="center">Weibull</td>
+<td align="right">rweibull</td>
+<td align="right">dweibull</td>
+<td align="right">pweibull</td>
+<td align="right">qweibull</td>
+</tr>
+<tr>
+<td align="center">Wilcoxon Rank Sum</td>
+<td align="right">rwilcox</td>
+<td align="right">dwilcox</td>
+<td align="right">pwilcox</td>
+<td align="right">qwilcox</td>
+</tr>
+</tbody>
+</table>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 12 April 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html&text=R 学习笔记：生成模拟数据&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html&t=R 学习笔记：生成模拟数据"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html&title=R 学习笔记：生成模拟数据" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：生成模拟数据&amp;body=Viens découvrir un article à propos de [R 学习笔记：生成模拟数据] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-sheng-cheng-mo-ni-shu-ju.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

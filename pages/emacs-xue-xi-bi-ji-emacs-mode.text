@@ -1,0 +1,63 @@
+Title: Emacs 学习笔记：Emacs mode
+Date: 2016-02-04 19:14
+Modified: 2016-02-23 23:05:35
+Category: 壹零零壹
+Tags: emacs
+Authors: Wolfson Liu
+Summary: Emacs 的一些常用 mode.
+
+
+## Major Mode ##
+
+打开的一个缓冲 (buffer) 在模式栏中小括号里面会有, 在缓冲列表的 Mode 栏目所显示, 一般和打开的为文件类型相匹配.
+
+### Shell Mode ###
+
+通过 **M-x shell** 可以开启一个 shell, 在 shell 中, 需要在 **C-c** **C-z** **C-d** 等命令前面增加一个 **C-c** 才能正确执行功能.
+
+* **C-c C-c**:                                 shell 终止命令, 其他的类似, 均添加 **C-c**.
+* **M-p**:     comint-previous-input           上一条命令.
+* **M-n**:     comint-next-input               下一条命令.
+* **C-c C-p**: comint-previous-prompt          移动到上一条命令.
+* **C-c C-n**: comint-next-prompt              移动到下一条命令.
+* **C-c C-o**: comint-delete-output            把最后一条命令的输出结果清除.
+* **C-c C-l**: comint-dynamic-list-input-ring  列出最近输入的命令.
+* **C-c C-r**: comint-show-output              到输出结果的第一行.
+* **C-c C-e**: comint-show-maximum-output      到输出结果的最后一行.
+
+除了直接开启 shell 之外, 还可以运行简单的 shell 命令.
+
+* **M-!**:     shell-command                   运行一条 shell 命令并在 minibuffer 输出结果.
+* **C-u M-!**:                                 把运行的 shell 命令的输出结果保存在光标所在的文件位置.
+* **M-|**:     shell-command-on-region         运行选择的文字中的 shell 命令, 可以使用 **M-h** **C-SPC** 等选择.
+
+
+### Outline Mode ###
+
+Outline Mode 作为主要的 Mode 时, 文本的目录需要有一定规律, 以一个 '*' 符号开头的表示最高级标题, 多一个降低一级.
+
+* **C-c C-n**: 到下一个或者一级目录.
+* **C-c C-p**: 到上一个目录.
+* **C-c C-f**: 到同级别的后一个目录.
+* **C-c C-b**: 到同级别的前一个目录.
+* **C-c C-u**: 到上一级目录.
+* **C-c C-t**: 只显示目录标题.
+* **C-c C-q**: 只显示第一级标题.
+* **C-c C-a**: 显示所有内容.
+* **C-c C-^**: 给标题升级.
+* **C-c C-v**: 给标题降级.
+
+--------------------------------------------------------------------------------
+
+## Minor Mode ##
+
+* **refill-mode**:
+* **auto-fill-mode**: 在打字的时候自动添加换行符, 来保持整个文字排版良好. 不同的段落之间应该有空行, 否则会把所有的内容都重排成一段. 在修改排列好的段落后, 需要使用 *M-q*(fill-paragraph) 重排段落.
+* **overwrite-mode**: Overwrite Mode, 也可以按键盘 **Insert** 键来开启和关闭.
+* **recursive-edit**: 暂时停止手头工作, 如 quary-repace 开始编辑, **C-M-c** 退出 recursive-edit. 开始 recursive-edit, 当前 Major Mode 会被方括号包围.
+* **flyspell-mode**: 实时拼写检查.
+* **abbrev-mode**: 需要设定缩写方式, 可以使用 **C-x a i g** 全局设定, **C-x a i l** 局部设定, 或者使用 "./.abbrev_defs" 来设定.
+* **rectangle-mark-mode**: **C-x SPASE**, 可以在该模式中按照块进行选择, 并使用普通的移除, 删除操作.
+* **read-only-mode**: 只读模式, **C-x C-q**, 把当前的缓冲切换为只读模式.
+* **outline-minor-mode**: 开启 outline mode 的 minor mode, 可以和 Markdown 等 mode 一起使用.
+* **folding-mode**: 可以用于折叠代码.

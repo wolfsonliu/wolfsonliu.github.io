@@ -1,0 +1,41 @@
+Title: RNA-Seq 分析流程
+Date: 2016-03-12 16:38
+Modified: 2016-03-12 16:38
+Category: 壹零零壹
+Tags: bioinformatics
+Authors: Wolfson Liu
+Summary: RNA-Seq 分析的总结.
+
+## RNA-Seq 简介 ##
+
+### 实验设计 ###
+
+RNA-Seq 实验中，需要把 RNA 从样品中提取出来。在样品提取的过程中，需要
+把占据所有RNA量 90% 的 rRNA 给去处，留下 1% 到 2%的研究关注的
+mRNA(Conesa et al., 2016)。对于真核细胞而言，mRNA在成熟之后都会加有
+polyA的尾巴，所以可以根据polyA的尾巴，从总RNA中，利用粘有polyT的磁珠抓
+取mRNA。
+
+### Raw data 预处理 ###
+
+获得的 RNA-Seq 数据需要先像其他的测序数据分析一样进行质量控制和预处理。
+RNA-seq 数据做质量控制可以使用FastQC和NGSQC软件，对于一些超过 30% 的
+outlier可以扔掉。对于测序数据靠近3'端的数据的测序质量是逐渐降低的，所
+以可以把低于一定测序质量的序列剪去，FASTX-Toolkit，Trimmomatic，picard
+等都是可以选择的软件。
+
+### Reads alignment ###
+
+处理过的 reads 会被匹配到参考基因组上。常用的匹配软件有 bowtie 或者
+BWA等。一般情况下应该至少有70%到90%的序列可以匹配到参考基因组上。如果
+是直接匹配到基因组上，匹配率会高一些，而如果是匹配到转录组上，匹配度会
+低一些，因为一些未知的转录序列会被丢掉。
+
+--------------------
+
+#### 参考文献 ####
+
+1. Conesa, A., Madrigal, P., Tarazona, S., Gomez-Cabrero, D., Cervera,
+   A., McPherson, A., Szcześniak, M.W., Gaffney, D.J., Elo, L.L.,
+   Zhang, X., et al. (2016). A survey of best practices for RNA-seq
+   data analysis. Genome Biology 17.

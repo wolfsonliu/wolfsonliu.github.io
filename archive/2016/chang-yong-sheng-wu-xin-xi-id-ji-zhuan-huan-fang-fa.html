@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>常用生物信息 ID 及转换方法</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html">
+<meta name="twitter:title" content="Wolf Cave ~ 常用生物信息 ID 及转换方法">
+<meta name="twitter:description" content="对常用的生物信息学数据库中的各种 ID 的总结.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ 常用生物信息 ID 及转换方法" />
+<meta property="og:description" content="对常用的生物信息学数据库中的各种 ID 的总结." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html" rel="bookmark" title="Permalink to 常用生物信息 ID 及转换方法">常用生物信息 ID 及转换方法</a></h2>
+        <div class="entry-content blog-post">
+            <p>众多不同的数据库所采用的对 Gene 和 Protein 编号的 ID 也是不同的, 所以在使用不同数据库数据的时候需要进行 ID 转换.</p>
+<hr>
+<h2>常用数据库 ID</h2>
+<table>
+<thead>
+<tr>
+<th>ID 示例</th>
+<th>ID 来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENSG00000116717</td>
+<td><strong>Ensemble ID</strong></td>
+</tr>
+<tr>
+<td>GA45A_HUMAN</td>
+<td><strong>UniProtKB/Swiss-Prot, entry name</strong></td>
+</tr>
+<tr>
+<td>A5PJB2_BOVIN</td>
+<td><strong>UniProtKB/TrEMBL, entry name</strong></td>
+</tr>
+<tr>
+<td>A2BC19, P12345, A0A022YWF9</td>
+<td><strong>UniProt, accession number</strong></td>
+</tr>
+<tr>
+<td>GLA, GLB, UGT1A1</td>
+<td><strong>HGNC Gene Symbol</strong></td>
+</tr>
+<tr>
+<td>U12345, AF123456</td>
+<td><strong>GenBank, NCBI, accession number</strong></td>
+</tr>
+<tr>
+<td>NT_123456, NM_123456, NP_123456</td>
+<td><strong>RefSeq, NCBI, accession number</strong></td>
+</tr>
+<tr>
+<td>10598, 717</td>
+<td><strong>Entrez ID, NCBI</strong></td>
+</tr>
+<tr>
+<td>uc001ett, uc031tla.1</td>
+<td><strong>UCSC ID</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>Ensembl stable IDs</h2>
+<p>Ensembl stable ID 的结构是根据不同物种设置的前缀, 加上数据所指的类型, 如基因蛋白质, 再加上一系列的数字. 有的时候可以有不同的版本, 则在 Ensembl ID 后面加上小数点和版本号.</p>
+<h3>常用物种前缀</h3>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>学名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ENSCEL</td>
+<td><em>Caenorhabditis elegans</em> (Caenorhabditis elegans)</td>
+</tr>
+<tr>
+<td>ENSCAF</td>
+<td><em>Canis lupus familiaris</em> (Dog)</td>
+</tr>
+<tr>
+<td>ENSDAR</td>
+<td><em>Danio rerio</em> (Zebrafish)</td>
+</tr>
+<tr>
+<td>FB</td>
+<td><em>Drosophila melanogaster</em> (Fruitfly)</td>
+</tr>
+<tr>
+<td>ENS</td>
+<td><em>Homo sapiens</em> (Human)</td>
+</tr>
+<tr>
+<td>ENSMUS</td>
+<td><em>Mus musculus</em> (Mouse)</td>
+</tr>
+<tr>
+<td>ENSRNO</td>
+<td><em>Rattus norvegicus</em> (Rat)</td>
+</tr>
+<tr>
+<td>ENSXET</td>
+<td><em>Xenopus tropicalis</em> (Xenopus)</td>
+</tr>
+</tbody>
+</table>
+<h3>类型前缀</h3>
+<table>
+<thead>
+<tr>
+<th>前缀</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E</td>
+<td>exon</td>
+</tr>
+<tr>
+<td>FM</td>
+<td>Ensembl protein family</td>
+</tr>
+<tr>
+<td>G</td>
+<td>gene</td>
+</tr>
+<tr>
+<td>GT</td>
+<td>gene tree</td>
+</tr>
+<tr>
+<td>P</td>
+<td>protein</td>
+</tr>
+<tr>
+<td>R</td>
+<td>regulatory feature</td>
+</tr>
+<tr>
+<td>T</td>
+<td>transcript</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>UniProt</h2>
+<p>UniProt 中录入的数据都被分配了一个唯一的 entry name.</p>
+<h3>UniProtKB/Swiss-Prot entry name</h3>
+<p>UniProtKB/Swiss-Prot entry name 是最多有 11 位包含大写字母的字符串, 一般有着 "X_Y" 的形式, 其中 "X" 是最多五个便于记忆的蛋白质编号, "_" 是下划线, "Y" 是最多五个便于记忆的物种编号.</p>
+<p>蛋白质编号示例如下:</p>
+<table>
+<thead>
+<tr>
+<th>Code(X)</th>
+<th>Recommended protein name</th>
+<th>Gene name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B2MG</td>
+<td>Beta-2-microglobulin</td>
+<td>B2M</td>
+</tr>
+<tr>
+<td>HBA</td>
+<td>Hemoglobin subunit alpha</td>
+<td>HBA1</td>
+</tr>
+<tr>
+<td>INS</td>
+<td>Insulin</td>
+<td>INS</td>
+</tr>
+<tr>
+<td>CAD17</td>
+<td>Cadherin-17</td>
+<td>CDH17</td>
+</tr>
+</tbody>
+</table>
+<p>物种编号示例如下:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Species</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BOVIN</td>
+<td>Bovine</td>
+</tr>
+<tr>
+<td>CHICK</td>
+<td>Chicken</td>
+</tr>
+<tr>
+<td>ECOLI</td>
+<td><em>Escherichia coli</em></td>
+</tr>
+<tr>
+<td>HORSE</td>
+<td>Horse</td>
+</tr>
+<tr>
+<td>HUMAN</td>
+<td><em>Homo sapiens</em></td>
+</tr>
+<tr>
+<td>MAIZE</td>
+<td>Maize (<em>Zea mays</em>)</td>
+</tr>
+<tr>
+<td>MOUSE</td>
+<td>Mouse</td>
+</tr>
+<tr>
+<td>PEA</td>
+<td>Garden pea (<em>Pisum sativum</em>)</td>
+</tr>
+<tr>
+<td>PIG</td>
+<td>Pig</td>
+</tr>
+<tr>
+<td>RABIT</td>
+<td>Rabbit</td>
+</tr>
+<tr>
+<td>RAT</td>
+<td>Rat</td>
+</tr>
+<tr>
+<td>SHEEP</td>
+<td>Sheep</td>
+</tr>
+<tr>
+<td>SOYBN</td>
+<td>Soybean (<em>Glycine max</em>)</td>
+</tr>
+<tr>
+<td>TOBAC</td>
+<td>Common tobacco (<em>Nicotina tabacum</em>)</td>
+</tr>
+<tr>
+<td>WHEAT</td>
+<td>Wheat (<em>Triticum aestivum</em>)</td>
+</tr>
+<tr>
+<td>YEAST</td>
+<td>Baker’s yeast (<em>Saccharomyces cerevisiae</em>)</td>
+</tr>
+</tbody>
+</table>
+<h3>UniProtKB/TrEMBL entry name</h3>
+<p>UniProtKB/TrEMBL entry name 是最多 16 位包含大写字母的字符串, 一般有着 "X_Y" 的形式, 其中 "X" 是 6 到 10 个字符组成的 accession number, "_" 是下划线, "Y" 是最多五个便于记忆的物种编号.</p>
+<h3>Accession Number</h3>
+<p>UniProtKB 的 Accession Number 相当于数据库的主键, 由 6 到 10 个大写字母或者数字组成. 其构成规律为: <code>[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}</code></p>
+<p>实际上, accession number 是三种类型:</p>
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[O P Q]</td>
+<td>[0-9]</td>
+<td>[A-Z 0-9]</td>
+<td>[A-Z 0-9]</td>
+<td>[A-Z 0-9]</td>
+<td>[0-9]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[A-N R-Z]</td>
+<td>[0-9]</td>
+<td>[A-Z]</td>
+<td>[A-Z 0-9]</td>
+<td>[A-Z 0-9]</td>
+<td>[0-9]</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>[A-N R-Z]</td>
+<td>[0-9]</td>
+<td>[A-Z]</td>
+<td>[A-Z 0-9]</td>
+<td>[A-Z 0-9]</td>
+<td>[0-9]</td>
+<td>[A-Z]</td>
+<td>[A-Z 0-9]</td>
+<td>[A-Z 0-9]</td>
+<td>[0-9]</td>
+</tr>
+</tbody>
+</table>
+<p>如果一个条目被分成两个, 或者多个条目合成一个, 则有相应的 accession number 继承规则.</p>
+<hr>
+<h2>HUGO Gene Nomenclature Committee</h2>
+<h3>Gene Symbol</h3>
+<p>Gene Symbol 是用来表示基因的编码, 由大写字母构成, 或由大写字母和数字构成, 首字母均应该是字母.</p>
+<p>如: GLA "galactosidase, alpha"; GLB "galactosidase, beta"; UGT1A1 "UDP glycosyltransferase 1 family, polypeptide A1" 再到 UGT1A13 代表了 13 个不同的 gene symbol.</p>
+<hr>
+<h2>NCBI</h2>
+<h3>GenBank Accession Number</h3>
+<p>GenBank 的通用 accession number 通常是由一个大写字母加上 5 个数字的组合, 或者两个大写字母加上 6 个数字的组合.</p>
+<h3>RefSeq Accession Number</h3>
+<p>RefSeq 有一套特殊的 Accesion Number. 形式是: <code>[A-Z]{2}[_][0-9]{6:}</code>, 两个大写字母, 一个下划线, 6 个或更多的数字.</p>
+<table>
+<thead>
+<tr>
+<th>Accession 前缀</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AC_</td>
+<td>Genomic</td>
+<td>Complete genomic molecule, usually alternate assembly</td>
+</tr>
+<tr>
+<td>NC_</td>
+<td>Genomic</td>
+<td>Complete genomic molecule, usually reference assembly</td>
+</tr>
+<tr>
+<td>NG_</td>
+<td>Genomic</td>
+<td>Incomplete genomic region</td>
+</tr>
+<tr>
+<td>NT_</td>
+<td>Genomic</td>
+<td>Contig or scaffold, clone-based or WGS</td>
+</tr>
+<tr>
+<td>NW_</td>
+<td>Genomic</td>
+<td>Contig or scaffold, primarily WGS</td>
+</tr>
+<tr>
+<td>NS_</td>
+<td>Genomic</td>
+<td>Environmental sequence</td>
+</tr>
+<tr>
+<td>NZ_</td>
+<td>Genomic</td>
+<td>Unfinished WGS</td>
+</tr>
+<tr>
+<td>NM_</td>
+<td>mRNA</td>
+<td></td>
+</tr>
+<tr>
+<td>NR_</td>
+<td>RNA</td>
+<td></td>
+</tr>
+<tr>
+<td>XM_</td>
+<td>mRNA</td>
+<td>Predicted model</td>
+</tr>
+<tr>
+<td>XR_</td>
+<td>RNA</td>
+<td>Predicted model</td>
+</tr>
+<tr>
+<td>AP_</td>
+<td>Protein</td>
+<td>Annotated on AC_ alternate assembly</td>
+</tr>
+<tr>
+<td>NP_</td>
+<td>Protein</td>
+<td>Associated with an NM_ or NC_ accession</td>
+</tr>
+<tr>
+<td>YP_</td>
+<td>Protein</td>
+<td></td>
+</tr>
+<tr>
+<td>XP_</td>
+<td>Protein</td>
+<td>Predicted model, associated with an XM_ accession</td>
+</tr>
+<tr>
+<td>ZP_</td>
+<td>Protein</td>
+<td>Predicted model, annotated on NZ_ genomic records</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>WGS: Whole Genome Shotgun sequence data, 鸟枪法测序.</li>
+</ul>
+<h3>Entrez ID</h3>
+<p>Entrez 是 NCBI 使用的能够对众多数据库进行联合搜索的搜索引擎, 其对不同的 Gene 进行了编号, 每个 gene 的编号就是 entrez gene id. 由于 entrez id 相对稳定, 所以也被众多其他数据库, 如 KEGG 等采用. Entrez Gene ID 就是一系列数字, 也比较容易辨识. R 或网站都有众多的工具可以帮助从不同的 ID 转换为 entrez id 或者反向转换.</p>
+<hr>
+<h2>UCSC ID</h2>
+<p>UCSC ID 由小写字母和数字构成, 起始均为 uc, 然后是三位数字, 接着又是三位小写字母, 最后有小数点和数字构成版本号.</p>
+<p>如: uc010qfk.3, uc010qfk.3.</p>
+<hr>
+<h2>ID Mapping</h2>
+<ul>
+<li><a href="http://www.uniprot.org/uploadlists/">Uniprot ID mapping</a> 可以很方便地把 ID 转换为其他 ID 类型, 所包含的类型十分全面.</li>
+<li><a href="https://biodbnet-abcc.ncifcrf.gov/db/db2db.php">bioDBnet</a> 网站提供了常见的 ID 转换的选项, 类型全面.</li>
+<li><a href="https://david.ncifcrf.gov/conversion.jsp">DAVID Gene ID Conversion Tool</a> 可以把 Gene ID 转换为多种常用类型和 DAVID ID, 方便进一步用 DAVID 做 GO 分析.</li>
+<li><a href="http://www.bridgedb.org/">BridgeDB</a> 一套提供 ID 转换的框架.</li>
+<li><a href="http://www.inetbio.org/flynet/human_genes_converter.php?f=guide">Human genes converter</a> 把常用的 Ensambl ID 或 Symbol 转换为 Gene 的 Entrez ID.</li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 23 February 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/bioinformatics.html">#bioinformatics, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html&text=常用生物信息 ID 及转换方法&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html&t=常用生物信息 ID 及转换方法"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html&title=常用生物信息 ID 及转换方法" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=常用生物信息 ID 及转换方法&amp;body=Viens découvrir un article à propos de [常用生物信息 ID 及转换方法] sur le site de Wolfson Liu. ../../archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/chang-yong-sheng-wu-xin-xi-id-ji-zhuan-huan-fang-fa.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

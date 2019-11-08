@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git branch 命令</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p><code>git branch</code> 或者 <code>man git branch</code> 命令是用来显示，创建和删除分支（branch）的。</p>
+<h2>显示分支信息</h2>
+<p>如果只需要看有哪些分支，只需要 <code>git branch</code> 命令即可。</p>
+<p><code>git branch</code> 和 <code>git branch --list</code> 输出内容一致，都是仅仅输出分支的名称。</p>
+<div class="highlight"><pre><span></span>git branch
+<span class="c1"># * dev</span>
+<span class="c1">#  master</span>
+</pre></div>
+
+
+<p>如果要列出每个分支的最后一个commit，需要跟上 <code>-v</code> 参数：</p>
+<div class="highlight"><pre><span></span>git branch -v
+<span class="c1"># * dev    333abc2 modified git branch</span>
+<span class="c1">#   master 7ad5046 add git commit usage</span>
+</pre></div>
+
+
+<p>使用参数 <code>-vv</code> 则可以显示远程分支的信息：</p>
+<div class="highlight"><pre><span></span>git branch -vv
+<span class="c1"># * dev    333abc2 modified git branch</span>
+<span class="c1">#   master 734cfcc [origin/master] add git command branch</span>
+</pre></div>
+
+
+<p>如果只想要列出于当前的分支合并过的分支，则加上 <code>--merged</code> 参数：</p>
+<div class="highlight"><pre><span></span>git branch --merged
+<span class="c1"># * dev</span>
+<span class="c1">#   master</span>
+</pre></div>
+
+
+<p>同样，如果只想要列出没有和当前分支合并过的分支，则加上 <code>--no-mergedd</code> 参数：</p>
+<div class="highlight"><pre><span></span>git branch --no-merged
+</pre></div>
+
+
+<p>如果要显示所有的分支信息，包括本地的远程的信息，则需要 <code>-a</code> 或者 <code>--all</code> 参数：</p>
+<div class="highlight"><pre><span></span>git branch -a
+<span class="c1"># * dev</span>
+<span class="c1">#  master</span>
+<span class="c1">#  remotes/origin/master</span>
+</pre></div>
+
+
+<p>如果要显示包含或者不包含有特定提交（commit）的分支，则需要增加参数
+<code>--contains &lt;SHA-1&gt;</code> 或者 <code>--no-contains &lt;SHA-1&gt;</code>。这里的 SHA-1 可以只
+是最前面的几个字母。</p>
+<div class="highlight"><pre><span></span>git branch -vv --contains 734cfcc
+<span class="c1"># * dev    333abc2 modified git branch</span>
+<span class="c1">#   master 734cfcc [origin/master] add git command branch</span>
+</pre></div>
+
+
+<p><code>-v</code>，<code>-vv</code>，<code>-a</code>， <code>--merged</code>，<code>--no-merged</code>，<code>--contains &lt;SHA-1&gt;</code> 或者 <code>--no-contains &lt;SHA-1&gt;</code> 等参数也可以相互配合使用：</p>
+<div class="highlight"><pre><span></span>git branch -a -vv
+<span class="c1"># * dev                   333abc2 modified git branch</span>
+<span class="c1">#   master                734cfcc [origin/master] add git command branch</span>
+<span class="c1">#   remotes/origin/master 734cfcc add git command branch</span>
+</pre></div>
+
+
+<h2>复制分支</h2>
+<p><code>git branch -c &lt;branch&gt;</code> 和 <code>git branch -C &lt;branch&gt;</code> 是用来复制分支的。
+对于参数 <code>-c</code>，其只会在目标不存在的时候进行复制，<code>-C</code> 参数则不管目标是
+否存在都会复制。<code>-c -f</code> 可以实现和 <code>-C</code> 相同的效果。</p>
+<p>如我们要把当前的分支复制到名称为 test 的分支，因为之前没有 test 分支，
+则可以正常复制。</p>
+<div class="highlight"><pre><span></span>git branch -c <span class="nb">test</span>
+git branch -v
+<span class="c1"># * dev    333abc2 modified git branch</span>
+<span class="c1">#   master 734cfcc add git command branch</span>
+<span class="c1">#   test   333abc2 modified git branch</span>
+</pre></div>
+
+
+<p>现在已经有了 test 分支，如果我们再使用 <code>-c</code> 参数则会报错，而使用 <code>-c
+-f</code> 或者 <code>-C</code> 参数则可以强制复制。</p>
+<div class="highlight"><pre><span></span>git branch -c <span class="nb">test</span>
+<span class="c1"># fatal: A branch named &#39;test&#39; already exists.</span>
+git branch -c -f <span class="nb">test</span>
+git branch -C <span class="nb">test</span>
+</pre></div>
+
+
+<h2>移动和重命名分支</h2>
+<p><code>git branch -m &lt;branch&gt;</code> 和 <code>git branch -M &lt;branch&gt;</code> 是用来移动和重命名分支的。
+类似 <code>-c</code> 参数，对于参数 <code>-m</code>，其只会在目标不存在的时候进行移动和重命名，<code>-M</code> 参数则不管目标是否存在都会移动和重命名。
+<code>-m -f</code> 可以实现和 <code>-M</code> 相同的效果。</p>
+<p>如我们把 test 分支重命名为 newtest：</p>
+<div class="highlight"><pre><span></span>git checkout <span class="nb">test</span>
+git branch -m newtest
+git branch
+<span class="c1"># * dev</span>
+<span class="c1">#   master</span>
+<span class="c1">#   newtest</span>
+</pre></div>
+
+
+<h2>删除分支</h2>
+<p>如果想要删除分支，则应该加上 <code>-d</code> 参数：</p>
+<div class="highlight"><pre><span></span>git branch -d &lt;name&gt;
+</pre></div>
+
+
+<p>需要注意的是，如果该分支还未被合并到其他分支，则删除时会报错。因为没有
+被合并的分支一旦删除就会永久丢失，这样能够避免误操作使得错误无法恢复。
+而对于合并过的分支而言，删除之后几乎总是可以恢复。如果不管是否合并都要
+删除，则应该使用 <code>-D</code> 参数，但是这会比较危险，有可能删除没有合并的分支。</p>
+<p>例如我们要删除 test 分支。</p>
+<div class="highlight"><pre><span></span>git checkout dev
+git branch -d <span class="nb">test</span>
+<span class="c1"># Deleted branch test (was 333abc2).</span>
+</pre></div>
+
+
+<h2>git branch -h</h2>
+<p><code>git branch -h</code> 可以显示其完整使用帮助：</p>
+<div class="highlight"><pre><span></span>usage: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">[</span>-r <span class="p">|</span> -a<span class="o">]</span> <span class="o">[</span>--merged <span class="p">|</span> --no-merged<span class="o">]</span>
+   or: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">[</span>-l<span class="o">]</span> <span class="o">[</span>-f<span class="o">]</span> &lt;branch-name&gt; <span class="o">[</span>&lt;start-point&gt;<span class="o">]</span>
+   or: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">[</span>-r<span class="o">]</span> <span class="o">(</span>-d <span class="p">|</span> -D<span class="o">)</span> &lt;branch-name&gt;...
+   or: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">(</span>-m <span class="p">|</span> -M<span class="o">)</span> <span class="o">[</span>&lt;old-branch&gt;<span class="o">]</span> &lt;new-branch&gt;
+   or: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">(</span>-c <span class="p">|</span> -C<span class="o">)</span> <span class="o">[</span>&lt;old-branch&gt;<span class="o">]</span> &lt;new-branch&gt;
+   or: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">[</span>-r <span class="p">|</span> -a<span class="o">]</span> <span class="o">[</span>--points-at<span class="o">]</span>
+   or: git branch <span class="o">[</span>&lt;options&gt;<span class="o">]</span> <span class="o">[</span>-r <span class="p">|</span> -a<span class="o">]</span> <span class="o">[</span>--format<span class="o">]</span>
+
+Generic options
+    -v, --verbose         show <span class="nb">hash</span> and subject, give twice <span class="k">for</span> upstream branch
+    -q, --quiet           suppress informational messages
+    -t, --track           <span class="nb">set</span> up tracking mode <span class="o">(</span>see git-pull<span class="o">(</span><span class="m">1</span><span class="o">))</span>
+    -u, --set-upstream-to &lt;upstream&gt;
+                          change the upstream info
+    --unset-upstream      Unset the upstream info
+    --color<span class="o">[=</span>&lt;when&gt;<span class="o">]</span>      use colored output
+    -r, --remotes         act on remote-tracking branches
+    --contains &lt;commit&gt;   print only branches that contain the commit
+    --no-contains &lt;commit&gt;
+                          print only branches that don<span class="s1">&#39;t contain the commit</span>
+<span class="s1">    --abbrev[=&lt;n&gt;]        use &lt;n&gt; digits to display SHA-1s</span>
+
+<span class="s1">Specific git-branch actions:</span>
+<span class="s1">    -a, --all             list both remote-tracking and local branches</span>
+<span class="s1">    -d, --delete          delete fully merged branch</span>
+<span class="s1">    -D                    delete branch (even if not merged)</span>
+<span class="s1">    -m, --move            move/rename a branch and its reflog</span>
+<span class="s1">    -M                    move/rename a branch, even if target exists</span>
+<span class="s1">    -c, --copy            copy a branch and its reflog</span>
+<span class="s1">    -C                    copy a branch, even if target exists</span>
+<span class="s1">    --list                list branch names</span>
+<span class="s1">    -l, --create-reflog   create the branch&#39;</span>s reflog
+    --edit-description    edit the description <span class="k">for</span> the branch
+    -f, --force           force creation, move/rename, deletion
+    --merged &lt;commit&gt;     print only branches that are merged
+    --no-merged &lt;commit&gt;  print only branches that are not merged
+    --column<span class="o">[=</span>&lt;style&gt;<span class="o">]</span>    list branches in columns
+    --sort &lt;key&gt;          field name to sort on
+    --points-at &lt;object&gt;  print only branches of the object
+    -i, --ignore-case     sorting and filtering are <span class="k">case</span> insensitive
+    --format &lt;format&gt;     format to use <span class="k">for</span> the output
+</pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

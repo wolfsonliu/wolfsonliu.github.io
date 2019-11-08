@@ -1,0 +1,46 @@
+Title: 用 R 计算IC50
+Date: 2019-11-07 23:28
+Modified: 2019-11-07 23:38
+Category: 羽风木石
+Tags: biology, r
+Authors: Wolfson Liu
+Summary: 计算 IC50
+
+数据如下, x 是加药量, y 是细胞数量.
+
+```{r}
+data <- data.frame(
+    x=c(0, 5, 10, 20, 25),
+    y=c(192.9, 167.3, 113.3, 21.2, 6.0)
+)
+```
+
+首先拟合曲线.
+
+```{r}
+lmresult <- lm(y ~ poly(x, 4), data=data)
+plot(data, type='p')
+xx <- seq(0, 25, length=100)
+lines(xx, predict(lmresult, data=data.frame(x=xx)), col='red')
+```
+然后计算 IC 50 的值.
+
+```{r}
+ic50func <- function(a) {
+    abs(predict(lmresult, data=data.frame(x=a)) - data[1, 'y'] * 0.5)
+}
+result.x <- optimize(ic50func, c(0, 25))$minimum
+```
+
+画图.
+
+```{r}
+result.y <- round(predict(lmresult, data.frame(x=result.x)), 3)
+plot(data, type='p')
+abline(h=result.y, 3), lty=3)
+abline(v=result.x, lty=3)
+mtext(result.x, side=1, at = 22.927)
+mtext(result.y, side=2, at = predict(lr4, data.frame(x=22.927)))
+lines(xx, predict(lr4, data.frame(x=xx)), col='red')
+points(result.x, result.y, pch=19, cex=2, col='blue')
+```

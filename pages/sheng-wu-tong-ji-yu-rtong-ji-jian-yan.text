@@ -1,0 +1,26 @@
+Title: 生物统计与 R：统计检验
+Date: 2018-04-17 23:16
+Modified: 2018-04-19 21:16
+Category: 壹零零壹
+Tags: r, statistics
+Authors: Wolfson Liu
+Summary: 生物统计中使用R，统计检验。
+
+
+假设检验：
+
+* null hypothesis： H0 零假设
+* alternative hypothesis： H1 备选假设
+* type I error： 一类错误，H0 为真而拒绝了 H0，type I error rate 用 alpha 表示
+* type II error：二类错误，H1 为真而拒绝了 H1，type II error rate 用 beta 表示
+* power：1 - beta，H1 为真而接受 H1 的概率
+
+若干单样本假设检验：
+* 对未知方差的正态分布的均值进行检验，用 one-sample t test
+* 对已知方差的正态分布的均值进行检验，用 one-sample z test
+* 对正态分布的方差进行检验，用 one-sample chi-squared test
+* 对二项分布（binomial test）的 p 检验，one-sample binomial test
+* 对 Poisson distribution 的期望的均值检验，one-sample Poisson test
+
+
+### one-sample t test ###

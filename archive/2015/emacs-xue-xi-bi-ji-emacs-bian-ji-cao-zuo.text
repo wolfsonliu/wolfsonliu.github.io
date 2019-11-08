@@ -1,0 +1,247 @@
+Title: Emacs 学习笔记：Emacs 编辑操作
+Date: 2015-12-18 10:56
+Modified: 2016-03-02 21:23
+Category: 壹零零壹
+Tags: emacs
+Authors: Wolfson Liu
+Summary: Emacs 的一些默认编辑命令的汇总.
+
+
+* **C** 是 **Control**, **Ctrl**.
+* **M** 是 **Meta**, 可以是 **Alt** 或者 **Escape** **Esc**.
+* - 表示连接, 并不打出.
+* **Up**, **Down**, **Left**, **Right** 方向键.
+* **Home**, **End**, **PgUp**, **PgDn**.
+* **space** 空格.
+
+--------------------------------------------------------------------------------
+
+## 光标定位和移动 ##
+
+* 向上移动一行 (previous-line): **C-p** (previous), **Up**.
+* 向下移动一行 (next-line): **C-n** (next), **Down**.
+* 向后移动一位字符 (backward-char): **C-b** (back), **Left**.
+* 向左移动一个单词 (backward-word): **M-b**.
+* 向前移动一位字符 (forward-char): **C-f** (front), **Right**.
+* 向右移动一个单词 (forward-word): **M-f**.
+
+* 移动到行首 (beginning-of-line): **C-a** (ahead), **Home**, 只会移动到本行行首, 更多的按键没有效果.
+* 移动到句首 (backward-sentence): **M-a** (ahead), **End**, 移动到句首, 更多的按键移动到上个句首.
+* 移动到行尾 (end-of-line): **C-e** (end), 只会移动到本行行尾, 更多的按键没有效果.
+* 移动到句尾 (forward-sentence): **M-e** (end), 移动到句尾, 更多的按键移动到下个句尾.
+* 向后移动一段 (backward-paragraph): **M-{**.
+* 向前移动一段 (forward-paragraph): **M-}**.
+
+* 向后移动一页 (backward-page): **C-x [**, 需要有 `^L`, **C-p C-l**.
+* 向前移动一段 (forward-parge): **C-x ]**, 需要有 `^L`, **C-p C-l**.
+* 向上移动一屏 (scroll-up): **C-v**, **PgUp**, 向下滚动几乎一屏, 默认设置是差两行.
+* 向下移动一屏 (scroll-down): **M-v**, **PgDn**, 向上滚动几乎一屏, 默认设置是差两行.
+
+* 设置光标所在行显示在屏幕的位置 (recenter): **C-l**, 连续按, 循环将光标所在行放在屏幕上中下三处 (**M-l** 是把字母改为小写而非控制定位功能).
+* 移动到 buffer 起始: **M-<**, 得到 < 需要按 **Shift**.
+* 移动到 buffer 终止: **M->**, 得到 > 需要按 **Shift**.
+* 移动到第 n 行 (goto-line): **M-x goto-line** enter 之后输入行数.
+* 移动到第 n 个字符 (goto-char): **M-x goto-char** enter 之后输入字符数.
+
+如果超出窗口的行不是以折回的方式显示的话, 需要移动窗口才能看完一行所有的内容.
+* 向窗口左侧滚动 (scroll-letf): **C-x <**
+* 向窗口右侧滚动 (scroll-right): **C-x >**
+
+--------------------------------------------------------------------------------
+
+## 选择删除撤销 ##
+
+* 选择 (set-mark-command): **C-Space**, 选择.
+* 选择段 (mark-paragraph): **M-h**, 选择段.
+* 选择页面 (mark-page): **C-x C-p**, 选择页面, 以 `^L` 分隔.
+* 选择整个缓冲 (mark-whole-buffer): **C-x h**, 选择整个缓冲的所有内容.
+* 转换点和光标 (exchange-point-and-mark): **C-x C-x**, 在选择了之后可以转换点或者光标.
+* 复制 (kill-ring-save): **M-w**.
+* 删除字符 (delete-character): **C-d**, 或者 Del, 删除单个字符, 但不保存.
+* 删除单词 (kill-word): **M-d**, kill 光标之后到空格 (或换行符) 之前的字符, 保存 kill ring.
+* 反向删除单词 (backward-kill-word): **M-DEL**, kill 光标之后到空格 (或换行符) 之前的字符, 保存 kill ring.
+* 移除行 (kill-line): **C-k**, 从光标删除到行末, 保存 kill ring.
+* 移除行 : **M - C-k**, 中间需要有个连字符, 从行首删除到光标, 保存 kill ring.
+* 移除句 (kill-sentence): **M-k**, 从光标删除到句末, 保存 kill ring.
+* 移除区域 (kill-region): **C-w**.
+* 移除段 (kill-paragraph).
+* 反向移除段 (backward-kill-paragraph).
+* 剪切到粘贴板 (clipboard-kill-region).
+* 复制到粘贴板 (clipboard-kill-ring-save).
+* 取回粘贴板内容 (clipboard-yank): 把粘贴板内容粘贴下来.
+* 取回 (yank): **C-y**.
+* 取回之前的: **M-y**, 需要上一个命令是 **C-y**.
+
+* 撤销 (undo): **C-_**, **C-/**, **C-x u**, 在输入 "_" 的时候需要有 **SHIFT**.
+* 恢复缓冲 (revert-buffer): 把缓冲重置为硬盘上保存的文件内容, 即上次保存的内容.
+* 恢复文件 (recovery-file): 在非正常退出后可以以恢复以 "#" 开头的自动保存文件.
+
+--------------------------------------------------------------------------------
+
+## 块操作 ##
+
+* 移除块 (kill-rectangle): **C-x r k**, 把块删除并放入块移除存储中.
+* 复制块 (copy-rectangle-as-kill): **C-x r M-w**, 把块内容存入删除存储中.
+* 删除块 (delete-rectangle): **C-x r d**, 清除块的内容, 不保存.
+* 取回块 (yank-rectangle): **C-x r y**, 把 kill ring 中最后一个块取出.
+* 添加空块 (open-rectangle): **C-x r o**, 按块添加空格, 原先内容向右移动.
+* 清空块 (clear-rectangle): **C-x r c**, 把块中内容换成空格.
+* 添加行号 (rectangle-number-lines): **C-x r N**, 在所选行前添加行号, 原先内容右移动.
+* 清除块前空格 (delete-whitespace-rectangle): 把所选择的块之前的空白字符删除, 即把内容向左移动, 相当于 open-rectangle 的逆操作.
+* 块替换字符 (string-rectangle): **C-x r t string RET**, 把所选择的块的每一行都替换成相同的字符.
+* 块插入字符 (string-insert-rectangle): 在所选择的块最前面插入字符.
+* 块选择模式 (rectangle-mark-mode): **C-x SPACE**, 可以在该模式中按照块进行选择, 并使用普通的移除, 删除操作.
+* 把块内容保存到 (copy-rectangle-to-register): **C-x r r R**, 其中 'R' 代表任意字符, 相当于变量名, 指明内容保存的名字.
+* 插入保存的块 (insert-register): **C-x r i R**, 其中 'R' 代表任意字符, 相当于是保存块内容的变量.
+
+
+--------------------------------------------------------------------------------
+
+## 文本排版 ##
+
+* 缩进 (indent-rigidly): **C-x TAB**, 设置选择的行的缩进, 也使用 **C-u** 或者 **M-n** 来指定缩进具体多少列.
+* 设置前缀 (set-fill-prefix): **C-x .**, 设置产生新行的时候自动补全的前缀, 可以和填充段落共同使用.
+* 分行 (split-line): **C-M-o**, 把光标之后的内容移动到下一行相同位置, 其他地方用空格补全.
+* 改变边距: increase-left-margin, decrease-left-margin, increase-right-margin, decrease-right-margin 分别在行左右增加或减少一定距离的空格 (默认 8 个).
+* 填充段落 (fill-paragraph): **M-q**, 自动把行排版成段落, 用空格填充.
+* 插入新行 (electric-newline-and-maybe-indent): **C-j**, 插入一个新行, 根据 mode 和文本的情况来决定是否要缩进.
+* 居中行 (center-line): **M-o M-s**, 把光标所在的行进行居中.
+* 居中段 (center-paragraph): **M-o M-S**, 把光标所在的段进行居中.
+* 居中 (center-region): 默认按照 80 字符宽度居中当前选择的文本.
+
+--------------------------------------------------------------------------------
+
+## 字符替换查询 ##
+
+* 搜索 (isearch-forward): **C-s**, incremental search, 向前增量搜索. **M-n** 下一个搜索词, **M-p** 上一个搜索词. **C-s C-s** 重复搜索.
+* 搜索 (isearch-backward): **C-r**, incremental search, 向后增量搜索. **C-r C-r** 重复搜索.
+* 简单搜索: **C-s ENTER** **C-r ENTER**.
+* 单词搜索: **C-s ENTER C-w** **C-s ENTER C-w**
+* 搜索光标所在单词 (isearch-yank-word): **C-s C-w**
+* 搜索光标到行末字符 (isearch-yank-line): **C-s C-y**
+* 正则搜索 (isearch-forward-regexp): **C-M-s**
+* 正则搜索 (isearch-backward-regexp): **C-M-r**
+* 简单正则搜索 (re-search-forward): **C-M-s ENTER**
+* 简单正则搜索 (re-search-backward): **C-M-r ENTER**
+* 替换 (query-replace): **M-%**, 替换前询问, % 可能需要按 **Shift**, 先输入需要替换的字符串, 再输入需要替换后目的字符串. q 退出询问替换. 如果想要暂停替换而开始编辑, **C-r**, 如果要继续替换, **C-M-c**.
+* 替换 (replace-string): **M-x replace-string**, 直接替换所有符合要求的字符串.
+* 正则替换 (query-replace-regexp): **C-M-%**, 根据正则表达式进行替换.
+* 字符换位 (transpose-chars): **C-t**, 把 point 前面的字符于后面一个交换, point 也后移动.
+* 单词换位 (transpose-words): **M-t**, 把单词换位, 但并不移动标点符号.
+* 行换位 (transpose-lines): **C-x C-t**, 把前后两行换位, 如把空行和上一行换位.
+* 句换位 (transpose-sentences).
+* 段换位 (transpose-paragraphs).
+* 将字母改为大写 (upcase-word): **M-u** (upper), 将光标之后本单词所有字母改为大写.
+* 将字母改为小写 (downcase-word): **M-l** (lower), 将光标之后本单词所有字母改为小写.
+* 首字母大写 (captalize-word): **M-c**, 把单词首字母大写.
+* 补全 (dabbrev-expand): **M-/**, 根据少量字母自动补全重复出现单词. 
+* 制表符换空格 (untabify): 把文件中制表符换成相应长度的空格.
+* 空格换制表符 (tabify): 把文件中相应的空格换成制表符号.
+
+## 重复命令 ##
+
+* 重复 n 次命令: **M-n COMMAND**, n 为要重复的次数, COMMAND 是命令.
+* 重复命令 (universal-argument): **C-u (n) COMMAND**, 如果加上 n 则和 **M-n** 类似, 如果不加 n, 则是四次, 多个 **C-u** 是 4 的倍数次.
+
+--------------------------------------------------------------------------------
+
+## 文件或窗口 ##
+
+### 文件操作 File ###
+
+* 打开文件 (find-file): **C-x C-f** 再输入文件名.
+* 更换打开文件 (find-altenate-file): **C-x C-v** 再输入文件名, 如果打开的文件不是想要的, 可以替换.
+* 插入文件 (insert-file): **C-x i** 再输入需要插入的文件名.
+* 保存文件 (save-buffer): **C-x C-s** 把修改的文件按照原名称保存.
+* 保存文件 (write-file): **C-x C-w** 把文件另存为别的名字, 原文件不被改变.
+* 保存一些文件 (save-some-buffers): **C-x s**, 批量保存文件: 'y' 保存; 'n' 放弃保存; '!' 不再询问直接保存所有; 'C-r' 查看文件; 'd' (diff-buffer-with-file) 查看缓存和文件的区别; '.' 仅仅想要保存当前文件而不再询问; 'q' 退出.
+* 查看缓冲和文件的差异 (diff-buffer-with-file): 查看缓存和保存在硬盘上的文件的区别.
+
+### 缓冲操作 Buffer ###
+
+* 关闭缓冲 (kill-buffer): **C-x-k**, 可以输入名称关闭缓冲.
+* 关闭缓冲 (kill-matching-buffers): 根据正则表达式关闭缓冲.
+* 关闭一些缓冲 (kill-some-buffers).
+* 打开缓冲列表 (list-buffers): **C-x C-b**, 把所有缓冲以列表形式展现, 也可以按 Ctrl 和左键.
+* 切换缓冲 (switch-to-buffer): **C-x b**, 切换不同的缓冲.
+* 缓冲重命名 (rename-buffer): 重命名缓冲.
+* 重命名当前缓冲为不重复名称 (rename-uniquely): 一般直接增加数字
+* 只读模式 (read-only-mode): **C-x C-q**, 把当前的缓冲切换成只读模式.
+
+#### 缓冲列表 Buffer List ####
+
+缓冲列表有一些特别的操作, 缓冲列表使用 **C-x C-b** 打开. 在缓冲列表里面, 有一些是立即执行的, 另外一些则要确认后才执行.
+
+```
+CRM Buffer                 Size Mode             File
+  * emacs_control.md       6428 Markdown         ~/Documents/emacs_control.md
+  * emacs_mode.md           851 Markdown         ~/Documents/emacs_mode.md
+ %  *About GNU Emacs*       795 Fundamental      
+ %  *GNU Emacs*             718 Fundamental      
+
+```
+在缓冲列表里面, "CRM" 代表操作, 读写情况, 修改情况; "Buffer" 是不同的缓冲的名字, 通过 rename-buffer 可以改变; "Size" 是缓冲的大小; "File" 代笔的是缓冲对应的存在硬盘上的文件, 有的缓冲没有对应的文件就留空. 在 "CRM" 中, "C" 下面可以有诸多标记: "." 当前活动的缓冲, 就是光标所在的缓冲; "D" 代表删除缓冲; "S" 代表保存缓冲. "R" 一栏下面: 空格代表可以写, "%" 代表只读. "M" 一栏下面: "*" 代表距离上次保存有修改, 空格表示没有修改.
+
+##### 立即执行 #####
+
+* **p**, **C-p**: 上移光标.
+* **n**, **C-n**: 下移光标.
+* **u**: 取消当前标记并下移光标.
+* **DEL**: 取消上一个标记, 上移光标.
+* **x**: 执行所有标记.
+* **~**: 把缓冲标记为未改变.
+* **%**: 缓冲只读模式转变.
+* **1**: 把光标所选择缓冲在全窗口显示.
+* **2**: 把光标所选择的缓冲和下一个缓冲使用两个横向排列的窗口显示.
+* **f**: 在缓冲列表窗口显示光标所选择的缓冲.
+* **o**: 把另一个窗口内容替换为所选择的缓冲.
+* **m**: 对多个缓冲标记为在窗口显示, 在按下 **v** 后把所有选择的缓冲用不同的窗口都显示出来.
+* **q**: 退出缓冲列表.
+
+##### 标记 #####
+
+一些命令只对缓冲做标记, 只有在下按 **x** 之后才执行. 标记一般显示在 "CRM" 中的 "C" 栏.
+
+* **d**: 标记缓冲为删除, "D".
+* **k**: 标记缓冲为删除, "D".
+* **s**: 保存缓冲, 在 "CRM" 的 "M" 栏显示 "S".
+
+### 窗口操作 Window ###
+
+* 纵向分割窗口 (split-window-below): **C-x 2**.
+* 横向分割窗口 (split-window-right): **C-x 3**.
+* 增加窗口高度 (enlarge-window): **C-x ^**, 增加光标所在窗口高度, 可能需要 SHIFT.
+* 减小窗口高度 (shrink-window): 减小光标所在窗口高度.
+* 增加窗口宽度 (enlarge-window-horizontally): **C-x }**, 增加光标所在窗口宽度 (一个字符的宽度), 可能需要 SHIFT.
+* 减小窗口宽度 (shrink-window-horizontally): **C-x {**, 增加光标所在窗口宽度 (一个字符的宽度), 可能需要 SHIFT.
+* 平衡窗口 (balance-windows): **C-x +**, 可能需要 SHIFT, 把窗口平均分配大小.
+* 缩小窗口高度 (shrink-window-if-larger-than-buffer): **C-x -**, 如果窗口高度比缓冲行数更多, 则缩小窗口.
+* 在另一个窗口打开文件 (find-file-other-window): **C-x 4 C-f** **C-x 4 f**, 相当于 **C-x C-f**, 不过使用另一个窗口或新建一个窗口.
+* 在另一个窗口只读打开缓冲 (find-file-read-only-other-window): **C-x 4 r**, 在另一个窗口以只读的模式打开文件. 可以使用 **C-x C-q** 来取消只读.
+* 在另一个窗口打开缓冲 (swith-to-buffer-other-window): **C-x 4 b**, 相当于 **C-x b** , 不过使用另一个窗口或新建一个窗口.
+
+
+### 框架操作 Frame ###
+
+* 打开新框架 (make-frame-command): **C-x 5 2**, 新建一个框架, 就是另外一个 emacs 界面.
+* 关掉其他框架 (delete-other-frames): **C-x 5 1**, 关掉其他的窗口.
+* 关掉本框架 (delete-frame): **C-x 5 0**, 关掉本框架.
+* 切换框架 (switch-to-buffer-other-frame): **C-x 5 b**, 切换到另外的框架, 相当于切换缓冲的 **C-x b**.
+* 另一个框架 (other-frame): **C-x 5 o**, 换到上一个激活的框架, 相当于 **C-x o**.
+* 在另一个框架打开文件 (find-file-other-frame): **C-x 5 f**, 在另一个框架打开文件.
+* 在另一个框架打开只读文件 (find-file-read-only-other-frame): **C-x 5 r**, 只读在另一个框架打开文件.
+
+--------------------------------------------------------------------------------
+
+## 书签 ##
+
+当建立书签的时候, Emacs 会在家目录建立一个文件 .emacs.bmk. 书签指向的是文件中的位置而不是内容, 所以内容改变了, 书签指向的位置没有改变.
+
+* 建立书签 (bookmark-set): **C-x r m**
+* 移动到一个书签 (bookmark-jump): **C-x r b**
+* 书签重命名 (bookmark-rename)
+* 删除书签 (bookmark-remove)
+* 书签目录 (bookmark-bmenu-list): **C-x r l**, 打开书签目录. 书签目录也有相应的操作.
+
+--------------------------------------------------------------------------------
+

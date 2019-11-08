@@ -1,0 +1,129 @@
+Title: Python 学习笔记: functools module
+Date: 2016-10-26 22:17
+Modified: 2016-11-02 20:24
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: functools module.
+
+functools 中提供了很多方便的工具. 如 reduce 函数的功能类似于在 R 中常用的 Reduce 函数, 可以把接受两个元素的函数累积运算到所有元素.
+
+### 函数 ###
+
+#### reduce ####
+
+`reduce` 函数类似于 R 中的 Reduce 函数, 是把一个双目函数累积地运用到整个序列的元素上.
+
+```
+reduce(lambda x, y: x + y, [1, 2, 3, 4, 5])
+# 15
+```
+
+#### partial ####
+
+`partial` 函数 (实际上是类) 是用来给一些函数预设一定的参数, 在接下来的调用中就不需要重复传入参数了. `partial` 的 func 属性是其接受的原来的函数, keywords 属性里则是保存了原来函数的参数的名和值的 dict.
+
+```
+int('1001', base = 2)
+# 9
+two2ten = partial(int, base = 2)
+two2ten('1001')
+# 9
+```
+
+`partialmethod` 类似于 `partial` 函数, 不过是用来对类的 method 进行预先设置.
+
+```
+class Call:
+    def __init__(self):
+        pass
+    def callout(self, sound):
+        return sound
+    dog = partialmethod(callout, sound = 'Woof!')
+    cat = partialmethod(callout, sound = 'Mew!')
+animall = Call()
+animall.dog()
+# 'Woof!'
+animall.cat()
+# 'Mew!'
+```
+
+
+### 修饰器 ###
+
+#### lru_cache ####
+
+`lru_cache` 是一个函数修饰器, 用来储存一些频繁调用相同参数的函数的结果, 当再次使用函数的时候可以直接返回结果而不用计算, 提高了速度, 是用空间换时间的策略.
+
+```
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n-1) + fib(n-2)
+
+@lrc_cache(100)
+def fib2(n):
+    if n < 2:
+        return n
+    return fib2(n-1) + fib2(n-2)
+# %timeit [fib(x) for x in range(10)]
+# 10000 loops, best of 3: 53.7 µs per loop
+# %timeit [fib2(x) for x in range(10)]
+# The slowest run took 5.22 times longer than the fastest.
+# This could mean that an intermediate result is being cached.
+# 100000 loops, best of 3: 2.97 µs per loop
+```
+
+可以看到当频繁地使用相同的参数调用函数的时候, lrc_cache 修饰的函数有很高的运行效率.
+
+#### total_ordering ####
+
+`total_ordering` 是一个类修饰器, 当一个类只定义了 `__eq__()` 和 `__lt()__`, `__le__()`, `__gt__()`, `__ge__()` 中的一种时, total_ordering 可以帮助补全其他的方法.
+
+#### wraps ####
+
+`wraps` 是用来帮助在使用自己编写的函数修饰器的时候能够保留原函数的信息. 官方文档提供了例子.
+
+```
+def my_decorator(f):
+    @wraps(f)
+    def wrapper(*args, **kwds):
+        print('Calling decorated function')
+        return f(*args, **kwds)
+    return wrapper
+
+def my_decorator2(f):
+    def wrapper2(*args, **kwds):
+        print('Calling decorated function2')
+        return f(*args, **kwds)
+    return wrapper
+
+@my_decorator
+def example():
+    """Docstring"""
+    print('Called example function')
+
+example()
+# Calling decorated function
+# Called example function
+
+example.__name__
+# 'example'
+example.__doc__
+# 'Docstring'
+
+@my_decorator2
+def example2():
+    """Docstring2"""
+    print('Called example2 function')
+
+example2()
+# Calling decorated function2
+# Called example2 function
+example2.__name__
+# 'wrapper2'
+example2.__doc__
+#
+```
+
+可以看到在不在自己定义的修饰器中使用 wraps, 其修饰的函数的属性实际上是返回的修饰函数的属性. 而 wraps 可以让被修饰的函数的依然保留之前的属性.

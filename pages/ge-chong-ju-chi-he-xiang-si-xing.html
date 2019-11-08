@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>各种距离和相似性</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>距离</h2>
+<h3>Euclidean Distance</h3>
+<p>欧几里得距离是在三维世界中最为常用的距离.</p>
+<h3>Kendall tau Distance</h3>
+<p>计算两个排序的距离. 两个排序的每一对可能的搭配, 计算其中不相符的排序的比例.</p>
+<p>如(wikipedia 例子):</p>
+<table>
+<thead>
+<tr>
+<th>Person</th>
+<th>A</th>
+<th>B</th>
+<th>C</th>
+<th>D</th>
+<th>E</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rank by Height</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Rank by Weight</td>
+<td>3</td>
+<td>4</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+</tr>
+</tbody>
+</table>
+<p>其可能的配对排序为:</p>
+<table>
+<thead>
+<tr>
+<th>Pair</th>
+<th>Height</th>
+<th>Weight</th>
+<th>Count</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(A,B)</td>
+<td>1 &lt; 2</td>
+<td>3 &lt; 4</td>
+<td></td>
+</tr>
+<tr>
+<td>(A,C)</td>
+<td>1 &lt; 3</td>
+<td>3 &gt; 1</td>
+<td>X</td>
+</tr>
+<tr>
+<td>(A,D)</td>
+<td>1 &lt; 4</td>
+<td>3 &gt; 2</td>
+<td>X</td>
+</tr>
+<tr>
+<td>(A,E)</td>
+<td>1 &lt; 5</td>
+<td>3 &lt; 5</td>
+<td></td>
+</tr>
+<tr>
+<td>(B,C)</td>
+<td>2 &lt; 3</td>
+<td>4 &gt; 1</td>
+<td>X</td>
+</tr>
+<tr>
+<td>(B,D)</td>
+<td>2 &lt; 4</td>
+<td>4 &gt; 2</td>
+<td>X</td>
+</tr>
+<tr>
+<td>(B,E)</td>
+<td>2 &lt; 5</td>
+<td>4 &lt; 5</td>
+<td></td>
+</tr>
+<tr>
+<td>(C,D)</td>
+<td>3 &lt; 4</td>
+<td>1 &lt; 2</td>
+<td></td>
+</tr>
+<tr>
+<td>(C,E)</td>
+<td>3 &lt; 5</td>
+<td>1 &lt; 5</td>
+<td></td>
+</tr>
+<tr>
+<td>(D,E)</td>
+<td>4 &lt; 5</td>
+<td>2 &lt; 5</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>其中有四个配对的排序是不相同的, 所占的比例为所有的配对的 0.4,
+其 Kendall tau 距离为 0.4.</p>
+<p>Python 中有计算函数:</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">kendalltau</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">initial_lexsort</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Hamming Distance</h3>
+<p>计算两个相同长度的序列的距离. 其计算方法是把所有不同的位置的个数比上整个序列的长度,
+完全相同的时候距离为 0, 完全不同的时候距离为 1.</p>
+<p>例如:</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">as</span> <span class="nn">dist</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="c1"># 0.0</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="c1"># 0.25</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="c1"># 0.5</span>
+<span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1"># 1.0</span>
+</pre></div>
+
+
+<h2>相似性</h2>
+<h3>cosine similarity</h3>
+<p>cosine similarity</p>
+<div class="highlight"><pre><span></span><span class="n">cosine.similarity.numeric</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">return</span><span class="p">(</span><span class="nf">sum</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="nf">sqrt</span><span class="p">(</span><span class="nf">sum</span><span class="p">(</span><span class="n">a^2</span><span class="p">)</span><span class="o">*</span><span class="nf">sum</span><span class="p">(</span><span class="n">b^2</span><span class="p">)))</span>
+<span class="p">}</span>
+<span class="nf">cosine.similarity.numeric</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">4</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">4</span><span class="p">))</span>
+<span class="c1"># 0.8</span>
+</pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

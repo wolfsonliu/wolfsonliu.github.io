@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>linux 系统从软件源安装 texlive</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>我需要使用 latex 来生成 pdf, 一般在 linux 下面采用的是 texlive. 因为我
+对 latex 或者 texlive 了解很有限, 所以我一般会直接下载的安装脚本, 把整
+个 texlive 安装到电脑上, 占用大约 4G 的空间. 既然一般的 linux 发行版的
+软件源中都有 texlive, 那我就不妨去从软件源安装, 更方便使用和管理, 还可
+以不安装太多的包以节省空间.</p>
+<h3>Fedora 下的 texlive</h3>
+<p>我使用的是 Fedora 24 发行版, 其中已经把 texlive 中的包按照一定的功能进
+行了集合, 通过一条命令就可以安装许多相关的 texlive 包. 例如一个集合可
+能叫做 <code>texlive-scheme-basic</code>, 那么只要安装这个集合就可以把 texlive 的
+基础软件都安装上, <code>sudo dnf install texlive-scheme-basic</code>. Fedora 下对
+texlive 的分包如下可以有更大块的 (scheme), 和更为细分的 (collection),
+根据目的等不同进行区分, 有重复有差别.</p>
+<p>包含的 scheme 有:</p>
+<ul>
+<li>texlive-scheme-basic: 是 texlive 最基础的包, 包含 tex latex 等常用的
+  基础的包和语言支持.</li>
+<li>texlive-scheme-context: ConTeXt 所需要的包.</li>
+<li>texlive-scheme-full: texlive 中所包括的所有的包.</li>
+<li>texlive-scheme-gust: GUST tex live 包.</li>
+<li>texlive-scheme-medium: 中等的集合, 包括 small 中所有的和更多的其他的包和语言支持.</li>
+<li>texlive-scheme-minimal: 只有 plain tex 相关的包.</li>
+<li>texlive-scheme-small: 小集合, 有 basic 中的包, 加上 xetex, metapost 和一些语言支持.</li>
+<li>texlive-scheme-tetex: teTex 所需要的包, 比中等的多一些.</li>
+<li>texlive-scheme-xml: XML 相关的包.</li>
+</ul>
+<p>另外更为细分的 collection 有:</p>
+<ul>
+<li>texlive-collection-basic: 基本的程序和包.</li>
+<li>texlive-collection-bibtexextra: 更多的 BibTex 风格.</li>
+<li>texlive-collection-binextra: Tex 辅助程序包.</li>
+<li>texlive-collection-context: ConTeXt 和包.</li>
+<li>texlive-collection-documentation-arabic: 阿拉伯语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-base: 基础文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-bulgarian: 保加利亚语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-chinese: 中文的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-czechslovak: 捷克斯洛伐克的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-dutch: 荷兰语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-english: 英语文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-finnish: 芬兰语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-french: 法语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-german: 德语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-italian: 意大利语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-japanese: 日语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-korean: 朝鲜语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-mongolian: 蒙古语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-polish: 波兰语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-portuguese: 葡萄牙语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-russian: 俄语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-serbian: 塞尔维亚语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-slovenian: 斯洛文尼亚语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-spanish: 西班牙语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-thai: 泰语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-turkish: 土耳其语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-ukrainian: 乌克兰语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-documentation-vietnamese: 越南语的文档, 可以使用 texdoc 查询.</li>
+<li>texlive-collection-fontsextra: 比基础包更多的字体.</li>
+<li>texlive-collection-fontsrecommended: 推荐的字体.</li>
+<li>texlive-collection-fontutils: 图形和字体工具.</li>
+<li>texlive-collection-formatsextra: 更多的格式支持.</li>
+<li>texlive-collection-games: 游戏相关的包, 如象棋棋谱的包等.</li>
+<li>texlive-collection-genericextra: 更多的一般的包.</li>
+<li>texlive-collection-genericrecommended: 推荐的一般的包.</li>
+<li>texlive-collection-htmlxml: HTML/SGML/XML 支持.</li>
+<li>texlive-collection-humanities:</li>
+<li>texlive-collection-langafrican: 非洲语言支持.</li>
+<li>texlive-collection-langarabic: 阿拉伯语支持.</li>
+<li>texlive-collection-langarmenian: 亚美尼亚语支持.</li>
+<li>texlive-collection-langcjk: 中文 日文 韩文支持.</li>
+<li>texlive-collection-langcroatian: 克罗地亚语支持.</li>
+<li>texlive-collection-langcyrillic: 斯拉夫语支持.</li>
+<li>texlive-collection-langczechslovak: 捷克斯洛伐克语言支持.</li>
+<li>texlive-collection-langdanish: 丹麦语支持.</li>
+<li>texlive-collection-langdutch: 荷兰语支持.</li>
+<li>texlive-collection-langenglish: 英语支持.</li>
+<li>texlive-collection-langfinnish: 芬兰语支持.</li>
+<li>texlive-collection-langfrench: 法语支持.</li>
+<li>texlive-collection-langgerman: 德语支持.</li>
+<li>texlive-collection-langgreek: 希腊语支持.</li>
+<li>texlive-collection-langhebrew: 希伯来语支持.</li>
+<li>texlive-collection-langhungarian: 匈牙利语支持.</li>
+<li>texlive-collection-langindic: 印度语支持.</li>
+<li>texlive-collection-langitalian: 意大利语支持.</li>
+<li>texlive-collection-langlatin: 拉丁语支持.</li>
+<li>texlive-collection-langlatvian: 拉脱维亚语支持.</li>
+<li>texlive-collection-langlithuanian: 立陶宛语支持.</li>
+<li>texlive-collection-langmongolian: 蒙古语支持.</li>
+<li>texlive-collection-langnorwegian: 挪威语支持.</li>
+<li>texlive-collection-langother: 其他语言.</li>
+<li>texlive-collection-langpolish: 波兰语支持.</li>
+<li>texlive-collection-langportuguese: 葡萄牙语支持.</li>
+<li>texlive-collection-langspanish: 西班牙语支持.</li>
+<li>texlive-collection-langswedish: 瑞典语支持.</li>
+<li>texlive-collection-langtibetan: 藏语支持.</li>
+<li>texlive-collection-langturkmen: 土库曼语支持.</li>
+<li>texlive-collection-langvietnamese: 越南语支持.</li>
+<li>texlive-collection-latexextra: 额外的 LaTeX 相关的包.</li>
+<li>texlive-collection-latexrecommended: 推荐的 LaTeX 相关的包.</li>
+<li>texlive-collection-latex: LaTeX 必需的包.</li>
+<li>texlive-collection-luatex: LuaTeX 相关的包.</li>
+<li>texlive-collection-mathextra: 额外的数学包.</li>
+<li>texlive-collection-metapost: MetaPost 和 MetaFont 相关的包.</li>
+<li>texlive-collection-music: 音乐相关的包.</li>
+<li>texlive-collection-omega: Omega (TeX 扩展) 相关的包.</li>
+<li>texlive-collection-pictures: 图像 图表相关的包.</li>
+<li>texlive-collection-plainextra: 额外的 plain TeX 的包.</li>
+<li>texlive-collection-pstricks:</li>
+<li>texlive-collection-publishers: 出版商的一些格式 模版等.</li>
+<li>texlive-collection-science: 自然科学和计算机科学的包.</li>
+<li>texlive-collection-texinfo:</li>
+<li>texlive-collection-xetex: XeTeX 相关的包.</li>
+</ul>
+<h4>安装文档</h4>
+<p>在安装完所需的包后, 我按照习惯使用 texdoc 去查看文档来了解所需要使用的
+包的使用方法, 结果根本找不到文档, 因为所需要的包的 pdf 文档并没有安装
+到本地. 这就需要自己再从源上去安装这些文档. 可以通过下面的命令方便地安
+装所缺失的 pdf 文档.</p>
+<div class="highlight"><pre><span></span><span class="nv">packages</span><span class="o">=</span>$<span class="ss">(</span><span class="nv">dnf</span> <span class="nv">search</span> <span class="nv">installed</span> <span class="o">|</span> <span class="nv">grep</span> <span class="s1">&#39;</span><span class="s">texlive</span><span class="s1">&#39;</span> <span class="o">|</span> <span class="nv">cut</span> <span class="o">-</span><span class="nv">d</span><span class="s1">&#39;</span><span class="s"> </span><span class="s1">&#39;</span> <span class="o">-</span><span class="nv">f1</span> <span class="o">|</span> <span class="nv">sed</span> <span class="s1">&#39;</span><span class="s">s/\.x86_64/-doc/</span><span class="s1">&#39;</span><span class="ss">)</span>
+
+<span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> ${<span class="nv">packages</span>}<span class="c1">; do</span>
+    <span class="nv">yes</span> <span class="o">|</span> <span class="nv">sudo</span> <span class="nv">dnf</span> <span class="nv">install</span> ${<span class="nv">x</span>}
+<span class="nv">done</span>
+</pre></div>
+
+
+<p>当文档安装完成后, 就可以在 bash 中使用 texdoc 程序方便地调出相应的 texlive 包的说明文档了.</p>
+<h3>Ubuntu 下的 texlive</h3>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

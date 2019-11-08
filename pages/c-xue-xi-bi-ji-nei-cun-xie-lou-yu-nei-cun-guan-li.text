@@ -1,0 +1,178 @@
+Title: C++ 学习笔记：内存泄漏与内存管理
+Date: 2015-12-14 20:18
+Modified: 2015-12-21 21:40
+Category: 壹零零壹
+Tags: memory management, c/c++
+Authors: Wolfson Liu
+Summary: c++ 内存管理.
+
+### 内存泄漏 Memory Leak ###
+
+内存泄漏指的是程序错误管理内存, 以至于不再需要的内存不被释放. 内存泄漏实际上是资源泄漏（Resource Leak）的一种, 资源泄漏指的是不被程序使用的计算机资源没有被释放. 在 C++ 的面向对象的编程中, 就是因为没有处理好析构函数（destructor）. 我在编写数值模拟计算的程序的时候就遇到了这种情况, 我没有明确指定析构函数, 完全依靠自动生成的析构函数, 在程序运行过程中, 内存占用不断增加, 直到程序进程被终止, 也就是所谓的“程序衰老”（Software aging）. 
+
+内存泄漏不一定都像我写的这个程序一样会造成问题. 如果一个程序很简单, 运行时间很短, 且没有持续消耗内存的过程, 那么即是有内存泄漏的问题, 也没有影响. 泄漏的内存会在程序终止的时候由操作系统释放. 根据维基百科上面的内容, 下面一些情况, 如果发生内存泄漏会造成严重问题. 
+* 程序会运行相当长时间, 在运行过程中会不断消耗内存, 如一些嵌入式系统中的程序, 可能运行若干年, 服务器后台程序. 
+* 有众多一次性任务申请新的内存分配的程序, 如电脑游戏等. 
+* 可使用的内存很有限, 如嵌入式系统. 
+* 系统设备驱动. 
+* 程序结束后不自动释放内存的系统. 
+
+Python 有很好的 Garbage Collection 系统, 这也是我在使用 Python 的时候根本没有考虑内存泄漏的原因. 而 C/C++ 没有自动的 Garbage Collection, 我在写程序的时候没有去注意这个问题, 所以程序出现了内存泄漏, 以至于计算较多抽样的时候程序会持续消耗内存直到被系统终止. 常畅学长说了一句话, C/C++ 十分信赖程序员, 所以没有自动的内存管理系统. 当然, 使用自动的内存管理会很方便编程, 同时, 也会消耗一定性能. 我还是个初学者, 技艺不精, 得努力才好. 
+
+在 C/C++ 编程的时候会采用 Resource Acquisition Is Initialization RAII 的方法, 即在起始阶段动态分配内存, 那么在使用结束之后要删除. 使用 RAII 这种方法, 最需要注意的就是, 该类型对象需要自己对内存释放负责, 即应该包含能够释放内存的成员函数. 对于 C++ 的一些容器, 因为有了良好的设计, 也会有自动释放内存的能力, 但是自己编写的类则需要注意. 
+```
+// C version
+#include <stdlib.h>
+
+void f(int n)
+{
+  int* array = calloc(n, sizeof(int)); // apply memory here.
+  do_some_work(array);
+  free(array); // free memory here.
+}
+```
+```
+// C++ version
+#include <vector>
+
+void f(int n)
+{
+  std::vector<int> array (n);
+  do_some_work(array);
+  // memory managed by vector.
+}
+```
+
+所以, 如果需要动态申请空间, 就应该在使用结束后进行释放. 内存泄漏发生在指针的使用, 如果在指针所指的内存未释放就将指针重新设置, 则会造成内存泄漏的问题. 实际上, 可以采用 Rule of Five 来指导 C++ 编程: 如果一个类需要编写自定义的 destructor, copy/move constructor, copy/move assignment 中任意一种, 那么也需要自定义其他四种. 这样在 destructor 中就可以处理内存释放问题. 如果使用智能指针, 将更方便管理内存使用.
+
+--------------------
+
+### 动态分配 Dynamic allocation ###
+
+内存泄漏往往和动态分配空间相关 (也就是 c 中的 malloc realloc calloc free 和 c++ 中的 new delete). 如果不需要动态分配空间则不会出现内存泄漏的问题. 但是有些情况需要使用动态分配. 比如说, 我的一个数列需要根据输入的参数来确定大小并进行赋值, 当然, 可以定义一个足够大的数列, 但是, 这样会使得程序有限制性. 这种情况下就需要使用动态分配. 以下几种情况需要使用动态分配. 不管是什么情况下, 应该使用能够自行管理内存的类型, 防止自己忘记释放内存造成内存泄漏. 当不得不去管理内存的时候, 可以在小范围内使用 new 和 delete 函数来管理, 在范围之外再转换成自动管理的方式.
+
+1. 编译的时候无法确定变量需要使用的最大空间: 如果需要根据某些函数来确定内存分配大小或者根据输入来分配内存大小, 则需要使用动态分配的方法.
+2. 需要生成一个非常大的对象: 静态分配的对象在编译的时候就确定了, 会被存在栈 stack 中, 而动态分配的对象会存在堆 heap 中. 如果需要生成的对象非常大, 在栈的使用上面会有问题, 所以需要借用堆来存放. 
+
+--------------------
+
+### 使用指针 ###
+
+因为使用动态分配需要使用指针进行配合. 指针方便使用, 但对于我这样的新手来说, 使用起来有风险. 我应该尽量减少使用指针的情况, 除非真的知道自己在干什么. 在以下几种情况下需要使用指针.
+
+1. 需要引用语义(Reference semantics): 在调用函数的时候, 有的时候我需要函数处理的是我所传递的参数的本身, 而不是参数的复制, 这个时候, 我需要使用引用形参或者指针形参作为函数的参数类型.
+2. 多态性: 如果我想要单个变量能够有不同的类型, 这个时候需要使用指针. 比如说使用句柄(handle)类, 句柄类对象将负责管理从基础类继承的类对象, 而不用用户去管理.
+3. C++ 兼容 C: 在使用一些 C 的函数的时候, 需要使用指针来兼容 C 的参数.
+
+--------------------
+
+### 内存管理 ###
+
+处理内存泄漏可以有多种方式. 
+
+1. 垃圾收集：Garbage collection, 这种方式被多种语言采用, 如 C# Java VB Python 等. 这种方法非常好用, 但是, 这是一种消耗较多资源的方法, 程序运行远没有 C++ 的效率. 
+2. 智能指针：Smart pointer, 这是 C++ 11 中采取的方式, 只会消耗相对小的资源, 并不会很大范围内影响程序的效率. 
+
+#### 智能指针 ####
+
+智能指针可以像内置的指针类型一样, 但是可以帮助管理对象, 决定什么时候应该删除对象. 所以, 使用智能指针可以不用担心该指针会造成内存泄漏的问题. 如果不使用智能指针, 我们就需要去考虑在动态分配了内存后, 什么时候应该使用 delete, 否则可能会引起内存泄漏, 同时, 还要注意不要指向已经被删除的对象. 
+
+C++ 11 中有智能指针的 library, 可以通过 `#include <memory>` 来实现（编译的时候需要添加 `-std=c++11` 选项）. 其中的智能指针包括三种：shared ptr；weak ptr；unique ptr. shared ptr 可以指向实际的对象, 并且通过该类型进行赋值之后, 该类型的计数器会记录, 等到指向对象的计数器为 0 的时候, 将自动释放对象. 如果只使用 shared ptr 会出现一个问题, 如果若干个 shared ptr 出现环, 那么将无法最终释放. 所以, 在这种情况下需要使用 weak ptr, weak ptr 不会影响对象的生存期, 却知道什么时候该对象的生存期结束, 同时将释放. shared ptr 和 weak ptr 均指向 manager object, manager object 中有 shared ptr 和 weak ptr 的计数器和指向 managed object 的指针. 当 shared ptr 的计数器为 0 的时候 managed object 将被释放, 当 shared ptr 和 weak ptr 的计数器均为 0 的时候, manager object 将被释放. 
+
+##### Shared ptr #####
+
+使用智能指针, 需要在定义智能指针的时候就对其进行赋值, 而不应该留下空智能指针. 如果确实需要留下空智能指针, 在后面赋值的时候需要使用 reset() 函数 `oneshared_ptr.reset(new int(10))`. 对于 shared ptr, 可以通过 get() 函数获得内置的指针类型, 但是这样做并不好. 如果使用智能指针, 就应该在所有地方都应用智能指针, 尽量不再使用内置的指针类型, 否则会造成对象无法正常释放. 
+```
+class Base {};
+class Derived : public Base {};
+...
+shared_ptr<Derived> dp1(new Derived);
+// two allocation: manager obj and managed obj. slow.
+shared_ptr<Base> bp1 = dp1;
+shared_ptr<Base> bp2(dp1);
+shared_ptr<Base> bp3(new Derived);
+shared_ptr<Base> bp(make_shared<Derived>(argument list));
+// only one allocation! fast.
+```
+在使用智能指针的时候, 相关的类中都需要有 virtual 的析构函数, 这样才能使得智能指针在释放对象的时候选择正确的方式进行析构. 可以使用 make shared 函数, 这样就避免了直接使用 new, make shared 函数和 shared ptr 使得 new 和 delete 都不用显示地进行使用, 使得代码更可靠. 
+
+在 boost 库中, shared ptr 可以支持 array, 可以通过 `shared_ptr<int[10]> a` 实现, 方括号中如果写具体数字, 则会限制 [] 调用到一定的范围之内. 而在 memory 中不支持 array.
+
+##### Weak ptr #####
+
+对于 weak ptr, 其没有定义 * 和 -> 操作符, 也没有 get(), 所以使用 weak ptr 不会因为没有注意到产生指针指向问题和内存泄漏问题. 如果要将 weak ptr 的指向赋值给 shared ptr, 需要使用 weak ptr 的 lock() 函数, 而不能直接使用赋值操作符. 
+```
+void do_it(weak_ptr<Thing> wp){
+shared_ptr<Thing> sp = wp.lock(); // get shared_ptr from weak_ptr
+if(sp)
+sp->defrangulate(); // tell the Thing to do something
+else
+cout << "The Thing is gone!" << endl;
+}
+```
+当使用从 weak ptr 赋值的 shared ptr 的时候, 需要使用 if 去检验 shared ptr 对象是否存在, 直接检验即可得到 true or false 的结果. 
+
+##### Unique ptr #####
+
+如果需要使用指向 array 的指针的时候, 需要使用 unique ptr, 因为 unique ptr 支持 delete [] 的释放操作, 而对于没有增加函数的 shared ptr 则只会调用 delete, 这样就会造成 array 除了第一项后面的内存泄漏. 
+```
+unique_ptr<int[]> p(new int[10]);
+```
+因为 `unique_ptr` 没有定义 operator+, 所以 `unique_ptr` 不能像 build-in 的指针那样指定数组的时候可以直接使用 + 来指向数组的某一位. 如果要使用, 就可以考虑在程序内部使用传统的方法建立和释放动态存储空间来使用诸如 `max_element` 等泛型函数. 在一个小范围内可控地使用 new 和 delete 还是可以的. 
+
+在 boost 库中, 相应的为 `scoped_ptr`
+
+##### shared this pointer #####
+
+在类中, 不免要用到 this 指针, 最好使得 this 指针也是 shared ptr. 在 memory 头文件中也定义了一个可继承的类：`enable_shared_from_this<>`. 当自己编写的类继承该类, 就可以在类成员函数中是用 `shared_from_this()` 来得到 `shared_ptr` 类型的 this 指针. 网上的例子如下. 
+```
+#include <memory>
+#include <iostream>
+ 
+struct Good: std::enable_shared_from_this<Good>
+{
+    std::shared_ptr<Good> getptr() {
+        return shared_from_this();
+    }
+};
+ 
+struct Bad
+{
+    std::shared_ptr<Bad> getptr() {
+        return std::shared_ptr<Bad>(this);
+    }
+    ~Bad() { std::cout << "Bad::~Bad() called\n"; }
+};
+ 
+int main()
+{
+    // Good: the two shared_ptr's share the same object
+    std::shared_ptr<Good> gp1(new Good);
+    std::shared_ptr<Good> gp2 = gp1->getptr();
+    std::cout << "gp2.use_count() = " << gp2.use_count() << '\n';
+ 
+    // Bad, each shared_ptr thinks it's the only owner of the object
+    std::shared_ptr<Bad> bp1(new Bad);
+    std::shared_ptr<Bad> bp2 = bp1->getptr();
+    std::cout << "bp2.use_count() = " << bp2.use_count() << '\n';
+} // UB: double-delete of Bad
+```
+输出结果如下：
+```
+gp2.use_count() = 2
+bp2.use_count() = 1
+Bad::~Bad() called
+Bad::~Bad() called
+```
+
+--------------------
+
+###### Reference ######
+
+1. [维基百科-内存泄漏](https://en.wikipedia.org/wiki/Memory_leak)
+2. [C++ 11 智能指针介绍](http://www.umich.edu/~eecs381/handouts/C++11_smart_ptrs.pdf)
+3. [C++ 11 智能指针建议](http://www.informit.com/articles/article.aspx?p=2085179)
+4. [C++ Reference](http://en.cppreference.com/w/cpp/memory/enable_shared_from_this)
+5. [什么时候应该选用指针](http://stackoverflow.com/questions/22146094/why-should-i-use-a-pointer-rather-than-the-object-itself) http://blog.jobbole.com/90147/
+6. [零法则](https://rmf.io/cxx11/rule-of-zero/)
+7. [三法则](https://en.wikipedia.org/wiki/Rule_of_three_(C%2B%2B_programming))

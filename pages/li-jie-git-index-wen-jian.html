@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>理解 Git index 文件</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>Git 在 .git 文件夹下面存放了 index 文件，该文件是 Git stage 的文件信息
+存放地，根据该文件中的内容可以去查看当前有哪些文件或者变化没有被记录。
+而当文件被stage的时候，相应的变化则会被先写入该文件，而后在commit之后
+则会把相应的信息存入 .git/object 文件夹下。通过 git ls-files -s 可以查
+看 index 文件中的 stage 文件的信息。Index 文件是用二进制存储的，包含有
+ctime 和 mtime 时间信息，文件存储的设备信息，磁盘的inode信息，文件的
+mode信息，UID，GID，文件大小，文件的SHA-1码，flag，文件的file path等信
+息。下面以 version 2 的 index 文件为例子。</p>
+<h1>一个例子</h1>
+<p>例如如果我们的项目文件夹下面有两个文件被stage：.gitignore 和 file1。</p>
+<div class="highlight"><pre><span></span>.
+├── .git
+│ ├── COMMIT_EDITMSG
+│ ├── HEAD
+│ ├── branches
+│ ├── config
+│ ├── description
+│ ├── hooks
+│ │ ├── applypatch-msg.sample
+│ │ ├── commit-msg.sample
+│ │ ├── fsmonitor-watchman.sample
+│ │ ├── post-update.sample
+│ │ ├── pre-applypatch.sample
+│ │ ├── pre-commit.sample
+│ │ ├── pre-push.sample
+│ │ ├── pre-rebase.sample
+│ │ ├── pre-receive.sample
+│ │ ├── prepare-commit-msg.sample
+│ │ └── update.sample
+│ ├── index
+│ ├── info
+│ │ └── exclude
+│ ├── logs
+│ │ ├── HEAD
+│ │ └── refs
+│ │ └── heads
+│ │ └── master
+│ ├── objects
+│ │ ├── 2a
+│ │ │ └── 65a9ad4587f6c689dc66b77917ff96f5afe653
+│ │ ├── <span class="m">30</span>
+│ │ │ └── 3ff981c488b812b6215f7db7920dedb3b59d9a
+│ │ ├── <span class="m">68</span>
+│ │ │ └── 23658394fecca1415c17bccebf8dba3ed0cc54
+│ │ ├── 7e
+│ │ │ └── 03b5bfc52c8e4cf3cb422ef802fa36254d20a5
+│ │ ├── b2
+│ │ │ └── 5c15b81fae06e1c55946ac6270bfdb293870e8
+│ │ ├── bd
+│ │ │ └── c705169c09f886182d5dfe731f241c3a4e0586
+│ │ ├── info
+│ │ └── pack
+│ └── refs
+│ ├── heads
+│ │ └── master
+│ └── tags
+├── .gitignore
+├── file1
+└── file1~
+</pre></div>
+
+
+<p>使用 hexdump 命令去读取 .git/index 文件可以得到：</p>
+<div class="highlight"><pre><span></span><span class="m">00000000</span> <span class="m">44</span> <span class="m">49</span> <span class="m">52</span> <span class="m">43</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> 5b bd 6c c4 <span class="p">|</span>DIRC........<span class="o">[</span>.l.<span class="p">|</span>
+<span class="m">00000010</span> <span class="m">30</span> b2 d1 dc 5b bd 6c c4 <span class="m">30</span> b2 d1 dc <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0d <span class="p">|</span><span class="m">0</span>...<span class="o">[</span>.l.0.......<span class="p">|</span>
+<span class="m">00000020</span> <span class="m">00</span> <span class="m">01</span> a5 f4 <span class="m">00</span> <span class="m">00</span> <span class="m">81</span> a4 <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span>................<span class="p">|</span>
+<span class="m">00000030</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> b2 5c <span class="m">15</span> b8 1f ae <span class="m">06</span> e1 c5 <span class="m">59</span> <span class="m">46</span> ac <span class="p">|</span>.....<span class="se">\.</span>......YF.<span class="p">|</span>
+<span class="m">00000040</span> <span class="m">62</span> <span class="m">70</span> bf db <span class="m">29</span> <span class="m">38</span> <span class="m">70</span> e8 <span class="m">00</span> 0a 2e <span class="m">67</span> <span class="m">69</span> <span class="m">74</span> <span class="m">69</span> <span class="m">67</span> <span class="p">|</span>bp..<span class="o">)</span>8p....gitig<span class="p">|</span>
+<span class="m">00000050</span> 6e 6f <span class="m">72</span> <span class="m">65</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 5b bd 6c <span class="m">62</span> <span class="p">|</span>nore........<span class="o">[</span>.lb<span class="p">|</span>
+<span class="m">00000060</span> 3a <span class="nb">cd</span> d6 6c 5b bd 6c <span class="m">62</span> 3a <span class="nb">cd</span> d6 6c <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0d <span class="p">|</span>:..l<span class="o">[</span>.lb:..l....<span class="p">|</span>
+<span class="m">00000070</span> <span class="m">00</span> <span class="m">01</span> a5 e3 <span class="m">00</span> <span class="m">00</span> <span class="m">81</span> a4 <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span>................<span class="p">|</span>
+<span class="m">00000080</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0b <span class="m">30</span> 3f f9 <span class="m">81</span> c4 <span class="m">88</span> b8 <span class="m">12</span> b6 <span class="m">21</span> 5f 7d <span class="p">|</span>....0?.......!_<span class="o">}</span><span class="p">|</span>
+<span class="m">00000090</span> b7 <span class="m">92</span> 0d ed b3 b5 9d 9a <span class="m">00</span> <span class="m">05</span> <span class="m">66</span> <span class="m">69</span> 6c <span class="m">65</span> <span class="m">31</span> <span class="m">00</span> <span class="p">|</span>..........file1.<span class="p">|</span>
+000000a0 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">54</span> <span class="m">52</span> <span class="m">45</span> <span class="m">45</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">19</span> <span class="m">00</span> <span class="m">32</span> <span class="m">20</span> <span class="m">30</span> <span class="p">|</span>....TREE.....2 <span class="m">0</span><span class="p">|</span>
+000000b0 0a 7e <span class="m">03</span> b5 bf c5 2c 8e 4c f3 cb <span class="m">42</span> 2e f8 <span class="m">02</span> fa <span class="p">|</span>.~....,.L..B....<span class="p">|</span>
+000000c0 <span class="m">36</span> <span class="m">25</span> 4d <span class="m">20</span> a5 c8 <span class="m">93</span> <span class="m">98</span> ea b9 <span class="m">46</span> <span class="m">35</span> <span class="m">31</span> bf <span class="m">45</span> 9f <span class="p">|</span><span class="m">6</span>%M ......F51.E.<span class="p">|</span>
+000000d0 <span class="m">95</span> ad 7b c6 8f <span class="m">42</span> <span class="m">76</span> bb ff <span class="p">|</span>..<span class="o">{</span>..Bv..<span class="p">|</span>
+000000d9
+</pre></div>
+
+
+<p>实际含义如下：</p>
+<div class="highlight"><pre><span></span><span class="m">00000000</span> <span class="m">44</span> <span class="m">49</span> <span class="m">52</span> <span class="m">43</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="p">|</span> 5b bd 6c c4 <span class="p">|</span>
+D I R C <span class="p">|</span> idx version <span class="p">|</span> file count <span class="p">|</span> ctime second
+<span class="m">00000010</span> <span class="m">30</span> b2 d1 dc <span class="p">|</span> 5b bd 6c c4 <span class="p">|</span> <span class="m">30</span> b2 d1 dc <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0d <span class="p">|</span>
+nano sec <span class="p">|</span> mtime second nano sec <span class="p">|</span> device <span class="p">|</span>
+<span class="m">00000020</span> <span class="m">00</span> <span class="m">01</span> a5 f4 <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">81</span> a4 <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span>
+inode <span class="p">|</span> file mode <span class="p">|</span> UID <span class="p">|</span> GID <span class="p">|</span>
+<span class="m">00000030</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> <span class="p">|</span> b2 5c <span class="m">15</span> b8 <span class="p">|</span> 1f ae <span class="m">06</span> e1 <span class="p">|</span> c5 <span class="m">59</span> <span class="m">46</span> ac <span class="p">|</span>
+file size <span class="p">|</span> file SHA-1 checksum <span class="m">160</span> bit length
+<span class="m">00000040</span> <span class="m">62</span> <span class="m">70</span> bf db <span class="p">|</span> <span class="m">29</span> <span class="m">38</span> <span class="m">70</span> e8 <span class="p">|</span> <span class="m">00</span> 0a 2e <span class="m">67</span> <span class="p">|</span> <span class="m">69</span> <span class="m">74</span> <span class="m">69</span> <span class="m">67</span> <span class="p">|</span>
+<span class="p">|</span> flags <span class="p">|</span> file name
+<span class="m">00000050</span> 6e 6f <span class="m">72</span> <span class="m">65</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="p">|</span> 5b bd 6c <span class="m">62</span> <span class="p">|</span>
+<span class="p">|</span> file information separation <span class="p">|</span> ctime second
+<span class="m">00000060</span> 3a <span class="nb">cd</span> d6 6c <span class="p">|</span> 5b bd 6c <span class="m">62</span> <span class="p">|</span> 3a <span class="nb">cd</span> d6 6c <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0d <span class="p">|</span>
+nano sec <span class="p">|</span> mtime second nano sec <span class="p">|</span> device <span class="p">|</span>
+<span class="m">00000070</span> <span class="m">00</span> <span class="m">01</span> a5 e3 <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">81</span> a4 <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span>
+inode <span class="p">|</span> file mode <span class="p">|</span> UID <span class="p">|</span> GID <span class="p">|</span>
+<span class="m">00000080</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0b <span class="p">|</span> <span class="m">30</span> 3f f9 <span class="m">81</span> <span class="p">|</span> c4 <span class="m">88</span> b8 <span class="m">12</span> <span class="p">|</span> b6 <span class="m">21</span> 5f 7d <span class="p">|</span>
+file size <span class="p">|</span> file SHA-1 checksum <span class="m">160</span> bit length
+<span class="m">00000090</span> b7 <span class="m">92</span> 0d ed <span class="p">|</span> b3 b5 9d 9a <span class="p">|</span> <span class="m">00</span> <span class="m">05</span> <span class="m">66</span> <span class="m">69</span> <span class="p">|</span> 6c <span class="m">65</span> <span class="m">31</span> <span class="m">00</span> <span class="p">|</span>
+<span class="p">|</span> flags <span class="p">|</span> file name
+000000a0 <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="p">|</span> <span class="m">54</span> <span class="m">52</span> <span class="m">45</span> <span class="m">45</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">19</span> <span class="p">|</span> <span class="m">00</span> <span class="m">32</span> <span class="m">20</span> <span class="m">30</span> <span class="p">|</span>
+separation <span class="p">|</span> T R E E <span class="p">|</span>
+000000b0 0a 7e <span class="m">03</span> b5 <span class="p">|</span> bf c5 2c 8e <span class="p">|</span> 4c f3 cb <span class="m">42</span> <span class="p">|</span> 2e f8 <span class="m">02</span> fa <span class="p">|</span>
+<span class="p">|</span> Tree of current head SHA-1 checksum
+000000c0 <span class="m">36</span> <span class="m">25</span> 4d <span class="m">20</span> <span class="p">|</span> a5 c8 <span class="m">93</span> <span class="m">98</span> <span class="p">|</span> ea b9 <span class="m">46</span> <span class="m">35</span> <span class="p">|</span> <span class="m">31</span> bf <span class="m">45</span> 9f <span class="p">|</span>
+<span class="p">|</span> index file SHA-1 checksum
+000000d0 <span class="m">95</span> ad 7b c6 <span class="p">|</span> 8f <span class="m">42</span> <span class="m">76</span> bb <span class="p">|</span> ff
+000000d9
+</pre></div>
+
+
+<p>利用 stat 命令可以获取文件的信息， file1 和 .gitignore 的信息如下：</p>
+<div class="highlight"><pre><span></span>File: .gitignore
+Size: <span class="m">3</span> Blocks: <span class="m">0</span> IO Block: <span class="m">4096</span> regular file
+Device: dh/13d Inode: <span class="m">3096224743925236</span> Links: <span class="m">1</span>
+Access: <span class="o">(</span><span class="m">0777</span>/-rwxrwxrwx<span class="o">)</span> Uid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span> Gid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span>
+Access: <span class="m">2018</span>-10-10 <span class="m">11</span>:06:44.797237900 +0800
+Modify: <span class="m">2018</span>-10-10 <span class="m">11</span>:06:44.817025500 +0800
+Change: <span class="m">2018</span>-10-10 <span class="m">11</span>:06:44.817025500 +0800
+Birth: -
+</pre></div>
+
+
+<div class="highlight"><pre><span></span>File: file1
+Size: <span class="m">11</span> Blocks: <span class="m">0</span> IO Block: <span class="m">4096</span> regular file
+Device: dh/13d Inode: <span class="m">1970324837082595</span> Links: <span class="m">1</span>
+Access: <span class="o">(</span><span class="m">0777</span>/-rwxrwxrwx<span class="o">)</span> Uid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span> Gid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span>
+Access: <span class="m">2018</span>-10-10 <span class="m">11</span>:05:06.956652400 +0800
+Modify: <span class="m">2018</span>-10-10 <span class="m">11</span>:05:06.986568300 +0800
+Change: <span class="m">2018</span>-10-10 <span class="m">11</span>:05:06.986568300 +0800
+Birth: -
+</pre></div>
+
+
+<h2>Index 文件信息解释</h2>
+<p>Index 文件包含有若干信息：
+1. 12-byte 的 header 部分；
+2. 若干 index 条目，每个文件一条，两条之间以 8-byte 的 0 来间隔（ 00
+   00 00 00 00 00 00 00）；
+3. 扩展信息，如当前 Head 的 Tree 的 SHA-1 checksum，以 4-byte 的 0（00
+00 00 00）来和前面的条目间隔；
+4. 160-bit (20-byte) 的该 index 文件在本 160 bits 之前的内容的 SHA-1
+   checksum。</p>
+<h3>Header 部分</h3>
+<p>在上面的例子中是：0x44 49 52 43 00 00 00 02 00 00 00 02
+12-byte 的头部包括：</p>
+<ol>
+<li>4-byte 的签名 0x44 49 52 43 即 “DIRC”，代表 dircache，文件夹缓存；</li>
+<li>4-byte 的版本号，前面例中为 0x00 00 00 02，为十进制的 2，即代表该
+index 文件版本为 version 2；</li>
+<li>4-byte 的当前 stage 的文件数量，前面例子中为 0x00 00 00 02，为十进
+制的 2，即当前一共 stage 了两个文件。</li>
+</ol>
+<h3>Index 条目部分</h3>
+<p>Index 的条目部分可以有多个条目，来记录所有当前 stage 的文件信息，条目
+数应该和 Header 部分中的文件数量一致。不同文件的条目之间以8-byte的 0
+来间隔（ 0x00 00 00 00 00 00 00 00）。对于一个条目有如下一些部分：</p>
+<ol>
+<li>
+<p>8-byte （64-bit）的 ctime：该文件创建的时间 ctime 以 8-byte 来存储，
+其中前 4-byte 为 32-bit 的以秒计算的时间 （Unix time：从 1970年1月1日
+00:00:00 计算），后 4-byte 为 nanosecond 微秒。一般前 4-byte second 计
+算时间就可以用。例如例子中的第一个条目的 ctime 为 0x5b bd 6c c4 30 b2
+d1 dc，其 Unix time 为 0x5b bd 6c c4，即距离 1970年1月1日 00:00:00 后
+1539140804 秒。使用 date命令，date --date="@1539140804"，得到为 Wed
+Oct 10 11:06:44 DST 2018，该时间与前面使用stat命令得到的 .gitignore 的
+ctime 一致。</p>
+</li>
+<li>
+<p>8-byte （64-bit）的 mtime：mtime即该文件最后一次修改的时间，与
+ctime 类似。前面的例子中 .gitignore 的 ctime 和 mtime 一样，都是 Wed
+Oct 10 11:06:44 DST 2018，对应于 Unix time 为1539140804，十六进制为
+0x5b bd 6c c4。</p>
+</li>
+<li>
+<p>4-byte （32-bit）的 device：Device 即为该文件存储的设备。示例中我们
+通过 stat 知道 .gitignore 文件存储设备为 13，而在 index 中的 device 信
+息部分为 0x00 00 00 0d，即十进制的 13。</p>
+</li>
+<li>
+<p>4-byte （32-bit）的 inode：Inode 是该文件在设备的文件系统中存储的具
+体块的编号。从 stat 命令可以知道，.gitignore 的 inode 为
+3096224743925236，即十六进制的 0x00 01 a5 f4。对比 hexdump 的结果，查
+询 index 文件中该文件的inode 信息，正是0x00 01 a5 f4。</p>
+</li>
+<li>
+<p>4-byte （32-bit）的 mode：Linux文件系统中的文件有相应的权限设置
+（mode），该信息用 4-byte 存于 index 文件中。例如，在hexdump 结果中，
+该位置信息为 0x0000 81a4，转换为二进制为 00000000 00000000 10000001
+10100100，对应的权限应该是 100644。这里不是简单的进制转换，而是从后向
+前数，每三位代表一个权限，所以110100100对应的就是644。由于本次例子在
+windows subsystem linux 中进行，而ntfs文件系统不支持权限管理，所以
+stat 显示的 .gitignore 的权限是 777。</p>
+</li>
+<li>
+<p>4-byte （32-bit）的 UID：文件拥有者的 UID。例子中.gitignore 的 UID
+为1000，而在 index 相应位置就是 0x00 00 03 e8，即1000。</p>
+</li>
+<li>
+<p>4-byte （32-bit）的 GID：文件拥有者的 GID。例子中.gitignore 的 GID
+为1000，而在 index 相应位置就是 0x00 00 03 e8，即1000。</p>
+</li>
+<li>
+<p>4-byte （32-bit）的 文件大小：该部分为文件的大小。例子中 .gitignore
+的文件大小为 3 个字节，在 index 的相应位置为 0x00 00 00 03，即十进制的
+3。</p>
+</li>
+<li>
+<p>20-byte （160-bit）的文件 SHA-1 checksum:也就是该文件在 .git/object
+文件中存储的 checksum。例如，.gitignore 文件的 checksum 为 0xb2 5c 15
+b8 1f ae 06 e1 c5 59 46 ac 62 70 bf db 29 38 70 e8，我们可以在
+.git/object 文件夹中找到相应的文件，而使用 git cat-file 命令，git
+cat-file -p b25c15b81fae06e1c55946ac6270bfdb293870e8，可以看到输出的就
+是 .gitignore 的内容。</p>
+</li>
+<li>
+<p>2-byte （16-bit）的flag：</p>
+</li>
+<li>
+<p>若干字节的文件路径 file path：文件相对于工作目录的路径。如果就在工
+作目录中，则是该文件的名字，如果是在文件夹中，则文件夹名字会包括在其中。</p>
+</li>
+<li>
+<p>8-byte （32-bit）的空白文件分隔符：不同的index条目之间用于间隔的长
+为 8-byte 的空白，即 0x00 00 00 00 00 00 00 00。</p>
+</li>
+</ol>
+<h3>扩展信息部分</h3>
+<p>在本例子中，扩展信息部分是当前的 Head 对应的 Tree 的 SHA-1 checksum，
+以 4-byte 的空白字符于前面的index 条目分隔。在例子中，Head 对应的 Tree
+的 SHA-1 为 0x7e03b5bfc52c8e4cf3cb422ef802fa36254d20a5，所以我们可以在
+index 文件的扩展信息部分找到该 checksum。SHA-1 index checksum 部分Git
+为了保证数据完整性会使用 SHA-1 checksum。对于 index 文件也会计算其
+SHA-1 checksum。并把生成的 checksum 值存于index文件最末尾。所以，index
+文件最末尾的 20-byte （160-bit）checksum 实际上是前面内容的校验值。</p>
+<h3>若干命令行工具简介</h3>
+<ul>
+<li>hexdump，hd：可以把二进制文件转为ASCII，十进制，十六进制，八进制等。</li>
+<li>xxd: 可以把二进制输入转成十六进制，在十六进制和字符之间进行双向的转换。</li>
+<li>stat：统计文件的信息，包括文件的创建修改时间等，UID，GID，mode，在文
+件系统中的 inode 位置及大小等。</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

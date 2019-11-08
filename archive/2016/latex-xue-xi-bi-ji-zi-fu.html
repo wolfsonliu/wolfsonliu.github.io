@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>LaTeX 学习笔记：字符</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html">
+<meta name="twitter:title" content="Wolf Cave ~ LaTeX 学习笔记：字符">
+<meta name="twitter:description" content="LaTeX 保留字符和特殊字符.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ LaTeX 学习笔记：字符" />
+<meta property="og:description" content="LaTeX 保留字符和特殊字符." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html" rel="bookmark" title="Permalink to LaTeX 学习笔记：字符">LaTeX 学习笔记：字符</a></h2>
+        <div class="entry-content blog-post">
+            <h2>保留字符</h2>
+<p>在 LaTex 里面有很多有特殊用途的保留字符, 需要留意.</p>
+<p>保留字符主要有: # $ % ^ &amp; _ { } ~ \</p>
+<p>输入方法为:</p>
+<div class="highlight"><pre><span></span><span class="err">\</span><span class="o">#</span> <span class="err">\$</span> <span class="err">\</span><span class="o">%</span> <span class="err">\</span><span class="o">^</span><span class="err">{}</span> <span class="err">\</span><span class="o">&amp;</span> <span class="err">\</span><span class="n">_</span> <span class="err">\{</span> <span class="err">\}</span> <span class="err">\</span><span class="o">~</span><span class="err">{}</span> <span class="err">\</span><span class="n">textbackslash</span><span class="err">{}</span>
+</pre></div>
+
+
+<p>其中, \ 除了可以使用 <code>\textbackslash</code> 输入外, 也可以 <code>\backslash</code>. ~ 可以使用 <code>\textasciitilde</code>, ^ 可以使用 <code>\textasciicircum</code> 来输入.</p>
+<p>如果使用 \verb 或者 verbatim environment 则可以不使用 escape 的方式.</p>
+<h2>符号</h2>
+<ul>
+<li>引号: 如果使用英文的引号 (quotation mark), 则需要使用一个和 ~ 在一起的那个反引号 (Backtick) 来作为一个前引号, 一个撇号 (Apostrophe) 作为后引号, 两个反引号做前双引号, 两个撇号做后双引号. </li>
+<li>波浪号: 西文波浪号 (tilde) 是保留符号, 需要转义. 中文波浪号需要使用数学中符号 <code>$\sim$</code>. <code>~</code> 本身代表的是不能断开的空格, 两侧的字符不会因为排版而分割两行.</li>
+<li>省略号: 西文省略号 (ellipsis) 需要特别的命令来输出 <code>\ldots</code> 或者 <code>\dots</code>, 为了排版需要也可以放入数学环境中. 中文六个点的省略号可以直接用输入法输入.</li>
+<li>减号 连字符 破折号: 单用一个 <code>-</code> 在数学环境下是减号, 数学环境外使用一个 <code>-</code> 是连字符 (hyphen), 使用两个 <code>--</code> 是短连接 (en dash) 用来表示数字范围, 使用三个 <code>---</code> 是破折号 (em dash). 中文的破折号可以直接用输入法输入.</li>
+</ul>
+<h3>特殊符号</h3>
+<p>有的时候需要使用一些特殊符号, 除了 LaTex 自带的一些之外, 在 textcomp 包中有较多的特殊符号使用. 也可以查阅 《texdoc The Comprehensive LaTeX Symbol List》 其中列出了很多的符号和对应的包. 有的时候输入法可以输出一些特殊字符, 如果系统支持, 也可以直接输出.</p>
+<ul>
+<li>小节标志: <code>\S</code></li>
+<li>版权标志: <code>\copyright</code> 圆圈中的 C.</li>
+<li>注册标志: <code>\textregistered</code> 圆圈中的 R.</li>
+<li>商标标志: <code>\texttrademark</code> TM 标志.</li>
+<li>分隔圆点: <code>\textbullet</code> 可以在中文中连接外国名字的名和姓.</li>
+</ul>
+<h2>希腊字母</h2>
+<p>有些希腊字母和英文一样, 所以就没有单独的命令.</p>
+<table>
+<thead>
+<tr>
+<th align="center">Name</th>
+<th align="center">LaTex Upper</th>
+<th align="center">LaTex Lower</th>
+<th align="center">LaTex Variable</th>
+<th align="center">Name</th>
+<th align="center">LaTex Upper</th>
+<th align="center">LaTex Lower</th>
+<th align="center">LaTex Variable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">alpha</td>
+<td align="center"><code>A</code></td>
+<td align="center"><code>\alpha</code></td>
+<td align="center"></td>
+<td align="center">nu</td>
+<td align="center"><code>N</code></td>
+<td align="center"><code>\nu</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">beta</td>
+<td align="center"><code>B</code></td>
+<td align="center"><code>\beta</code></td>
+<td align="center"></td>
+<td align="center">xi</td>
+<td align="center"><code>\Xi</code></td>
+<td align="center"><code>\xi</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">gamma</td>
+<td align="center"><code>\Gamma</code></td>
+<td align="center"><code>\gamma</code></td>
+<td align="center"></td>
+<td align="center">omicron</td>
+<td align="center"><code>O</code></td>
+<td align="center"><code>o</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">delta</td>
+<td align="center"><code>\Delta</code></td>
+<td align="center"><code>\delta</code></td>
+<td align="center"></td>
+<td align="center">pi</td>
+<td align="center"><code>\Pi</code></td>
+<td align="center"><code>\pi</code></td>
+<td align="center"><code>\varpi</code></td>
+</tr>
+<tr>
+<td align="center">epsilon</td>
+<td align="center"><code>E</code></td>
+<td align="center"><code>\epsilon</code></td>
+<td align="center"><code>\varepsilon</code></td>
+<td align="center">rho</td>
+<td align="center"><code>P</code></td>
+<td align="center"><code>\rho</code></td>
+<td align="center"><code>\varho</code></td>
+</tr>
+<tr>
+<td align="center">zeta</td>
+<td align="center"><code>Z</code></td>
+<td align="center"><code>\zeta</code></td>
+<td align="center"></td>
+<td align="center">sigma</td>
+<td align="center"><code>\Sigma</code></td>
+<td align="center"><code>\sigma</code></td>
+<td align="center"><code>\varsigma</code></td>
+</tr>
+<tr>
+<td align="center">eta</td>
+<td align="center"><code>H</code></td>
+<td align="center"><code>\eta</code></td>
+<td align="center"></td>
+<td align="center">tau</td>
+<td align="center"><code>T</code></td>
+<td align="center"><code>\tau</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">theta</td>
+<td align="center"><code>\Theta</code></td>
+<td align="center"><code>\theta</code></td>
+<td align="center"></td>
+<td align="center">upsilon</td>
+<td align="center"><code>\Upsilon</code></td>
+<td align="center"><code>\upsilon</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">iota</td>
+<td align="center"><code>I</code></td>
+<td align="center"><code>\iota</code></td>
+<td align="center"></td>
+<td align="center">phi</td>
+<td align="center"><code>\Phi</code></td>
+<td align="center"><code>\phi</code></td>
+<td align="center"><code>\varphi</code></td>
+</tr>
+<tr>
+<td align="center">kappa</td>
+<td align="center"><code>K</code></td>
+<td align="center"><code>\kappa</code></td>
+<td align="center"><code>\varkappa</code></td>
+<td align="center">chi</td>
+<td align="center"><code>X</code></td>
+<td align="center"><code>\chi</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">lambda</td>
+<td align="center"><code>\Lambda</code></td>
+<td align="center"><code>\lambda</code></td>
+<td align="center"></td>
+<td align="center">psi</td>
+<td align="center"><code>\Psi</code></td>
+<td align="center"><code>\psi</code></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">mu</td>
+<td align="center"><code>M</code></td>
+<td align="center"><code>\mu</code></td>
+<td align="center"></td>
+<td align="center">omega</td>
+<td align="center"><code>\Omega</code></td>
+<td align="center"><code>\omega</code></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2>注意</h2>
+<p>默认认为以小写字母和句号 (.) 作为一句的结尾, 所以如果一个句子结尾是大写字母则应该显式地指明结尾, <code>THE LAST\@.</code> 或者 <code>THE LAST\ .</code>.</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 05 January 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/latex.html">#latex, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html&text=LaTeX 学习笔记：字符&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html&t=LaTeX 学习笔记：字符"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html&title=LaTeX 学习笔记：字符" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=LaTeX 学习笔记：字符&amp;body=Viens découvrir un article à propos de [LaTeX 学习笔记：字符] sur le site de Wolfson Liu. ../../archive/2016/latex-xue-xi-bi-ji-zi-fu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/latex-xue-xi-bi-ji-zi-fu.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

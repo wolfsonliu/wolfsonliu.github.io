@@ -1,0 +1,15 @@
+Title: R 学习笔记：一些习惯
+Date: 2016-06-21 23:39
+Modified: 2016-06-21 23:40
+Category: 壹零零壹
+Tags: r
+Authors: Wolfson Liu
+Summary: R 的一些好习惯
+
+
+* 每一个 if 都要有 else 那怕是空的, 这样才能分清 else 是哪个 if 的.
+* 不要使用 1:length(x), 而是用 seq_along(x) 或者 seq(along.with = x).
+* 使用 <- 来赋值, 而不是 =.
+* 使用 x[row, , drop = FALSE] 而不是 x[row,].
+* 使用 FALSE/TRUE 而不是 F/T.
+* 使用 apply 而不是 for.

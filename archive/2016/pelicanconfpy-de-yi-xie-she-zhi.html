@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>pelicanconf.py 的一些设置</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html">
+<meta name="twitter:title" content="Wolf Cave ~ pelicanconf.py 的一些设置">
+<meta name="twitter:description" content="使用 Pelican 生成静态博客的一些设置.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ pelicanconf.py 的一些设置" />
+<meta property="og:description" content="使用 Pelican 生成静态博客的一些设置." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html" rel="bookmark" title="Permalink to pelicanconf.py 的一些设置">pelicanconf.py 的一些设置</a></h2>
+        <div class="entry-content blog-post">
+            <p>pelicanconf.py 是 Pelican 的设置文件, 可以设置的内容太多了, 学一点就记录一点吧.</p>
+<h3>基本信息设置</h3>
+<p>基本信息可以设置网站名称, 网站小标题, 时区, 语言, 作者等.</p>
+<div class="highlight"><pre><span></span><span class="n">SITENAME</span>     <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;Wolf Cave&quot;</span>
+<span class="n">SITESUBTITLE</span> <span class="o">=</span> <span class="ss">&quot;一个记录 Wolfson Liu 生活的地方&quot;</span>
+<span class="n">SITEURL</span>      <span class="o">=</span> <span class="ss">&quot;https://wolfsonliu.github.io&quot;</span>
+<span class="o">#</span><span class="n">SITEURL</span>      <span class="o">=</span> <span class="ss">&quot;http://localhost:8000&quot;</span>
+<span class="n">TIMEZONE</span>     <span class="o">=</span> <span class="ss">&quot;Asia/Shanghai&quot;</span>
+<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;zh&quot;</span>
+<span class="n">AUTHOR</span>       <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;Wolfson Liu&quot;</span>
+</pre></div>
+
+
+<p>需要注意的是 SITEURL 的设置, 这个相当于 HTML 文件中的 base, 当在本地调试的时候需要设置成本地端口, 而在发布的时候转换成博客地址.</p>
+<h3>路径设置</h3>
+<p>路径设置是很重要的, 涉及到不同页面之间的跳转. 可以自己去u规划不同类型的页面怎样放置在不同的文件夹中. 带有 PATH 的变量指本地的 Markdown, 图片等文件存放文件夹, 而带有 URL 的变量则是网页相关内容.</p>
+<div class="highlight"><pre><span></span><span class="n">PATH</span>               <span class="o">=</span> <span class="ss">&quot;content&quot;</span>
+<span class="n">STATIC_PATHS</span>       <span class="o">=</span> <span class="p">[</span><span class="ss">&quot;pages&quot;</span><span class="p">,</span><span class="ss">&quot;images&quot;</span><span class="p">]</span>
+<span class="n">ARTICLE_PATHS</span>      <span class="o">=</span> <span class="p">[</span><span class="ss">&quot;pages&quot;</span><span class="p">]</span>
+<span class="n">ARTICLE_URL</span>        <span class="o">=</span> <span class="ss">&quot;archive/{slug}.html&quot;</span>
+<span class="n">ARTICLE_SAVE_AS</span>    <span class="o">=</span> <span class="n">ARTICLE_URL</span>
+<span class="n">AUTHOR_URL</span>         <span class="o">=</span> <span class="ss">&quot;author/wolfson-liu.html&quot;</span>
+<span class="n">AUTHOR_SAVE_AS</span>     <span class="o">=</span> <span class="n">AUTHOR_URL</span>
+<span class="n">AUTHORS_URL</span>        <span class="o">=</span> <span class="ss">&quot;&quot;</span>
+<span class="n">AUTHORS_SAVE_AS</span>    <span class="o">=</span> <span class="ss">&quot;&quot;</span>
+<span class="n">TAG_URL</span>            <span class="o">=</span> <span class="ss">&quot;tag/{slug}.html&quot;</span>
+<span class="n">TAG_SAVE_AS</span>        <span class="o">=</span> <span class="n">TAG_URL</span>
+<span class="n">TAGS_URL</span>           <span class="o">=</span> <span class="ss">&quot;tags.html&quot;</span>
+<span class="n">TAGS_SAVE_AS</span>       <span class="o">=</span> <span class="n">TAGS_URL</span>
+<span class="n">CATEGORY_URL</span>       <span class="o">=</span> <span class="ss">&quot;category/{slug}.html&quot;</span>
+<span class="n">CATEGORY_SAVE_AS</span>   <span class="o">=</span> <span class="n">CATEGORY_URL</span>
+<span class="n">CATEGORIES_URL</span>     <span class="o">=</span> <span class="ss">&quot;categories.html&quot;</span>
+<span class="n">CATEGORIES_SAVE_AS</span> <span class="o">=</span> <span class="n">CATEGORIES_URL</span>
+<span class="n">ARCHIVES_URL</span>       <span class="o">=</span> <span class="ss">&quot;archives.html&quot;</span>
+<span class="n">ARCHIVES_SAVE_AS</span>   <span class="o">=</span> <span class="n">ARCHIVES_URL</span>
+</pre></div>
+
+
+<ul>
+<li>PATH 指明了 Pelican 去哪个文件夹寻找 Markdown 文件, 该文件夹应该和 pelicanconf.py, Makefile 等文件在同一目录下.</li>
+<li>STATIC_PATHS 是 Markdown 文件中使用的图片等静态资源的存放地点, 应该位于 PATH 所指明的文件夹中.</li>
+<li>ARTICLE_PATHS 是文章的存放目录, 在 PATH 目录下.</li>
+<li>以 URL 结尾的是说所指明的类型的页面的存放地点, 这个是和网站或者本地 Pelican 输出文件夹中对应的, 这个一般可以直接设置为相对路径. 如果指明的文件夹不存在, Pelican 将会自动建立文件夹.</li>
+<li>以 SAVE_AS 结尾的变量指的是把相应 Markdown 文件转为 HTML 后存放的相对位置, 应该和相应的 URL 一致.</li>
+<li>AUTHOR, TAG, CATEGORY 指的是特定的一个类型的页面, 如对于 TAG: python 来说, 就是 python 这个 TAG 的相关文章的页面.</li>
+<li>AUTHORS, TAGS, CATEGORIES 指的是相关类型的所有集合的目录文献, 如 TAGS 页面上显示出的是所有的 TAG 的 list.</li>
+</ul>
+<h3>显示设置</h3>
+<p>对于不同的主题应该有相应合适的显示设置, 这样才能使得相应主题显示正常. 我曾经一直不知道为什么在菜单栏中有所有地文章的标题, 最后发现是相应的变量设置的问题, 这个小小的设置可折腾坏我了.</p>
+<div class="highlight"><pre><span></span><span class="n">DISPLAY_PAGES_ON_MENU</span>          <span class="o">=</span> <span class="k">False</span>
+<span class="n">DISPLAY_HEADER</span>                 <span class="o">=</span> <span class="k">True</span>
+<span class="n">DISPLAY_FOOTER</span>                 <span class="o">=</span> <span class="k">True</span>
+<span class="n">DISPLAY_HOME</span>                   <span class="o">=</span> <span class="k">True</span>
+<span class="n">DISPLAY_MENU</span>                   <span class="o">=</span> <span class="k">True</span>
+<span class="n">DISPLAY_CATEGORIES_ON_MENU</span>     <span class="o">=</span> <span class="k">True</span>
+<span class="n">DISPLAY_CATEGORIES_ON_SUBMENU</span>  <span class="o">=</span> <span class="k">False</span>
+<span class="n">DISPLAY_CATEGORIES_ON_POSTINFO</span> <span class="o">=</span> <span class="k">False</span>
+<span class="n">DISPLAY_AUTHOR_ON_POSTINFO</span>     <span class="o">=</span> <span class="k">False</span>
+<span class="n">DISPLAY_SEARCH_FORM</span>            <span class="o">=</span> <span class="k">False</span>
+</pre></div>
+
+
+<p>相应的用法已经在名称里面简要说明了, 根据相应的主题去调整就好.</p>
+<h3>菜单设置</h3>
+<p>有的主题会有菜单, 相应也可以设置菜单栏中的项目.</p>
+<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">pelican</span><span class="o">-</span><span class="n">blue</span> <span class="n">setting</span>
+<span class="o">#</span> <span class="err">第一个是菜单的名称</span><span class="p">,</span> <span class="err">第二个是点击菜单后跳转的页面</span>
+<span class="n">MENUITEMS</span> <span class="o">=</span> <span class="p">((</span><span class="ss">&quot;文章&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/&quot;</span><span class="o">+</span><span class="n">ARCHIVES_URL</span><span class="p">),</span>
+             <span class="p">(</span><span class="ss">&quot;类别&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/&quot;</span><span class="o">+</span><span class="n">CATEGORIES_URL</span><span class="p">),</span>
+             <span class="p">(</span><span class="ss">&quot;标签&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/&quot;</span><span class="o">+</span><span class="n">TAGS_URL</span><span class="p">),</span>
+             <span class="p">(</span><span class="ss">&quot;关于&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/about.html&quot;</span><span class="p">),)</span>
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 16 February 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/pelican.html">#pelican, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html&text=pelicanconf.py 的一些设置&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html&t=pelicanconf.py 的一些设置"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html&title=pelicanconf.py 的一些设置" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=pelicanconf.py 的一些设置&amp;body=Viens découvrir un article à propos de [pelicanconf.py 的一些设置] sur le site de Wolfson Liu. ../../archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/pelicanconfpy-de-yi-xie-she-zhi.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

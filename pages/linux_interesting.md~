@@ -1,0 +1,19 @@
+Title: 好玩的 linux
+Date: 2015-12-29 11:46
+Modified: 2015-12-29 11:46
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: 一些好玩的 linux 程序.
+
+
+看到一些好玩的 linux 程序, 记录下来.
+
+###Bash
+
+Bash 下面的一些好玩的 linux 程序.
+
+* [sl 小火车](http://www.tkl.iis.u-tokyo.ac.jp/~toyoda/index_e.html): 有的时候会把 ls 打错为 sl, 用该程序治愈以下. 会在 terminal 出现小火车, 还有多种选项.
+* [asciiview](https://manned.org/asciiview): 可以使用符号在 terminal 上面显示位图.
+* [cowsay](http://cowsay.morecode.org/): 在 terminal 显示一头说话的牛.
+

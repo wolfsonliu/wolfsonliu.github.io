@@ -1,0 +1,72 @@
+Title: Emacs 学习笔记：markdown mode
+Date: 2016-06-17 22:45
+Modified: 2016-06-17 23:28
+Category: 壹零零壹
+Tags: R
+Authors: Wolfson Liu
+Summary: 使用 Markdown mode.
+
+我使用 markdown 来写博客和写笔记, 所以还是需要了解 Emacs 下面的 Markdown mode 的使用方法的. 写这篇笔记之前, 我准备写 R 语言的 S4 类的笔记, 然而由于我已经有很久没有用过 Emacs 下的 Markdown mode 了, 已经忘记了插入题目的快捷键. 所以, 我觉得有必要先复习一下再继续写 R 的笔记.
+
+## Markdown mode 安装于配置 ##
+
+[EmacsWiki](https://www.emacswiki.org/emacs/MarkdownMode#toc2)网站上有关于 [markdown-mode](http://jblevins.org/projects/markdown-mode/) 包的介绍和一些自定义的介绍, 可以安装好之后, 自己去调整该包的使用.
+
+需要注意的是, 使用 markdown-mode 时候, 我们可能需要用我们写的 markdown 文档生成 HTML 或者其他的文档形式, 这个时候就需要使用 [pandoc](http://pandoc.org/) 程序来转换. 想要使用快捷键完成就需要设置 pandoc 的位置, 使用下面的命令.
+
+* M-x customize-variable: markdown-command "/usr/bin/pandoc"
+
+还需要设置 Emacs 能够自动根据文件后缀名来自动打开 markdown-mode. 需要在 *init.el* 中添加后缀名.
+
+```
+(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+```
+
+## 编辑文档命令 ##
+
+* `C-c C-t n`: 插入标题, `# title #` 类型其中 n 为 1 到 6, 对应于 HTML 对应的标题. 
+* `C-c C-t t`: 插入标题, underline 类型, =.
+* `C-c C-t s`: 插入标题, underline 类型, -.
+* `C-c -`: 插入水平线, 默认插入设定的每行字节数的减号.
+
+* `C-c c-a L`: 插入引用链接, 或者 `C-c C-a r`, `[text][label]`.
+* `C-c C-a l`: 插入链接, `[text](url)`.
+* `C-c C-a f`: 插入注脚.
+
+* `C-c C-i i`: 插入图像, 或者 `C-c TAB i`, `![text](url)`.
+* `C-c C-i I`: 插入引用图像, 或者 `C-c TAB I`, `![text][label]`.
+
+* `C-c C-s b`: 插入引用, `>`.
+* `C-c C-s c`: 插入代码, 用撇号包围的.
+* `C-c C-s s`: 粗体.
+* `C-c C-p e`: 意大利体.
+
+* `C-c C-x d`: 向下移动列表.
+* `C-c C-x l`: 提升列表等级, 即减少空格.
+* `C-c C-x m`: 插入列表项.
+* `C-c C-x r`: 降低列表等级, 即增加空格.
+* `C-c C-x u`: 向上移动列表.
+
+## 检查文档命令 ##
+
+* `C-c C-c c`: 检查引用.
+
+## 浏览文档命令 ##
+
+* `C-c C-c e`: 输出 HTML 文档.
+* `C-c C-c m`: 在另一个 Emacs 窗口打开预览 HTML 文档.
+* `C-c C-c o`: 打开文件.
+* `C-c C-c p`: 在浏览器中预览 HTML 文档.
+* `C-c C-c v`: 输出并在浏览器中预览文档.
+
+
+
+
+
+
+
+
+
+
+

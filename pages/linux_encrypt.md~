@@ -1,0 +1,27 @@
+Title: linux 下加密解密文件的方法
+Date: 2016-12-28 21:41
+Modified: 2016-12-28 21:41
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: 加密解密
+
+我需要把一些文件加密, 所以需要了解在 linux 下加密文件的办法, 当然, 还要知道解密的办法.
+
+## Openssl ##
+
+openssl 支持多种加密方法, 其加密文件的命令如下:
+
+```
+$ openssl enc -aes-128-ecb -in file -out file.encrypted
+```
+
+然后会需要输入加密密码.
+
+其解密文件只要加上 `-d`, 需要命令如下:
+
+```
+$ openssl enc -aes-128-ecb -d -in file.encrypted -out file
+```
+
+

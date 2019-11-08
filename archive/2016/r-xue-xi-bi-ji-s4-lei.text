@@ -1,0 +1,373 @@
+Title: R 学习笔记：S4 类
+Date: 2016-06-17 22:26
+Modified: 2016-06-22 14:47
+Category: 壹零零壹
+Tags: r
+Authors: Wolfson Liu
+Summary: S4 基础.
+
+S4 的意思是指 S 语言的版本 4. R 语言本身对面向对象编程的支持不是很理想, S4 类在一定程度上使得 R 语言更适合于面向对象编程. 那么, 为什么 R 也需要使用面向对象编程呢? 我所理解的面向对象编程的好处在于, 面向对象编程的方式可以很好地处理现实的问题. 因为现实中的每一个需要处理的数据, 都对应于一个背后的对象, 例如, 如果是工资数据, 那么工资对应的是一个个员工, 这个员工会有种种属性, 再例如, 如果处理的数据是基因表达量, 那么这个表达量背后对应的就是基因, 基因有其位置信息, 有其编码信息, 有其各种 ID 等. 我会需要使用 R 语言处理很多现实的问题. 如果只是简单地处理一个维度的数据, 那么就可以把这些数据看成简单的数字使用 R 语言处理. 但是, 如果要对数据所对应的对象进行多维度地分析和处理, 那么使用面向对象编程的方式就可以使得数据很规整, 并且减少错误的可能性. 如果简单地使用 list 来纵向地包装同一个对象的不同数据或者横向地包装不同对象地同类型数据自然也是可以的, 有的时候甚至很方便, 不过, 在更为复杂的地方, 使用更合适地面向对象的工具显然是个更优的选择.
+
+R 语言是一个方程语言, 几乎所有的操作都是基于方程的, 那怕是一个运算符, 其被后也是一个方程. R 的面向对象的编程, 更像是面向方程和类的编程, 其 S4 类面向对象编程的方式中也蕴含着方程的思想, 后面要提到的 R 语言中 S4 的方法和类是相互独立的特点就是这中思想的一个体现. 在 R 的 S4 编程中, 方法是属于方法原型的, 而不属于类.
+
+## 面向对象基础 ##
+
+不同的语言进行面向对象编程中, 有许多东西是共同的. 就像浩巍说的, 编程就是一通百通. 如果了解 Python 的面向对象编程, 里面的很多思想也能使用在 R 语言面向对象编程中.
+
+* 类 (class) 是面向对象编程的基础. 类就像是一个包装的盒子, 把对象的所有的属性都包含在其中. 可以形象地说, 类有点像一个有多种口味可供选择的冰激凌机器.
+* 变量 (variable) 是描述对象的具体特征的数据, 是类的属性, 可以是数字或者字符等各种类型, 在 R 语言的 S4 类中被称为存储槽 (slot). 不同的变量, 就是冰激凌机器中的不同口味的冰激凌.
+* 方法 (method) 是作用于类对象的各种操作, 也是类的属性, 具体实现就是各种方程. 方法也对应于冰激凌机器上产出不同口味冰激凌的不同的按钮. 对于不同的类可以有相似的方法, 例如对不同的类都可以有 print 函数来输出类的内容. 需要注意的是, 在 R 语言的 S4 类中, 类的方法本身不属于类本身, 而是独立的方程, 这点和 Python 等语言面向对象编程有差别. 但是, 在 R 语言的 RC 类 (Reference Class) 中方法本身则属于类. 
+
+面向对象编程有三个重要特点: 封装, 继承和多态性. 封装的好处是把同属一个类的不同的属性能够包装在一起, 不会和外部的变量等相互影响. 那么在 R 的 S4 面向对象编程中, 也应该注意的是, 尽量不要直接引用类的 slot, 最好是通过方法来引用, 也就是通过按键来获得冰激凌, 而不是直接打开储藏盖去取. 不过, 直接引用确实是一个很方便的方式, 在能够保证正确的情况下也可以适当采用. 继承和多态性则有利于代码的重用, 减少由于采用重复相同的代码, 而在代码发生改变的时候造成不同的相关类之间出现不一致. 类的继承关系需要在编程之前妥善设计好, 这样才能有效地发挥面向对象编程的优势.
+
+## S4 基础 ##
+
+S4 面向对象编程的问题是类的方法和类的变量是分离的, 所以这在一定程度上就减弱了面向对象编程的封装的特点. 基于 S4 进行面向对象编程的时候, 就需要注意, 把一个类的方法和类的变量都放在同一个文件中, 采用合适的名称进行命名.
+
+R 语言中定义好的 S4 类的一些函数在 methods 包中, 在使用 S4 编程前需要加载 methods 包: `library(methods)`. 如果要查看 methods 包中的函数可以使用 ls 函数: `ls("package:methods")`.
+
+还应该分清的是类和实例的关系, 一个类正像其名称, 是一类东西的通称, 而实例是具体的某个东西, 所以可以使用 class 函数或者 typeof 等函数来查看某个实例的类. 判断是否是 S4 类可以使用函数 isS4.
+
+### 类 ###
+
+#### 创建类 ####
+
+对于 S4 类的定义, 其定义中只包含类的名称和其变量, 也就是 slot, 而不包括方法. 定义 S4 类要使用 setClass 函数.
+
+```
+setClass(
+    Class = "IcecreamMachine",
+    slots = c(
+        strawberry = "numeric",
+        chocolate  = "numeric",
+        mango      = "numeric"
+    )
+)
+```
+
+在创建类的时候, 应该指定每个 slots 的类型, 最好是可以限定的基本类型, 如 numeric, character, 等 atomic 类型. 而最好不要是 list 等类型, 因为我们可以向 list 中添加任何类型的数据, 这样就使得类的变量变得不可控, 也不好建立合适的方法. slots 接受一个 vector 或者 list, 把变量名和其类型名对应起来即可.
+
+在使用 setClass 函数定义类的时候, 可以使用 validity 参数来定义校验函数, 来保证类的每个值符合要求. 在定义完成后, 也可以使用 setValidity 函数来设置.
+
+#### 默认值 ####
+
+有的时候, 我们会希望类的每个或某些值在创建实例的时候有一定的默认值, 即使没有在建立的时候赋值, 其实例的变量也是有默认值的. 那么这个时候可以使用 setClass 中的 prototype 参数.
+
+```
+setClass(
+    Class     = "IcecreamMachine",
+    slots     = c(
+        strawberry = "numeric",
+        chocolate  = "numeric",
+        mango      = "numeric"
+    ),
+    prototype = list(
+        strawberry = 0,
+        chocolate  = 0,
+        mango      = 0
+    )
+)
+```
+
+设定默认值的时候, prototype 接受一个 list, 其中变量名和默认值一一对应.
+
+#### 继承 ####
+
+继承是面向对象编程的重要特征, S4 类的继承关系通过 setClass 中的 contais 参数设置. 虽然可以设置一个类继承自多个父类, 但是这样有可能会引起方法调用的问题, 所以最好只用一个类. 当一个类每有对应方法的时候, 会向其父类的方法寻找. ANY 是所有的 S4 类的最基本的父类, 所以一个类和定义的父类均没有定义相应方法时, 最后会使用 ANY 类的方法.
+
+```
+setClass(
+    Class = "IcecreamStore",
+    slots = c(place = "character"),
+    contains = "IcecreamMachine"
+)
+```
+
+上例中, 因为 IcecreamMachine 有定义 show 函数, 而 IcecreamStore 没有定义 show 函数, 所有其实例会调用 IcecreamMachine 的 show 函数. 如果想要使用 ANY 的 show 函数, 则需要使用 unclass 函数.
+需要注意的是, 如果对父类定义了特定的方法, 要在子类中也使用相应方法, 就需要定义, 否则会直接调用父类的方法, 从而有可能引起错误.
+
+
+#### 删除类 ####
+
+可以使用 removeClass 来删除类.
+
+```
+removeClass(Class = "IcecreamMachine")
+```
+
+删除类后, 已经存在的类的实例并不会被删除. 
+
+#### 查看类 ####
+
+R 语言提供了很多方便使用的自省函数, S4 类也有一些方便使用的函数.
+
+* 查看类 slot 变量名, slotNames 函数.
+* 获得类 slot, getSlots 函数.
+* 获得类, getClass 函数.
+
+```
+slotNames("IcecreamMachine")
+#[1] "strawberry" "chocolate"  "mango"
+
+getSlots("IcecreamMachine")
+#strawberry  chocolate      mango 
+# "numeric"  "numeric"  "numeric"
+
+getClass("IcecreamMachine")
+#Class "IcecreamMachine" [in ".GlobalEnv"]
+#
+#Slots:
+#
+#Name:  strawberry  chocolate      mango
+#Class:    numeric    numeric    numeric
+```
+
+### 方法 ###
+
+S4 类的方法和 S4 类的定义是独立的. S4 的方法要使用 setMethod 函数来定义.
+
+由一些函数已经有了相应的其他类型的定义, 我们可以继续定义符合我们所需要的类型的对应的函数. 需要注意的是, 在为类定义已经有的函数的重载函数的时候, 新定义的函数的参数应该和原函数的参数一致, 否则会发生警告或错误. 常见的函数, 如 show, 可以设置在命令行输入该类实例后输出的形式, 又如 print 函数, 可以设置 print 的形式. 
+
+```
+setMethod(
+    f           = "show",
+    signature   = "IcecreamMachine",
+    definition = function(object) {
+        cat("*** Wounderful Icecream Machine! ***\n")
+        cat("Taste:\n")
+        cat("\tStrawberry: ", object@strawberry, "\n") 
+        cat("\tChocolate: ", object@chocolate, "\n") 
+        cat("\tMango: ", object@mango, "\n") 
+    }
+)
+```
+
+对于已经存在的方法原型, 可以直接使用 setMethod. 而对于自定义的方法则需要先设置方法原型, 使用 setGeneric 函数.
+
+```
+setGeneric(
+    name = "getIcecream",
+    def  = function(object,...) {
+        standardGeneric("getIcecream")
+    }
+)
+setMethod(
+    f          = "getIcecream",
+    signature  = "IcecreamMachine",
+    definition = function(object, type) {
+        slot(object, type) <- slot(object, type) - 1
+        return(1)
+    }
+)
+```
+
+由于使用 setGeneric 会把之前的定义给覆盖, 我们可以使用 lockBinding 函数来锁定定义, 避免误操作. 
+
+```
+lockBinding("getIcecream", .GlobalEnv)
+```
+
+#### 查看方法 ####
+
+关于方法的自省函数也很方便使用.
+
+查看一个 S4 类所拥有的方法可以使用函数 showMethods 函数.
+
+```
+showMethods(classes="IcecreamMachine")
+#Function: getIcecream (package .GlobalEnv)
+#object="IcecreamMachine"
+
+#Function: initialize (package methods)
+#.Object="IcecreamMachine"
+#    (inherited from: .Object="ANY")
+
+#Function: show (package methods)
+#object="IcecreamMachine"
+```
+
+查看类是否有特定的方法使用函数 existsMethod.
+
+```
+existsMethod(f = "print", signature = "IcecreamMachine")
+#[1] FALSE
+existsMethod(f = "show", signature = "IcecreamMachine")
+#[1] TRUE
+```
+
+也可以直接获得某个方法的代码, 使用函数 getMethod.
+
+```
+getMethod(f="show", signature="IcecreamMachine")
+#Method Definition:
+
+#function (object) 
+#{
+#    cat("*** Wounderful Icecream Machine! ***\n")
+#    cat("Taste:\n")
+#    cat("\tStrawberry: ", object@strawberry, "\n")
+#    cat("\tChocolate: ", object@chocolate, "\n")
+#    cat("\tMango: ", object@mango, "\n")
+#}
+
+#Signatures:
+#        object
+#target  "IcecreamMachine"
+#defined "IcecreamMachine"
+```
+
+#### 操作属性 ####
+
+虽然使用 "@" 符号可以直接获得 S4 对象的属性, 但是利用面向对象方式进行编程, 最好使得所有和对象的属性的操作都是通过对象的方法来完成, 这样才能保证属性的确定性, 知道属性是按照规律进行改变的.
+
+对于获取属性的值, 可以设置一定函数来获取值, 如各种 get 函数.
+
+
+```
+setGeneric(
+    name = "getRest",
+    def  = function(object,...) {
+        standardGeneric("getRest")
+    }
+)
+setMethod(
+    f          = "getRest",
+    signature  = "IcecreamMachine",
+    definition = function(object, type) {
+        return(slot(object, type))
+    }
+)
+```
+
+也可以使用函数直接设置类的属性的值, 如各种 set 函数. 这里需要注意的是, 可以使用 setMethod 函数, 但是函数名称里面要加上 "<-", 或者使用 setReplaceMethod, 函数名称里面不加 "<-".
+
+
+```
+setGeneric(
+    name = "setIce<-",
+    def  = function(object, type, value) {
+        standardGeneric("setIce<-")
+    }
+)
+setReplaceMethod(
+    f          = "setIce",
+    signature  = "IcecreamMachine",
+    definition = function(object, type, value) {
+        slot(object, type) <- value
+        return(object)
+    }
+)
+```
+
+还可以定义 "[" 函数和 "[<-" 函数方便操作.
+
+
+```
+setMethod(
+    f          = "[",
+    signature  = "IcecreamMachine",
+    definition = function(x,i,j,drop) {
+        if (i == "strawberry") {
+            return(x@strawberry)
+        } else if (i == "chocolate") {
+            return(x@chocolate)
+        } else if (i == "mango") {
+            return(x@mango)
+        }
+    }
+)
+#[1] "["
+setReplaceMethod(
+    f          = "[",
+    signature  = "IcecreamMachine",
+    definition = function(x,i,j,value) {
+        if (i == "strawberry") {
+            x@strawberry <- value
+        } else if (i == "chocolate") {
+            x@chocolate <- value
+        } else if (i == "mango") {
+            x@mango <- value
+        }
+        validObject(x)
+        return(x)
+    }
+)
+#[1] "[<-"
+```
+
+#### 方法举例 ####
+
+构造函数是一个类的重要的方法, 在定义类的时候都会有默认的构造函数, 也可以自己定义构造函数. 构造函数的函数名为 initialize, 在创建新的实例时使用的 new 函数就调用 initialize 函数.
+
+
+```
+setMethod(
+    f          = "initialize",
+    signature  = "IcecreamMachine",
+    definition = function(.Object,
+                          strewberry,
+                          chocolate,
+                          mango) {
+        cat("Welcome to an icecream world!\n")
+        .Object@strewberry <- strewberry
+        .Object@chocolate  <- chocolate
+        .Object@mango      <- mango
+        return(.Object)
+    }
+)
+#[1] "initialize"    
+```
+
+显示函数 show 是在交互的界面下输出对象信息的函数, 可以设置类的 show 函数来控制所需要的输出格式和信息, 可以是文字, 图形等.
+
+
+```
+setMethod(
+    f           = "show",
+    signature   = "IcecreamMachine",
+    definition = function(object) {
+        cat("\tStrawberry: ", object@strawberry, "\n") 
+        cat("\tChocolate: ", object@chocolate, "\n") 
+        cat("\tMango: ", object@mango, "\n") 
+    }
+)
+#[1] "show"
+```
+
+类似的是 print 函数, 可以 print 出来所需要的文字信息, 与 show 函数有所不同.
+
+
+```
+setMethod(
+    f           = "print",
+    signature   = "IcecreamMachine",
+    definition = function(x,...) {
+        cat(
+            "Total: ",
+            x@strawberry + 
+            x@chocolate + 
+            x@mango,
+            "\n"
+        )
+        cat("\tStrawberry: ", x@strawberry, "\n") 
+        cat("\tChocolate: ", x@chocolate, "\n") 
+        cat("\tMango: ", x@mango, "\n") 
+    }
+)
+#[1] "print"
+```
+
+--------------------------------------------------------------------------------
+
+### 参考文献 ###
+
+* [Advanced R](adv-r.had.co.nz)
+* [A (Not So) Short Introduction to S4](https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf)
+* [How S4 methods works](developer.r-project.org/howMethodsWork.pdf)
+
+
+
+
+
+
+

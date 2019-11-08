@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：S4 类</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/r-xue-xi-bi-ji-s4-lei.html">
+<meta name="twitter:title" content="Wolf Cave ~ R 学习笔记：S4 类">
+<meta name="twitter:description" content="S4 基础.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ R 学习笔记：S4 类" />
+<meta property="og:description" content="S4 基础." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/r-xue-xi-bi-ji-s4-lei.html" rel="bookmark" title="Permalink to R 学习笔记：S4 类">R 学习笔记：S4 类</a></h2>
+        <div class="entry-content blog-post">
+            <p>S4 的意思是指 S 语言的版本 4. R 语言本身对面向对象编程的支持不是很理想, S4 类在一定程度上使得 R 语言更适合于面向对象编程. 那么, 为什么 R 也需要使用面向对象编程呢? 我所理解的面向对象编程的好处在于, 面向对象编程的方式可以很好地处理现实的问题. 因为现实中的每一个需要处理的数据, 都对应于一个背后的对象, 例如, 如果是工资数据, 那么工资对应的是一个个员工, 这个员工会有种种属性, 再例如, 如果处理的数据是基因表达量, 那么这个表达量背后对应的就是基因, 基因有其位置信息, 有其编码信息, 有其各种 ID 等. 我会需要使用 R 语言处理很多现实的问题. 如果只是简单地处理一个维度的数据, 那么就可以把这些数据看成简单的数字使用 R 语言处理. 但是, 如果要对数据所对应的对象进行多维度地分析和处理, 那么使用面向对象编程的方式就可以使得数据很规整, 并且减少错误的可能性. 如果简单地使用 list 来纵向地包装同一个对象的不同数据或者横向地包装不同对象地同类型数据自然也是可以的, 有的时候甚至很方便, 不过, 在更为复杂的地方, 使用更合适地面向对象的工具显然是个更优的选择.</p>
+<p>R 语言是一个方程语言, 几乎所有的操作都是基于方程的, 那怕是一个运算符, 其被后也是一个方程. R 的面向对象的编程, 更像是面向方程和类的编程, 其 S4 类面向对象编程的方式中也蕴含着方程的思想, 后面要提到的 R 语言中 S4 的方法和类是相互独立的特点就是这中思想的一个体现. 在 R 的 S4 编程中, 方法是属于方法原型的, 而不属于类.</p>
+<h2>面向对象基础</h2>
+<p>不同的语言进行面向对象编程中, 有许多东西是共同的. 就像浩巍说的, 编程就是一通百通. 如果了解 Python 的面向对象编程, 里面的很多思想也能使用在 R 语言面向对象编程中.</p>
+<ul>
+<li>类 (class) 是面向对象编程的基础. 类就像是一个包装的盒子, 把对象的所有的属性都包含在其中. 可以形象地说, 类有点像一个有多种口味可供选择的冰激凌机器.</li>
+<li>变量 (variable) 是描述对象的具体特征的数据, 是类的属性, 可以是数字或者字符等各种类型, 在 R 语言的 S4 类中被称为存储槽 (slot). 不同的变量, 就是冰激凌机器中的不同口味的冰激凌.</li>
+<li>方法 (method) 是作用于类对象的各种操作, 也是类的属性, 具体实现就是各种方程. 方法也对应于冰激凌机器上产出不同口味冰激凌的不同的按钮. 对于不同的类可以有相似的方法, 例如对不同的类都可以有 print 函数来输出类的内容. 需要注意的是, 在 R 语言的 S4 类中, 类的方法本身不属于类本身, 而是独立的方程, 这点和 Python 等语言面向对象编程有差别. 但是, 在 R 语言的 RC 类 (Reference Class) 中方法本身则属于类. </li>
+</ul>
+<p>面向对象编程有三个重要特点: 封装, 继承和多态性. 封装的好处是把同属一个类的不同的属性能够包装在一起, 不会和外部的变量等相互影响. 那么在 R 的 S4 面向对象编程中, 也应该注意的是, 尽量不要直接引用类的 slot, 最好是通过方法来引用, 也就是通过按键来获得冰激凌, 而不是直接打开储藏盖去取. 不过, 直接引用确实是一个很方便的方式, 在能够保证正确的情况下也可以适当采用. 继承和多态性则有利于代码的重用, 减少由于采用重复相同的代码, 而在代码发生改变的时候造成不同的相关类之间出现不一致. 类的继承关系需要在编程之前妥善设计好, 这样才能有效地发挥面向对象编程的优势.</p>
+<h2>S4 基础</h2>
+<p>S4 面向对象编程的问题是类的方法和类的变量是分离的, 所以这在一定程度上就减弱了面向对象编程的封装的特点. 基于 S4 进行面向对象编程的时候, 就需要注意, 把一个类的方法和类的变量都放在同一个文件中, 采用合适的名称进行命名.</p>
+<p>R 语言中定义好的 S4 类的一些函数在 methods 包中, 在使用 S4 编程前需要加载 methods 包: <code>library(methods)</code>. 如果要查看 methods 包中的函数可以使用 ls 函数: <code>ls("package:methods")</code>.</p>
+<p>还应该分清的是类和实例的关系, 一个类正像其名称, 是一类东西的通称, 而实例是具体的某个东西, 所以可以使用 class 函数或者 typeof 等函数来查看某个实例的类. 判断是否是 S4 类可以使用函数 isS4.</p>
+<h3>类</h3>
+<h4>创建类</h4>
+<p>对于 S4 类的定义, 其定义中只包含类的名称和其变量, 也就是 slot, 而不包括方法. 定义 S4 类要使用 setClass 函数.</p>
+<div class="highlight"><pre><span></span><span class="n">setClass</span><span class="p">(</span>
+    <span class="k">Class</span> <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">slots</span> <span class="o">=</span> <span class="k">c</span><span class="p">(</span>
+        <span class="n">strawberry</span> <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
+        <span class="n">chocolate</span>  <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
+        <span class="n">mango</span>      <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>在创建类的时候, 应该指定每个 slots 的类型, 最好是可以限定的基本类型, 如 numeric, character, 等 atomic 类型. 而最好不要是 list 等类型, 因为我们可以向 list 中添加任何类型的数据, 这样就使得类的变量变得不可控, 也不好建立合适的方法. slots 接受一个 vector 或者 list, 把变量名和其类型名对应起来即可.</p>
+<p>在使用 setClass 函数定义类的时候, 可以使用 validity 参数来定义校验函数, 来保证类的每个值符合要求. 在定义完成后, 也可以使用 setValidity 函数来设置.</p>
+<h4>默认值</h4>
+<p>有的时候, 我们会希望类的每个或某些值在创建实例的时候有一定的默认值, 即使没有在建立的时候赋值, 其实例的变量也是有默认值的. 那么这个时候可以使用 setClass 中的 prototype 参数.</p>
+<div class="highlight"><pre><span></span><span class="n">setClass</span><span class="p">(</span>
+    <span class="k">Class</span>     <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">slots</span>     <span class="o">=</span> <span class="k">c</span><span class="p">(</span>
+        <span class="n">strawberry</span> <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
+        <span class="n">chocolate</span>  <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
+        <span class="n">mango</span>      <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span>
+    <span class="p">),</span>
+    <span class="n">prototype</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span>
+        <span class="n">strawberry</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">chocolate</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">mango</span>      <span class="o">=</span> <span class="mi">0</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>设定默认值的时候, prototype 接受一个 list, 其中变量名和默认值一一对应.</p>
+<h4>继承</h4>
+<p>继承是面向对象编程的重要特征, S4 类的继承关系通过 setClass 中的 contais 参数设置. 虽然可以设置一个类继承自多个父类, 但是这样有可能会引起方法调用的问题, 所以最好只用一个类. 当一个类每有对应方法的时候, 会向其父类的方法寻找. ANY 是所有的 S4 类的最基本的父类, 所以一个类和定义的父类均没有定义相应方法时, 最后会使用 ANY 类的方法.</p>
+<div class="highlight"><pre><span></span><span class="n">setClass</span><span class="p">(</span>
+    <span class="k">Class</span> <span class="o">=</span> <span class="ss">&quot;IcecreamStore&quot;</span><span class="p">,</span>
+    <span class="n">slots</span> <span class="o">=</span> <span class="k">c</span><span class="p">(</span><span class="n">place</span> <span class="o">=</span> <span class="ss">&quot;character&quot;</span><span class="p">),</span>
+    <span class="k">contains</span> <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span>
+<span class="p">)</span>
+</pre></div>
+
+
+<p>上例中, 因为 IcecreamMachine 有定义 show 函数, 而 IcecreamStore 没有定义 show 函数, 所有其实例会调用 IcecreamMachine 的 show 函数. 如果想要使用 ANY 的 show 函数, 则需要使用 unclass 函数.
+需要注意的是, 如果对父类定义了特定的方法, 要在子类中也使用相应方法, 就需要定义, 否则会直接调用父类的方法, 从而有可能引起错误.</p>
+<h4>删除类</h4>
+<p>可以使用 removeClass 来删除类.</p>
+<div class="highlight"><pre><span></span><span class="n">removeClass</span><span class="p">(</span><span class="k">Class</span> <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>删除类后, 已经存在的类的实例并不会被删除. </p>
+<h4>查看类</h4>
+<p>R 语言提供了很多方便使用的自省函数, S4 类也有一些方便使用的函数.</p>
+<ul>
+<li>查看类 slot 变量名, slotNames 函数.</li>
+<li>获得类 slot, getSlots 函数.</li>
+<li>获得类, getClass 函数.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">slotNames</span><span class="p">(</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;strawberry&quot;</span> <span class="ss">&quot;chocolate&quot;</span>  <span class="ss">&quot;mango&quot;</span>
+
+<span class="n">getSlots</span><span class="p">(</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="n">strawberry</span>  <span class="n">chocolate</span>      <span class="n">mango</span> 
+<span class="o">#</span> <span class="ss">&quot;numeric&quot;</span>  <span class="ss">&quot;numeric&quot;</span>  <span class="ss">&quot;numeric&quot;</span>
+
+<span class="n">getClass</span><span class="p">(</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="k">Class</span> <span class="ss">&quot;IcecreamMachine&quot;</span> <span class="p">[</span><span class="k">in</span> <span class="ss">&quot;.GlobalEnv&quot;</span><span class="p">]</span>
+<span class="o">#</span>
+<span class="o">#</span><span class="n">Slots</span><span class="p">:</span>
+<span class="o">#</span>
+<span class="o">#</span><span class="n">Name</span><span class="p">:</span>  <span class="n">strawberry</span>  <span class="n">chocolate</span>      <span class="n">mango</span>
+<span class="o">#</span><span class="k">Class</span><span class="p">:</span>    <span class="nb">numeric</span>    <span class="nb">numeric</span>    <span class="nb">numeric</span>
+</pre></div>
+
+
+<h3>方法</h3>
+<p>S4 类的方法和 S4 类的定义是独立的. S4 的方法要使用 setMethod 函数来定义.</p>
+<p>由一些函数已经有了相应的其他类型的定义, 我们可以继续定义符合我们所需要的类型的对应的函数. 需要注意的是, 在为类定义已经有的函数的重载函数的时候, 新定义的函数的参数应该和原函数的参数一致, 否则会发生警告或错误. 常见的函数, 如 show, 可以设置在命令行输入该类实例后输出的形式, 又如 print 函数, 可以设置 print 的形式. </p>
+<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>           <span class="o">=</span> <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span><span class="ss">)</span> {
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">*** Wounderful Icecream Machine! ***</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Taste:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Strawberry: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">strawberry</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Chocolate: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">chocolate</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Mango: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">mango</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
+    }
+<span class="ss">)</span>
+</pre></div>
+
+
+<p>对于已经存在的方法原型, 可以直接使用 setMethod. 而对于自定义的方法则需要先设置方法原型, 使用 setGeneric 函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">setGeneric</span><span class="ss">(</span>
+    <span class="nv">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getIcecream</span><span class="s2">&quot;</span>,
+    <span class="nv">def</span>  <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>,...<span class="ss">)</span> {
+        <span class="nv">standardGeneric</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">getIcecream</span><span class="s2">&quot;</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+<span class="nv">setMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getIcecream</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> {
+        <span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> <span class="o">&lt;-</span> <span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">return</span><span class="ss">(</span><span class="mi">1</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+</pre></div>
+
+
+<p>由于使用 setGeneric 会把之前的定义给覆盖, 我们可以使用 lockBinding 函数来锁定定义, 避免误操作. </p>
+<div class="highlight"><pre><span></span><span class="n">lockBinding</span><span class="p">(</span><span class="ss">&quot;getIcecream&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">GlobalEnv</span><span class="p">)</span>
+</pre></div>
+
+
+<h4>查看方法</h4>
+<p>关于方法的自省函数也很方便使用.</p>
+<p>查看一个 S4 类所拥有的方法可以使用函数 showMethods 函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">showMethods</span><span class="ss">(</span><span class="nv">classes</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
+#<span class="nv">Function</span>: <span class="nv">getIcecream</span> <span class="ss">(</span><span class="nv">package</span> .<span class="nv">GlobalEnv</span><span class="ss">)</span>
+#<span class="nv">object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
+
+#<span class="nv">Function</span>: <span class="nv">initialize</span> <span class="ss">(</span><span class="nv">package</span> <span class="nv">methods</span><span class="ss">)</span>
+#.<span class="nv">Object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
+#    <span class="ss">(</span><span class="nv">inherited</span> <span class="nv">from</span>: .<span class="nv">Object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">ANY</span><span class="s2">&quot;</span><span class="ss">)</span>
+
+#<span class="nv">Function</span>: <span class="k">show</span> <span class="ss">(</span><span class="nv">package</span> <span class="nv">methods</span><span class="ss">)</span>
+#<span class="nv">object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>查看类是否有特定的方法使用函数 existsMethod.</p>
+<div class="highlight"><pre><span></span><span class="nv">existsMethod</span><span class="ss">(</span><span class="nv">f</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">print</span><span class="s2">&quot;</span>, <span class="nv">signature</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
+#[<span class="mi">1</span>] <span class="nv">FALSE</span>
+<span class="nv">existsMethod</span><span class="ss">(</span><span class="nv">f</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>, <span class="nv">signature</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
+#[<span class="mi">1</span>] <span class="nv">TRUE</span>
+</pre></div>
+
+
+<p>也可以直接获得某个方法的代码, 使用函数 getMethod.</p>
+<div class="highlight"><pre><span></span><span class="nv">getMethod</span><span class="ss">(</span><span class="nv">f</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>, <span class="nv">signature</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
+#<span class="nv">Method</span> <span class="nv">Definition</span>:
+
+#<span class="nv">function</span> <span class="ss">(</span><span class="nv">object</span><span class="ss">)</span> 
+#{
+#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">*** Wounderful Icecream Machine! ***</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Taste:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Strawberry: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">strawberry</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Chocolate: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">chocolate</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Mango: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">mango</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+#}
+
+#<span class="nv">Signatures</span>:
+#        <span class="nv">object</span>
+#<span class="nv">target</span>  <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
+#<span class="nv">defined</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<h4>操作属性</h4>
+<p>虽然使用 "@" 符号可以直接获得 S4 对象的属性, 但是利用面向对象方式进行编程, 最好使得所有和对象的属性的操作都是通过对象的方法来完成, 这样才能保证属性的确定性, 知道属性是按照规律进行改变的.</p>
+<p>对于获取属性的值, 可以设置一定函数来获取值, 如各种 get 函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">setGeneric</span><span class="ss">(</span>
+    <span class="nv">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getRest</span><span class="s2">&quot;</span>,
+    <span class="nv">def</span>  <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>,...<span class="ss">)</span> {
+        <span class="nv">standardGeneric</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">getRest</span><span class="s2">&quot;</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+<span class="nv">setMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getRest</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> {
+        <span class="k">return</span><span class="ss">(</span><span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">))</span>
+    }
+<span class="ss">)</span>
+</pre></div>
+
+
+<p>也可以使用函数直接设置类的属性的值, 如各种 set 函数. 这里需要注意的是, 可以使用 setMethod 函数, 但是函数名称里面要加上 "&lt;-", 或者使用 setReplaceMethod, 函数名称里面不加 "&lt;-".</p>
+<div class="highlight"><pre><span></span><span class="nv">setGeneric</span><span class="ss">(</span>
+    <span class="nv">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">setIce&lt;-</span><span class="s2">&quot;</span>,
+    <span class="nv">def</span>  <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span>, <span class="nv">value</span><span class="ss">)</span> {
+        <span class="nv">standardGeneric</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">setIce&lt;-</span><span class="s2">&quot;</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+<span class="nv">setReplaceMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">setIce</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span>, <span class="nv">value</span><span class="ss">)</span> {
+        <span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> <span class="o">&lt;-</span> <span class="nv">value</span>
+        <span class="k">return</span><span class="ss">(</span><span class="nv">object</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+</pre></div>
+
+
+<p>还可以定义 "[" 函数和 "[&lt;-" 函数方便操作.</p>
+<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">[</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">x</span>,<span class="nv">i</span>,<span class="nv">j</span>,<span class="nv">drop</span><span class="ss">)</span> {
+        <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">strawberry</span><span class="s2">&quot;</span><span class="ss">)</span> {
+            <span class="k">return</span><span class="ss">(</span><span class="nv">x</span>@<span class="nv">strawberry</span><span class="ss">)</span>
+        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">chocolate</span><span class="s2">&quot;</span><span class="ss">)</span> {
+            <span class="k">return</span><span class="ss">(</span><span class="nv">x</span>@<span class="nv">chocolate</span><span class="ss">)</span>
+        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">mango</span><span class="s2">&quot;</span><span class="ss">)</span> {
+            <span class="k">return</span><span class="ss">(</span><span class="nv">x</span>@<span class="nv">mango</span><span class="ss">)</span>
+        }
+    }
+<span class="ss">)</span>
+#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">[</span><span class="s2">&quot;</span>
+<span class="nv">setReplaceMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">[</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">x</span>,<span class="nv">i</span>,<span class="nv">j</span>,<span class="nv">value</span><span class="ss">)</span> {
+        <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">strawberry</span><span class="s2">&quot;</span><span class="ss">)</span> {
+            <span class="nv">x</span>@<span class="nv">strawberry</span> <span class="o">&lt;-</span> <span class="nv">value</span>
+        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">chocolate</span><span class="s2">&quot;</span><span class="ss">)</span> {
+            <span class="nv">x</span>@<span class="nv">chocolate</span> <span class="o">&lt;-</span> <span class="nv">value</span>
+        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">mango</span><span class="s2">&quot;</span><span class="ss">)</span> {
+            <span class="nv">x</span>@<span class="nv">mango</span> <span class="o">&lt;-</span> <span class="nv">value</span>
+        }
+        <span class="nv">validObject</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>
+        <span class="k">return</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">[&lt;-</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<h4>方法举例</h4>
+<p>构造函数是一个类的重要的方法, 在定义类的时候都会有默认的构造函数, 也可以自己定义构造函数. 构造函数的函数名为 initialize, 在创建新的实例时使用的 new 函数就调用 initialize 函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">initialize</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span>.<span class="nv">Object</span>,
+                          <span class="nv">strewberry</span>,
+                          <span class="nv">chocolate</span>,
+                          <span class="nv">mango</span><span class="ss">)</span> {
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Welcome to an icecream world!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
+        .<span class="nv">Object</span>@<span class="nv">strewberry</span> <span class="o">&lt;-</span> <span class="nv">strewberry</span>
+        .<span class="nv">Object</span>@<span class="nv">chocolate</span>  <span class="o">&lt;-</span> <span class="nv">chocolate</span>
+        .<span class="nv">Object</span>@<span class="nv">mango</span>      <span class="o">&lt;-</span> <span class="nv">mango</span>
+        <span class="k">return</span><span class="ss">(</span>.<span class="nv">Object</span><span class="ss">)</span>
+    }
+<span class="ss">)</span>
+#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">initialize</span><span class="s2">&quot;</span>    
+</pre></div>
+
+
+<p>显示函数 show 是在交互的界面下输出对象信息的函数, 可以设置类的 show 函数来控制所需要的输出格式和信息, 可以是文字, 图形等.</p>
+<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
+    <span class="nv">f</span>           <span class="o">=</span> <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>,
+    <span class="nv">signature</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
+    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span><span class="ss">)</span> {
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Strawberry: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">strawberry</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Chocolate: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">chocolate</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
+        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Mango: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">mango</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
+    }
+<span class="ss">)</span>
+#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>
+</pre></div>
+
+
+<p>类似的是 print 函数, 可以 print 出来所需要的文字信息, 与 show 函数有所不同.</p>
+<div class="highlight"><pre><span></span><span class="n">setMethod</span><span class="p">(</span><span class="w"></span>
+<span class="w">    </span><span class="n">f</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;print&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">signature</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="n">definition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,...)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;Total: &quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="n">x</span><span class="nv">@strawberry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">            </span><span class="n">x</span><span class="nv">@chocolate</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
+<span class="w">            </span><span class="n">x</span><span class="nv">@mango</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="ss">&quot;\n&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tStrawberry: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="nv">@strawberry</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tChocolate: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="nv">@chocolate</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tMango: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="nv">@mango</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="err">}</span><span class="w"></span>
+<span class="p">)</span><span class="w"></span>
+<span class="err">#</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"> </span><span class="ss">&quot;print&quot;</span><span class="w"></span>
+</pre></div>
+
+
+<hr>
+<h3>参考文献</h3>
+<ul>
+<li><a href="adv-r.had.co.nz">Advanced R</a></li>
+<li><a href="https://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf">A (Not So) Short Introduction to S4</a></li>
+<li><a href="developer.r-project.org/howMethodsWork.pdf">How S4 methods works</a></li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Fri 17 June 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/r-xue-xi-bi-ji-s4-lei.html&text=R 学习笔记：S4 类&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/r-xue-xi-bi-ji-s4-lei.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/r-xue-xi-bi-ji-s4-lei.html&t=R 学习笔记：S4 类"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/r-xue-xi-bi-ji-s4-lei.html&title=R 学习笔记：S4 类" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：S4 类&amp;body=Viens découvrir un article à propos de [R 学习笔记：S4 类] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-s4-lei.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-s4-lei.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：R 面向对象编程</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>R 语言虽然看上去是面向过程的语言, 其实 R 语言也是有很好的面向对象编程的特性的. R 中有三个面向对象的体系: S3; S4; Reference classes. S3 和 S4 是很典型的 R 对象, 其修改实际上是对原对象的复制, 并且其对象的方法并不属于对象本身. 而 Reference classes, 或者 RC, 则是十分像是底层的 C++ 的对象, 其对对象的修改是直接的修改, 而不是复制, 并且, 其方法是对象的一部分, RC 更像是 S4 和其环境和方法的整合. 这里主要关注 S3 和 S4 这两个系统.</p>
+<hr>
+<h2>S3</h2>
+<p>S3 是 R 的第一个非常简单的面向对象的体系, 也是使用最广泛的体系. 一般初学 R, 使用的就主要是 S3. 在 basic 包和 stats 包中所采用的也都是 S3. 可以说 S3 是 R 面向对象编程或者平时的数据处理的基础吧.</p>
+<p>判断一个对象是不是 S3 对象, 可以使用函数 is.object 和 isS4, S3 对象是对象, 所以 is.object 会返回 TRUE, 而 isS4 则返回 FALSE. 也可以使用 pryr 包中的 otype 函数去检验, otype 会返回四种结果: base; S3; S4; RC. 如果一个对象没有 class 这个属性, 则返回 "base"; 如果对象有 class 属性, 而不是 S4, 则返回 "S3"; 如果一个对象是 S4, 而不是 RC, 则返回 "S4"; 同样, 如果一个对象是 Reference classes, 则返回 "S4".</p>
+<p>因为 S3 的类实际上是对象的一个属性, 所以可以通过一般的改变属性的办法来建立对象. 可以使用 structure 或者 attr 函数来设置 class 属性. 对于已经建立的对象, 还可以使用 class 替换函数来修改属性, 可以使用 class 函数来设置 class 的属性, 也可以使用 unclass 来去除 class 的属性. 还可以使用 inherits 函数来看继承关系.</p>
+<div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">&lt;-</span> <span class="nf">structure</span><span class="p">(</span><span class="nf">list</span><span class="p">(),</span> <span class="n">class</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="c1">#[1] &quot;foo&quot;</span>
+<span class="nf">inherits</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
+<span class="c1">#[1] TRUE</span>
+</pre></div>
+
+
+<h3>建立新方法</h3>
+<p>对于新建立的类, 可以使用 UseMethod 函数来建立适合该类的方法. UseMethod 接受函数名做为参数. 然后接着建立对于不同的类的方法, 应该使用函数名加上一个小数点再加上类名作为类的方法函数.</p>
+<div class="highlight"><pre><span></span><span class="n">thefoo</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nf">UseMethod</span><span class="p">(</span><span class="s">&quot;thefoo&quot;</span><span class="p">)</span>
+<span class="n">thefoo.default</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="s">&quot;Default&quot;</span>
+<span class="n">thefoo.foo</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="s">&quot;Class foo&quot;</span>
+<span class="n">foo</span> <span class="o">&lt;-</span> <span class="nf">structure</span><span class="p">(</span><span class="nf">list</span><span class="p">(),</span> <span class="n">class</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
+<span class="nf">thefoo</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="c1">#[1] &quot;Class foo&quot;</span>
+</pre></div>
+
+
+<hr>
+<h2>S4</h2>
+<p>S4 和 S3 很像, 同样方法不属于类, 而属于函数. 但是 S4 相比于 S3 有更为严格的定义. 还需要注意的是, S3 使用 "$" 来取元素, 而 S4 则使用 "@" 来取元素.</p>
+<p>S4 的方法都在 methods 包中, 由于该包不是在所有情况下都加载, 所以最好使用 S4 前调用该包. 由于 basic 包和 stats 包是建立在 S3 上的, 所以需要调用 stats4 包来使用相关的函数.</p>
+<p>S4 的建立不像 S3 那么简单只要设置属性就了. S4 的建立需要有相对严格的定义, 通过 setClass 函数来设置一个类的名称, 存储槽 (slots), 还有继承关系 (contains), 还有更多可以设置的东西, 可以查看文档了解. 而建立一个 S4 对象, 需要使用 new 函数, 需要指明类名, 每个存储槽的值. </p>
+<div class="highlight"><pre><span></span><span class="nf">setClass</span><span class="p">(</span><span class="s">&quot;Person&quot;</span><span class="p">,</span>
+         <span class="n">slots</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;character&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="s">&quot;numeric&quot;</span><span class="p">))</span>
+<span class="n">alice</span> <span class="o">&lt;-</span> <span class="nf">new</span><span class="p">(</span><span class="s">&quot;Person&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="m">40</span><span class="p">)</span>
+<span class="nf">setClass</span><span class="p">(</span><span class="s">&quot;Employee&quot;</span><span class="p">,</span>
+         <span class="n">slots</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">boss</span> <span class="o">=</span> <span class="s">&quot;Person&quot;</span><span class="p">),</span>
+         <span class="n">contains</span> <span class="o">=</span> <span class="s">&quot;Person&quot;</span><span class="p">)</span>
+<span class="n">john</span> <span class="o">&lt;-</span> <span class="nf">new</span><span class="p">(</span><span class="s">&quot;Employee&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">boss</span> <span class="o">=</span> <span class="n">alice</span><span class="p">)</span>
+</pre></div>
+
+
+<p>选择对象的一个元素的时候, 需要使用 slot 函数或者 @, 相当于 S3 中的 "[[" 函数.</p>
+<div class="highlight"><pre><span></span><span class="n">slot</span><span class="p">(</span><span class="n">john</span><span class="p">,</span> <span class="ss">&quot;boss&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="n">An</span> <span class="k">object</span> <span class="k">of</span> <span class="k">class</span> <span class="ss">&quot;Person&quot;</span>
+<span class="o">#</span><span class="n">Slot</span> <span class="ss">&quot;name&quot;</span><span class="p">:</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;Alice&quot;</span>
+
+<span class="o">#</span><span class="n">Slot</span> <span class="ss">&quot;age&quot;</span><span class="p">:</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">40</span>
+</pre></div>
+
+
+<h3>建立新方法</h3>
+<p>S4 为类建立新方法会相对于 S3 麻烦一点. 建立新方法时需要使用 setGeneric 和 setMethod 函数.</p>
+<div class="highlight"><pre><span></span><span class="n">setGeneric</span><span class="p">(</span><span class="ss">&quot;union&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;union&quot;</span>
+<span class="n">setMethod</span><span class="p">(</span><span class="ss">&quot;union&quot;</span><span class="p">,</span>
+          <span class="k">c</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="ss">&quot;data.frame&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="ss">&quot;data.frame&quot;</span><span class="p">),</span>
+          <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="err">{</span>
+          <span class="k">unique</span><span class="p">(</span><span class="n">rbind</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+          <span class="err">}</span>
+<span class="p">)</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;union&quot;</span>
+</pre></div>
+
+
+<h2>RC</h2>
+<p>RC 本身继承自 S4, RC 的建立方法和 S4 很像, 使用 setRefClasses 函数. RC 和 S4 的重要区别在于方法属于类本身, 所以创建新的对象使用的是类的 new 函数.</p>
+<div class="highlight"><pre><span></span><span class="n">Account</span> <span class="o">&lt;-</span> <span class="nf">setRefClass</span><span class="p">(</span><span class="s">&quot;Account&quot;</span><span class="p">,</span>
+                       <span class="n">fields</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">balance</span> <span class="o">=</span> <span class="s">&quot;numeric&quot;</span><span class="p">),</span>
+                       <span class="n">methods</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span>
+                       <span class="n">withdraw</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+                           <span class="n">balance</span> <span class="o">&lt;&lt;-</span> <span class="n">balance</span> <span class="o">-</span> <span class="n">x</span>
+                       <span class="p">},</span>
+                       <span class="n">deposit</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+                           <span class="n">balance</span> <span class="o">&lt;&lt;-</span> <span class="n">balance</span> <span class="o">+</span> <span class="n">x</span>
+                       <span class="p">}))</span>
+<span class="n">a</span> <span class="o">&lt;-</span> <span class="n">Account</span><span class="o">$</span><span class="nf">new</span><span class="p">(</span><span class="n">balance</span> <span class="o">=</span> <span class="m">100</span><span class="p">)</span>
+<span class="n">a</span><span class="o">$</span><span class="n">balance</span>
+<span class="c1">#&gt; [1] 100</span>
+<span class="n">a</span><span class="o">$</span><span class="n">balance</span> <span class="o">&lt;-</span> <span class="m">200</span>
+<span class="n">a</span><span class="o">$</span><span class="n">balance</span>
+<span class="c1">#&gt; [1] 200</span>
+</pre></div>
+
+
+<p>RC 的复制不是简单的使用赋值符号, 而应该使用 copy 方法.</p>
+<div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">&lt;-</span> <span class="n">a</span><span class="o">$</span><span class="nf">copy</span><span class="p">()</span>
+</pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

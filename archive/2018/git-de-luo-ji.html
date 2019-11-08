@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git 的逻辑</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/git-de-luo-ji.html">
+<meta name="twitter:title" content="Wolf Cave ~ Git 的逻辑">
+<meta name="twitter:description" content="Git 设计上的逻辑">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Git 的逻辑" />
+<meta property="og:description" content="Git 设计上的逻辑" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/git-de-luo-ji.html" rel="bookmark" title="Permalink to Git 的逻辑">Git 的逻辑</a></h2>
+        <div class="entry-content blog-post">
+            <p>Git 最初设计是为了满足 Linux 项目的开发，其需要有以下的特点：
+* 速度：因为 Linux 内核代码量庞大，如果速度缓慢则会影响使用
+* 简单的设计
+* 支持非线性开发：Linux等项目往往有众多开发者开发，必须支持同时的分支
+* 完全的分布式设计
+* 能够处理大型项目：快的速度与大的数据量支持</p>
+<h2>Git 存储版本快照</h2>
+<p>Git 存储的是一个时刻所有文件的快照，而不是差别。对于 Subversion 等版本
+控制软件，其存储的是某一个时刻，该版本不同的文件相对于上个版本的差异，
+而 Git 存储的是当前版本的所有文件的快照。为了节省空间，如果当前版本中
+某些文件没有发生变化，则记录的是之前的文件，而不会重新存一份。</p>
+<h2>Git 本地</h2>
+<p>化几乎所有的操作Git 是分布式的版本控制软件，所有的数据在本地都有一份。
+所以使用 Git 读取数据，其直接从硬盘上读取信息，而不需要联网从服务器获
+取信息，使得所有的操作都可以在本地进行并且避免了网络延迟对于速度的影响。
+在未联网的情况下，可以直接使用 Git 的命令去查询历史、记录修改的文件等
+几乎所有操作。</p>
+<h2>Git 保持完整性</h2>
+<p>Git 在存储文件之间都对内存进行了校验和，并且使用该校验和来引用文件。所
+以，任何对 Git 数据的修改都会被发现，这就保证了 Git 的数据完整性。对于
+校验和的使用是作为 Git 最底层的技术的，不能被轻易地修改。Git 使用 160
+位的十六进制 SHA-1 哈希值做校验和 （如：
+303ff981c488b812b6215f7db7920dedb3b59d9a）。在.git/object 文件夹下所有
+的数据也是以其校验和作为文件名的。</p>
+<h2>Git 记录文件的三个阶段</h2>
+<p>Git 对于文件的版本控制有三个阶段，分别为：modified，staged，commited。
+这三个阶段也分别对应三个存储位置，modified 的文件信息位于工作目录中
+（working directory），staged 的信息存于 .git/index 文件中，而commited
+的信息存于 .git/objects 文件夹中。使用 Git 进行版本控制的流程包括：</p>
+<ol>
+<li>在工作目录中修改文件；</li>
+<li>把修改的文件添加到 stage，使用 git add 命令；</li>
+<li>把 stage 的文件添加到 Git 的存储中，完成 commit，使用 git commit 命
+令，相应的数据会被保存到.git/objects 文件夹下。</li>
+</ol>
+<p>文件可以在这三个阶段间
+进行切换，从而可以记录版本或者回滚到原来的版本。</p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Wed 10 October 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/git.html">#git, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/git-de-luo-ji.html&text=Git 的逻辑&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/git-de-luo-ji.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/git-de-luo-ji.html&t=Git 的逻辑"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/git-de-luo-ji.html&title=Git 的逻辑" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Git 的逻辑&amp;body=Viens découvrir un article à propos de [Git 的逻辑] sur le site de Wolfson Liu. ../../archive/2018/git-de-luo-ji.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/git-de-luo-ji.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

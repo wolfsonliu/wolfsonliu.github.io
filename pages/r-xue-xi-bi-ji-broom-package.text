@@ -1,0 +1,14 @@
+Title: R 学习笔记：broom package
+Date: 2017-01-27 11:34
+Modified: 2017-01-27 11:34
+Category: 壹零零壹
+Tags: r
+Authors: Wolfson Liu
+Summary: broom package.
+
+broom package 包含若干用于把 lm 等函数的结果转换成方便处理而又整洁的 data.frame 类型的函数.
+
+broom 提供了三个 S3 类的函数用于不同程度的规整数据.
+* tidy
+* augment
+* glance

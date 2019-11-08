@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>C++ 学习笔记：Ordinary Differential Equations (GNU Scientific Library)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>GNU Scientific Library 中有求解常微分方程（Oridinary Differential Equations）的函数，可以用来求解复杂的 ODE。详细的内容参看 <a href="https://www.gnu.org/software/gsl/manual/html_node/">gsl 手册</a>。在参考说明中，给出了例子，参看例子就可以很好理解，先让程序跑起来，之后细看内容。</p>
+<h4>例子</h4>
+<p>我写的计算 MAPK 的代码部分如下，是封装在一个 class 中的，有多个不同的拓扑结构的函数，在 odeRun 完成不同函数的选择。</p>
+<div class="highlight"><pre><span></span><span class="o">////</span> <span class="nv">Member</span><span class="o">-</span><span class="nv">Function</span>
+<span class="o">////</span> <span class="nv">odeFunction1s1p</span>: <span class="nv">needed</span> <span class="nv">by</span> <span class="o">&lt;</span><span class="nv">gsl</span><span class="o">/</span><span class="nv">gsl_odeiv2</span>.<span class="nv">h</span><span class="o">&gt;</span>, <span class="mi">1</span> <span class="nv">stage</span>, <span class="mi">1</span> <span class="nv">phosphorylation</span>.
+<span class="nv">int</span> <span class="nv">ReactantConcentration</span>::<span class="nv">odeFunction1s1p</span><span class="ss">(</span><span class="nv">double</span> <span class="nv">t</span>, <span class="nv">const</span> <span class="nv">double</span> <span class="nv">y</span>[], <span class="nv">double</span> <span class="nv">f</span>[], <span class="nv">void</span> <span class="o">*</span><span class="nv">para</span><span class="ss">)</span>
+{
+    <span class="nv">static_cast</span><span class="o">&lt;</span><span class="nv">void</span><span class="o">&gt;</span><span class="ss">(</span><span class="nv">t</span><span class="ss">)</span><span class="c1">;    // convert type to avoid unused parameter warning</span>
+    <span class="nv">Parameter</span> <span class="nb">params</span> <span class="o">=</span> <span class="o">*</span><span class="nv">static_cast</span><span class="o">&lt;</span><span class="nv">Parameter</span> <span class="o">*&gt;</span><span class="ss">(</span><span class="nv">para</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">use</span> <span class="nv">ras</span> <span class="nv">as</span> <span class="nv">the</span> <span class="nv">kinase</span> <span class="k">for</span> <span class="nv">map3k</span>, <span class="nv">m3kp</span> <span class="nv">as</span> <span class="nv">the</span> <span class="nv">phosphatase</span> <span class="k">for</span> <span class="nv">map3kp</span>.
+    <span class="nv">double</span> <span class="nv">map3k</span>       <span class="o">=</span> <span class="nv">y</span>[<span class="mi">0</span>]<span class="c1">;    // MAPKKK</span>
+    <span class="nv">double</span> <span class="nv">map3kp</span>      <span class="o">=</span> <span class="nv">y</span>[<span class="mi">1</span>]<span class="c1">;    // MAPKKK-phosphoryl</span>
+    <span class="nv">double</span> <span class="nv">map3k_ras</span>   <span class="o">=</span> <span class="nv">y</span>[<span class="mi">2</span>]<span class="c1">;    // intermedia product</span>
+    <span class="nv">double</span> <span class="nv">map3kp_m3kp</span> <span class="o">=</span> <span class="nv">y</span>[<span class="mi">3</span>]<span class="c1">;    // intermedia product</span>
+    <span class="nv">double</span> <span class="nv">ras</span>         <span class="o">=</span> <span class="nv">y</span>[<span class="mi">4</span>]<span class="c1">;    // MAPKKK kinase</span>
+    <span class="nv">double</span> <span class="nv">m3kp</span>        <span class="o">=</span> <span class="nv">y</span>[<span class="mi">5</span>]<span class="c1">;    // MAPKKK-p phosphatase </span>
+
+    <span class="o">//</span> <span class="nv">map3k</span> <span class="o">+</span> <span class="nv">ras</span> <span class="o">&lt;</span><span class="nv">b0</span><span class="o">==</span><span class="nv">f0</span><span class="o">&gt;</span> <span class="nv">map3k_ras</span> <span class="o">&lt;</span><span class="nv">kb0</span><span class="o">-=</span><span class="nv">kf0</span><span class="o">&gt;</span> <span class="nv">map3kp</span> <span class="o">+</span> <span class="nv">ras</span>
+    <span class="o">//</span> <span class="nv">map3kp</span> <span class="o">+</span> <span class="nv">m3kp</span> <span class="o">&lt;</span><span class="nv">b1</span><span class="o">==</span><span class="nv">f1</span><span class="o">&gt;</span> <span class="nv">map3kp_m3kp</span> <span class="o">&lt;</span><span class="nv">kb1</span><span class="o">-=</span><span class="nv">kf1</span><span class="o">&gt;</span> <span class="nv">map3k</span> <span class="o">+</span> <span class="nv">m3kp</span>
+    <span class="o">//</span> <span class="nv">map3k</span>
+    <span class="nv">f</span>[<span class="mi">0</span>] <span class="o">=</span> <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">*</span> <span class="nv">ras</span> <span class="o">+</span> <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k_ras</span> <span class="o">+</span>
+    <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp_m3kp</span> <span class="o">-</span> <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">*</span> <span class="nv">m3kp</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">map3kp</span>
+    <span class="nv">f</span>[<span class="mi">1</span>] <span class="o">=</span> <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">*</span> <span class="nv">m3kp</span> <span class="o">+</span> <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp_m3kp</span> <span class="o">+</span>
+    <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k_ras</span> <span class="o">-</span> <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">*</span> <span class="nv">ras</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">map3k_ras</span>
+    <span class="nv">f</span>[<span class="mi">2</span>] <span class="o">=</span> <span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">*</span> <span class="nv">ras</span> <span class="o">-</span> <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k_ras</span> <span class="o">-</span>
+    <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k_ras</span> <span class="o">+</span> <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">*</span> <span class="nv">ras</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">map3kp_m3kp</span>
+    <span class="nv">f</span>[<span class="mi">3</span>] <span class="o">=</span> <span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">*</span> <span class="nv">m3kp</span> <span class="o">-</span> <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp_m3kp</span> <span class="o">-</span>
+    <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp_m3kp</span> <span class="o">+</span> <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">*</span> <span class="nv">m3kp</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">ras</span>: <span class="nv">dras</span> <span class="o">=</span> <span class="o">-</span><span class="nv">dmap3k_ras</span>
+    <span class="nv">f</span>[<span class="mi">4</span>] <span class="o">=</span> <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">*</span> <span class="nv">ras</span> <span class="o">+</span> <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k_ras</span> <span class="o">+</span>
+    <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k_ras</span> <span class="o">-</span> <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">*</span> <span class="nv">ras</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">m3kp</span>: <span class="nv">dm3kp</span> <span class="o">=</span> <span class="o">-</span><span class="nv">dmap3kp_m3kp</span>
+    <span class="nv">f</span>[<span class="mi">5</span>] <span class="o">=</span> <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">*</span> <span class="nv">m3kp</span> <span class="o">+</span> <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp_m3kp</span> <span class="o">+</span>
+    <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp_m3kp</span> <span class="o">-</span> <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">*</span> <span class="nv">m3kp</span><span class="c1">;    </span>
+
+    <span class="k">return</span> <span class="nv">GSL_SUCCESS</span><span class="c1">;    // in gsl header.</span>
+}
+
+<span class="o">////</span> <span class="nv">Member</span><span class="o">-</span><span class="nv">Function</span>
+<span class="o">////</span> <span class="nv">odeJacobian1s1p</span>: <span class="nv">needed</span> <span class="nv">by</span> <span class="o">&lt;</span><span class="nv">gsl</span><span class="o">/</span><span class="nv">gsl_odeiv2</span>.<span class="nv">h</span><span class="o">&gt;</span>, <span class="mi">1</span> <span class="nv">stage</span>, <span class="mi">1</span> <span class="nv">phosphorylation</span>.
+<span class="nv">int</span> <span class="nv">ReactantConcentration</span>::<span class="nv">odeJacobian1s1p</span><span class="ss">(</span><span class="nv">double</span> <span class="nv">t</span>, <span class="nv">const</span> <span class="nv">double</span> <span class="nv">y</span>[], <span class="nv">double</span> <span class="o">*</span><span class="nv">dfdy</span>, <span class="nv">double</span> <span class="nv">dfdt</span>[], <span class="nv">void</span> <span class="o">*</span><span class="nv">para</span><span class="ss">)</span>
+{
+    <span class="nv">static_cast</span><span class="o">&lt;</span><span class="nv">void</span><span class="o">&gt;</span><span class="ss">(</span><span class="nv">t</span><span class="ss">)</span><span class="c1">;    // convert type to avoid unused parameter warning</span>
+    <span class="o">//</span> <span class="nv">initiate</span>.
+    <span class="nv">Parameter</span> <span class="nb">params</span> <span class="o">=</span> <span class="o">*</span><span class="nv">static_cast</span><span class="o">&lt;</span><span class="nv">Parameter</span> <span class="o">*&gt;</span><span class="ss">(</span><span class="nv">para</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">use</span> <span class="nv">ras</span> <span class="nv">as</span> <span class="nv">the</span> <span class="nv">kinase</span> <span class="k">for</span> <span class="nv">map3k</span>, <span class="nv">m3kp</span> <span class="nv">as</span> <span class="nv">the</span> <span class="nv">phosphatase</span> <span class="k">for</span> <span class="nv">map3kp</span>.
+    <span class="nv">double</span> <span class="nv">map3k</span>       <span class="o">=</span> <span class="nv">y</span>[<span class="mi">0</span>]<span class="c1">;    // MAPKKK</span>
+    <span class="nv">double</span> <span class="nv">map3kp</span>      <span class="o">=</span> <span class="nv">y</span>[<span class="mi">1</span>]<span class="c1">;    // MAPKKK-phosphoryl</span>
+    <span class="nv">double</span> <span class="nv">map3k_ras</span>   <span class="o">=</span> <span class="nv">y</span>[<span class="mi">2</span>]<span class="c1">;    // intermedia product</span>
+    <span class="nv">double</span> <span class="nv">map3kp_m3kp</span> <span class="o">=</span> <span class="nv">y</span>[<span class="mi">3</span>]<span class="c1">;    // intermedia product</span>
+    <span class="nv">double</span> <span class="nv">ras</span>         <span class="o">=</span> <span class="nv">y</span>[<span class="mi">4</span>]<span class="c1">;    // MAPKKK kinase</span>
+    <span class="nv">double</span> <span class="nv">m3kp</span>        <span class="o">=</span> <span class="nv">y</span>[<span class="mi">5</span>]<span class="c1">;    // MAPKKK-p phosphatase </span>
+
+    <span class="nv">gsl_matrix_view</span> <span class="nv">dfdy_mat</span> <span class="o">=</span> <span class="nv">gsl_matrix_view_array</span><span class="ss">(</span><span class="nv">dfdy</span>, <span class="mi">6</span>, <span class="mi">6</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix</span> <span class="o">*</span><span class="nv">m</span> <span class="o">=</span> <span class="o">&amp;</span><span class="nv">dfdy_mat</span>.<span class="nv">matrix</span><span class="c1">;</span>
+
+    <span class="o">//</span> <span class="nv">calculate</span> <span class="nv">matrix</span>.
+    <span class="o">//</span> <span class="nv">map3k</span>.
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">0</span>, <span class="mi">0</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">ras</span> <span class="o">-</span>
+           <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">m3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">0</span>, <span class="mi">2</span>, <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">0</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">0</span>, <span class="mi">3</span>, <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">1</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">0</span>, <span class="mi">4</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">0</span>, <span class="mi">5</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3k</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">map3kp</span>.
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">1</span>, <span class="mi">0</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">m3kp</span> <span class="o">-</span>
+           <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">ras</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">0</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">1</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">1</span>, <span class="mi">4</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">1</span>, <span class="mi">5</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">map3k_ras</span>.
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">2</span>, <span class="mi">0</span>, <span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">ras</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">ras</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">2</span>, <span class="mi">2</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">0</span>] <span class="o">-</span> <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">0</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">2</span>, <span class="mi">3</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">+</span>
+           <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">2</span>, <span class="mi">5</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">map3kp_m3kp</span>.
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">3</span>, <span class="mi">0</span>, <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">m3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">m3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">3</span>, <span class="mi">2</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">1</span>] <span class="o">-</span> <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">1</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">3</span>, <span class="mi">5</span>, <span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">+</span>
+           <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3k</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">ras</span>.
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">4</span>, <span class="mi">0</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">ras</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">4</span>, <span class="mi">1</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">ras</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">4</span>, <span class="mi">2</span>, <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">0</span>] <span class="o">+</span> <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">0</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">4</span>, <span class="mi">3</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">4</span>, <span class="mi">4</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3k</span> <span class="o">-</span>
+           <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">0</span>] <span class="o">*</span> <span class="nv">map3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">4</span>, <span class="mi">5</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="o">//</span> <span class="nv">m3kp</span>.
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">5</span>, <span class="mi">0</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">m3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">5</span>, <span class="mi">1</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">m3kp</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">5</span>, <span class="mi">2</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">5</span>, <span class="mi">3</span>, <span class="nb">params</span>.<span class="nv">b</span>[<span class="mi">1</span>] <span class="o">+</span> <span class="nb">params</span>.<span class="nv">kf</span>[<span class="mi">1</span>]<span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">5</span>, <span class="mi">4</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">gsl_matrix_set</span><span class="ss">(</span><span class="nv">m</span>, <span class="mi">5</span>, <span class="mi">5</span>, <span class="o">-</span><span class="nb">params</span>.<span class="nv">f</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3kp</span> <span class="o">-</span>
+           <span class="nb">params</span>.<span class="nv">kb</span>[<span class="mi">1</span>] <span class="o">*</span> <span class="nv">map3k</span><span class="ss">)</span><span class="c1">;</span>
+
+    <span class="k">for</span> <span class="ss">(</span><span class="nv">int</span> <span class="nv">i</span> <span class="o">=</span> <span class="mi">0</span><span class="c1">; i != 6; ++i) {</span>
+    <span class="nv">dfdt</span>[<span class="nv">i</span>] <span class="o">=</span> <span class="mi">0</span>.<span class="mi">0</span><span class="c1">;</span>
+    }
+
+    <span class="k">return</span> <span class="nv">GSL_SUCCESS</span><span class="c1">;</span>
+}
+
+
+<span class="o">////</span> <span class="nv">Member</span><span class="o">-</span><span class="nv">Function</span>
+<span class="o">////</span> <span class="nv">odeRun</span>: <span class="nv">using</span> <span class="nv">gsl</span> <span class="nv">to</span> <span class="nv">solve</span> <span class="nv">ode</span>.
+<span class="nv">void</span> <span class="nv">ReactantConcentration</span>::<span class="nv">odeRun</span><span class="ss">(</span><span class="nv">double</span> <span class="nv">start_t</span>, <span class="nv">double</span> <span class="nv">end_t</span>, <span class="nv">Parameter</span> <span class="o">*</span><span class="nb">params</span>, <span class="nv">double</span> <span class="nv">reactant</span>[], <span class="nv">double</span> <span class="nv">pacelen</span><span class="ss">)</span>
+{
+    <span class="o">//</span> <span class="nv">initiate</span>.
+    <span class="nv">double</span> <span class="o">*</span><span class="nv">y</span> <span class="o">=</span> <span class="nv">reactant</span><span class="c1">;</span>
+    <span class="nv">double</span> <span class="nv">time_span</span> <span class="o">=</span> <span class="nv">end_t</span> <span class="o">-</span> <span class="nv">start_t</span><span class="c1">;    // used to reset start_t and end_t.</span>
+
+    <span class="nv">typedef</span> <span class="nv">int</span> <span class="ss">(</span><span class="o">*</span> <span class="nv">Func</span><span class="ss">)(</span><span class="nv">double</span> <span class="nv">t</span>, <span class="nv">const</span> <span class="nv">double</span> <span class="nv">y</span>[], <span class="nv">double</span> <span class="nv">f</span>[], <span class="nv">void</span> <span class="o">*</span><span class="nv">para</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="nv">typedef</span> <span class="nv">int</span> <span class="ss">(</span><span class="o">*</span> <span class="nv">Jac</span><span class="ss">)(</span><span class="nv">double</span> <span class="nv">t</span>, <span class="nv">const</span> <span class="nv">double</span> <span class="nv">y</span>[], <span class="nv">double</span> <span class="o">*</span><span class="nv">dfdy</span>, <span class="nv">double</span> <span class="nv">dydt</span>[], <span class="nv">void</span> <span class="o">*</span><span class="nv">para</span><span class="ss">)</span><span class="c1">;</span>
+
+    <span class="nv">Func</span> <span class="nv">odeFunction</span><span class="c1">;    // function pointer.</span>
+    <span class="nv">Jac</span> <span class="nv">odeJacobian</span><span class="c1">;    // function pointer.</span>
+
+    <span class="k">if</span> <span class="ss">(</span><span class="nv">reaction_type</span> <span class="o">==</span> <span class="mi">1</span><span class="ss">)</span> {
+    <span class="nv">odeFunction</span> <span class="o">=</span> <span class="nv">odeFunction1s1p</span><span class="c1">;</span>
+    <span class="nv">odeJacobian</span> <span class="o">=</span> <span class="nv">odeJacobian1s1p</span><span class="c1">;</span>
+    } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">reaction_type</span> <span class="o">==</span> <span class="mi">2</span><span class="ss">)</span> {
+    <span class="nv">odeFunction</span> <span class="o">=</span> <span class="nv">odeFunction1s2p</span><span class="c1">;</span>
+    <span class="nv">odeJacobian</span> <span class="o">=</span> <span class="nv">odeJacobian1s2p</span><span class="c1">;</span>
+    } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">reaction_type</span> <span class="o">==</span> <span class="mi">3</span><span class="ss">)</span> {
+    <span class="nv">odeFunction</span> <span class="o">=</span> <span class="nv">odeFunction2s1p</span><span class="c1">;</span>
+    <span class="nv">odeJacobian</span> <span class="o">=</span> <span class="nv">odeJacobian2s1p</span><span class="c1">;</span>
+    } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">reaction_type</span> <span class="o">==</span> <span class="mi">4</span><span class="ss">)</span> {
+    <span class="nv">odeFunction</span> <span class="o">=</span> <span class="nv">odeFunction2s2p</span><span class="c1">;</span>
+    <span class="nv">odeJacobian</span> <span class="o">=</span> <span class="nv">odeJacobian2s2p</span><span class="c1">;</span>
+    } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">reaction_type</span> <span class="o">==</span> <span class="mi">5</span><span class="ss">)</span> {
+    <span class="nv">odeFunction</span> <span class="o">=</span> <span class="nv">odeFunction3s1p</span><span class="c1">;</span>
+    <span class="nv">odeJacobian</span> <span class="o">=</span> <span class="nv">odeJacobian3s1p</span><span class="c1">;</span>
+    } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">reaction_type</span> <span class="o">==</span> <span class="mi">6</span><span class="ss">)</span> {
+    <span class="nv">odeFunction</span> <span class="o">=</span> <span class="nv">odeFunction3s2p</span><span class="c1">;</span>
+    <span class="nv">odeJacobian</span> <span class="o">=</span> <span class="nv">odeJacobian3s2p</span><span class="c1">;</span>
+    }<span class="o">//</span> <span class="nv">HERE</span><span class="o">!!!!!!!!!!!!!!!!!!!!!!</span><span class="nv">signal</span> <span class="nv">handler</span>.
+    <span class="nv">gsl_odeiv2_system</span> <span class="nv">sys</span> <span class="o">=</span> {<span class="nv">odeFunction</span>, <span class="nv">odeJacobian</span>, <span class="nv">reactant_num</span>, <span class="o">&amp;*</span><span class="nb">params</span>}<span class="c1">;</span>
+    <span class="nv">gsl_odeiv2_driver</span> <span class="o">*</span><span class="nv">d</span> <span class="o">=</span> <span class="nv">gsl_odeiv2_driver_alloc_y_new</span><span class="ss">(</span><span class="o">&amp;</span><span class="nv">sys</span>, <span class="nv">gsl_odeiv2_step_rk8pd</span>, <span class="mi">1</span><span class="nv">e</span><span class="o">-</span><span class="mi">6</span>, <span class="mi">1</span><span class="nv">e</span><span class="o">-</span><span class="mi">6</span>, <span class="mi">0</span>.<span class="mi">0</span><span class="ss">)</span><span class="c1">;</span>
+
+    <span class="nv">Concentration</span> <span class="nv">reaction</span><span class="c1">;    // temporary store y.</span>
+
+    <span class="o">//</span> <span class="nv">calculate</span>.
+    <span class="k">do</span> {
+    <span class="nv">long</span> <span class="nv">times</span> <span class="o">=</span> <span class="nv">static_cast</span><span class="o">&lt;</span><span class="nv">long</span><span class="o">&gt;</span><span class="ss">((</span><span class="nv">end_t</span> <span class="o">-</span> <span class="nv">start_t</span><span class="ss">)</span><span class="o">/</span><span class="nv">pacelen</span><span class="ss">)</span><span class="c1">;</span>
+    <span class="k">for</span> <span class="ss">(</span><span class="nv">long</span> <span class="nv">i</span> <span class="o">=</span> <span class="mi">0</span><span class="c1">; i != times; ++i) {</span>
+        <span class="nv">double</span> <span class="nv">ti</span> <span class="o">=</span> <span class="nv">pacelen</span> <span class="o">+</span> <span class="nv">start_t</span><span class="c1">;</span>
+        <span class="nv">int</span> <span class="nv">status</span> <span class="o">=</span> <span class="nv">gsl_odeiv2_driver_apply</span><span class="ss">(</span><span class="nv">d</span>, <span class="o">&amp;</span><span class="nv">start_t</span>, <span class="nv">ti</span>, <span class="nv">y</span><span class="ss">)</span><span class="c1">;</span>
+        <span class="k">if</span> <span class="ss">(</span><span class="nv">status</span> <span class="o">!=</span> <span class="nv">GSL_SUCCESS</span><span class="ss">)</span> {
+        <span class="nv">printf</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Error, return value = %d</span><span class="se">\n</span><span class="s2">&quot;</span>, <span class="nv">status</span><span class="ss">)</span><span class="c1">;</span>
+        <span class="k">break</span><span class="c1">;</span>
+        }
+        <span class="nv">reaction</span>.<span class="k">setTime</span><span class="ss">(</span><span class="nv">ti</span><span class="ss">)</span><span class="c1">;    // set the time of reaction to ti.</span>
+        <span class="nv">reaction</span>.<span class="nv">setConcentration</span><span class="ss">(</span><span class="nv">reactant_num</span>, <span class="nv">y</span><span class="ss">)</span><span class="c1">;    // set the concentrate of reactant to y[]</span>
+        <span class="o">//</span><span class="nv">outfile</span> <span class="o">&lt;&lt;</span> <span class="nv">reaction</span>.<span class="nv">time</span><span class="c1">;</span>
+        <span class="o">//</span><span class="k">for</span> <span class="ss">(</span><span class="nv">int</span> <span class="nv">i</span> <span class="o">=</span> <span class="mi">0</span><span class="c1">; i != reactant_num; ++i) {</span>
+        <span class="o">//</span>  <span class="nv">outfile</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">,</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">reaction</span>.<span class="nv">reactant</span>[<span class="nv">i</span>]<span class="c1">;</span>
+        <span class="o">//</span>}
+        <span class="o">//</span><span class="nv">outfile</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="c1">;</span>
+
+        <span class="o">//</span><span class="nv">reaction</span>.<span class="nv">printConcentration</span><span class="ss">()</span><span class="c1">;</span>
+        <span class="nv">list</span>.<span class="nv">push_back</span><span class="ss">(</span><span class="nv">reaction</span><span class="ss">)</span><span class="c1">;    // record the situation at ti.</span>
+    }
+    <span class="o">//</span><span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="nv">start_t</span> <span class="o">&lt;&lt;</span> <span class="nv">std</span>::<span class="nv">endl</span><span class="c1">;</span>
+    <span class="nv">end_t</span> <span class="o">=</span> <span class="nv">start_t</span> <span class="o">+</span> <span class="nv">time_span</span><span class="c1">;</span>
+    <span class="o">//</span><span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="nv">end_t</span> <span class="o">&lt;&lt;</span> <span class="nv">std</span>::<span class="nv">endl</span><span class="c1">;</span>
+    } <span class="k">while</span> <span class="ss">(</span><span class="o">!</span><span class="nv">isStable</span><span class="ss">())</span><span class="c1">;</span>
+
+    <span class="o">//</span><span class="nv">outfile</span>.<span class="nv">close</span><span class="ss">()</span><span class="c1">;</span>
+    <span class="o">//</span><span class="nv">outfile</span>.<span class="nv">clear</span><span class="ss">()</span><span class="c1">;</span>
+    <span class="nv">gsl_odeiv2_driver_free</span> <span class="ss">(</span><span class="nv">d</span><span class="ss">)</span><span class="c1">;</span>
+}
+<span class="o">////////////////////</span>
+</pre></div>
+
+
+<h4>头文件</h4>
+<p>新版本的相关的函数都在 <code>gsl_odeiv2.h</code> 中，所有的函数都以 <code>gsl_odeiv2</code> 开头。至少需要使用下面的三个头文件，在使用 g++ 编译的时候加上 <code>-lgsl -lgslcblas</code>。</p>
+<div class="highlight"><pre><span></span>#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">gsl</span><span class="o">/</span><span class="nv">gsl_errno</span>.<span class="nv">h</span><span class="o">&gt;</span>
+#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">gsl</span><span class="o">/</span><span class="nv">gsl_matrix</span>.<span class="nv">h</span><span class="o">&gt;</span>
+#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">gsl</span><span class="o">/</span><span class="nv">gsl_odeiv2</span>.<span class="nv">h</span><span class="o">&gt;</span>
+</pre></div>
+
+
+<h4>定义 ODE 系统</h4>
+<p>常微分方程：<code>dy_i(t)/dt = f_i(t, y_1(t), ..., y_n(t))</code></p>
+<p>使用 gsl 的 ode 模块需要写出来一个含有所有计算的常微分方程的函数，以供调用，具体例子是 odeFunction1s1p。函数的形参应该参照 gsl 的说明文档中的给出，这样才能被 gsl 库正确调用。</p>
+<p>除了对方程的定义之外，还需要写出其 Jacobian 矩阵，gsl 在计算过程中的部分过程可能会用到。</p>
+<p>需要注意的是，如果这些函数都是定义在 class 中，需要定义为 static ，这样才能被运行 ode 的函数正确调用。</p>
+<h4>运行 ODE</h4>
+<p>前面的东西写好后，就要写跑 ode 计算的函数，按照手册和例子写就好。</p>
+<h4>总结</h4>
+<p>现在我只是能够使用了，但还不够了解 gsl 的 ode 计算部分，需要未来继续学习。</p>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

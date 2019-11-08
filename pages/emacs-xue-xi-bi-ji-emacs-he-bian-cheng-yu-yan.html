@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Emacs 学习笔记：Emacs 和编程语言</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>Compilation Mode</h2>
+<p>使用 <code>compile</code> 可以开始编译代码并进入 compilation mode.</p>
+<ul>
+<li>下一个错误 (next-error): 移动到下一个错误信息并访问相应的源代码.</li>
+<li>下一个错误信息 (compilation-next-error): <code>M-n</code>, 移动到下一个错误信息.</li>
+<li>上一个错误信息 (compilation-previous-error): <code>M-p</code>, 移动到上一个错误信息.</li>
+<li>访问源代码 (compilation-goto-error): <code>C-c C-c</code>, 访问当前错误信息的源代码.</li>
+</ul>
+<hr>
+<h2>写代码</h2>
+<h3>Mode</h3>
+<p>如果相应的语言没有被 Emacs 默认支持, 则在部署相应的 mode 之后, 可能还需要在 init.el 文件中添加一行命令根据文件名自动加载相应的 mode.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">autoload</span> <span class="err">\</span><span class="s1">&#39;function &quot;filename&quot; &quot;description&quot; t) </span>
+<span class="s1">(autoload \&#39;</span><span class="n">python</span><span class="o">-</span><span class="k">mode</span> <span class="ss">&quot;python-mode&quot;</span> <span class="ss">&quot;python&quot;</span> <span class="n">t</span><span class="p">)</span> <span class="p">;;</span> <span class="err">加载</span> <span class="k">mode</span> <span class="n">lisp</span> <span class="err">文件</span>
+</pre></div>
+
+
+<p>在自动加载 lisp 文件后还应该自动根据代码后缀名自动开启相应的 mode. auto-mode-alist 存储文件后缀名和相应 mode 的对应关系.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">setq</span> <span class="n">auto</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span> <span class="p">(</span><span class="n">cons</span> <span class="err">\&#39;</span><span class="p">(</span><span class="ss">&quot;\\.py$&quot;</span> <span class="p">.</span> <span class="n">python</span><span class="o">-</span><span class="k">mode</span><span class="p">)</span> <span class="n">auto</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span><span class="p">))</span>
+</pre></div>
+
+
+<p>对于交互式语言, 还可以添加下列支持.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">setq</span> <span class="n">interpreter</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span>
+      <span class="p">(</span><span class="n">cons</span> <span class="err">\&#39;</span><span class="p">(</span><span class="ss">&quot;python&quot;</span> <span class="p">.</span> <span class="n">python</span><span class="o">-</span><span class="k">mode</span><span class="p">)</span>
+            <span class="n">interpreter</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span><span class="p">))</span>
+</pre></div>
+
+
+<h3>注释</h3>
+<ul>
+<li>注释 (indent-for-comment): <strong>M-;</strong>, 根据相应的语言插入注释.</li>
+<li>设置注释列 (comment-set-column): <strong>C-x ;</strong>, 设置插入注释的列.</li>
+<li>在新行插入注释 (indent-new-comment-line): <strong>M-j</strong>, 在新行插入注释.</li>
+<li>注释区域 (comment-region): 把选择的区域注释.</li>
+<li>删除注释 (kill-comment): 把注释删除, 包括注释符号和内容, 放入 kill ring.</li>
+</ul>
+<h3>缩进</h3>
+<ul>
+<li>缩进区域 (indent-region): <strong>C-M \</strong>, 缩进选择的区域.</li>
+<li>移动到第一个非空格字符 (back-to-indentation): <strong>M-m</strong>, 调到行第一个非空格字符.</li>
+<li>删除缩进 (delete-indentation): <strong>M-^</strong>, 把本行和上一缩进对齐, 即删除本行新增缩进.</li>
+</ul>
+<hr>
+<h2>C/C++</h2>
+<p>可以通过 c-mode 或者 c++-mode 来使得文本进入 c/c++ mode. 同时, 以 .c .h .y 结尾的文件会自动开启 c-mode, 而以 .C .H .cc .hh .cpp .cxx .hxx .c++ .h++ 结尾的文件会进入 c++-mode.</p>
+<ul>
+<li>设置编程风格 (c-set-style): 可以设置 c mode 中的风格. </li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

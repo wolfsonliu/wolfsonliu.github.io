@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Linux 学习笔记: Bash Script 入门</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>什么是脚本</h2>
+<ul>
+<li>一个记录了shell命令的文本文件（文件扩展名是.sh）（在linux下，文件扩
+  展名的意义和 Windows 不同，文件扩展名更多是给人看的）</li>
+<li>拥有编程语言的基本特性，可以认为是一个语言</li>
+<li>协调不同软件的工作</li>
+<li>自动化，减轻工作量</li>
+</ul>
+<h2>一个简单的脚本</h2>
+<p>我们写第一个简单的脚本，脚本名字叫：<code>hello_world.sh</code></p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+
+<span class="nb">echo</span> <span class="s2">&quot;Hello World!&quot;</span>
+</pre></div>
+
+
+<p>在 bash script 中的注释是 <code>#</code> 后面的部分，bash 不会运行注释。在上面例
+子里面，第一行为 <code>#!</code> 是特殊的注释，这里是告诉bash，使用哪个命令来运行
+该脚本。在 <code>#!</code> 后面跟着具体的命令的绝对路径，因为这里是 bash 脚本，则
+使用的是 <code>/bin/bash</code>；如果是 R 脚本，可以是 <code>/usr/bin/env R</code>；或者是
+awk 脚本的话，则应该是 <code>/usr/bin/awk -f</code>。在我们把脚本权限设置可执行的
+时候，bash 会用指定的解释器运行该脚本。例如运行 <code>./hello_world.sh</code>，相
+当于 <code>/bin/bash ./hello_world.sh</code>。</p>
+<h2>脚本与函数</h2>
+<p>我们可以把所有需要运行的命令都写在一个文本文件中，这样就完成了一个脚本。
+但是有的时候我们会需要在脚本中重复地运行若干命令，这样的情况下就可以把
+相应重复的命令打包成一个函数，在脚本中就可以减少重复代码的数量。使用函
+数可以让脚本更简洁明了，方便维护。bash script 的函数很简单，就是把相应
+的命令放在函数体中。</p>
+<p>如 hello_world2.sh：</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+
+<span class="k">function</span> hello <span class="o">{</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Hello!&quot;</span>
+<span class="o">}</span>
+
+world<span class="o">()</span> <span class="o">{</span>
+    <span class="nb">echo</span> <span class="s2">&quot;World!&quot;</span>
+<span class="o">}</span>
+
+hello
+world
+</pre></div>
+
+
+<h2>变量</h2>
+<p>在 bash 中可以定义变量，引用变量的时候需要在变量名前加上 <code>$</code>，如
+<code>$HOME</code>。在 bash 中有若干预先定义好的以大写字母命令的变量，被称为环境
+变量，用户在定义自己的变量的时候除非是有意如此，最好不要和环境变量重名，
+否则可能会引起一些命令不能正常运行。</p>
+<p>用户可以自己定义变量。需要注意的是，如果所要定义变量的值中有空格，需要
+使用引号引起来。双引号和单引号在 bash 中是不一样的，双引号中的变量名会
+替换为变量对应的值，而对于单引号中的变量名则不会自动替换，单引号中的字
+符就是其原始字符。</p>
+<div class="highlight"><pre><span></span>$ <span class="nv">myname</span><span class="o">=</span>Wolfson
+$ <span class="nv">MYGRATE</span><span class="o">=</span><span class="s2">&quot;Hello World!&quot;</span>
+$ <span class="nb">echo</span> <span class="nv">$mygrate</span> I am <span class="nv">$myname</span>
+Hello World! I am Wolfson
+$ <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$MYGRATE</span><span class="s2"> I am </span><span class="nv">$myname</span><span class="s2">&quot;</span>
+$ <span class="nb">echo</span> <span class="s1">&#39;$MYGRATE I am $myname&#39;</span>
+<span class="nv">$MYGRATE</span> I am <span class="nv">$myname</span><span class="err">&#39;</span>
+</pre></div>
+
+
+<h3>位置变量</h3>
+<p>对于脚本和函数都支持位置变量。<code>$0</code> 是该脚本的名称或者函数的名称；<code>$1</code>
+是该脚本或者该函数后面的第一个参数；<code>$2</code>是该脚本或者该函数后面的第二个
+参数，依次类推。</p>
+<p>例如 hello.sh 脚本：</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<span class="nb">echo</span> “Hello, <span class="nv">$1</span>! I am <span class="nv">$2</span>.”
+</pre></div>
+
+
+<p>可以给运行该脚本，给参数或不给：</p>
+<div class="highlight"><pre><span></span>$ ./hello.sh
+Hello, ! I am .
+$ ./hello.sh <span class="s2">&quot;Han Meimei&quot;</span> <span class="s2">&quot;Li Lei&quot;</span>
+Hello, Han Meimei! I am Li Lei.
+</pre></div>
+
+
+<p>对于函数也如此，例如 hello2.sh脚本：</p>
+<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<span class="k">function</span> grate <span class="o">{</span>
+    <span class="nb">echo</span> “Hello, <span class="nv">$1</span>! I am <span class="nv">$2</span>.”
+<span class="o">}</span>
+grate
+grate <span class="s2">&quot;Han Meimei&quot;</span> <span class="s2">&quot;Li Lei&quot;</span>
+</pre></div>
+
+
+<p>运行改脚本：</p>
+<div class="highlight"><pre><span></span>$ ./hello2.sh
+Hello, ! I am .
+Hello, Han Meimei! I am Li Lei.
+$ ./hello2.sh <span class="s2">&quot;Zhang San&quot;</span> <span class="s2">&quot;Li Si&quot;</span>
+Hello, ! I am .
+Hello, Han Meimei! I am Li Lei.
+</pre></div>
+
+
+<h2>流程控制</h2>
+<p>流程控制是为了使得脚本可以非线性地运行以达到任务目的。bash中有多种流程控制：</p>
+<ul>
+<li>if/else：用于条件判断</li>
+<li>for：用于执行一定计数的循环</li>
+<li>while：当一定条件成立（真）的情况下执行循环</li>
+<li>until：当一定条件不成立（假）的情况下执行循环</li>
+<li>case：在若干条件中选择</li>
+</ul>
+<h3>if/else</h3>
+<p>当需要根据一个条件来确定是否要执行或者要执行什么样的命令的情况下需要用
+到 if/else 做条件判断。</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span>
+    <span class="o">(</span>statement<span class="o">)</span>
+<span class="o">[</span><span class="k">elif</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span><span class="o">]</span>
+<span class="o">[</span>    <span class="o">(</span>statement<span class="o">)]</span>
+<span class="o">[</span><span class="k">else</span><span class="o">]</span>
+<span class="o">[</span>    <span class="o">(</span>statement<span class="o">)]</span>
+<span class="k">fi</span>
+</pre></div>
+
+
+<p>在bash script中，可以使用 <code>[]</code> test 语句做条件判断，具体参考 <code>man test</code>。</p>
+<p>例如，我们可以在文件夹不存在的时候去创建文件夹，而在文件夹存在的时候不采取操作：</p>
+<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> ! -e ~/seq <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    mkdir ~/seq
+<span class="k">fi</span>
+</pre></div>
+
+
+<h3>for</h3>
+<p>如果有同样的任务需要运行特定的次数，则可以使用 for 循环语句。</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="o">(</span>name<span class="o">)</span> <span class="o">[</span>in list<span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+    <span class="o">(</span>statement<span class="o">)</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>比如我们想输出 1 到 10：</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="nv">$x</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>或者我们可以把要逐个处理的值用空格隔开：</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> x in one two three four<span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="nv">$x</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>写个 for 循环可以容易地批量实现文件重命名：</p>
+<div class="highlight"><pre><span></span>mkdir tmp
+
+<span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+    touch tmp/<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.txt
+<span class="k">done</span>
+<span class="nb">echo</span> <span class="s2">&quot;Initial files:&quot;</span>
+ls tmp
+
+<span class="k">for</span> x in <span class="sb">`</span>ls tmp<span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+    mv tmp/<span class="si">${</span><span class="nv">x</span><span class="si">}</span> tmp/file<span class="si">${</span><span class="nv">x</span><span class="si">}</span>
+<span class="k">done</span>
+<span class="nb">echo</span> <span class="s2">&quot;Renamed files:&quot;</span>
+ls tmp
+</pre></div>
+
+
+<h3>while 和 until</h3>
+<p>有时候我们希望一个命令不断执行，直到条件发生变化，这个时候我们可以用
+while 或者 until。两者区别在于， 如果初始条件为假，则while一次也不会执
+行，而until则会执行一次。只需要把条件取反，就能把while变成untile。</p>
+<div class="highlight"><pre><span></span><span class="k">while</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="o">(</span>statement<span class="o">)</span>
+<span class="k">done</span>
+<span class="k">until</span> <span class="o">(</span>not condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
+    <span class="o">(</span>statement<span class="o">)</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>例如我们写一个while 循环找到最后一层目录：</p>
+<div class="highlight"><pre><span></span><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
+
+mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">}</span>
+
+<span class="nv">pdirs</span><span class="o">=</span>one
+
+<span class="nb">echo</span> <span class="s2">&quot;Dirs: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">i</span><span class="o">=</span><span class="m">1</span>
+<span class="k">while</span> <span class="o">[</span> <span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> wc -l<span class="sb">`</span> -ne <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dirs     : </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nv">pdirs</span><span class="o">=</span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span>/<span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> head -1<span class="sb">`</span>
+    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dirs Grow: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<p>如果我们要拓展一下，用上面 while 循环实现类似于 <code>rmdir -p</code> 的功能：</p>
+<div class="highlight"><pre><span></span><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
+
+mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">}</span>
+
+<span class="nv">pdirs</span><span class="o">=</span>./one
+
+<span class="nb">echo</span> <span class="s2">&quot;Dirs: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="nv">i</span><span class="o">=</span><span class="m">1</span>
+<span class="k">while</span> <span class="o">[</span> <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> !<span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dir: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> wc -l<span class="sb">`</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+        rmdir <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span>
+        <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Del: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="nv">pdirs</span><span class="o">=</span><span class="sb">`</span>dirname <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="sb">`</span>
+    <span class="k">else</span>
+        <span class="nv">pdirs</span><span class="o">=</span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span>/<span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> head -1<span class="sb">`</span>
+    <span class="k">fi</span>
+    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dir: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
+<span class="k">done</span>
+</pre></div>
+
+
+<h3>man test</h3>
+<div class="highlight"><pre><span></span>TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>                          User Commands                         TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+
+NAME
+       <span class="nb">test</span> - check file types and compare values
+
+SYNOPSIS
+       <span class="nb">test</span> EXPRESSION
+       <span class="nb">test</span>
+
+       <span class="o">[</span> EXPRESSION <span class="o">]</span>
+       <span class="o">[</span> <span class="o">]</span>
+       <span class="o">[</span> OPTION
+
+DESCRIPTION
+       Exit with the status determined by EXPRESSION.
+
+       --help display this <span class="nb">help</span> and <span class="nb">exit</span>
+
+       --version
+              output version information and <span class="nb">exit</span>
+
+       An omitted EXPRESSION defaults to false.  Otherwise, EXPRESSION is <span class="nb">true</span>
+       or <span class="nb">false</span> and sets <span class="nb">exit</span> status.  It is one of:
+
+       <span class="o">(</span> EXPRESSION <span class="o">)</span>
+              EXPRESSION is <span class="nb">true</span>
+
+       ! EXPRESSION
+              EXPRESSION is <span class="nb">false</span>
+
+       EXPRESSION1 -a EXPRESSION2
+              both EXPRESSION1 and EXPRESSION2 are <span class="nb">true</span>
+
+       EXPRESSION1 -o EXPRESSION2
+              either EXPRESSION1 or EXPRESSION2 is <span class="nb">true</span>
+
+       -n STRING
+              the length of STRING is nonzero
+
+       STRING equivalent to -n STRING
+
+       -z STRING
+              the length of STRING is zero
+
+       <span class="nv">STRING1</span> <span class="o">=</span> STRING2
+              the strings are equal
+
+       STRING1 !<span class="o">=</span> STRING2
+              the strings are not equal
+
+       INTEGER1 -eq INTEGER2
+              INTEGER1 is equal to INTEGER2
+
+       INTEGER1 -ge INTEGER2
+              INTEGER1 is greater than or equal to INTEGER2
+
+       INTEGER1 -gt INTEGER2
+              INTEGER1 is greater than INTEGER2
+
+       INTEGER1 -le INTEGER2
+              INTEGER1 is less than or equal to INTEGER2
+
+       INTEGER1 -lt INTEGER2
+              INTEGER1 is less than INTEGER2
+
+       INTEGER1 -ne INTEGER2
+              INTEGER1 is not equal to INTEGER2
+
+       FILE1 -ef FILE2
+              FILE1 and FILE2 have the same device and inode numbers
+
+       FILE1 -nt FILE2
+              FILE1 is newer <span class="o">(</span>modification date<span class="o">)</span> than FILE2
+
+       FILE1 -ot FILE2
+              FILE1 is older than FILE2
+
+       -b FILE
+              FILE exists and is block special
+
+       -c FILE
+              FILE exists and is character special
+
+       -d FILE
+              FILE exists and is a directory
+
+       -e FILE
+              FILE exists
+
+       -f FILE
+              FILE exists and is a regular file
+
+       -g FILE
+              FILE exists and is set-group-ID
+
+       -G FILE
+              FILE exists and is owned by the effective group ID
+
+       -h FILE
+              FILE exists and is a symbolic link <span class="o">(</span>same as -L<span class="o">)</span>
+
+       -k FILE
+              FILE exists and has its sticky bit <span class="nb">set</span>
+
+       -L FILE
+              FILE exists and is a symbolic link <span class="o">(</span>same as -h<span class="o">)</span>
+
+       -O FILE
+              FILE exists and is owned by the effective user ID
+
+       -p FILE
+              FILE exists and is a named pipe
+
+       -r FILE
+              FILE exists and <span class="nb">read</span> permission is granted
+
+       -s FILE
+              FILE exists and has a size greater than zero
+
+       -S FILE
+              FILE exists and is a socket
+
+       -t FD  file descriptor FD is opened on a terminal
+
+       -u FILE
+              FILE exists and its set-user-ID bit is <span class="nb">set</span>
+
+       -w FILE
+              FILE exists and write permission is granted
+
+       -x FILE
+              FILE exists and execute <span class="o">(</span>or search<span class="o">)</span> permission is granted
+
+       Except <span class="k">for</span> -h and  -L,  all  FILE-related  tests  dereference  symbolic
+       links.   Beware  that  parentheses  need  to be escaped <span class="o">(</span>e.g., by back‐
+       slashes<span class="o">)</span> <span class="k">for</span> shells.  INTEGER may also be -l STRING, which evaluates to
+       the length of STRING.
+
+       NOTE:  Binary  -a  and -o are inherently ambiguous.  Use <span class="s1">&#39;test EXPR1 &amp;&amp;</span>
+<span class="s1">       test EXPR2&#39;</span> or <span class="s1">&#39;test EXPR1 || test EXPR2&#39;</span> instead.
+
+       NOTE: <span class="o">[</span> honors the --help and --version options,  but  <span class="nb">test</span>  does  not.
+       <span class="nb">test</span> treats each of those as it treats any other nonempty STRING.
+
+       NOTE:  your shell may have its own version of <span class="nb">test</span> and/or <span class="o">[</span>, which usu‐
+       ally supersedes the version  described  here.   Please  refer  to  your
+       shell<span class="s1">&#39;s documentation for details about the options it supports.</span>
+
+<span class="s1">AUTHOR</span>
+<span class="s1">       Written by Kevin Braunsdorf and Matthew Bradburn.</span>
+
+<span class="s1">REPORTING BUGS</span>
+<span class="s1">       GNU coreutils online help: &lt;http://www.gnu.org/software/coreutils/&gt;</span>
+<span class="s1">       Report [ translation bugs to &lt;http://translationproject.org/team/&gt;</span>
+
+<span class="s1">COPYRIGHT</span>
+<span class="s1">       Copyright  ©  2017  Free Software Foundation, Inc.  License GPLv3+: GNU</span>
+<span class="s1">       GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.</span>
+<span class="s1">       This is free software: you are free  to  change  and  redistribute  it.</span>
+<span class="s1">       There is NO WARRANTY, to the extent permitted by law.</span>
+
+<span class="s1">SEE ALSO</span>
+<span class="s1">       Full documentation at: &lt;http://www.gnu.org/software/coreutils/[&gt;</span>
+<span class="s1">       or available locally via: info &#39;</span><span class="o">(</span>coreutils<span class="o">)</span> <span class="nb">test</span> invocation<span class="err">&#39;</span>
+
+GNU coreutils <span class="m">8</span>.28               January <span class="m">2018</span>                          TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+</pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

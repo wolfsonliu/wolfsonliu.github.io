@@ -1,0 +1,131 @@
+Title: Linux 学习笔记: 和进程相关的知识
+Date: 2017-05-19 21:24
+Modified: 2018-10-15 20:23
+Category: 壹零零壹
+Tags: linux bash
+Authors: Wolfson Liu
+Summary: 进程
+
+
+### top ###
+
+在命令行下查看当前机器上运行的进程, 可以使用 top 命令方便地查看各种信息.
+
+
+* < 和 >: 用于选择用于排序的列.
+* P: 按照CPU使用排序显示进程.
+* M: 按照内存使用量排序显示进程.
+
+* F: 选择需要显示的列.
+* u: 选择要显示的用户的进程.
+* z: 高亮当前运行进程.
+
+* l: 上机时间统计显示.
+* m: Memory 统计显示.
+* t: Task/CPU 统计显示.
+* 1: 显示每个线程的情况
+
+* k: kill 相应的进程.
+
+* q: 退出 top.
+
+### ps ###
+
+ps 是显示当前运行的进程信息的程序, 有着强大功能. 根据 ps 的man page,
+ps的命令有三种使用类型来实现: unix的单一连字符命令, 如`-e -f`等; GNU的
+双连字符长命令, 如`--group`等; BSD的没有连字符的命令, 如`a t`等. 不管
+是选择哪一个形式, 最好保持风格一致, 因为大多数linux的命令是采用单一连
+字符或者双连字符的命令形式, 所以在linux下面最好也这样使用ps命令.
+
+下面是概览性的选项, 即控制输出多个进程信息.
+
+* `-A` 或者 `-e`: 列出所有的进程
+* `-a`: 列出除了控制进程(session leader)和没有终端(tty)的进程之外的所有进程.
+* `-d`: 列出除了控制进程外的所有进程.
+* `-N` 或者 `--deselect`: 除了在选项后面列出的进程不呈现, 呈现剩下所有的进程.
+
+下面是特定性选项, 可以用来根据输入参数指定特定的进程信息.
+
+* `-C`: 通过命令名称选择进程. 如选择火狐浏览器的进程: `ps -C firefox`.
+* `-G` 或者 `--Group`: 通过 group ID (real group ID, RGID) 或名称去选
+  择进程. 如选择 root 组的进程: `ps -f -G root`.
+* `-g` 或者 `--group`: 通过 session 或者 group ID (effective group ID,
+  EGID) 选择.
+* `-p` 或者 `--pid`: 通过 process ID 选择, 不同的 PID 之间用空格去区分.
+* `--ppid`: 通过 parent process ID 选择,  不同的 PPID 之间用空格去区分.
+* `-q` 或者 `--quick-pid`: 通过 process ID 选择, 快速模式, 输出没有进
+  行排序或者其他筛选选择.
+* `-s` 或者 `--sid`: 通过 session ID 选择.
+* `-t` 或者 `--tty`: 通过 terminal 进行选择.
+* `-U` 或者 `--User`: 通过 real user ID (RUID) 或者用户名进行选择. 如
+  选择 root 的进程: `ps -f -U root`.
+* `-u` 或者 `--user`: 通过 effective user ID (EUID) 或者用户名进行选择.
+
+
+可以选择不同的输出格式.
+
+* `-f`: 全格式输出, 可以搭配其他选项, 与 `-L` 搭配会输出 NLWP (number
+  of threads) 和 LWP (thread ID). 其中 CMD 列会显示任务的绝对路径.
+* `-j`: 任务格式, 会增加 PGID (process group ID) 和 SID (session ID) 列.
+* `-l`: 长格式, 包含多列信息, 经常和 `-y` 搭配.
+* `-y`: 不输出 flag, 与 `-l` 类似.
+* `-o` 或者 `--format`: 用户定义的输出.
+* `-O`: 与 `-o` 相似, 不过有预先定义的列,
+  与 `-o pid,\:format,\:state,\:tname,\:time,\:command` 相同.
+
+
+
+* 控制进程: session leader 的 process id (pid) 与 session id (sid) 想
+  同.
+
+
+
+### pstree ###
+
+有许多进程是相互关联的, 呈现出树状的结构, 为了了解不同进程之间的关系, 可以使用 pstree 这条命令.
+直接使用 pstree 即可在命令行界面显示层级的进程树状结构.
+
+* `-a` 或 `--arguments`: 可以显示出进程运行的时候的参数.
+* `-c` 或 `--compact`: 显示相同的重复的进程, 不加该参数会默认隐藏相同的重复进程.
+* `-g` 或 `--show-pgids`: 显示 PGID.
+* `-p` 或 `--show-pids`: 显示 PID.
+* `-s` 或 `--show-parents`: 显示父进程.
+
+另外还有一些和显示相关参数设置, 可以显示高亮或者选择显示的字符.
+
+* `-A` 或 `--ascii`: 使用 ASCII 字符显示树.
+* `-G` 或 `--vt100`: 使用 VT100 线条显示树.
+* `-U` 或 `--unicode`: 使用 UTF-8 字符显示树.
+* `-h` 或 `--highlight-all`: 高亮当前进程.
+* `-H PID` 或 `--highlight-pid=PID`: 高亮特定 PID 的进程.
+* `-l` 或 `--long`: 对于过长的线不截断, 不加该参数会默认截断过长的线.
+* `-n`: 根据 PID 简短输出.
+
+
+### kill ###
+
+kill 用来终止任务，可以向任务发出不同的信号。
+
+| Signal  |  Value   | Action | Comment |
+| ------- | -------- | ------ | ------- |
+| SIGHUP  |     1    |  Term  | Hangup detected on controlling terminal|
+|         |          |        | or death of controlling process|
+| SIGINT  |     2    |  Term  | Interrupt from keyboard|
+| SIGQUIT |     3    |  Core  | Quit from keyboard|
+| SIGILL  |     4    |  Core  | Illegal Instruction|
+| SIGABRT |     6    |  Core  | Abort signal from abort(3)|
+| SIGFPE  |     8    |  Core  | Floating-point exception|
+| SIGKILL |     9    |  Term  | Kill signal|
+| SIGSEGV |    11    |  Core  | Invalid memory reference|
+| SIGPIPE |    13    |  Term  | Broken pipe: write to pipe with no|
+|         |          |        | readers; see pipe(7)|
+| SIGALRM |    14    |  Term  | Timer signal from alarm(2)|
+| SIGTERM |    15    |  Term  | Termination signal|
+| SIGUSR1 | 30,10,16 |  Term  | User-defined signal 1|
+| SIGUSR2 | 31,12,17 |  Term  | User-defined signal 2|
+| SIGCHLD | 20,17,18 |  Ign   | Child stopped or terminated|
+| SIGCONT | 19,18,25 |  Cont  | Continue if stopped|
+| SIGSTOP | 17,19,23 |  Stop  | Stop process|
+| SIGTSTP | 18,20,24 |  Stop  | Stop typed at terminal|
+| SIGTTIN | 21,21,26 |  Stop  | Terminal input for background process|
+| SIGTTOU | 22,22,27 |  Stop  | Terminal output for background process|

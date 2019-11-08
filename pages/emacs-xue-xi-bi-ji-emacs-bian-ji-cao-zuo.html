@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Emacs 学习笔记：Emacs 编辑操作</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <ul>
+<li><strong>C</strong> 是 <strong>Control</strong>, <strong>Ctrl</strong>.</li>
+<li><strong>M</strong> 是 <strong>Meta</strong>, 可以是 <strong>Alt</strong> 或者 <strong>Escape</strong> <strong>Esc</strong>.</li>
+<li>
+<ul>
+<li>表示连接, 并不打出.</li>
+</ul>
+</li>
+<li><strong>Up</strong>, <strong>Down</strong>, <strong>Left</strong>, <strong>Right</strong> 方向键.</li>
+<li><strong>Home</strong>, <strong>End</strong>, <strong>PgUp</strong>, <strong>PgDn</strong>.</li>
+<li><strong>space</strong> 空格.</li>
+</ul>
+<hr>
+<h2>光标定位和移动</h2>
+<ul>
+<li>向上移动一行 (previous-line): <strong>C-p</strong> (previous), <strong>Up</strong>.</li>
+<li>向下移动一行 (next-line): <strong>C-n</strong> (next), <strong>Down</strong>.</li>
+<li>向后移动一位字符 (backward-char): <strong>C-b</strong> (back), <strong>Left</strong>.</li>
+<li>向左移动一个单词 (backward-word): <strong>M-b</strong>.</li>
+<li>向前移动一位字符 (forward-char): <strong>C-f</strong> (front), <strong>Right</strong>.</li>
+<li>
+<p>向右移动一个单词 (forward-word): <strong>M-f</strong>.</p>
+</li>
+<li>
+<p>移动到行首 (beginning-of-line): <strong>C-a</strong> (ahead), <strong>Home</strong>, 只会移动到本行行首, 更多的按键没有效果.</p>
+</li>
+<li>移动到句首 (backward-sentence): <strong>M-a</strong> (ahead), <strong>End</strong>, 移动到句首, 更多的按键移动到上个句首.</li>
+<li>移动到行尾 (end-of-line): <strong>C-e</strong> (end), 只会移动到本行行尾, 更多的按键没有效果.</li>
+<li>移动到句尾 (forward-sentence): <strong>M-e</strong> (end), 移动到句尾, 更多的按键移动到下个句尾.</li>
+<li>向后移动一段 (backward-paragraph): <strong>M-{</strong>.</li>
+<li>
+<p>向前移动一段 (forward-paragraph): <strong>M-}</strong>.</p>
+</li>
+<li>
+<p>向后移动一页 (backward-page): <strong>C-x [</strong>, 需要有 <code>^L</code>, <strong>C-p C-l</strong>.</p>
+</li>
+<li>向前移动一段 (forward-parge): <strong>C-x ]</strong>, 需要有 <code>^L</code>, <strong>C-p C-l</strong>.</li>
+<li>向上移动一屏 (scroll-up): <strong>C-v</strong>, <strong>PgUp</strong>, 向下滚动几乎一屏, 默认设置是差两行.</li>
+<li>
+<p>向下移动一屏 (scroll-down): <strong>M-v</strong>, <strong>PgDn</strong>, 向上滚动几乎一屏, 默认设置是差两行.</p>
+</li>
+<li>
+<p>设置光标所在行显示在屏幕的位置 (recenter): <strong>C-l</strong>, 连续按, 循环将光标所在行放在屏幕上中下三处 (<strong>M-l</strong> 是把字母改为小写而非控制定位功能).</p>
+</li>
+<li>移动到 buffer 起始: <strong>M-&lt;</strong>, 得到 &lt; 需要按 <strong>Shift</strong>.</li>
+<li>移动到 buffer 终止: <strong>M-&gt;</strong>, 得到 &gt; 需要按 <strong>Shift</strong>.</li>
+<li>移动到第 n 行 (goto-line): <strong>M-x goto-line</strong> enter 之后输入行数.</li>
+<li>移动到第 n 个字符 (goto-char): <strong>M-x goto-char</strong> enter 之后输入字符数.</li>
+</ul>
+<p>如果超出窗口的行不是以折回的方式显示的话, 需要移动窗口才能看完一行所有的内容.
+* 向窗口左侧滚动 (scroll-letf): <strong>C-x &lt;</strong>
+* 向窗口右侧滚动 (scroll-right): <strong>C-x &gt;</strong></p>
+<hr>
+<h2>选择删除撤销</h2>
+<ul>
+<li>选择 (set-mark-command): <strong>C-Space</strong>, 选择.</li>
+<li>选择段 (mark-paragraph): <strong>M-h</strong>, 选择段.</li>
+<li>选择页面 (mark-page): <strong>C-x C-p</strong>, 选择页面, 以 <code>^L</code> 分隔.</li>
+<li>选择整个缓冲 (mark-whole-buffer): <strong>C-x h</strong>, 选择整个缓冲的所有内容.</li>
+<li>转换点和光标 (exchange-point-and-mark): <strong>C-x C-x</strong>, 在选择了之后可以转换点或者光标.</li>
+<li>复制 (kill-ring-save): <strong>M-w</strong>.</li>
+<li>删除字符 (delete-character): <strong>C-d</strong>, 或者 Del, 删除单个字符, 但不保存.</li>
+<li>删除单词 (kill-word): <strong>M-d</strong>, kill 光标之后到空格 (或换行符) 之前的字符, 保存 kill ring.</li>
+<li>反向删除单词 (backward-kill-word): <strong>M-DEL</strong>, kill 光标之后到空格 (或换行符) 之前的字符, 保存 kill ring.</li>
+<li>移除行 (kill-line): <strong>C-k</strong>, 从光标删除到行末, 保存 kill ring.</li>
+<li>移除行 : <strong>M - C-k</strong>, 中间需要有个连字符, 从行首删除到光标, 保存 kill ring.</li>
+<li>移除句 (kill-sentence): <strong>M-k</strong>, 从光标删除到句末, 保存 kill ring.</li>
+<li>移除区域 (kill-region): <strong>C-w</strong>.</li>
+<li>移除段 (kill-paragraph).</li>
+<li>反向移除段 (backward-kill-paragraph).</li>
+<li>剪切到粘贴板 (clipboard-kill-region).</li>
+<li>复制到粘贴板 (clipboard-kill-ring-save).</li>
+<li>取回粘贴板内容 (clipboard-yank): 把粘贴板内容粘贴下来.</li>
+<li>取回 (yank): <strong>C-y</strong>.</li>
+<li>
+<p>取回之前的: <strong>M-y</strong>, 需要上一个命令是 <strong>C-y</strong>.</p>
+</li>
+<li>
+<p>撤销 (undo): <strong>C-_</strong>, <strong>C-/</strong>, <strong>C-x u</strong>, 在输入 "_" 的时候需要有 <strong>SHIFT</strong>.</p>
+</li>
+<li>恢复缓冲 (revert-buffer): 把缓冲重置为硬盘上保存的文件内容, 即上次保存的内容.</li>
+<li>恢复文件 (recovery-file): 在非正常退出后可以以恢复以 "#" 开头的自动保存文件.</li>
+</ul>
+<hr>
+<h2>块操作</h2>
+<ul>
+<li>移除块 (kill-rectangle): <strong>C-x r k</strong>, 把块删除并放入块移除存储中.</li>
+<li>复制块 (copy-rectangle-as-kill): <strong>C-x r M-w</strong>, 把块内容存入删除存储中.</li>
+<li>删除块 (delete-rectangle): <strong>C-x r d</strong>, 清除块的内容, 不保存.</li>
+<li>取回块 (yank-rectangle): <strong>C-x r y</strong>, 把 kill ring 中最后一个块取出.</li>
+<li>添加空块 (open-rectangle): <strong>C-x r o</strong>, 按块添加空格, 原先内容向右移动.</li>
+<li>清空块 (clear-rectangle): <strong>C-x r c</strong>, 把块中内容换成空格.</li>
+<li>添加行号 (rectangle-number-lines): <strong>C-x r N</strong>, 在所选行前添加行号, 原先内容右移动.</li>
+<li>清除块前空格 (delete-whitespace-rectangle): 把所选择的块之前的空白字符删除, 即把内容向左移动, 相当于 open-rectangle 的逆操作.</li>
+<li>块替换字符 (string-rectangle): <strong>C-x r t string RET</strong>, 把所选择的块的每一行都替换成相同的字符.</li>
+<li>块插入字符 (string-insert-rectangle): 在所选择的块最前面插入字符.</li>
+<li>块选择模式 (rectangle-mark-mode): <strong>C-x SPACE</strong>, 可以在该模式中按照块进行选择, 并使用普通的移除, 删除操作.</li>
+<li>把块内容保存到 (copy-rectangle-to-register): <strong>C-x r r R</strong>, 其中 'R' 代表任意字符, 相当于变量名, 指明内容保存的名字.</li>
+<li>插入保存的块 (insert-register): <strong>C-x r i R</strong>, 其中 'R' 代表任意字符, 相当于是保存块内容的变量.</li>
+</ul>
+<hr>
+<h2>文本排版</h2>
+<ul>
+<li>缩进 (indent-rigidly): <strong>C-x TAB</strong>, 设置选择的行的缩进, 也使用 <strong>C-u</strong> 或者 <strong>M-n</strong> 来指定缩进具体多少列.</li>
+<li>设置前缀 (set-fill-prefix): <strong>C-x .</strong>, 设置产生新行的时候自动补全的前缀, 可以和填充段落共同使用.</li>
+<li>分行 (split-line): <strong>C-M-o</strong>, 把光标之后的内容移动到下一行相同位置, 其他地方用空格补全.</li>
+<li>改变边距: increase-left-margin, decrease-left-margin, increase-right-margin, decrease-right-margin 分别在行左右增加或减少一定距离的空格 (默认 8 个).</li>
+<li>填充段落 (fill-paragraph): <strong>M-q</strong>, 自动把行排版成段落, 用空格填充.</li>
+<li>插入新行 (electric-newline-and-maybe-indent): <strong>C-j</strong>, 插入一个新行, 根据 mode 和文本的情况来决定是否要缩进.</li>
+<li>居中行 (center-line): <strong>M-o M-s</strong>, 把光标所在的行进行居中.</li>
+<li>居中段 (center-paragraph): <strong>M-o M-S</strong>, 把光标所在的段进行居中.</li>
+<li>居中 (center-region): 默认按照 80 字符宽度居中当前选择的文本.</li>
+</ul>
+<hr>
+<h2>字符替换查询</h2>
+<ul>
+<li>搜索 (isearch-forward): <strong>C-s</strong>, incremental search, 向前增量搜索. <strong>M-n</strong> 下一个搜索词, <strong>M-p</strong> 上一个搜索词. <strong>C-s C-s</strong> 重复搜索.</li>
+<li>搜索 (isearch-backward): <strong>C-r</strong>, incremental search, 向后增量搜索. <strong>C-r C-r</strong> 重复搜索.</li>
+<li>简单搜索: <strong>C-s ENTER</strong> <strong>C-r ENTER</strong>.</li>
+<li>单词搜索: <strong>C-s ENTER C-w</strong> <strong>C-s ENTER C-w</strong></li>
+<li>搜索光标所在单词 (isearch-yank-word): <strong>C-s C-w</strong></li>
+<li>搜索光标到行末字符 (isearch-yank-line): <strong>C-s C-y</strong></li>
+<li>正则搜索 (isearch-forward-regexp): <strong>C-M-s</strong></li>
+<li>正则搜索 (isearch-backward-regexp): <strong>C-M-r</strong></li>
+<li>简单正则搜索 (re-search-forward): <strong>C-M-s ENTER</strong></li>
+<li>简单正则搜索 (re-search-backward): <strong>C-M-r ENTER</strong></li>
+<li>替换 (query-replace): <strong>M-%</strong>, 替换前询问, % 可能需要按 <strong>Shift</strong>, 先输入需要替换的字符串, 再输入需要替换后目的字符串. q 退出询问替换. 如果想要暂停替换而开始编辑, <strong>C-r</strong>, 如果要继续替换, <strong>C-M-c</strong>.</li>
+<li>替换 (replace-string): <strong>M-x replace-string</strong>, 直接替换所有符合要求的字符串.</li>
+<li>正则替换 (query-replace-regexp): <strong>C-M-%</strong>, 根据正则表达式进行替换.</li>
+<li>字符换位 (transpose-chars): <strong>C-t</strong>, 把 point 前面的字符于后面一个交换, point 也后移动.</li>
+<li>单词换位 (transpose-words): <strong>M-t</strong>, 把单词换位, 但并不移动标点符号.</li>
+<li>行换位 (transpose-lines): <strong>C-x C-t</strong>, 把前后两行换位, 如把空行和上一行换位.</li>
+<li>句换位 (transpose-sentences).</li>
+<li>段换位 (transpose-paragraphs).</li>
+<li>将字母改为大写 (upcase-word): <strong>M-u</strong> (upper), 将光标之后本单词所有字母改为大写.</li>
+<li>将字母改为小写 (downcase-word): <strong>M-l</strong> (lower), 将光标之后本单词所有字母改为小写.</li>
+<li>首字母大写 (captalize-word): <strong>M-c</strong>, 把单词首字母大写.</li>
+<li>补全 (dabbrev-expand): <strong>M-/</strong>, 根据少量字母自动补全重复出现单词. </li>
+<li>制表符换空格 (untabify): 把文件中制表符换成相应长度的空格.</li>
+<li>空格换制表符 (tabify): 把文件中相应的空格换成制表符号.</li>
+</ul>
+<h2>重复命令</h2>
+<ul>
+<li>重复 n 次命令: <strong>M-n COMMAND</strong>, n 为要重复的次数, COMMAND 是命令.</li>
+<li>重复命令 (universal-argument): <strong>C-u (n) COMMAND</strong>, 如果加上 n 则和 <strong>M-n</strong> 类似, 如果不加 n, 则是四次, 多个 <strong>C-u</strong> 是 4 的倍数次.</li>
+</ul>
+<hr>
+<h2>文件或窗口</h2>
+<h3>文件操作 File</h3>
+<ul>
+<li>打开文件 (find-file): <strong>C-x C-f</strong> 再输入文件名.</li>
+<li>更换打开文件 (find-altenate-file): <strong>C-x C-v</strong> 再输入文件名, 如果打开的文件不是想要的, 可以替换.</li>
+<li>插入文件 (insert-file): <strong>C-x i</strong> 再输入需要插入的文件名.</li>
+<li>保存文件 (save-buffer): <strong>C-x C-s</strong> 把修改的文件按照原名称保存.</li>
+<li>保存文件 (write-file): <strong>C-x C-w</strong> 把文件另存为别的名字, 原文件不被改变.</li>
+<li>保存一些文件 (save-some-buffers): <strong>C-x s</strong>, 批量保存文件: 'y' 保存; 'n' 放弃保存; '!' 不再询问直接保存所有; 'C-r' 查看文件; 'd' (diff-buffer-with-file) 查看缓存和文件的区别; '.' 仅仅想要保存当前文件而不再询问; 'q' 退出.</li>
+<li>查看缓冲和文件的差异 (diff-buffer-with-file): 查看缓存和保存在硬盘上的文件的区别.</li>
+</ul>
+<h3>缓冲操作 Buffer</h3>
+<ul>
+<li>关闭缓冲 (kill-buffer): <strong>C-x-k</strong>, 可以输入名称关闭缓冲.</li>
+<li>关闭缓冲 (kill-matching-buffers): 根据正则表达式关闭缓冲.</li>
+<li>关闭一些缓冲 (kill-some-buffers).</li>
+<li>打开缓冲列表 (list-buffers): <strong>C-x C-b</strong>, 把所有缓冲以列表形式展现, 也可以按 Ctrl 和左键.</li>
+<li>切换缓冲 (switch-to-buffer): <strong>C-x b</strong>, 切换不同的缓冲.</li>
+<li>缓冲重命名 (rename-buffer): 重命名缓冲.</li>
+<li>重命名当前缓冲为不重复名称 (rename-uniquely): 一般直接增加数字</li>
+<li>只读模式 (read-only-mode): <strong>C-x C-q</strong>, 把当前的缓冲切换成只读模式.</li>
+</ul>
+<h4>缓冲列表 Buffer List</h4>
+<p>缓冲列表有一些特别的操作, 缓冲列表使用 <strong>C-x C-b</strong> 打开. 在缓冲列表里面, 有一些是立即执行的, 另外一些则要确认后才执行.</p>
+<div class="highlight"><pre><span></span><span class="n">CRM</span> <span class="n">Buffer</span>                 <span class="k">Size</span> <span class="k">Mode</span>             <span class="n">File</span>
+  <span class="o">*</span> <span class="n">emacs_control</span><span class="p">.</span><span class="n">md</span>       <span class="mi">6428</span> <span class="n">Markdown</span>         <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">emacs_control</span><span class="p">.</span><span class="n">md</span>
+  <span class="o">*</span> <span class="n">emacs_mode</span><span class="p">.</span><span class="n">md</span>           <span class="mi">851</span> <span class="n">Markdown</span>         <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">emacs_mode</span><span class="p">.</span><span class="n">md</span>
+ <span class="o">%</span>  <span class="o">*</span><span class="n">About</span> <span class="n">GNU</span> <span class="n">Emacs</span><span class="o">*</span>       <span class="mi">795</span> <span class="n">Fundamental</span>      
+ <span class="o">%</span>  <span class="o">*</span><span class="n">GNU</span> <span class="n">Emacs</span><span class="o">*</span>             <span class="mi">718</span> <span class="n">Fundamental</span>      
+</pre></div>
+
+
+<p>在缓冲列表里面, "CRM" 代表操作, 读写情况, 修改情况; "Buffer" 是不同的缓冲的名字, 通过 rename-buffer 可以改变; "Size" 是缓冲的大小; "File" 代笔的是缓冲对应的存在硬盘上的文件, 有的缓冲没有对应的文件就留空. 在 "CRM" 中, "C" 下面可以有诸多标记: "." 当前活动的缓冲, 就是光标所在的缓冲; "D" 代表删除缓冲; "S" 代表保存缓冲. "R" 一栏下面: 空格代表可以写, "%" 代表只读. "M" 一栏下面: "*" 代表距离上次保存有修改, 空格表示没有修改.</p>
+<h5>立即执行</h5>
+<ul>
+<li><strong>p</strong>, <strong>C-p</strong>: 上移光标.</li>
+<li><strong>n</strong>, <strong>C-n</strong>: 下移光标.</li>
+<li><strong>u</strong>: 取消当前标记并下移光标.</li>
+<li><strong>DEL</strong>: 取消上一个标记, 上移光标.</li>
+<li><strong>x</strong>: 执行所有标记.</li>
+<li><strong>~</strong>: 把缓冲标记为未改变.</li>
+<li><strong>%</strong>: 缓冲只读模式转变.</li>
+<li><strong>1</strong>: 把光标所选择缓冲在全窗口显示.</li>
+<li><strong>2</strong>: 把光标所选择的缓冲和下一个缓冲使用两个横向排列的窗口显示.</li>
+<li><strong>f</strong>: 在缓冲列表窗口显示光标所选择的缓冲.</li>
+<li><strong>o</strong>: 把另一个窗口内容替换为所选择的缓冲.</li>
+<li><strong>m</strong>: 对多个缓冲标记为在窗口显示, 在按下 <strong>v</strong> 后把所有选择的缓冲用不同的窗口都显示出来.</li>
+<li><strong>q</strong>: 退出缓冲列表.</li>
+</ul>
+<h5>标记</h5>
+<p>一些命令只对缓冲做标记, 只有在下按 <strong>x</strong> 之后才执行. 标记一般显示在 "CRM" 中的 "C" 栏.</p>
+<ul>
+<li><strong>d</strong>: 标记缓冲为删除, "D".</li>
+<li><strong>k</strong>: 标记缓冲为删除, "D".</li>
+<li><strong>s</strong>: 保存缓冲, 在 "CRM" 的 "M" 栏显示 "S".</li>
+</ul>
+<h3>窗口操作 Window</h3>
+<ul>
+<li>纵向分割窗口 (split-window-below): <strong>C-x 2</strong>.</li>
+<li>横向分割窗口 (split-window-right): <strong>C-x 3</strong>.</li>
+<li>增加窗口高度 (enlarge-window): <strong>C-x ^</strong>, 增加光标所在窗口高度, 可能需要 SHIFT.</li>
+<li>减小窗口高度 (shrink-window): 减小光标所在窗口高度.</li>
+<li>增加窗口宽度 (enlarge-window-horizontally): <strong>C-x }</strong>, 增加光标所在窗口宽度 (一个字符的宽度), 可能需要 SHIFT.</li>
+<li>减小窗口宽度 (shrink-window-horizontally): <strong>C-x {</strong>, 增加光标所在窗口宽度 (一个字符的宽度), 可能需要 SHIFT.</li>
+<li>平衡窗口 (balance-windows): <strong>C-x +</strong>, 可能需要 SHIFT, 把窗口平均分配大小.</li>
+<li>缩小窗口高度 (shrink-window-if-larger-than-buffer): <strong>C-x -</strong>, 如果窗口高度比缓冲行数更多, 则缩小窗口.</li>
+<li>在另一个窗口打开文件 (find-file-other-window): <strong>C-x 4 C-f</strong> <strong>C-x 4 f</strong>, 相当于 <strong>C-x C-f</strong>, 不过使用另一个窗口或新建一个窗口.</li>
+<li>在另一个窗口只读打开缓冲 (find-file-read-only-other-window): <strong>C-x 4 r</strong>, 在另一个窗口以只读的模式打开文件. 可以使用 <strong>C-x C-q</strong> 来取消只读.</li>
+<li>在另一个窗口打开缓冲 (swith-to-buffer-other-window): <strong>C-x 4 b</strong>, 相当于 <strong>C-x b</strong> , 不过使用另一个窗口或新建一个窗口.</li>
+</ul>
+<h3>框架操作 Frame</h3>
+<ul>
+<li>打开新框架 (make-frame-command): <strong>C-x 5 2</strong>, 新建一个框架, 就是另外一个 emacs 界面.</li>
+<li>关掉其他框架 (delete-other-frames): <strong>C-x 5 1</strong>, 关掉其他的窗口.</li>
+<li>关掉本框架 (delete-frame): <strong>C-x 5 0</strong>, 关掉本框架.</li>
+<li>切换框架 (switch-to-buffer-other-frame): <strong>C-x 5 b</strong>, 切换到另外的框架, 相当于切换缓冲的 <strong>C-x b</strong>.</li>
+<li>另一个框架 (other-frame): <strong>C-x 5 o</strong>, 换到上一个激活的框架, 相当于 <strong>C-x o</strong>.</li>
+<li>在另一个框架打开文件 (find-file-other-frame): <strong>C-x 5 f</strong>, 在另一个框架打开文件.</li>
+<li>在另一个框架打开只读文件 (find-file-read-only-other-frame): <strong>C-x 5 r</strong>, 只读在另一个框架打开文件.</li>
+</ul>
+<hr>
+<h2>书签</h2>
+<p>当建立书签的时候, Emacs 会在家目录建立一个文件 .emacs.bmk. 书签指向的是文件中的位置而不是内容, 所以内容改变了, 书签指向的位置没有改变.</p>
+<ul>
+<li>建立书签 (bookmark-set): <strong>C-x r m</strong></li>
+<li>移动到一个书签 (bookmark-jump): <strong>C-x r b</strong></li>
+<li>书签重命名 (bookmark-rename)</li>
+<li>删除书签 (bookmark-remove)</li>
+<li>书签目录 (bookmark-bmenu-list): <strong>C-x r l</strong>, 打开书签目录. 书签目录也有相应的操作.</li>
+</ul>
+<hr>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

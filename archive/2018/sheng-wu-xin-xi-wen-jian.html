@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>生物信息文件</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/sheng-wu-xin-xi-wen-jian.html">
+<meta name="twitter:title" content="Wolf Cave ~ 生物信息文件">
+<meta name="twitter:description" content="常见生物信息文件解析.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ 生物信息文件" />
+<meta property="og:description" content="常见生物信息文件解析." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/sheng-wu-xin-xi-wen-jian.html" rel="bookmark" title="Permalink to 生物信息文件">生物信息文件</a></h2>
+        <div class="entry-content blog-post">
+            <h2>fastq</h2>
+<h2>SAM/BAM</h2>
+<p>SAM （sequence alignment/map）文件是用于存储二代测序数据匹配结果的文本
+文件格式。BAM文件是其二进制格式，比SAM文件要节约存储空间，两者可以容易
+地进行转换。SAM文件中一般有两部分构成，可选的头部（header section），
+记录匹配信息的匹配部（alignment section）。头部主要是存储一些和文件格
+式规格，匹配软件，匹配参考基因组等相关的信息。而匹配部则是序列的具体匹
+配信息，每条序列占据一行，每行包含多个列存储不同的内容。</p>
+<h3>示例</h3>
+<p>假设存在下面的序列要存储为 SAM 文件。 ref 是参考基因组，而 r001 等是不
+同的测序数据。</p>
+<div class="highlight"><pre><span></span><span class="n">Coor</span>     <span class="mi">12345678901234</span>  <span class="mi">5678901234567890123456789012345</span>
+<span class="k">ref</span>      <span class="n">AGCATGTTAGATAA</span><span class="o">**</span><span class="n">GATAGCTGTGCTAGTAGGCAGTCAGCGCCAT</span>
+
+<span class="o">+</span><span class="n">r001</span><span class="o">/</span><span class="mi">1</span>        <span class="n">TTAGATAAAGGATA</span><span class="o">*</span><span class="n">CTG</span>
+<span class="o">+</span><span class="n">r002</span>         <span class="n">aaaAGATAA</span><span class="o">*</span><span class="n">GGATA</span>
+<span class="o">+</span><span class="n">r003</span>       <span class="n">gcctaAGCTAA</span>
+<span class="o">+</span><span class="n">r004</span>                     <span class="n">ATAGCT</span><span class="p">..............</span><span class="n">TCAGC</span>
+<span class="o">-</span><span class="n">r003</span>                            <span class="n">ttagctTAGGC</span>
+<span class="o">-</span><span class="n">r001</span><span class="o">/</span><span class="mi">2</span>                                        <span class="n">CAGCGGCAT</span>
+</pre></div>
+
+
+<p>那么其存为 SAM 文件应为：</p>
+<div class="highlight"><pre><span></span><span class="nv">@HD</span><span class="w"> </span><span class="nl">VN</span><span class="p">:</span><span class="mf">1.6</span><span class="w"> </span><span class="nl">SO</span><span class="p">:</span><span class="n">coordinate</span><span class="w"></span>
+<span class="nv">@SQ</span><span class="w"> </span><span class="nl">SN</span><span class="p">:</span><span class="k">ref</span><span class="w"> </span><span class="k">LN</span><span class="err">:</span><span class="mi">45</span><span class="w"></span>
+<span class="n">r001</span><span class="w">   </span><span class="mi">99</span><span class="w"> </span><span class="k">ref</span><span class="w">  </span><span class="mi">7</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">8</span><span class="n">M2I4M1D3M</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">37</span><span class="w">  </span><span class="mi">39</span><span class="w"> </span><span class="n">TTAGATAAAGGATACTG</span><span class="w"> </span><span class="o">*</span><span class="w"></span>
+<span class="n">r002</span><span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="k">ref</span><span class="w">  </span><span class="mi">9</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">3</span><span class="n">S6M1P1I4M</span><span class="w"> </span><span class="o">*</span><span class="w">  </span><span class="mi">0</span><span class="w">   </span><span class="mi">0</span><span class="w"> </span><span class="n">AAAAGATAAGGATA</span><span class="w">    </span><span class="o">*</span><span class="w"></span>
+<span class="n">r003</span><span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="k">ref</span><span class="w">  </span><span class="mi">9</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">5</span><span class="n">S6M</span><span class="w">       </span><span class="o">*</span><span class="w">  </span><span class="mi">0</span><span class="w">   </span><span class="mi">0</span><span class="w"> </span><span class="n">GCCTAAGCTAA</span><span class="w">       </span><span class="o">*</span><span class="w"> </span><span class="nl">SA</span><span class="p">:</span><span class="nl">Z</span><span class="p">:</span><span class="k">ref</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="o">-</span><span class="p">,</span><span class="mi">6</span><span class="n">H5M</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="n">r004</span><span class="w">    </span><span class="mi">0</span><span class="w"> </span><span class="k">ref</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">6</span><span class="n">M14N5M</span><span class="w">    </span><span class="o">*</span><span class="w">  </span><span class="mi">0</span><span class="w">   </span><span class="mi">0</span><span class="w"> </span><span class="n">ATAGCTTCAGC</span><span class="w">       </span><span class="o">*</span><span class="w"></span>
+<span class="n">r003</span><span class="w"> </span><span class="mi">2064</span><span class="w"> </span><span class="k">ref</span><span class="w"> </span><span class="mi">29</span><span class="w"> </span><span class="mi">17</span><span class="w"> </span><span class="mi">6</span><span class="n">H5M</span><span class="w">       </span><span class="o">*</span><span class="w">  </span><span class="mi">0</span><span class="w">   </span><span class="mi">0</span><span class="w"> </span><span class="n">TAGGC</span><span class="w">             </span><span class="o">*</span><span class="w"> </span><span class="nl">SA</span><span class="p">:</span><span class="nl">Z</span><span class="p">:</span><span class="k">ref</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="o">+</span><span class="p">,</span><span class="mi">5</span><span class="n">S6M</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="n">r001</span><span class="w">  </span><span class="mi">147</span><span class="w"> </span><span class="k">ref</span><span class="w"> </span><span class="mi">37</span><span class="w"> </span><span class="mi">30</span><span class="w"> </span><span class="mi">9</span><span class="n">M</span><span class="w">         </span><span class="o">=</span><span class="w">  </span><span class="mi">7</span><span class="w"> </span><span class="o">-</span><span class="mi">39</span><span class="w"> </span><span class="n">CAGCGGCAT</span><span class="w">         </span><span class="o">*</span><span class="w"> </span><span class="nl">NM</span><span class="p">:</span><span class="nl">i</span><span class="p">:</span><span class="mi">1</span><span class="w"></span>
+</pre></div>
+
+
+<p>其中 <code>@HD</code> 和 <code>@SQ</code> 是头部，头部的行以 @ 起始。而文件中剩下的部分则是
+匹配部，是具体的匹配信息。</p>
+<h3>头部</h3>
+<h3>匹配部</h3>
+<p>在头部下面是包含序列匹配信息的匹配部。匹配部的每一行都代表了fastq中的
+一条序列。匹配部有十一列。不同的文件中都会包含这十一列，只是对于有的匹
+配信息，根据序列不同或者选项不同，有的列可能是0值或者空值。</p>
+<ol>
+<li>QNAME: String, [!-?A-~]{1,254}, 序列名称, 为fastq文件中一个序列的第一行信息.</li>
+<li>FLAG: Int, [0,2^16-1], 二进制的旗标.</li>
+<li>RNAME: String, *|[!-()+-&lt;&gt;-~][!-~]*, 参考序列的名称, 如果是基因组的话则是相应的染色体名称.</li>
+<li>POS: Int, [0,2^31-1], 以1为起始的在参考序列上的位置.</li>
+<li>MAPQ: Int, [0,2^8-1], 序列匹配的质量</li>
+<li>CIGAR: String, *|([0-9]+[MIDNSHPX=])+, CIGAR值, 反映了大致匹配情况.</li>
+<li>RNEXT: String, *|=|[!-()+-&lt;&gt;-~][!-~]<em>, 下一个匹配序列对应的参考序
+   列的名称, 如果与本序列相同, 则设置为 '=', 如果没有相关的信息则是 '</em>'</li>
+<li>PNEXT: Int, [0,2^31-1], 下一个匹配序列对应的以1为起始的在参考序列上的位置.</li>
+<li>TLEN: Int, [-2^31+1,2^31-1], 模板长度.</li>
+<li>SEQ: String, *|[A-Za-z=.]+, 序列, fastq文件中第二行信息.</li>
+<li>QUAL: String, [!-~]+, 序列质量, fastq文件中第四行信息.</li>
+</ol>
+<p>除了上面的必须有的列外，还有可选列，可选列中的信息都是按照 TAG:TYPE:VALUE 去排列的。</p>
+<h2>VCF/BCF</h2>
+<p>VCF 是用于存储 variant 信息的文本文件，BCF是二进制存储的方式。VCF文件
+包括三部分：元数据部分（meta-information），表头部分（header）和数据部
+分。</p>
+<p>VCF 的例子如下所示：</p>
+<div class="highlight"><pre><span></span>##<span class="nv">fileformat</span><span class="o">=</span><span class="nv">VCFv4</span>.<span class="mi">2</span>
+##<span class="nv">FILTER</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">PASS</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">All filters passed</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">bcftoolsVersion</span><span class="o">=</span><span class="mi">1</span>.<span class="mi">9</span><span class="o">+</span><span class="nv">htslib</span><span class="o">-</span><span class="mi">1</span>.<span class="mi">9</span>
+##<span class="nv">bcftoolsCommand</span><span class="o">=</span><span class="nv">mpileup</span> <span class="o">-</span><span class="nv">Ou</span> <span class="o">-</span><span class="nv">f</span> <span class="o">/</span><span class="nv">home</span><span class="o">/</span><span class="mi">485</span><span class="o">/</span><span class="nv">Reference</span><span class="o">/</span><span class="nv">Homo_sapiens</span><span class="o">/</span><span class="nv">UCSC</span><span class="o">/</span><span class="nv">hg38</span><span class="o">/</span><span class="nv">Sequence</span><span class="o">/</span><span class="nv">WholeGenomeFasta</span><span class="o">/</span><span class="nv">genome</span>.<span class="nv">fa</span> <span class="o">/</span><span class="nv">home</span><span class="o">/</span><span class="mi">485</span><span class="o">/</span><span class="nv">Background_1</span><span class="o">/</span><span class="nv">Background_1</span>.<span class="nv">sorted</span>.<span class="nv">bam</span>
+##<span class="nv">reference</span><span class="o">=</span><span class="nv">file</span>:<span class="o">///</span><span class="nv">home</span><span class="o">/</span><span class="mi">485</span><span class="o">/</span><span class="nv">Reference</span><span class="o">/</span><span class="nv">Homo_sapiens</span><span class="o">/</span><span class="nv">UCSC</span><span class="o">/</span><span class="nv">hg38</span><span class="o">/</span><span class="nv">Sequence</span><span class="o">/</span><span class="nv">WholeGenomeFasta</span><span class="o">/</span><span class="nv">genome</span>.<span class="nv">fa</span>
+##<span class="nv">contig</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">chr1</span>,<span class="nv">length</span><span class="o">=</span><span class="mi">248956422</span><span class="o">&gt;</span>
+##<span class="nv">ALT</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=*</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Represents allele(s) other than observed.</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">INDEL</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">0</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Flag</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Indicates that the variant is an INDEL.</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">IDV</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Maximum number of reads supporting an indel</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">IMF</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Maximum fraction of reads supporting an indel</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">DP</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Raw read depth</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">VDB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Variant Distance Bias for filtering splice-site artefacts in RNA-seq data (bigger is better)</span><span class="s2">&quot;</span>,<span class="nv">Version</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">3</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">RPB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Mann-Whitney U test of Read Position Bias (bigger is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">MQB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Mann-Whitney U test of Mapping Quality Bias (bigger is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">BQB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Mann-Whitney U test of Base Quality Bias (bigger is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">MQSB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Mann-Whitney U test of Mapping Quality vs Strand Bias (bigger is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">SGB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Segregation based metric.</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">MQ0F</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Fraction of MQ0 reads (smaller is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">FORMAT</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">PL</span>,<span class="nv">Number</span><span class="o">=</span><span class="nv">G</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">List of Phred-scaled genotype likelihoods</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">FORMAT</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">GT</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">String</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Genotype</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">ICB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Inbreeding Coefficient Binomial test (bigger is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">HOB</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Float</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Bias in the number of HOMs number (smaller is better)</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">AC</span>,<span class="nv">Number</span><span class="o">=</span><span class="nv">A</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Allele count in genotypes for each ALT allele, in the same order as listed</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">AN</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Total number of alleles in called genotypes</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">DP4</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">4</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">INFO</span><span class="o">=&lt;</span><span class="nv">ID</span><span class="o">=</span><span class="nv">MQ</span>,<span class="nv">Number</span><span class="o">=</span><span class="mi">1</span>,<span class="nv">Type</span><span class="o">=</span><span class="nv">Integer</span>,<span class="nv">Description</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">Average mapping quality</span><span class="s2">&quot;</span><span class="o">&gt;</span>
+##<span class="nv">bcftools_callVersion</span><span class="o">=</span><span class="mi">1</span>.<span class="mi">9</span><span class="o">+</span><span class="nv">htslib</span><span class="o">-</span><span class="mi">1</span>.<span class="mi">9</span>
+#<span class="nv">CHROM</span>  <span class="nv">POS</span>     <span class="nv">ID</span>      <span class="nv">REF</span>     <span class="nv">ALT</span>     <span class="nv">QUAL</span>    <span class="nv">FILTER</span>  <span class="nv">INFO</span>    <span class="nv">FORMAT</span>  <span class="o">/</span><span class="nv">home</span><span class="o">/</span><span class="mi">485</span><span class="o">/</span><span class="nv">data</span><span class="o">/</span><span class="nv">Background_1</span><span class="o">/</span><span class="nv">Background_1</span>.<span class="nv">sorted</span>.<span class="nv">bam</span>
+<span class="nv">chr1</span>    <span class="mi">12198</span>   .       <span class="nv">G</span>       <span class="nv">C</span>       <span class="mi">11</span>.<span class="mi">7172</span> .       <span class="nv">DP</span><span class="o">=</span><span class="mi">1</span><span class="c1">;SGB=-0.379885;MQ0F=0;AC=2;AN=2;DP4=0,0,1,0;MQ=60   GT:PL   1/1:41,3,0</span>
+<span class="nv">chr1</span>    <span class="mi">14464</span>   .       <span class="nv">A</span>       <span class="nv">T</span>       <span class="mi">117</span>     .       <span class="nv">DP</span><span class="o">=</span><span class="mi">44</span><span class="c1">;VDB=3.43916e-10;SGB=-0.693141;RPB=0.804784;MQB=0.997831;BQB=0.960039;MQ0F=0;AC=2;AN=2;DP4=4,0,37,0;MQ=44  GT:PL   1/1:144,7,0</span>
+<span class="nv">chr1</span>    <span class="mi">14653</span>   .       <span class="nv">C</span>       <span class="nv">T</span>       <span class="mi">85</span>      .       <span class="nv">DP</span><span class="o">=</span><span class="mi">252</span><span class="c1">;VDB=1.88797e-18;SGB=-0.693147;RPB=7.469e-24;MQB=0.0373404;MQSB=0.720283;BQB=0.997816;MQ0F=0.0595238;ICB=1;HOB=0.5;AC=1;AN=2;DP4=151,17,69,1;MQ=32        GT:PL   0/1:118,0,255</span>
+</pre></div>
+
+
+<h3>元数据部分</h3>
+<p>元数据部分主要是关于计算环境的说明，关于参考序列的描述，和关于INFO的种种描述信息等。</p>
+<ul>
+<li><code>##fileformat=VCFv4.2</code>: 当前 VCF 文件所采用的 VCF 格式版本, 最新的是4.2.</li>
+<li><code>##INFO=&lt;ID=ID,Number=number,Type=type,Description="description",Source="source",Version="version"&gt;</code>: INFO 列对应的信息描述.</li>
+<li><code>##FILTER=&lt;ID=ID,Description="description"&gt;</code>: FILTER 列信息, 过滤条
+  件的描述.</li>
+<li><code>##FORMAT=&lt;ID=ID,Number=number,Type=type,Description="description"&gt;</code>:
+  FORMAT 列信息, 该位点类型的简要描述, 具体信息在 INFO 列中.</li>
+<li><code>##ALT=&lt;ID=type,Description=description&gt;</code>: ALT列信息, variant的位点
+  信息描述.</li>
+<li><code>##contig=&lt;ID=chr1,length=248956422&gt;</code>: 在VCF文件中引用的参考序列名称
+  对应的信息.</li>
+<li>``</li>
+</ul>
+<h3>表头部分</h3>
+<p>表头部分只有一行，以‘#’号开头，是下面数据部分的每一列的表头。</p>
+<ul>
+<li>CHROM: 染色体名称</li>
+<li>POS: variant 在染色体上的位置</li>
+<li>ID:</li>
+<li>REF: 参考基因组上该位置的碱基，或者一小段序列（对于INDEL情况）。</li>
+<li>ALT: 比对序列中的该位点的碱基，如果是碱基替换则可能只是一个碱基，而
+  如果是INDEL，则可能是若干碱基。</li>
+<li>QUAL: 该位点质量</li>
+<li>FILTER:</li>
+<li>INFO: 该位点variant信息</li>
+<li>FORMAT:</li>
+<li>文件名: bam文件地址</li>
+</ul>
+<h3>数据部分</h3>
+<p>数据部分就是具体的每个variant的信息了。</p>
+<h4>Reference</h4>
+<ul>
+<li>https://samtools.github.io/hts-specs/SAMv1.pdf</li>
+<li>https://samtools.github.io/hts-specs/VCFv4.2.pdf</li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Mon 16 July 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/bioinformatics.html">#bioinformatics, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/sheng-wu-xin-xi-wen-jian.html&text=生物信息文件&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/sheng-wu-xin-xi-wen-jian.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/sheng-wu-xin-xi-wen-jian.html&t=生物信息文件"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/sheng-wu-xin-xi-wen-jian.html&title=生物信息文件" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=生物信息文件&amp;body=Viens découvrir un article à propos de [生物信息文件] sur le site de Wolfson Liu. ../../archive/2018/sheng-wu-xin-xi-wen-jian.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/sheng-wu-xin-xi-wen-jian.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

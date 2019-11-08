@@ -1,0 +1,376 @@
+Title: Python 学习笔记: virtual environment
+Date: 2016-05-24 12:32
+Modified: 2018-07-17 15:29
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: 使用 virtualenv 和 conda 来管理 virtual environment
+
+
+## virturalenv ##
+
+有些 python 的包之间的相互依赖程度不一样, 有可能我所需要使用的一个包依
+赖于某个特定的包的一个版本, 而我所需要用的另一个包依赖于某个特定的包的
+另一个版本, 这样的情况下如果都是用 pip 来安装 python 包, 可能就使得依
+赖不合适. 所以, 我需要使得每个包都有自己独立的依赖环境, 每个包可以有一
+个自己的虚拟环境, 即 virtualenv. 下面主要提及的是在 Linux 下面的操作,
+可以使用 virtualenv 或者 virtualenv-3 创建 python2.7 或者 python3 环境.
+
+### 创建环境 ###
+
+首先, 要建立一个文件夹, 用于保存一个独立的 python 环境. 比如说建立一个文件夹叫作 ENV.
+
+```
+$ mkdir ENV
+```
+
+然后在该文件夹起始一个独立的环境.
+
+```
+$ virtualenv ENV
+New python executable in ENV/bin/python
+Installing setuptools, pip, wheel...done.
+```
+
+可以看到在 ENV 文件夹下面创建了所必须的文件夹和文件或者文件链接.
+* bin: 用于保存独立环境下面的可执行文件, 其中有 activate 等启动镜像环
+  境所需要的脚本和 python 的链接等.
+* include: 用于保存独立环境下面所需要的头文件, 最开始只有一个文件夹
+  python2.7 是 python2.7 所需要的头文件所在的文件夹.
+* lib: 用于保存 python 相关的包.
+* lib64: 用于保存 64 位的 python 相关的包.
+
+### 激活环境 ###
+
+在 Linux 的终端下去激活环境需要运行下面的脚本, 其会改变一些环境变量.
+
+```
+$ source ENV/bin/activate
+(ENV)$
+```
+
+当环境激活之后, $PATH 的第一个路径就会变成 ENV/bin 的绝对路径. 而提示
+符参数 $PS1 的前面会加上 "(ENV)". 如果直接从 ENV/bin 去运行程序, 则不
+使用 activate 脚本去修改也可以.
+
+### 关闭环境 ###
+
+如果想要把更改过的变量复原, 则使用 deactivate 命令.
+
+```
+(ENV)$ deactivate
+$
+```
+
+### 移除环境 ###
+
+想要移除环境只需要将环境所在的文件夹删除.
+
+```
+(ENV)$ deactivate
+$ rm -r /path/to/ENV
+```
+
+### 参数设置 ###
+
+如果想要添加别的搜索路径到一个环境中, 可以设置参数
+`--extra-search-dir`.
+
+```{shell}
+$ virtualenv --extra-search-dir=/path/to/other/dir ENV
+```
+
+
+## Conda ##
+
+除了 virtualenv 包外, 如果使用 [Anaconda]{https://www.continuum.io }
+Python 发行版,其中有 conda 作为 virtual environment 管理软件.
+
+
+### 创建环境 ###
+
+创建环境可以使用下面的命令创建环境.
+
+```{shell}
+$ conda create -n envname python=x.x anaconda
+```
+
+`conda` 是 anaconda 管理软件的名称, `create` 说明创建环境.
+`-n envname` 指定要创建的环境的名称为 envname.
+`python=x.x` 指定环境中需要的 Python 的版本号.
+`anaconda` 指定该环境中需要安装的包, 可以有多个,
+例如如果是 `pandas scipy sympy` 则指定环境建立的时候安装这三个包,
+也可以在环境建立完成后再另外安装所需要的包和软件.
+
+### 激活环境 ###
+
+conda 环境的激活命令和 virtualenv 相似却不同. 主要是因为 conda 的
+active 脚本的定义不同.
+
+```{shell}
+$ source activate envname
+```
+
+### 关闭环境 ###
+
+conda 环境的关闭也需要使用 source 命令
+
+```{shell}
+$ source deactivate
+```
+
+### 移除环境 ###
+
+```{shell}
+$ conda remove --name envname --all
+```
+
+然后可以使用 `conda info --env` 来查看剩下的环境.
+
+
+## Conda 使用简介 ##
+
+conda 命令是 anaconda 中带有的管理应用, 环境和包的软件, 功能比
+virtualenv要全面和强大的多。
+
+* `conda help`: 显示conda命令的帮助文档.
+* `conda info`: 显示当前 anaconda 安装的情况, 包括系统, python 版本,
+  默认下载地址, 各种默认地址等.
+* `conda list`: 列出一个 conda 环境中的包.
+* `conda search`: 搜索 python 包并显示相应的信息.
+* `conda create`: 创建 conda 环境.
+* `conda install`: 安装软件包.
+* `conda update`: 更新软件包.
+* `conda upgrade`: 更新软件包, 同 `update`.
+* `conda remove`: 删除软件包.
+* `conda uninstall`: 删除软件包, 同 `uninstall`.
+* `conda config`: 配制 conda 环境, 修改 .condarc 文件.
+* `conda clean`: 删除没用的包或者缓存.
+
+### conda info 环境与包的信息 ###
+
+`conda info` 可以用来显示当前的环境信息.
+
+用法如下:
+
+```
+conda info [-h] [--json] [--debug] [--verbose] [--offline] [-a] [-e]
+           [-l] [-s] [--root] [--unsafe-channels]
+           [packages [packages ...]]
+```
+
+如果 conda info 后面没有跟参数, 输出的是当前安装的 anaconda 整体的信息.
+
+```{shell}
+conda info
+
+#                platform : linux-64
+#           conda version : 4.3.34
+#        conda is private : False
+#       conda-env version : 4.3.34
+#     conda-build version : not installed
+#          python version : 3.6.1.final.0
+#        requests version : 2.18.4
+#        root environment : /gpfs/share/software/anaconda3  (read only)
+#     default environment : /gpfs/share/software/anaconda3
+#        envs directories : /gpfs/share/home/1501111485/.conda/envs
+#                           /gpfs/share/software/anaconda3/envs
+#           package cache : /gpfs/share/software/anaconda3/pkgs
+#                           /gpfs/share/home/1501111485/.conda/pkgs
+#            channel URLs : https://repo.continuum.io/pkgs/main/linux-64
+#                           https://repo.continuum.io/pkgs/main/noarch
+#                           https://repo.continuum.io/pkgs/free/linux-64
+#                           https://repo.continuum.io/pkgs/free/noarch
+#                           https://repo.continuum.io/pkgs/r/linux-64
+#                           https://repo.continuum.io/pkgs/r/noarch
+#                           https://repo.continuum.io/pkgs/pro/linux-64
+#                           https://repo.continuum.io/pkgs/pro/noarch
+#             config file : None
+#              netrc file : None
+#            offline mode : False
+#              user-agent : conda/4.3.34 requests/2.18.4 CPython/3.6.1 Linux/3.10.0-514.el7.x86_64 Red Hat Enterprise Linux Server/7.3 glibc/2.17    
+#                 UID:GID : 66237:66338
+```
+
+
+conda info 后面可以跟包的名字, 则会输出相应的包的名字:
+
+```{shell}
+conda info pandas
+
+# pandas 0.23.2 py37h04863e7_0
+# ----------------------------
+# file name   : pandas-0.23.2-py37h04863e7_0.tar.bz2
+# name        : pandas
+# version     : 0.23.2
+# build string: py37h04863e7_0
+# build number: 0
+# channel     : defaults
+# size        : 10.0 MB
+# arch        : None
+# license     : BSD 3-clause
+# md5         : 5317d6f21fcfd23255891d3df62cd678
+# noarch      : None
+# platform    : None
+# subdir      : linux-64
+# timestamp   : 1531088501052
+# url         : https://repo.continuum.io/pkgs/main/linux-64/pandas-0.23.2-py37h04863e7_0.tar.bz2
+# dependencies:
+#     libgcc-ng >=7.2.0
+#     libstdcxx-ng >=7.2.0
+#     numpy >=1.11.3,<2.0a0
+#     python >=3.7,<3.8.0a0
+#     python-dateutil >=2.5.*
+#     pytz
+```
+
+上面的输出只有 0.23.2 版本的信息, 而实际上则会输出所有在库里的不同版本
+的 pandas 包的信息.
+
+`conda info -a` 是输出所有的信息, 包括 `conda info` 输出的信息, 和所有
+的环境, 许可证, 系统信息等 (如环境变量等).
+
+如果只是想知道当前所有的环境, 可以使用 `-e` 或者 `--env` 参数, 只列出
+当前已有的环境:
+
+```{shell}
+conda info -e
+
+# # conda environments:
+# #
+# root                  *  /gpfs/share/software/anaconda3
+```
+
+如果只需要获取许可证的信息, 则可以使用 `-l` 参数:
+
+```{shell}
+conda info -l
+
+# License directories:
+#     /gpfs/share/home/1501111485/.continuum
+#     /gpfs/share/software/anaconda3/licenses
+# License files (license*.txt):
+# Package/feature end dates:
+```
+
+而如果只需要获取系统信息, 则应该使用 `-s` 参数.
+
+
+### conda list 列出环境中的包 ###
+
+conda list 可以列出环境的包, 用法如下:
+
+```
+conda list [-h] [-n ENVIRONMENT | -p PATH] [--json] [--debug]
+           [--verbose] [--show-channel-urls] [--no-show-channel-urls]
+           [-c] [-f] [--explicit] [--md5] [-e] [-r] [--no-pip]
+           [regex]
+```
+
+`conda list [regex]` 后面的 `[regex]` 是包名称的正则表达式, 如果没有指
+定的话则默认列出所有的包.
+
+```{shell}
+conda list
+
+# # packages in environment at /gpfs/share/software/anaconda3:
+# #
+# _license                  1.1                      py36_1
+# alabaster                 0.7.10                   py36_0
+# anaconda                  4.4.0               np112py36_0
+# ... (ignored many lines)
+# zict                      0.1.2                    py36_0
+# zlib                      1.2.8                         3
+
+conda list tensor
+
+# # packages in environment at /gpfs/share/software/anaconda3:
+# #
+# tensorflow-gpu            1.3.0                     <pip>
+# tensorflow-tensorboard    0.1.6                     <pip>
+```
+
+正则表达式中 `^` 表示起始, `$` 表示末尾, 所以要搜索以 'tensor' 开头的
+包则最好写为 '^tensor' 要搜索以 'gpu' 结尾的包则应该写为 'gpu$'. 而如
+果要搜索全名为`pandas` 的包则应该写为 `^pandas$` 或者使用参数 `-f` 或
+者 `--full-name`.
+
+```{shell}
+conda list ^pandas$
+
+conda list -f pandas
+```
+
+conda list 默认输出当前的环境中的包, 使用 `-n ENVIRONMENT` 或者
+`--name ENVIRONMENT` 则可列出指定的 ENVIRONMENT 环境中的包.
+
+```{shell}
+conda list -n root ^lib
+
+# # packages in environment at /gpfs/share/software/anaconda3:
+# #
+# libffi                    3.2.1                         1
+# libgcc                    4.8.5                         2
+# libgfortran               3.0.0                         1
+# libgpuarray               0.7.5                         0    conda-forge
+# libiconv                  1.14                          0
+# libpng                    1.6.27                        0
+# librosa                   0.6.0                    py36_0    conda-forge
+# libsodium                 1.0.10                        0
+# libtiff                   4.0.6                         3
+# libtool                   2.4.2                         0
+# libxcb                    1.12                          1
+# libxml2                   2.9.4                         0
+# libxslt                   1.1.29                        0
+```
+
+除了可以使用 `-n` 指定环境的名称外, 也可以使用 `-p PATH` 或者
+`--prefix PATH` 指定环境的存储路径.
+
+
+
+### conda search 搜索包 ###
+
+conda search 和 conda list 的用法很相似：
+
+```
+conda search [-h] [-n ENVIRONMENT | -p PATH] [--canonical] [-f]
+             [--names-only] [--use-index-cache] [-o]
+             [--platform {win-32,win-64,osx-64,linux-32,linux-64}]
+             [--spec] [--reverse-dependency] [--offline] [-c CHANNEL]
+             [--override-channels] [--json] [--debug] [--verbose]
+             [--use-local] [-k]
+             [regex]
+```
+
+conda search 能够搜索没有安装的包, 而 conda list 主要搜索安装在环境中的包.
+
+### conda create 创建环境 ###
+
+conda 通过 conda create 命令来创建新的环境. 使用方法如下:
+
+```
+conda create [-h] [-y] [--dry-run] [-f] [--file FILE] [--no-deps] [-m]
+             [--use-index-cache] [--use-local] [--offline] [--no-pin]
+             [-c CHANNEL] [--override-channels]
+             [-n ENVIRONMENT | -p PATH] [-q] [--copy] [--clobber] [-k]
+             [--alt-hint] [--update-dependencies]
+             [--no-update-dependencies] [--channel-priority]
+             [--no-channel-priority] [--show-channel-urls]
+             [--no-show-channel-urls] [--json] [--debug] [--verbose]
+             [--clone ENV] [--no-default-packages]
+             [package_spec [package_spec ...]]
+```
+
+如果要创建新的环境ENV, 则可以使用:
+
+```{shell}
+conda create -n ENV
+
+conda create --name ENV
+
+conda create -p ENV/PATH
+
+conda create --prefix ENV/PATH
+```
+

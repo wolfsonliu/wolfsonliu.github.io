@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：对字符串的处理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html">
+<meta name="twitter:title" content="Wolf Cave ~ R 学习笔记：对字符串的处理">
+<meta name="twitter:description" content="R 对字符串的基本处理方法.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ R 学习笔记：对字符串的处理" />
+<meta property="og:description" content="R 对字符串的基本处理方法." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html" rel="bookmark" title="Permalink to R 学习笔记：对字符串的处理">R 学习笔记：对字符串的处理</a></h2>
+        <div class="entry-content blog-post">
+            <h2>常用字符处理函数</h2>
+<ul>
+<li>nchar: 计算字符串中字符数量或者存储大小, 返回相应值, 与多数函数一样, nchar 是可以接受并返回向量的. 同时, nzchar 可以判断字符串是否非空, 非空返回 TRUE, 空则返回 FALSE.</li>
+<li>substr: 或者 substring 函数, 返回一个字符串的子串, <code>substr(x, start, end)</code>, 也可以直接赋值给 substr, 从而能改变 x 的值 <code>substring(x, first, last) &lt;- "0"</code>, 需要注意的是替换字符的数量是相同的.</li>
+<li>sub: 替换第一个出现的符合匹配的字符串, <code>sub(pattern, replacement, x, ignore.case=FALSE, fixed=FALSE)</code>.</li>
+<li>gsub: 替换所有符合匹配的字符串.</li>
+<li>strsplit: 接受一个字符串, 设置 split 根据的字符, 输出一个 list. 需要注意的是 split 是正则表达式, 如果用 "." 等则需要使用正则表达式的方法.</li>
+<li>toupper: 转换为大写字母.</li>
+<li>tolower: 转换为小写字母.</li>
+<li>
+<p>paste: 连接字符串, 也可以使用 paste0 函数, 默认不在两个字符串之间加入字符. collapse 参数是设置向量之内的连接字符, 而 sep 是设置向量之间的连接字符.</p>
+</li>
+<li>
+<p>grep: 按照一定 pattern 去查找向量中是否含有该类型字符. 如果有, 默认返回对应的下标, 如果 <code>value = TRUE</code>, 则直接返回对应的值. 如果没有匹配, 则返回空, 可以使用 any 函数或者 length 函数结果是否为 0 去判断是否有匹配.</p>
+</li>
+<li>print: 把字符输出到终端.</li>
+<li>cat: 连接字符并输出到终端或文件.</li>
+</ul>
+<h2>正则表达式</h2>
+<p>R 是支持 POSIX 规范的正则表达式的, 有许多需要比对的函数接受正则表达式, 如 strsplit, grep 等. 需要注意的是, "\" 在正则表达式中是为了把一个保留字符转义为普通字符, 如 "." 把匹配任意字符的 "." 转义为句点, 那么在 R 中, 如果把相应的正则表达式保存在字符串中, 则应该使用两个 "\", 如我要转义正则表达式中匹配任意字符的 "." 为句点, <code>reg.exp &lt;- "\\.txt"</code> (有的时候可以使用方括号 <code>"[.]txt"</code>). 如果使用 readline 函数从终端读取, 则只用使用一个 "\", R 解释器可以解读.</p>
+<h3>保留字符</h3>
+<p>在 R 中正则表达式有一些保留字符, 这些保留字符在正则表达式中有特殊含义, 如果字符串中有该字符, 需要进行转意. R 使用 POSIX 兼容的正则表达式, 和 linux 终端下的很接近.</p>
+<div class="highlight"><pre><span></span><span class="p">.</span> <span class="o">^</span> <span class="err">$</span> <span class="o">+</span> <span class="o">?</span> <span class="o">*</span> <span class="p">(</span> <span class="p">)</span> <span class="p">[</span> <span class="p">]</span> <span class="err">{</span> <span class="err">}</span> <span class="o">|</span> <span class="err">\</span>
+</pre></div>
+
+
+<h3>基本用法</h3>
+<h4>字符与字符集</h4>
+<p>在正则表达式中, 一个字符或者一个字符集本身只代表一个值. 一个字符代表的就是自身, 而字符集代表的是符合集合的任意一个字符, 更多的字符匹配需要通过指定数量来获得. 下面所列的几个地为是一样的, 如 "a" 的地位和 "[:alpha:]" 的地为一样, 在 "a" 外面需要一个方括号的地方, 如 <code>[a]</code>, 在 "[:alpha:]" 也需要, 如 <code>[[alpha:]]</code></p>
+<ul>
+<li>.: 匹配任意一个字符.</li>
+<li>.: 在 R 中或者 "\.", 代表句点, 需要转义.</li>
+<li>a: 代表一个字符 "a", 其他字符类似.</li>
+<li>[:alnum:]: 所有的字母和数字, A-Z, a-z, 0-9, alpha and number.</li>
+<li>[:alpha:]: 所有的字母, A-Z, a-z.</li>
+<li>[:blank:]: space and tab, 空格和制表符.</li>
+<li>[:cntrl:]: 控制字符, 响铃, 退格, 水平制表符, 归位, 转义等.</li>
+<li>[:digit:]: 数字, 0-9.</li>
+<li>[:graph:]: 可视字符, 所有的数字, 字母, 标点等可以看到的字符.</li>
+<li>[:lower:]: 小写字母, a-z.</li>
+<li>[:print:]: 可打印字符, 包括空格和可视字符.</li>
+<li>[:punct:]: 标点, <code _="|">][!"#$%&amp;'()*+,./:;&lt;=&gt;?@\\^_\</code>~-`.</li>
+<li>[:space:]: 空白符号, 空格制表符等.</li>
+<li>[:upper:]: 大写字母, A-Z.</li>
+<li>[:xdigit:]: 十六进制数字.</li>
+</ul>
+<h4>逻辑与分组</h4>
+<ul>
+<li>|: 逻辑或, 代表两者中取一个</li>
+<li>(): 分组, 与 | 一起用, 代表在所包含的模式中符合一个, <code>(a|b)</code>.</li>
+<li>[]: 匹配一个, 匹配其中包含的一个字符或字符集, <code>[a[:digit:]]</code>.</li>
+<li>[^]: 不匹配其中任何一个.</li>
+</ul>
+<h4>数量</h4>
+<p>数量符号指明其前面的字符重复的数量.</p>
+<ul>
+<li>?: 前面的字符重复 0 次或 1 次.</li>
+<li>*: 前面的字符重复 0 次或多次.</li>
+<li>+: 前面的字符重复 1 次或多次.</li>
+<li>{n}: 前面的字符重复 n 次.</li>
+<li>{min,}: 前面的字符重复至少 min 次.</li>
+<li>{min, max}: 前面的字符重复 min 次到 max 次.</li>
+</ul>
+<h4>位置</h4>
+<p>有的时候需要匹配位置.</p>
+<ul>
+<li>^: 把位置锚定在行首.</li>
+<li>$: 把位置锚定在行尾.</li>
+</ul>
+<h2>常见字符串处理问题</h2>
+<h3>取字符串的部分字符</h3>
+<p>主要使用 strsplit 函数.</p>
+<p>丽莎问了一个问题, 想要提取一系列的物种学名中的属名, 这些学名有的有亚种加词, 有的没有.</p>
+<div class="highlight"><pre><span></span><span class="nv">species</span> <span class="o">&lt;-</span> <span class="nv">c</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Corvus_corone</span><span class="s2">&quot;</span>,
+             <span class="s2">&quot;</span><span class="s">Cyanopica_cyanus</span><span class="s2">&quot;</span>,
+             <span class="s2">&quot;</span><span class="s">Pica_pica_serica</span><span class="s2">&quot;</span>,
+             <span class="s2">&quot;</span><span class="s">Corvus_macrorhynchos</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="nv">genus</span> <span class="o">&lt;-</span> <span class="nv">unname</span><span class="ss">(</span><span class="nv">sapply</span><span class="ss">(</span><span class="nv">species</span>, <span class="nv">function</span><span class="ss">(</span><span class="nv">m</span><span class="ss">)</span>{<span class="nv">unlist</span><span class="ss">(</span><span class="k">strsplit</span><span class="ss">(</span><span class="nv">m</span>,<span class="nv">split</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">_</span><span class="s2">&quot;</span><span class="ss">))</span>[<span class="mi">1</span>]}<span class="ss">))</span>
+</pre></div>
+
+
+<p>上面的代码可以解决这个问题. </p>
+<ul>
+<li>unlist: 把 strsplit 输出的 list 变成向量.</li>
+<li>sapply: 把一个操作用在一个向量上. FUN 可以为 "[" 就可以提取 list 中特定的部分, <code>sapply(list, "[", 1)</code>.</li>
+<li>unname: sapply 得到的结果有 names, 使用 unname 可以去掉 names.</li>
+</ul>
+<h3>取字符串中的单个字母</h3>
+<p>如果需要对字符串中的单个字母进行操作或判断, 则应该先把整个字符串转换为单个字母的向量, 这个任务能通过 substr 来完成.</p>
+<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">&lt;-</span> ’<span class="n">Mississippi</span>’
+<span class="n">len</span>   <span class="o">&lt;-</span> <span class="nf">nchar</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="n">ltrs</span>  <span class="o">&lt;-</span> <span class="nf">substr</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="m">1</span><span class="o">:</span><span class="n">len</span><span class="p">,</span><span class="m">1</span><span class="o">:</span><span class="n">len</span><span class="p">)</span>
+<span class="n">ltrs</span>
+<span class="n">[1]</span> <span class="s">&quot;M&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;i&quot;</span>
+</pre></div>
+
+
+<h3>除去字符串最后一个字符</h3>
+<p>石强问怎么把一些字符串最后的句号给去掉, 查了网站, 没看到类似 python rstrip 之类的函数, 那就用多个函数组合吧. 需要注意的是英文句号本身是正则表达式里面的符号, 需要用方括号括起来.</p>
+<div class="highlight"><pre><span></span><span class="n">some</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;my.&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;is&quot;</span><span class="p">,</span> <span class="s">&quot;Wolfson.&quot;</span><span class="p">)</span>
+<span class="nf">substr</span><span class="p">(</span><span class="n">x</span>     <span class="o">=</span> <span class="n">some</span><span class="nf">[grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)</span><span class="n">]</span><span class="p">,</span>
+       <span class="n">start</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">),</span>
+       <span class="n">stop</span>  <span class="o">=</span> <span class="nf">nchar</span><span class="p">(</span><span class="n">some</span><span class="nf">[grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)</span><span class="n">]</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>字符和对象的转换, 运行字符串中的命令</h3>
+<p>有的时候需要把接下来需要运行的命令保存在字符串中, 然后再运行. 这种情况下, 需要 parse, eval, call, get 等函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span> <span class="o">&lt;-</span> <span class="nv">c</span><span class="ss">(</span><span class="mi">0</span>, <span class="mi">6</span>, <span class="mi">24</span>, <span class="mi">48</span><span class="ss">)</span>
+<span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span> <span class="o">&lt;-</span> <span class="nv">vector</span><span class="ss">()</span>
+<span class="k">for</span> <span class="ss">(</span><span class="nv">i</span> <span class="nv">in</span> <span class="nv">c</span><span class="ss">(</span><span class="mi">1</span>:<span class="mi">4</span><span class="ss">))</span> {
+  <span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span>[<span class="nv">i</span>] <span class="o">&lt;-</span> <span class="nv">paste</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">rna.time.</span><span class="s2">&quot;</span>,
+                             <span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span>[<span class="nv">i</span>],
+                             <span class="nv">sep</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="ss">)</span>
+  ## <span class="nv">setting</span> <span class="nv">names</span>.
+  <span class="nv">tmp</span>.<span class="nv">load</span>.<span class="nv">rna</span>.<span class="nv">data</span> <span class="o">&lt;-</span> <span class="nv">paste</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span>[<span class="nv">i</span>],
+                             <span class="s2">&quot;</span><span class="s"> &lt;- </span><span class="s2">&quot;</span>,
+                             <span class="s2">&quot;</span><span class="s">ballgown(dataDir = rna.data.parent.dir, </span><span class="s2">&quot;</span>,
+                             <span class="s1">&#39;</span><span class="s">samplePattern = &quot;*-</span><span class="s1">&#39;</span>,
+                             <span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span>[<span class="nv">i</span>],
+                             <span class="s1">&#39;</span><span class="s">-*&quot;, meas = &quot;all&quot;)</span><span class="s1">&#39;</span>,
+                             <span class="nv">sep</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="ss">)</span>
+  ## <span class="nv">excute</span> <span class="nv">strings</span>
+  <span class="nv">eval</span><span class="ss">(</span><span class="nv">parse</span><span class="ss">(</span><span class="nv">text</span> <span class="o">=</span> <span class="nv">tmp</span>.<span class="nv">load</span>.<span class="nv">rna</span>.<span class="nv">data</span><span class="ss">))</span>  # <span class="nv">excute</span>
+  <span class="nv">write</span><span class="ss">(</span><span class="nv">x</span>    <span class="o">=</span> <span class="nv">get</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span>[<span class="nv">i</span>]<span class="ss">)</span>,
+        <span class="nv">file</span> <span class="o">=</span> <span class="nv">paste</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span>[<span class="nv">i</span>], <span class="s2">&quot;</span><span class="s">_data.txt</span><span class="s2">&quot;</span>, <span class="nv">sep</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="ss">))</span>
+  ## <span class="nv">write</span> <span class="nv">data</span> <span class="nv">to</span> <span class="nv">file</span>.
+  ## <span class="nv">write</span> <span class="nv">the</span> <span class="nv">differencial</span> <span class="nv">expressed</span> <span class="nv">gene</span> <span class="nv">list</span> <span class="nv">to</span> <span class="nv">file</span>.
+}
+</pre></div>
+
+
+<ul>
+<li>parse: 把字符串转化为 R 表达式, file 指定输入的文件, 或者使用 text 指定包含所需字符串的对象.</li>
+<li>deparse: 把表达式转换为字符串.</li>
+<li>eval: 运行 R 表达式, 需要先使用 parse 把字符串转化为 R 表达式.</li>
+<li>call: 把字符串转化为函数表达式, <code>call(FUNCTIONNAME)</code>.</li>
+<li>get: 通过名称来获得数据对象, <code>get(DATANAME)</code>.</li>
+<li>substitute: 返回 parse tree, 可以和 deparse 配合, 获得函数参数实际的变量名.</li>
+</ul>
+<p>我们也许需要一个函数的参数或函数名都按照需求有所变化, 也就是说, 希望能通过函数名调用参数, 而又可以单独去赋予该函数参数, 这个时候就需要 do.call 函数.</p>
+<div class="highlight"><pre><span></span><span class="nv">sortframe</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">df</span>,...<span class="ss">)</span><span class="nv">df</span>[<span class="k">do</span>.<span class="nv">call</span><span class="ss">(</span><span class="nv">order</span>,<span class="nv">list</span><span class="ss">(</span>...<span class="ss">))</span>,]  # 对 <span class="nv">data</span>.<span class="nv">frame</span> 的每一列进行排序.
+</pre></div>
+
+
+<ul>
+<li>do.call, do.call 接受一个函数名和该函数的参数的 list, 并且调用该函数.</li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Wed 30 December 2015</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html&text=R 学习笔记：对字符串的处理&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html&t=R 学习笔记：对字符串的处理"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html&title=R 学习笔记：对字符串的处理" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：对字符串的处理&amp;body=Viens découvrir un article à propos de [R 学习笔记：对字符串的处理] sur le site de Wolfson Liu. ../../archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2015/r-xue-xi-bi-ji-dui-zi-fu-chuan-de-chu-li.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

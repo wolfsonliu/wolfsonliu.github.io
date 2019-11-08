@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git commit 提交记录</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/git-commit-ti-jiao-ji-lu.html">
+<meta name="twitter:title" content="Wolf Cave ~ Git commit 提交记录">
+<meta name="twitter:description" content="Git commit 及 objects 文件简介">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Git commit 提交记录" />
+<meta property="og:description" content="Git commit 及 objects 文件简介" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/git-commit-ti-jiao-ji-lu.html" rel="bookmark" title="Permalink to Git commit 提交记录">Git commit 提交记录</a></h2>
+        <div class="entry-content blog-post">
+            <p>Git 的三个阶段分别是：modified，staged，commited。最后一个阶段 commited (提交)由 <code>git commit</code> 命令完成，<code>commit</code> 之后，对于文件的相应的修改将会被保存在 Git 仓库当中。Git 存储的不是一个文件相对于前一个版本的变化的部分，而是当前文件的快照。所有的记录信息被存储在 <code>.git/objects</code> 文件夹下面。</p>
+<h2>Git commit 命令用法简介</h2>
+<p>如果有 stage 的文件，则需要使用 <code>git commit</code> 来将文件记录进 Git 仓库。最简单的用法就是：</p>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="k">commit</span>
+</pre></div>
+
+
+<p>该命令会调用默认的编辑器，来编辑 commit 的注释信息。一般默认编辑器是 VIM，默认编辑器可以通过 <code>git config --local core.editor=emacs</code> 来设置为 emacs 或其他编辑器。</p>
+<p>一般情况下，注释比较简短，使用编辑器编辑会比较繁琐，所以可以直接在 commit 的时候加上注释，使用 <code>-m</code> 参数即可。</p>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="k">commit</span> <span class="o">-</span><span class="n">m</span> <span class="ss">&quot;commit message&quot;</span>
+</pre></div>
+
+
+<p>如果在 commit 的时候需要使用特定的模板，则可以使用 <code>git commit -t &lt;file&gt;</code>，这样可以在打开编辑器的时候自动在其中加入模板的信息。</p>
+<p>如果在一次 commit 之后，发现有文件需要添加或者需要修改 commit 的注释，可以使用 <code>git commit --amend</code> 来修改上次 commit 的信息。</p>
+<h2>Git commit 的快照结构</h2>
+<p>Git commit 命令会存储当前的一个快照，相应的数据都存在 <code>.git/objects</code> 文件夹中， 以 SHA-1 命名。</p>
+<p><code>.git/objects</code> 文件夹下有若干子文件夹：
+* <code>objects/[0-9a-f][0-9a-f]</code>：存储对象的文件夹，以 SHA-1 的前两个字母命名。存储对象的子文件夹下面存储有所有 SHA-1 前两个字符与子文件夹名相同的所有 commit 文件，tree 文件和具体的 blob 文件，以原 SHA-1 除去前两个字符剩下的字符命名文件。
+* <code>objects/info</code>：文件夹，关于存储在该文件下中的对象的其他信息
+* <code>objects/pack</code>：文件夹，存储压缩的对象文件</p>
+<p>一个快照由三部分组成：
+1. 当前 commit 的文件，其中包括commit的信息（author和message等），对应的tree（树文件）的 SHA-1和对应的parent commit 的SHA-1（如果有）
+2. 当前 commit 的 tree 文件，tree中包括了当前快照中包括的所有的 blob （块文件）的 SHA-1
+3. 当前 commit 的所有的 blob 文件</p>
+<p>为了节约空间，以上所有的文件都是以压缩存储的。</p>
+<h3>commit 文件</h3>
+<p>commit 文件中存储有该 commit 的信息。使用 <code>git log --pretty=oneline</code>，我们可以知道所有的 commit 的情况：</p>
+<div class="highlight"><pre><span></span>d144d896cc3a57a21f1fdd443b2b76620584fd76 <span class="o">(</span>HEAD -&gt; master<span class="o">)</span> add markdown notes
+bdc705169c09f886182d5dfe731f241c3a4e0586 <span class="o">(</span>origin/master<span class="o">)</span> add ignore
+6823658394fecca1415c17bccebf8dba3ed0cc54 first file
+</pre></div>
+
+
+<p>我们可以知道当前一共有三个 commits。当前的 HEAD 的 commit 为 <code>d144d896cc3a57a21f1fdd443b2b76620584fd76</code>。
+远程的 <code>origin/master</code> HEAD 为 <code>bdc705169c09f886182d5dfe731f241c3a4e0586</code>。
+第一个 commit 为 <code>6823658394fecca1415c17bccebf8dba3ed0cc54</code>。
+这些 SHA-1 值就是所有的 commit 文件的文件名，在 <code>.git/objects</code> 文件下我们可以看到：</p>
+<div class="highlight"><pre><span></span><span class="err">│</span>   <span class="err">├──</span> <span class="n">objects</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">68</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">23658394</span><span class="n">fecca1415c17bccebf8dba3ed0cc54</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">bd</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">c705169c09f886182d5dfe731f241c3a4e0586</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">d1</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">44</span><span class="n">d896cc3a57a21f1fdd443b2b76620584fd76</span>
+</pre></div>
+
+
+<p>使用 <code>git cat-file -p d144d896cc3a57a21f1fdd443b2b76620584fd76</code> 可以去看该 commit 文件中的具体信息：</p>
+<div class="highlight"><pre><span></span><span class="n">tree</span> <span class="mi">2</span><span class="n">b548176ae75a1f62d6635409cc70c1ff6c2f25b</span>
+<span class="n">parent</span> <span class="n">bdc705169c09f886182d5dfe731f241c3a4e0586</span>
+<span class="n">author</span> <span class="n">Wolfson</span> <span class="n">Liu</span>
+<span class="n">committer</span> <span class="n">Wolfson</span> <span class="n">Liu</span>
+
+<span class="k">add</span> <span class="n">markdown</span> <span class="n">notes</span>
+</pre></div>
+
+
+<p>一个 commit 文件中包括：
+* tree 文件的 SHA-1 值，例如：<code>2b548176ae75a1f62d6635409cc70c1ff6c2f25b</code>
+* parent commit 文件的 SHA-1 值，如果是第一个 commit 则没有，例如：<code>bdc705169c09f886182d5dfe731f241c3a4e0586</code>
+* author 的信息和committer 的信息，例如：Wolfson Liu
+* commit 的注释信息，例如：add markdown notes</p>
+<h3>tree 文件</h3>
+<p>tree 文件中记录了当前 commit 所记录的所有文件快照（blob 文件）的存放位置。查询 commit 文件可以获得其对应的 tree 文件的信息。</p>
+<p>例如上面我们查看 commit 文件 <code>d144d896cc3a57a21f1fdd443b2b76620584fd76</code>，可以知道其 tree 文件为 <code>2b548176ae75a1f62d6635409cc70c1ff6c2f25b</code>。</p>
+<p>依然可以使用 <code>git cat-file -p 2b548176ae75a1f62d6635409cc70c1ff6c2f25b</code> 显示 tree 文件内容：</p>
+<div class="highlight"><pre><span></span><span class="mi">100644</span> <span class="nb">blob</span> <span class="n">b25c15b81fae06e1c55946ac6270bfdb293870e8</span>    <span class="p">.</span><span class="n">gitignore</span>
+<span class="mi">100644</span> <span class="nb">blob</span> <span class="mi">303</span><span class="n">ff981c488b812b6215f7db7920dedb3b59d9a</span>    <span class="n">file1</span>
+<span class="mi">040000</span> <span class="n">tree</span> <span class="mi">02</span><span class="n">a5f419fa69f1df550172be067237223b246d36</span>    <span class="n">md</span>
+</pre></div>
+
+
+<p>可以看出当前 tree 文件中记录了三个对象：<code>.gitignore</code>，<code>file</code>，和 <code>md</code>。其中，<code>.gitignore</code>和<code>file</code>都是普通的文件，所以标注为 blob。而 <code>md</code> 为文件夹，则标注为 tree。</p>
+<p>我们使用 <code>git cat-file -p 02a5f419fa69f1df550172be067237223b246d36</code> 继续看 <code>md</code> 的内容：</p>
+<div class="highlight"><pre><span></span><span class="mi">100644</span> <span class="nb">blob</span> <span class="n">d14ca1be4beb6730ad33df72ceec1201692477c9</span>    <span class="n">git_config</span><span class="p">.</span><span class="n">md</span>
+<span class="mi">100644</span> <span class="nb">blob</span> <span class="mi">16</span><span class="n">a63a284776906e0949a93567a0a35145e27067</span>    <span class="n">git_file_structure</span><span class="p">.</span><span class="n">md</span>
+<span class="mi">100644</span> <span class="nb">blob</span> <span class="mi">0</span><span class="n">fb6d6e6201ad79b3d74b77493d0a7b9b439a018</span>    <span class="n">git_logic</span><span class="p">.</span><span class="n">md</span>
+<span class="mi">100644</span> <span class="nb">blob</span> <span class="mi">9</span><span class="n">e31cfc76e9ef587b6af3fd4b09e3d09afb6dd26</span>    <span class="n">understand_git_index</span><span class="p">.</span><span class="n">md</span>
+<span class="mi">100644</span> <span class="nb">blob</span> <span class="mi">50</span><span class="n">d4402de7d0bbcfae79a23cd910c2eb7e61db30</span>    <span class="n">version_control_brief</span><span class="p">.</span><span class="n">md</span>
+</pre></div>
+
+
+<p>可以得到该文件夹下面所包含的所有文件对应的信息。因为该文件夹下面全是文件，而没有文件夹，所有所有的对象都是 blob。而如果还有子文件夹，则子文件夹也会存储为 tree 文件。</p>
+<h3>blob 文件</h3>
+<p>blob 文件中就是具体的文件的快照了。
+例如，我们使用  <code>git cat-file -p 303ff981c488b812b6215f7db7920dedb3b59d9a</code> 查看 <code>file1</code> 文件，得到的就是其内容：<code>first file</code>。对于其他的 blob 文件也是类似的。
+所以一个 blob 文件中存储的内容是压缩过的具体的 commit 时候的文件，也就是该时刻的一个快照。也就是说，所有 commit 时候的文件都会存一份下来，消耗掉一定的存储空间。</p>
+<p>为了节约存储空间，git 主要采用了两个策略：
+1. 对于所有的文件，全部压缩存储
+2. 对于完全相同的文件，即 SHA-1 值计算出来一样的文件，也只留存一次。</p>
+<p>所以，对于一个文件自建立之初就没有变动过，其在 objects 中只会存放一次，之后所有 commit 的 tree 文件中都会记录这一个文件的 SHA-1 值。</p>
+<h2>一个例子</h2>
+<p>假如我们的项目有 <code>.gitignore</code> 和 <code>file1</code> 这样两个文件和保存 markdown 笔记的 <code>md</code> 文件夹， <code>.git</code> 文件夹下面有如下的内容</p>
+<div class="highlight"><pre><span></span><span class="p">.</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">git</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">COMMIT_EDITMSG</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">HEAD</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">branches</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">config</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">description</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">hooks</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">applypatch</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="k">commit</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">fsmonitor</span><span class="o">-</span><span class="n">watchman</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">post</span><span class="o">-</span><span class="k">update</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">applypatch</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="k">commit</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">push</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">rebase</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">receive</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="k">prepare</span><span class="o">-</span><span class="k">commit</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="k">update</span><span class="p">.</span><span class="n">sample</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="k">index</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">info</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">exclude</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">logs</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">HEAD</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">refs</span>
+<span class="err">│</span>   <span class="err">│</span>       <span class="err">├──</span> <span class="n">heads</span>
+<span class="err">│</span>   <span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>   <span class="err">│</span>       <span class="err">└──</span> <span class="n">remotes</span>
+<span class="err">│</span>   <span class="err">│</span>           <span class="err">└──</span> <span class="n">origin</span>
+<span class="err">│</span>   <span class="err">│</span>               <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>   <span class="err">├──</span> <span class="n">objects</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">02</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a5f419fa69f1df550172be067237223b246d36</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">0</span><span class="n">f</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">16</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a63a284776906e0949a93567a0a35145e27067</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">2</span><span class="n">a</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">65</span><span class="n">a9ad4587f6c689dc66b77917ff96f5afe653</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">2</span><span class="n">b</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">548176</span><span class="n">ae75a1f62d6635409cc70c1ff6c2f25b</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">30</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">3</span><span class="n">ff981c488b812b6215f7db7920dedb3b59d9a</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">50</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">d4402de7d0bbcfae79a23cd910c2eb7e61db30</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">68</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">23658394</span><span class="n">fecca1415c17bccebf8dba3ed0cc54</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">7</span><span class="n">e</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">03</span><span class="n">b5bfc52c8e4cf3cb422ef802fa36254d20a5</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">9</span><span class="n">e</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">31</span><span class="n">cfc76e9ef587b6af3fd4b09e3d09afb6dd26</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">b2</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">5</span><span class="n">c15b81fae06e1c55946ac6270bfdb293870e8</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">bd</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">c705169c09f886182d5dfe731f241c3a4e0586</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">d1</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">44</span><span class="n">d896cc3a57a21f1fdd443b2b76620584fd76</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">4</span><span class="n">ca1be4beb6730ad33df72ceec1201692477c9</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">info</span>
+<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">pack</span>
+<span class="err">│</span>   <span class="err">└──</span> <span class="n">refs</span>
+<span class="err">│</span>       <span class="err">├──</span> <span class="n">heads</span>
+<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>       <span class="err">├──</span> <span class="n">remotes</span>
+<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">origin</span>
+<span class="err">│</span>       <span class="err">│</span>       <span class="err">└──</span> <span class="n">master</span>
+<span class="err">│</span>       <span class="err">└──</span> <span class="n">tags</span>
+<span class="err">├──</span> <span class="p">.</span><span class="n">gitignore</span>
+<span class="err">├──</span> <span class="n">file1</span>
+<span class="err">├──</span> <span class="n">file1</span><span class="o">~</span>
+<span class="err">└──</span> <span class="n">md</span>
+    <span class="err">├──</span> <span class="n">git_config</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">├──</span> <span class="n">git_file_structure</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">├──</span> <span class="n">git_logic</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">├──</span> <span class="n">understand_git_index</span><span class="p">.</span><span class="n">md</span>
+    <span class="err">└──</span> <span class="n">version_control_brief</span><span class="p">.</span><span class="n">md</span>
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Fri 19 October 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/git.html">#git, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/git-commit-ti-jiao-ji-lu.html&text=Git commit 提交记录&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/git-commit-ti-jiao-ji-lu.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/git-commit-ti-jiao-ji-lu.html&t=Git commit 提交记录"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/git-commit-ti-jiao-ji-lu.html&title=Git commit 提交记录" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Git commit 提交记录&amp;body=Viens découvrir un article à propos de [Git commit 提交记录] sur le site de Wolfson Liu. ../../archive/2018/git-commit-ti-jiao-ji-lu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/git-commit-ti-jiao-ji-lu.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

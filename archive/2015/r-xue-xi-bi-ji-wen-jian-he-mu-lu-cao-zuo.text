@@ -1,0 +1,83 @@
+Title: R 学习笔记：文件和目录操作
+Date: 2015-12-30 15:16
+Modified: 2016-03-02 21:32
+Category: 壹零零壹
+Tags: r
+Authors: Wolfson Liu
+Summary: R 文件和目录操作的基本方法.
+
+
+
+## 设置和获取工作目录 ##
+
+设置工作目录可以方法进行数据读取和输出.
+
+* `setwd("MYWORKINGDIR")`: 可以通过该函数设置工作目录, 功能类似 `cd MYWORKINGDIR`.
+* `getwd()`: 可以获得当前的工作目录, 功能类似 `pwd`.
+* `path.expand("~")`: 可以把 ~ 转为家目录的绝对路径.
+* `file.path(..., fsep = "/")`: 构建一个文件的路径, 根据输入的文件夹名和分隔符号来构建, 也可以通过 paste() 完成, 但 file.path 的速度更快.
+
+## 显示文件名或目录名 ##
+
+* `dir()` 或者 `list.files()`: 可以显示特定目录下的文件, 可以设置是否递归显示, 是否显示文件名前面的目录地址等, 默认显示工作目录.
+* `list.dirs()`: 详细显示设定的目录下的所有目录和递归显示下面的文件, 相当于有 dir 做了很多复杂的显示设置, 默认显示工作目录.
+* `R.home()`: 返回 R 的安装目录.
+
+
+## 显示文件内容和属性 ##
+
+* `file.show(FILE, pager = "less")`: 通过使用特定的 pager 来在屏幕上显示 FILE 的内容, 不设置 pager 的话则会有类似 bash 中 cat 的功能, 直接在屏幕上打印.
+* `file.info(FILEORDIR)`: 可以显示文件或者文件夹的属性, 包括大小, 是否是文件夹, 时间, uid, gid 等等, 输出为一个 data.frame.
+* `file.access(FILE, mode = 1)`: 测试文件的属性, mode 为 4(r), 2(w), 1(x), 如果该属性为真, 则返回 0, 否则返回 -1.
+* `file_test("-nt",FILE1,FILE2)`: 测试文件1比文件2早, 选项可以是 -f (是文件) -d (是文件夹) -nt (newer than) -ot (older than).
+
+## 判断文件夹或文件是否存在 ##
+
+* `dir.exists("DIR")`: 如果 DIR 存在的话, 返回 `TRUE` 否则返回 `FALSE`.
+* `file.exists("FILE")`: 如果 FILE 存在, 则返回 `TRUE`, 否则返回 `FALSE`.
+
+
+## 建立新文件夹或新文件 ##
+
+* `dir.create("DIR")`: 新建文件夹, showWarnings 设置是否有提醒, recursive 设置是否要递归建立各层目录, 相当于 `mkdir -p`, mode 设置权限 "0777".
+* `file.create("FILE")`: 新建文件.
+
+
+## 重命名文件与创建链接 ##
+
+* `file.rename(FROM, TO)`: 把文件从 FROM 重命名为 TO.
+* `file.symlink(FROM, TO)`: 创建文件的软链接, 相当于 bash 中 ln -s.
+
+
+## 复制, 和并, 删除文件 ##
+
+* `file.copy(FROM, TO)`: 把文件 FROM 复制为 TO, 可以在文件名前加上路径.
+* `file.append(FILE1, FILE2)`: 把第二个文件加在第一个文件后面.
+* `file.remove()`: 删除文件, 相当于 bash 中 rm, 删除成功返回 `TRUE`.
+* `unlink("FILEORDIR", recursive = F)`: 删除文件或者文件夹, 和 file.remove 相比支持使用通配符号.
+
+--------------------------------------------------------------------------------
+
+## 常用组合 ##
+
+* 设置工作目录为上级目录
+
+```
+setwd(dirname(getwd()))
+```
+
+* 批量移动或者命名文件, 如果需要删除或者复制, 只要简单修改函数即可.
+
+```
+moveFiles <-function(from.vector, to.vector)
+{
+    apply(cbind(from.vector, to.vector),
+          1,
+          FUN = function(x){
+              file.rename(x[1], 
+                          x[2]))
+          })
+}
+```
+
+

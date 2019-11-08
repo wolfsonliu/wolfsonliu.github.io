@@ -1,0 +1,45 @@
+Title: Python 学习笔记: sympy
+Date: 2017-05-29 11:00
+Modified: 2017-05-29 11:00
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: 使用 sympy.
+
+
+Sympy 是 python 的一个计算符号数学的包, 可以用来解方程等.
+Sympy 完全是 python 编写的, 有 BSD 的 license.
+
+```
+>>> import sympy as sp
+>>> x = sy.symbols('x')
+>>> sp.solve(x**2 - 4, x)
+### [-2, 2]
+```
+
+利用 Sympy 和其他的包的不同的地方在于, Sympy 就像数学一样是准确地求解,
+而 Numpy 等数值计算的包则是近似求解. Sympy 会把没有求的变量保持不变.
+
+```
+>>> import numpy
+>>> np.log(2)
+### 0.69314718055994529
+>>> sp.log(2)
+### log(2)
+>>> np.pi
+### 3.141592653589793
+>>> sp.pi
+### pi
+```
+
+### 微积分 ###
+
+`sp.Integral` 是积分, 其具有 `.doit()` 方法可以用来求解积分.
+
+```
+>>> x = sy.symbols('x')
+>>> a = sy.exp(x)
+>>> b = sy.Integral(a)
+>>> b.doit()
+### exp(x)
+```

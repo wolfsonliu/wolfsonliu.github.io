@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记: Cross validation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>在实际分析数据的时候, 并没有足够多的数据去建模并对模型进行测试.
+而测试误差 (test error) 和训练误差 (training error) 是有差距的.
+为了能够估计测试误差, 可以使用交叉验证的方法.</p>
+<p>所谓交叉验证, 简单讲就是从数据中抽取一部分的数据作为训练数据,
+然后另一部分数据作为测试数据,
+然后再抽取一部分的数据作为训练数据,
+另一部分作为测试数据, 循环往复.
+如此就能得到训练误差和测试误差, 从而能够去评判模型的好坏.</p>
+<p>常用的交叉验证方法有留下一个交叉验证 (leave one out cross validation)
+和 k 倍 交叉验证 (k fold cross validation).
+LOOCV 是每次取一个数据作为测试数据, 而其他数据作为训练数据.
+k-fold CV 是把数据分为 k 份, 然后每次取其中一份作为测试数据,
+其他作为测试数据.
+实际上 LOOCV 可以看作是 k 为样本数的 k-fold CV.</p>
+<h3>R 例子</h3>
+<p>使用 ISLR 包中的 Auto 数据来举例.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">library</span><span class="p">(</span><span class="n">ISLR</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nf">names</span><span class="p">(</span><span class="n">mgp</span><span class="p">)</span>
+<span class="n">[1]</span> <span class="s">&quot;mpg&quot;</span>          <span class="s">&quot;cylinders&quot;</span>    <span class="s">&quot;displacement&quot;</span> <span class="s">&quot;horsepower&quot;</span>   <span class="s">&quot;weight&quot;</span>
+<span class="n">[6]</span> <span class="s">&quot;acceleration&quot;</span> <span class="s">&quot;year&quot;</span>         <span class="s">&quot;origin&quot;</span>       <span class="s">&quot;name&quot;</span>
+</pre></div>
+
+
+<p>先做简单的 generalized linear model.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">glm.fit</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">mpg</span><span class="o">~</span><span class="n">horsepower</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Auto</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nf">coef</span><span class="p">(</span><span class="n">glm.fit</span><span class="p">)</span>
+<span class="p">(</span><span class="n">Intercept</span><span class="p">)</span>  <span class="n">horsepower</span>
+ <span class="m">39.9358610</span>  <span class="m">-0.1578447</span>
+</pre></div>
+
+
+<p>可以随机抽取一部分数据作为训练数据, 另一部分数据是测试数据.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">training</span> <span class="o">&lt;-</span> <span class="nf">sample</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">),</span> <span class="nf">dim</span><span class="p">(</span><span class="n">Auto</span><span class="p">)</span><span class="n">[1]</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">0.9</span><span class="p">,</span> <span class="m">0.1</span><span class="p">))</span>
+<span class="o">&gt;</span> <span class="n">test</span> <span class="o">&lt;-</span> <span class="o">!</span><span class="n">training</span>
+</pre></div>
+
+
+<p>然后我们再做 glm 并计算 Mean Squared Error.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">glm.model</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">mpg</span><span class="o">~</span><span class="n">horsepower</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Auto</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="n">training</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">glm.pred</span> <span class="o">&lt;-</span> <span class="nf">predict</span><span class="p">(</span><span class="n">glm.model</span><span class="p">,</span> <span class="n">newdata</span><span class="o">=</span><span class="n">Auto[test</span><span class="p">,</span><span class="n">]</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nf">mean</span><span class="p">((</span><span class="n">glm.pred</span> <span class="o">-</span> <span class="n">Auto[test</span><span class="p">,</span> <span class="s">&#39;mpg&#39;</span><span class="n">]</span><span class="p">)</span><span class="n">^2</span><span class="p">)</span>
+<span class="n">[1]</span> <span class="m">31.52817</span>
+</pre></div>
+
+
+<p>接下来我们可以使用 10-fold CV.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">groups</span> <span class="o">&lt;-</span> <span class="nf">sample</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span> <span class="nf">dim</span><span class="p">(</span><span class="n">Auto[1]</span><span class="p">),</span> <span class="n">replace</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">cv.error</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span> <span class="m">10</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nf">for </span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="nf">seq</span><span class="p">(</span><span class="m">10</span><span class="p">))</span> <span class="p">{</span>
+<span class="o">+</span>     <span class="n">glm.model</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">mpg</span><span class="o">~</span><span class="n">horsepower</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Auto</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="n">groups</span><span class="o">!=</span><span class="n">i</span><span class="p">))</span>
+<span class="o">+</span>     <span class="n">glm.pred</span> <span class="o">&lt;-</span> <span class="nf">predict</span><span class="p">(</span><span class="n">glm.model</span><span class="p">,</span> <span class="n">newdata</span><span class="o">=</span><span class="n">Auto[groups</span><span class="o">==</span><span class="n">i</span><span class="p">,</span> <span class="n">]</span><span class="p">)</span>
+<span class="o">+</span>     <span class="n">cv.error[i]</span> <span class="o">&lt;-</span> <span class="nf">mean</span><span class="p">((</span><span class="n">glm.pred</span> <span class="o">-</span> <span class="n">Auto[groups</span><span class="o">==</span><span class="n">i</span><span class="p">,</span><span class="s">&#39;mpg&#39;</span><span class="n">]</span><span class="p">)</span><span class="n">^2</span><span class="p">)</span>
+<span class="o">+</span> <span class="p">}</span>
+<span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">cv.error</span><span class="p">)</span>
+<span class="n">[1]</span> <span class="m">23.99952</span>
+</pre></div>
+
+
+<p>在 boot 包中, 提供了 cv.glm 函数, 可以自动完成 CV.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">library</span><span class="p">(</span><span class="n">boot</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">glm.model</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">mpg</span><span class="o">~</span><span class="n">horsepower</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">Auto</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">cv.err</span> <span class="o">&lt;-</span> <span class="nf">cv.glm</span><span class="p">(</span><span class="n">Auto</span><span class="p">,</span> <span class="n">glm.model</span><span class="p">,</span> <span class="n">K</span><span class="o">=</span><span class="m">10</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">cv.err</span><span class="o">$</span><span class="n">delta</span>
+<span class="n">[1]</span> <span class="m">24.17549</span> <span class="m">24.16324</span>
+</pre></div>
+
+
+<p>cv.glm 结果中的 delta 是平均的 MSE 和校正过的 MSE</p>
+<p>如果 mpg 和 horsepower 不是线性的关系, 则可以利用 CV 来确定具体的多项式.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">cv.error</span> <span class="o">&lt;-</span> <span class="nf">rep</span><span class="p">(</span><span class="kc">NA</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nf">for </span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="nf">seq</span><span class="p">(</span><span class="m">5</span><span class="p">))</span> <span class="p">{</span>
+<span class="o">+</span>     <span class="n">glm.model</span> <span class="o">&lt;-</span> <span class="nf">glm</span><span class="p">(</span><span class="n">mpg</span><span class="o">~</span><span class="nf">poly</span><span class="p">(</span><span class="n">horsepower</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">Auto</span><span class="p">)</span>
+<span class="o">+</span>     <span class="n">cv.error[i]</span> <span class="o">&lt;-</span> <span class="nf">cv.glm</span><span class="p">(</span><span class="n">Auto</span><span class="p">,</span> <span class="n">glm.model</span><span class="p">)</span><span class="o">$</span><span class="n">delta[1]</span>
+<span class="o">+</span> <span class="p">}</span>
+<span class="o">&gt;</span> <span class="n">cv.error</span>
+<span class="n">[1]</span> <span class="m">24.23151</span> <span class="m">19.24821</span> <span class="m">19.33498</span> <span class="m">19.42443</span> <span class="m">19.03321</span>
+</pre></div>
+
+
+<p>当 i = 2 时, CV MSE 最小, 由此可见多项式分布的项数应该为 2,
+mpg 和 horsepower 的关系应该为 <code>mpg = a0 + a1 * horsepower + a2 * horsepower ^ 2</code>.</p>
+<h3>Reference</h3>
+<ul>
+<li>G. James et al., <em>An Introduction to Statistical Learning: with Applications in R</em>,
+Springer Texts in Statistics, DOI 10.1007/978-1-4614-7138-7 5</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

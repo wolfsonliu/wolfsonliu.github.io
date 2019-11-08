@@ -1,0 +1,60 @@
+Title: Linux 学习笔记: Linux 目录配置简介
+Date: 2018-12-14 20:00
+Modified: 2018-12-14 20:00
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: Linux 目录配置简介
+
+[Filesystem Hierarchy Standard](http://www.pathname.com/fhs/)
+提供了软件存放的标准
+|         | 可分享的                         | 不可分享的             |
+|  ---    |  ---                            | ---                  |
+| 不可变的 | /usr：软件放置                   | /etc：配置文件          |
+|         | /opt：第三方的软件，如chrome浏览器 | /boot：开机与核心配置文件 |
+| 可变动的 | /var/mail：用户的邮件信箱         | /var/run：程序相关      |
+|         | /var/spool/news：新闻           | /var/lock：程序相关     |
+
+
+
+* /：根目录，所有的目录都在根目录之下，系统启动也是从根目录开始
+* /boot：系统开机所需要用到的各种软件和配置文件，linux内核文件
+* /bin：单用户模式下依然能够使用的最为基本的命令，诸如：cat，chmod，chown，date，mv，mkdir，cp，bash等
+* /dev：所有的接口都以文件形式保存在该文件夹中，有特殊的文件：
+  /dev/null，/dev/zero，/dev/lp*，/dev/sd*，/dev/usb*
+* /etc：linux系统下的主要的配置文件存放处，个人配置文件存放在个人用户
+  的家目录下的若干文件夹中
+* /home：默认的用户家目录，~，或者~1501111485代表该用户的家目录
+* /lib：函数库存放处，动态链接库等
+* /media：系统挂在的可移除的装置，软盘，光盘，U盘，移动硬盘等
+* /mnt：和/media类似
+* /opt：安装的第三方软件存放处，例如chrome等，也可以安装在/usr/local
+* /root：管理员的家目录
+* /sbin：管理员权限才能使用的一些命令，与系统管理相关：fdisk，fsck等
+* /tmp：任何人可以读写的数据临时存放处
+
+
+/usr目录：usr是Unix  Software Resource的缩写，是放置众多软件的地方
+  * /usr/bin/：大多数的用户可以使用的命令存放于此
+  * /usr/include/：c/c++等的头文件和包的存放处，python的包
+  * /usr/lib/：共享对象(动态链接库)文件等
+  * /usr/local/：系统管理员安装的非发行版提供的软件，也可以安装到/opt，
+    用户自己安装的话可以安装到~/.local
+  * /usr/share/：共享文件的存放处，几乎都是文本文件，图片等。
+    /usr/share/man文件夹中存放帮助文档（使用man命令会查询此文件夹），
+    /usr/share/doc：存放文件说明。
+
+/var 目录：variable files
+  * /var/cache：应用的缓存数据
+  * /var/lib：应用状态信息，如数据库等
+  * /var/lock：当前正在使用的独占锁定文件
+  * /var/log：log文件
+  * /var/mail：邮箱文件
+  * /var/opt：安装在 /opt 中的软件的缓存
+  * /var/tmp：临时文件存放处
+
+
+DOS 系统是Disk Operating System 的简写，其是基于磁盘的。影响是，
+windows下，软件安装在C盘的 Program Files 文件夹下面Linux系统是
+Unix-like系统，是基于文件的。在linux下面，磁盘可以挂在在某一个文件下，
+从而磁盘的概念是弱化的。linux下的软件不需要去安装到C盘，没有这个概念的。

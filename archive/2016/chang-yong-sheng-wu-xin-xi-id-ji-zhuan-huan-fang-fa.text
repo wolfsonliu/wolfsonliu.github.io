@@ -1,0 +1,182 @@
+Title: 常用生物信息 ID 及转换方法
+Date: 2016-02-23 16:35
+Modified: 2016-04-16 13:44
+Category: 壹零零壹
+Tags: bioinformatics
+Authors: Wolfson Liu
+Summary: 对常用的生物信息学数据库中的各种 ID 的总结.
+
+
+众多不同的数据库所采用的对 Gene 和 Protein 编号的 ID 也是不同的, 所以在使用不同数据库数据的时候需要进行 ID 转换.
+
+--------------------------------------------------------------------------------
+
+## 常用数据库 ID ##
+
+| ID 示例                                    | ID 来源                               |
+|--------------------------------------------|--------------------------------------|
+| ENSG00000116717                            | **Ensemble ID**                      |
+| GA45A\_HUMAN                               | **UniProtKB/Swiss-Prot, entry name** |
+| A5PJB2\_BOVIN                              | **UniProtKB/TrEMBL, entry name**     |
+| A2BC19, P12345, A0A022YWF9                 | **UniProt, accession number**        |
+| GLA, GLB, UGT1A1                           | **HGNC Gene Symbol**                 |
+| U12345, AF123456                           | **GenBank, NCBI, accession number**  |
+| NT\_123456, NM\_123456, NP\_123456         | **RefSeq, NCBI, accession number**   |
+| 10598, 717                                 | **Entrez ID, NCBI**                  |
+| uc001ett, uc031tla.1                       | **UCSC ID**                          |
+
+
+
+--------------------------------------------------------------------------------
+
+## Ensembl stable IDs ##
+
+Ensembl stable ID 的结构是根据不同物种设置的前缀, 加上数据所指的类型, 如基因蛋白质, 再加上一系列的数字. 有的时候可以有不同的版本, 则在 Ensembl ID 后面加上小数点和版本号.
+
+### 常用物种前缀 ###
+
+| 前缀    | 学名                                                 |
+|---------|-----------------------------------------------------|
+| ENSCEL  | _Caenorhabditis elegans_ (Caenorhabditis elegans)   |
+| ENSCAF  | _Canis lupus familiaris_ (Dog)                      |
+| ENSDAR  | _Danio rerio_ (Zebrafish)                           |
+| FB      | _Drosophila melanogaster_ (Fruitfly)                |
+| ENS     | _Homo sapiens_ (Human)                              |
+| ENSMUS  | _Mus musculus_ (Mouse)                              |
+| ENSRNO  | _Rattus norvegicus_ (Rat)                           |
+| ENSXET  | _Xenopus tropicalis_ (Xenopus)                      |
+
+### 类型前缀 ##
+
+| 前缀 | 类型                    |
+|------|------------------------|
+| E    | exon                   |
+| FM   | Ensembl protein family |
+| G    | gene                   |
+| GT   | gene tree              |
+| P    | protein                |
+| R    | regulatory feature     |
+| T    | transcript             |
+
+--------------------------------------------------------------------------------
+
+## UniProt ##
+
+UniProt 中录入的数据都被分配了一个唯一的 entry name.
+
+### UniProtKB/Swiss-Prot entry name ###
+
+UniProtKB/Swiss-Prot entry name 是最多有 11 位包含大写字母的字符串, 一般有着 "X_Y" 的形式, 其中 "X" 是最多五个便于记忆的蛋白质编号, "\_" 是下划线, "Y" 是最多五个便于记忆的物种编号.
+
+蛋白质编号示例如下:
+
+| Code(X) | Recommended protein name | Gene name |
+|---------|--------------------------|-----------|
+| B2MG    | Beta-2-microglobulin     | B2M       |
+| HBA     | Hemoglobin subunit alpha | HBA1      |
+| INS     | Insulin                  | INS       |
+| CAD17   | Cadherin-17              | CDH17     |
+
+物种编号示例如下:
+
+| Code  | Species                                    |
+|-------|--------------------------------------------|
+| BOVIN | Bovine                                     |
+| CHICK | Chicken                                    |
+| ECOLI | _Escherichia coli_                         |
+| HORSE | Horse                                      |
+| HUMAN | _Homo sapiens_                             |
+| MAIZE | Maize (_Zea mays_)                         |
+| MOUSE | Mouse                                      |
+| PEA   | Garden pea (_Pisum sativum_)               |
+| PIG   | Pig                                        |
+| RABIT | Rabbit                                     |
+| RAT   | Rat                                        |
+| SHEEP | Sheep                                      |
+| SOYBN | Soybean (_Glycine max_)                    |
+| TOBAC | Common tobacco (_Nicotina tabacum_)        |
+| WHEAT | Wheat (_Triticum aestivum_)                |
+| YEAST | Baker’s yeast (_Saccharomyces cerevisiae_) |
+
+### UniProtKB/TrEMBL entry name ###
+
+UniProtKB/TrEMBL entry name 是最多 16 位包含大写字母的字符串, 一般有着 "X_Y" 的形式, 其中 "X" 是 6 到 10 个字符组成的 accession number, "\_" 是下划线, "Y" 是最多五个便于记忆的物种编号.
+
+### Accession Number ###
+
+UniProtKB 的 Accession Number 相当于数据库的主键, 由 6 到 10 个大写字母或者数字组成. 其构成规律为: `[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}`
+
+实际上, accession number 是三种类型:
+
+| 1         | 2     | 3         | 4         | 5         | 6     | 7     | 8         | 9         | 10    |
+|-----------|-------|-----------|-----------|-----------|-------|-------|-----------|-----------|-------|
+| [O P Q]   | [0-9] | [A-Z 0-9] | [A-Z 0-9] | [A-Z 0-9] | [0-9] |       |           |           |       |
+| [A-N R-Z] | [0-9] | [A-Z]     | [A-Z 0-9] | [A-Z 0-9] | [0-9] |       |           |           |       |
+| [A-N R-Z] | [0-9] | [A-Z]     | [A-Z 0-9] | [A-Z 0-9] | [0-9] | [A-Z] | [A-Z 0-9] | [A-Z 0-9] | [0-9] |
+
+如果一个条目被分成两个, 或者多个条目合成一个, 则有相应的 accession number 继承规则.
+
+--------------------------------------------------------------------------------
+
+## HUGO Gene Nomenclature Committee ##
+
+### Gene Symbol ###
+
+Gene Symbol 是用来表示基因的编码, 由大写字母构成, 或由大写字母和数字构成, 首字母均应该是字母.
+
+如: GLA "galactosidase, alpha"; GLB "galactosidase, beta"; UGT1A1 "UDP glycosyltransferase 1 family, polypeptide A1" 再到 UGT1A13 代表了 13 个不同的 gene symbol.
+
+--------------------------------------------------------------------------------
+
+## NCBI ##
+
+### GenBank Accession Number ###
+
+GenBank 的通用 accession number 通常是由一个大写字母加上 5 个数字的组合, 或者两个大写字母加上 6 个数字的组合.
+
+### RefSeq Accession Number ###
+
+RefSeq 有一套特殊的 Accesion Number. 形式是: `[A-Z]{2}[_][0-9]{6:}`, 两个大写字母, 一个下划线, 6 个或更多的数字.
+
+| Accession 前缀   | 类型           | 说明                                                   |
+|------------------|---------------|-------------------------------------------------------|
+| AC\_             | Genomic       | Complete genomic molecule, usually alternate assembly |
+| NC\_             | Genomic       | Complete genomic molecule, usually reference assembly |
+| NG\_             | Genomic       | Incomplete genomic region                             |
+| NT\_             | Genomic       | Contig or scaffold, clone-based or WGS                |
+| NW\_             | Genomic       | Contig or scaffold, primarily WGS                     |
+| NS\_             | Genomic       | Environmental sequence                                |
+| NZ\_             | Genomic       | Unfinished WGS                                        |
+| NM\_             | mRNA          |                                                       |
+| NR\_             | RNA           |                                                       |
+| XM\_             | mRNA          | Predicted model                                       |
+| XR\_             | RNA           | Predicted model                                       |
+| AP\_             | Protein       | Annotated on AC_ alternate assembly                   |
+| NP\_             | Protein       | Associated with an NM_ or NC_ accession               |
+| YP\_             | Protein       |                                                       |
+| XP\_             | Protein       | Predicted model, associated with an XM_ accession     |
+| ZP\_             | Protein       | Predicted model, annotated on NZ_ genomic records     |
+
+* WGS: Whole Genome Shotgun sequence data, 鸟枪法测序.
+
+### Entrez ID ###
+
+Entrez 是 NCBI 使用的能够对众多数据库进行联合搜索的搜索引擎, 其对不同的 Gene 进行了编号, 每个 gene 的编号就是 entrez gene id. 由于 entrez id 相对稳定, 所以也被众多其他数据库, 如 KEGG 等采用. Entrez Gene ID 就是一系列数字, 也比较容易辨识. R 或网站都有众多的工具可以帮助从不同的 ID 转换为 entrez id 或者反向转换.
+
+--------------------------------------------------------------------------------
+
+## UCSC ID##
+
+UCSC ID 由小写字母和数字构成, 起始均为 uc, 然后是三位数字, 接着又是三位小写字母, 最后有小数点和数字构成版本号.
+
+如: uc010qfk.3, uc010qfk.3.
+
+--------------------
+
+## ID Mapping ##
+
+* [Uniprot ID mapping](http://www.uniprot.org/uploadlists/) 可以很方便地把 ID 转换为其他 ID 类型, 所包含的类型十分全面.
+* [bioDBnet](https://biodbnet-abcc.ncifcrf.gov/db/db2db.php) 网站提供了常见的 ID 转换的选项, 类型全面.
+* [DAVID Gene ID Conversion Tool](https://david.ncifcrf.gov/conversion.jsp) 可以把 Gene ID 转换为多种常用类型和 DAVID ID, 方便进一步用 DAVID 做 GO 分析.
+* [BridgeDB](http://www.bridgedb.org/) 一套提供 ID 转换的框架.
+* [Human genes converter](http://www.inetbio.org/flynet/human_genes_converter.php?f=guide) 把常用的 Ensambl ID 或 Symbol 转换为 Gene 的 Entrez ID.

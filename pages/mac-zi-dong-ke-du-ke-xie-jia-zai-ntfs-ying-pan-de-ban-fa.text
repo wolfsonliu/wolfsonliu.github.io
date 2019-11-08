@@ -1,0 +1,54 @@
+Title: Mac 自动可读可写加载 NTFS 硬盘的办法
+Date: 2019-03-14 22:56
+Modified: 2019-03-14 22:56
+Category: 壹零零壹
+Tags: mac
+Authors: Wolfson Liu
+Summary: Mac NTFS 可读 可写
+
+主要利用 ntfs-3g 来完成。
+
+首先安装 homebrew：
+
+```
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+```
+
+再安装 osxfuse 和 ntfs-3g：
+
+```
+brew cask install osxfuse
+brew install ntfs-3g
+```
+
+接下来准备替换系统的 mount-ntfs 为 ntfs-3g 的mount-ntfs。
+
+先重启电脑，按住 command-R-S 进入到单用户模式。
+
+关闭保护：
+```
+csrutil disable
+reboot
+```
+
+重启回到系统中，替换 mount-ntfs。
+
+备份系统原来的 mount-ntfs：
+```
+sudo mv /sbin/mount_ntfs /sbin/original.mount_ntfs
+```
+
+替换为 ntfs-3g 的 mount-ntfs：
+
+```
+sudo ln -s /usr/local/bin/mount_ntfs /sbin/mount_ntfs
+```
+
+接下来开启保护，重启电脑按 command-R-S 进入单用户模式。
+
+开启保护：
+```
+csrutil enable
+```
+
+最后重启电脑回到系统，就可以自动可读写挂载 NTFS 硬盘了。

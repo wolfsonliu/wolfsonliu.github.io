@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>设置 Pelican 和 GitHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>我一直以来想要练习写作能力，可是总是由于各种借口不能开始。自从了解到静态博客可以挂载在 GitHub 上的时候，我爱探索的性子就迫不及待的想要尝试了。然而，是真的没有时间了。最近，又见到了柯石英学长，他刚从国外回来，想要从事科普写作的工作，也给我看了几篇发表的和未发表的文章。我的内心又肿胀起来。好吧，先把博客建立起来再说。</p>
+<p>之前是听说过 Jekyll 的，在我准备尝试 Jekyll 的时候看到一个<a href="https://www.staticgen.com/">网站</a>上面列出了很多的静态网站生成软件。当然，Jekyll是第一名，这也是为什么我最早知道Jekyll的原因吧。然而，我看到Jekyll是用Ruby写的，我并没有尝试学习过Ruby，内心里有了一份纠结，难道我还得花时间学Ruby？接着看，发现了 Pelican 是用 Python 写的，而且排名也比较靠前。啊，我刚好学 Python，真好，就用 Pelican 了。另外一查，Pelican 是鹈鹕的意思，嘿嘿，就它没说了！</p>
+<p>正好周六，鼓捣鼓捣吧。我开始查找如何使用 Pelican 生成静态网页，如何建立 GitHub 的页面。<a href="http://docs.getpelican.com/en/3.6.3/quickstart.html">Pelican 的简单使用说明</a>还是要看一下的。不过，这个对于我想快速建立来说，还是有点麻烦。，找到了别人建立静态博客的<a href="http://mathamy.com/migrating-to-github-pages-using-pelican.html">说明</a>，于是我就按着说明一步一步来做了。我写的这段小文，也是参考了这篇文章的。</p>
+<hr>
+<h4>建立 GitHub 页面</h4>
+<ul>
+<li>按照<a href="https://pages.github.com/">说明</a>建立 GitHub 页面</li>
+</ul>
+<p>首先还是要有一个页面的，要不没有地方看呀。如果有域名当然好，我没有域名，就用 GitHub 提供的了。</p>
+<h4>配置 Pelican</h4>
+<ul>
+<li>安装 Pelican: <a href="http://docs.getpelican.com/en/3.6.3/quickstart.html">Pelican 的说明网站</a>上有如何安装 Pelican 的方法和需要安装的包。因为我主要用 Markdown 所以除了 Pelican 之外就 <code>pip install Markdown</code>。</li>
+<li>建立博客文件夹: 在安装好软件之后，就要在自己的硬盘上面找一个地方来放自己的博客页面文件。也是需要 Pelican 处理的主文件。</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">mkdir</span> <span class="o">~/</span><span class="n">myblog</span>
+<span class="n">cd</span> <span class="o">~/</span><span class="n">myblog</span>
+</pre></div>
+
+
+<ul>
+<li>运行 <code>pelican-quickstart</code>: 因为我没有时间去钻研 Pelican 具体该怎么用，所以就用傻瓜式操作了，Pelican 写了很方便的脚本来辅助建立项目。只要回答一些问题就好了。每个问题后面的方括号中的是默认设置，圆括号中是选项。有一点需要注意的是时区的设置，名称可以参考 <a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones">wikipedia</a>。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nv">pelican</span><span class="o">-</span><span class="nv">quickstart</span>
+<span class="nv">Welcome</span> <span class="nv">to</span> <span class="nv">pelican</span><span class="o">-</span><span class="nv">quickstart</span> <span class="nv">v3</span>.<span class="mi">6</span>.<span class="mi">3</span>.
+
+<span class="nv">This</span> <span class="nv">script</span> <span class="nv">will</span> <span class="nv">help</span> <span class="nv">you</span> <span class="nv">create</span> <span class="nv">a</span> <span class="nv">new</span> <span class="nv">Pelican</span><span class="o">-</span><span class="nv">based</span> <span class="nv">website</span>.
+
+<span class="nv">Please</span> <span class="nv">answer</span> <span class="nv">the</span> <span class="nv">following</span> <span class="nv">questions</span> <span class="nv">so</span> <span class="nv">this</span> <span class="nv">script</span> <span class="nv">can</span> <span class="nv">generate</span> <span class="nv">the</span> <span class="nv">files</span>
+<span class="nv">needed</span> <span class="nv">by</span> <span class="nv">Pelican</span>.
+
+
+<span class="nv">Where</span> <span class="k">do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">create</span> <span class="nv">your</span> <span class="nv">new</span> <span class="nv">web</span> <span class="nv">site</span>? [.]
+<span class="o">&gt;</span>
+<span class="nv">What</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">the</span> <span class="nv">title</span> <span class="nv">of</span> <span class="nv">this</span> <span class="nv">web</span> <span class="nv">site</span>?
+<span class="o">&gt;</span> <span class="nv">Wolfson</span><span class="s1">&#39;</span><span class="s">s Blog</span>
+<span class="nv">Who</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">the</span> <span class="nv">author</span> <span class="nv">of</span> <span class="nv">this</span> <span class="nv">web</span> <span class="nv">site</span>?
+<span class="o">&gt;</span> <span class="nv">Wolfson</span>
+<span class="nv">What</span> <span class="nv">will</span> <span class="nv">be</span> <span class="nv">the</span> <span class="nv">default</span> <span class="nv">language</span> <span class="nv">of</span> <span class="nv">this</span> <span class="nv">web</span> <span class="nv">site</span>? [<span class="nv">en</span>]
+<span class="o">&gt;</span> <span class="nv">zh</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">specify</span> <span class="nv">a</span> <span class="nv">URL</span> <span class="nv">prefix</span>? <span class="nv">e</span>.<span class="nv">g</span>., <span class="nv">http</span>:<span class="o">//</span><span class="nv">example</span>.<span class="nv">com</span>   <span class="ss">(</span><span class="nv">Y</span><span class="o">/</span><span class="nv">n</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">y</span>
+<span class="nv">What</span> <span class="nv">is</span> <span class="nv">your</span> <span class="nv">URL</span> <span class="nv">prefix</span>? <span class="ss">(</span><span class="nv">see</span> <span class="nv">above</span> <span class="nv">example</span><span class="c1">; no trailing slash)</span>
+<span class="o">&gt;</span> <span class="nv">http</span>:<span class="o">//</span><span class="nv">wolfson</span>.<span class="nv">github</span>.<span class="nv">io</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">enable</span> <span class="nv">article</span> <span class="nv">pagination</span>? <span class="ss">(</span><span class="nv">Y</span><span class="o">/</span><span class="nv">n</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">y</span>
+<span class="nv">How</span> <span class="nv">many</span> <span class="nv">articles</span> <span class="nv">per</span> <span class="nv">page</span> <span class="k">do</span> <span class="nv">you</span> <span class="nv">want</span>? [<span class="mi">10</span>]
+<span class="o">&gt;</span>
+<span class="nv">What</span> <span class="nv">is</span> <span class="nv">your</span> <span class="nv">time</span> <span class="nv">zone</span>? [<span class="nv">Europe</span><span class="o">/</span><span class="nv">Paris</span>]
+<span class="o">&gt;</span> <span class="nv">Asia</span><span class="o">/</span><span class="nv">Shanghai</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">generate</span> <span class="nv">a</span> <span class="nv">Fabfile</span><span class="o">/</span><span class="nv">Makefile</span> <span class="nv">to</span> <span class="nv">automate</span> <span class="nv">generation</span> <span class="nv">and</span> <span class="nv">publishing</span>? <span class="ss">(</span><span class="nv">Y</span><span class="o">/</span><span class="nv">n</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">y</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">an</span> <span class="nv">auto</span><span class="o">-</span><span class="nv">reload</span> <span class="o">&amp;</span> <span class="nv">simpleHTTP</span> <span class="nv">script</span> <span class="nv">to</span> <span class="nv">assist</span> <span class="nv">with</span> <span class="nv">theme</span> <span class="nv">and</span> <span class="nv">site</span> <span class="nv">development</span>? <span class="ss">(</span><span class="nv">Y</span><span class="o">/</span><span class="nv">n</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">y</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">upload</span> <span class="nv">your</span> <span class="nv">website</span> <span class="nv">using</span> <span class="nv">FTP</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">n</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">upload</span> <span class="nv">your</span> <span class="nv">website</span> <span class="nv">using</span> <span class="nv">SSH</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">n</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">upload</span> <span class="nv">your</span> <span class="nv">website</span> <span class="nv">using</span> <span class="nv">Dropbox</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">n</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">upload</span> <span class="nv">your</span> <span class="nv">website</span> <span class="nv">using</span> <span class="nv">S3</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">n</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">upload</span> <span class="nv">your</span> <span class="nv">website</span> <span class="nv">using</span> <span class="nv">Rackspace</span> <span class="nv">Cloud</span> <span class="nv">Files</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">n</span>
+<span class="k">Do</span> <span class="nv">you</span> <span class="nv">want</span> <span class="nv">to</span> <span class="nv">upload</span> <span class="nv">your</span> <span class="nv">website</span> <span class="nv">using</span> <span class="nv">GitHub</span> <span class="nv">Pages</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span> <span class="nv">y</span>
+<span class="nv">Is</span> <span class="nv">this</span> <span class="nv">your</span> <span class="nv">personal</span> <span class="nv">page</span> <span class="ss">(</span><span class="nv">username</span>.<span class="nv">github</span>.<span class="nv">io</span><span class="ss">)</span>? <span class="ss">(</span><span class="nv">y</span><span class="o">/</span><span class="nv">N</span><span class="ss">)</span>
+<span class="o">&gt;</span> <span class="nv">n</span>
+<span class="nv">Done</span>. <span class="nv">Your</span> <span class="nv">new</span> <span class="nv">project</span> <span class="nv">is</span> <span class="nv">available</span> <span class="nv">at</span> <span class="o">~/</span><span class="nv">Wolfson</span>
+</pre></div>
+
+
+<p>当这些问题回答完后, Pelican 会自动建立所需要的文件和文件夹。</p>
+<div class="highlight"><pre><span></span>$ tree
+.
+├── Makefile
+├── content
+├── develop_server.sh
+├── fabfile.py
+├── output
+├── pelicanconf.py
+└── publishconf.py
+</pre></div>
+
+
+<p>简要说下各个文件和文件夹的用途：
+* <code>Makefile</code> 使用 <code>make</code> 来生成页面的文件；
+* <code>content</code> 放图片和 Markdown 文件的文件夹，还可以在其中新建文件夹，只要在 <code>pelicanconf.py</code> 中列出就可以；
+* <code>develop_server.sh</code>，我没太明白，<code>Makefile</code> 需要使用的脚本；
+* <code>fabfile.py</code> 是使用 Python 写的 <a href="http://www.fabfile.org/">fabric</a> 程序的脚本，可以取代 <code>make</code> 的作用；
+* <code>output</code>是 Pelican 放生成的页面的地方，也是应该 push 到 GitHub 的文件的存放文件夹；
+* <code>pelicanconf.py</code> 是设置 Pelican 的文件加，里面定义了很多参数；
+* <code>publishconf.py</code> 也是设置的文件，快速设置中回答的一些问题的答案在配置文件中。</p>
+<h4>Pelican 主题</h4>
+<ul>
+<li>从 GitHub 上面 <a href="https://github.com/getpelican/pelican-themes">Pelican Theme</a> 可以获得，放在自己的博客文件夹中即可。</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">getpelican</span><span class="o">/</span><span class="n">pelican</span><span class="o">-</span><span class="n">themes</span>
+</pre></div>
+
+
+<ul>
+<li>设置自己喜欢的主题，可以通过 Pelican 程序提供的 <a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html">pelican-themes</a> 设置，也可以在 <code>pelicanconf.py</code> 中设置。</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">THEME</span> <span class="o">=</span> <span class="ss">&quot;pelican-themes/pelican-blue&quot;</span>
+</pre></div>
+
+
+<h4>增加 Disqus 评论</h4>
+<p>因为是静态博客, 所以 Pelican 生成的页面本身没有评论的功能, 但是可以很方便地通过 Disqus 来增加评论功能.</p>
+<p>首先, 需要在 Disqus 上面注册账号, 然后点击小齿轮出现的 "增加 Disqus 到其他网站", 跟着相关的设置就好. 设置完成后, 需要记下设置的 Disqus 网页名称. 接着, 在 pelicanconf.py 中进行设置就可以了.</p>
+<div class="highlight"><pre><span></span><span class="n">DISQUS_SITENAME</span> <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;wolfsonliu&quot;</span>
+</pre></div>
+
+
+<h4>生成网页</h4>
+<ul>
+<li>devserver 生成本地网页</li>
+</ul>
+<p>当有了 Markdown 文章之后，可以生成网页。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">cd</span> myblog
+$ make devserver
+</pre></div>
+
+
+<p>命令运行之后，output 文件夹中会有相应的网页生成。在浏览器中打开：http://localhost:8000 就可以进入生成的网页，可以看看效果然后修改错误之类的。</p>
+<h4>推送到 GitHub</h4>
+<ul>
+<li>页面生成无误后就可以推送到 GitHub 仓库，并通过设定的网址查看了。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ touch README.md
+$ git init
+$ git add README.md
+$ git add *
+$ git commit -m <span class="s2">&quot;first commit&quot;</span>
+$ git remote add origin https://github.com/wolfsonliu/wolfsonliu.github.io.git
+$ git push -u origin master
+</pre></div>
+
+
+<hr>
+<p>终于有了自己的博客了，可以好好写东西了。当然，还有很多需要调试需要修改的地方，有时间了可以弄一下。比如，修改下主题，增加些新的特性等。</p>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,1169 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Python 学习笔记: pandas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/python-xue-xi-bi-ji-pandas.html">
+<meta name="twitter:title" content="Wolf Cave ~ Python 学习笔记: pandas">
+<meta name="twitter:description" content="使用 pandas.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Python 学习笔记: pandas" />
+<meta property="og:description" content="使用 pandas." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/python-xue-xi-bi-ji-pandas.html" rel="bookmark" title="Permalink to Python 学习笔记: pandas">Python 学习笔记: pandas</a></h2>
+        <div class="entry-content blog-post">
+            <p>Pandas 是 Python 进行数据分析的基础包. R 语言一直作为一门统计分析语言, 在数据分析中扮演着重要的角色, 其所具有的 data.frame, list 等数据结构和向量化的函数使得 R 语言成为一门非常好用的数据分析语言. Python 作为一个通用语言本身并没有很好的数据分析的工具和方法, 基于 NumPy 的 Pandas 包提供了类似于 R 语言中的 data.frame 的类 DataFrame 和若干方便进行向量化计算的工具和函数, 使得 Python 能够非常方便地用于数据分析和处理. R 语言的另一个强项, 统计绘图, 则可以通过 Python 的 matplotlib 等包来实现, 这些会在未来介绍. Pandas 本身也使用了 matplotlib 来完成一定简单的绘图, 本文先不做介绍, 而会主要介绍使用 Pandas 进行数据分析的入门知识. </p>
+<h3>函数和方法</h3>
+<p>这里用 df 代表一个具体的 DataFrame, s 代表一个具体的 Series, p 代表一个具体的 Panel, 而 pd 代表 pandas 包, np 代表 numpy 包. 主要以 2016 年 10 月 23 日在北京野鸭湖湿地公园的一个鸟类记录为例子来演示 pandas 的函数和方法的使用.</p>
+<h4>创建 DataFrame</h4>
+<p>可以用来创建 DataFrame 的数据类型有:</p>
+<ol>
+<li>2D ndarray: row 和 column 分别对应创建的 DataFrame 的 index 和 column</li>
+<li>由 array, list, 或者 tuple 为值的 dict: dict 的 key 作为 column name, dict 的 value 作为 column. 其中所有的 value 必须等长.</li>
+<li>Numpy 的 structure/record array: 按照类似于 dict 的方式处理.</li>
+<li>由 Pandas Series 为值的 dict: dict 的 key 作为 column name, 而 Series 作为对应的列.</li>
+<li>由 dict 为值的 dict: 第一层的 dict key 作为 column name, 第二层的 dict key 作为 index.</li>
+<li>list of dicts or Series: dict 的 key 作为 column name, 不同 dict 对应同样的 key 的 value 作为每一列的值. 对于每一个 Series 作为一列.</li>
+<li>List of lists or tuples: 类似于 dict 和 Series 的 list, 只不过数据本身没有指定 index 和 columns.</li>
+<li>pandas DataFrame: 其他的 DataFrame</li>
+<li>NumPy MaskedArray</li>
+</ol>
+<div class="highlight"><pre><span></span><span class="nv">bird</span> <span class="o">=</span> <span class="nv">pd</span>.<span class="nv">DataFrame</span><span class="ss">(</span>
+{ <span class="s1">&#39;</span><span class="s">Chinese</span><span class="s1">&#39;</span>: [<span class="s1">&#39;</span><span class="s">绿头鸭</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">白眼潜鸭</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">雉鸡</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">小䴙䴘</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">凤头䴙䴘</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">白尾鹞</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">普通秧鸡</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">白骨顶</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">凤头麦鸡</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">红嘴鸥</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">大斑啄木鸟</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">灰头绿啄木鸟</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">棕背伯劳</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">楔尾伯劳</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">灰喜鹊</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">喜鹊</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">文须雀</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">银喉长尾山雀</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">白头鹎</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">黄眉柳莺</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">棕头鸦雀</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">红胁蓝尾鸲</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">北红尾鸲</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">小鹀</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">灰头鹀</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">苇鹀</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">金翅雀</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">麻雀</span><span class="s1">&#39;</span>],
+<span class="s1">&#39;</span><span class="s">Species</span><span class="s1">&#39;</span>: [<span class="s1">&#39;</span><span class="s">Mallard</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Ferruginous Duck</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Ring-necked Pheasant</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Little Grebe</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Great Crested Grebe</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Northern Harrier</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Brown-cheeked Rail</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Eurasian Coot</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Northern Lapwing</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Black-headed Gull</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Great Spotted Woodpecker</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Gray-headed Woodpecker</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Long-tailed Shrike</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Chinese Gray Shrike</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Azure-winged Magpie</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Eurasian Magpie</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Bearded Reedling</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Silver-throated Tit</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Light-vented Bulbul</span><span class="s1">&#39;</span>, <span class="s2">&quot;</span><span class="s">Pallas&#39;s Leaf Warbler</span><span class="s2">&quot;</span>, <span class="s1">&#39;</span><span class="s">Vinous-throated Parrotbill</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Red-flanked Bluetail</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Daurian Redstart</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Little Bunting</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Black-faced Bunting</span><span class="s1">&#39;</span>, <span class="s2">&quot;</span><span class="s">Pallas&#39;s Bunting</span><span class="s2">&quot;</span>, <span class="s1">&#39;</span><span class="s">Oriental Greenfinch</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Eurasian Tree Sparrow</span><span class="s1">&#39;</span>],
+<span class="s1">&#39;</span><span class="s">Scientific</span><span class="s1">&#39;</span>: [<span class="s1">&#39;</span><span class="s">Anas platyrhynchos</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Aythya nyroca</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Phasianus colchicus</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Tachybaptus ruficollis</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Podiceps cristatus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Circus cyaneus</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Rallus indicus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Fulica atra</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Vanellus vanellus</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Chroicocephalus ridibundus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Dendrocopos major</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Picus canus</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Lanius schach</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Lanius sphenocercus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Cyanopica cyanus</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Pica pica</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Panurus biarmicus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Aegithalos glaucogularis</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Pycnonotus sinensis</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Phylloscopus proregulus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Sinosuthora webbiana</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Tarsiger cyanurus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Phoenicurus auroreus</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Emberiza pusilla</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Emberiza spodocephala</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Emberiza pallasi</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Chloris sinica</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passer montanus</span><span class="s1">&#39;</span>],
+<span class="s1">&#39;</span><span class="s">Family</span><span class="s1">&#39;</span>: [<span class="s1">&#39;</span><span class="s">Anatidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Anatidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Phasianidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Podicipedidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Podicipedidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Accipitridae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Rallidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Rallidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Charadriidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Laridae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Picidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Picidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Laniidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Laniidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Corvidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Corvidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Panuridae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Aegithalidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Pycnonotidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Phylloscopidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Sylviidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Muscicapidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Muscicapidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Emberizidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Emberizidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Emberizidae</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Fringillidae</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeridae</span><span class="s1">&#39;</span>],
+<span class="s1">&#39;</span><span class="s">Order</span><span class="s1">&#39;</span>: [<span class="s1">&#39;</span><span class="s">Anseriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Anseriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Galliformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Podicipediformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Podicipediformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Accipitriformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Gruiformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Gruiformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Charadriiformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Charadriiformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Piciformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Piciformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>,
+<span class="s1">&#39;</span><span class="s">Passeriformes</span><span class="s1">&#39;</span>],
+<span class="s1">&#39;</span><span class="s">Count</span><span class="s1">&#39;</span>: [<span class="mi">4</span>, <span class="mi">3</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">20</span>, <span class="mi">35</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">40</span>, <span class="mi">3</span>, <span class="mi">1</span>, <span class="mi">1</span>, <span class="mi">2</span>, <span class="mi">110</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">2</span>, <span class="mi">1</span>, <span class="mi">20</span>, <span class="mi">1</span>, <span class="mi">70</span>]
+}
+<span class="ss">)</span>
+<span class="nv">df</span> <span class="o">=</span> <span class="nv">pd</span>.<span class="nv">DataFrame</span><span class="ss">(</span><span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randn</span><span class="ss">(</span><span class="mi">12</span><span class="ss">)</span>.<span class="nv">reshape</span><span class="ss">(</span><span class="mi">3</span>,<span class="mi">4</span><span class="ss">))</span>
+#           <span class="mi">0</span>         <span class="mi">1</span>         <span class="mi">2</span>         <span class="mi">3</span>
+# <span class="mi">0</span> <span class="o">-</span><span class="mi">0</span>.<span class="mi">489887</span>  <span class="mi">0</span>.<span class="mi">112742</span> <span class="o">-</span><span class="mi">0</span>.<span class="mi">971154</span>  <span class="mi">2</span>.<span class="mi">585245</span>
+# <span class="mi">1</span> <span class="o">-</span><span class="mi">0</span>.<span class="mi">863345</span>  <span class="mi">0</span>.<span class="mi">262259</span> <span class="o">-</span><span class="mi">1</span>.<span class="mi">024552</span>  <span class="mi">1</span>.<span class="mi">629240</span>
+# <span class="mi">2</span> <span class="o">-</span><span class="mi">0</span>.<span class="mi">055451</span>  <span class="mi">1</span>.<span class="mi">775159</span> <span class="o">-</span><span class="mi">1</span>.<span class="mi">079502</span>  <span class="mi">0</span>.<span class="mi">518504</span>
+</pre></div>
+
+
+<h4>行列操作</h4>
+<p>DataFrame 或者 Series 的 Index 在本质上和 DataFrame 的列或者 Series 没有太大差别, 适用于 DataFrame 列或者 Series 的部分 method 在 index 中也都有.</p>
+<p>因为在数据分析中有大量的任务是针对整列操作的, 所以 pandas 的 DataFrame 取列的设计是容易的. 可以像 dict 一样利用列名去取列, 同时 DataFrame 的每一列也都是 attribute, 可以像 attribute 一样取.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">]</span>
+<span class="o">#</span> <span class="mi">0</span>        <span class="err">绿头鸭</span>
+<span class="o">#</span> <span class="mi">1</span>       <span class="err">白眼潜鸭</span>
+<span class="o">#</span> <span class="p">...</span>       <span class="p">...</span>       <span class="o">#</span>  <span class="err">省略了中间的部分</span>
+<span class="o">#</span> <span class="mi">26</span>       <span class="err">金翅雀</span>
+<span class="o">#</span> <span class="mi">27</span>        <span class="err">麻雀</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Chinese</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="k">Size</span>
+<span class="o">#</span> <span class="mi">0</span>           <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="mi">1</span>           <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="p">...</span>       <span class="p">...</span>       <span class="o">#</span>  <span class="err">省略了中间的部分</span><span class="mi">26</span>      <span class="n">Fringillidae</span>
+<span class="o">#</span> <span class="mi">27</span>        <span class="n">Passeridae</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Family</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
+</pre></div>
+
+
+<p>在进行 DataFrame 的操作的时候, 我们会需要去取特定地行, 有的时候是取符合一定要求的行, 有的时候是取特定的行. 需要说明的是取特定的行的时候, 我们可以根据行的号来取, 也可以根据行的 index 来取, 这两者是不一样的.</p>
+<p>如果想要根据 index 或者 column 来取行列, 则可以使用 <code>df.ix['index']</code> 或者 <code>df['column']</code> 来取特定的行列, <code>df.ix[row, col]</code> 则可以用来取特定的位置的元素. 而如果想要根据行号或者列号来取, 则要使用 <code>df.irow(n)</code> 或者 <code>df.icol(n)</code> 方法.</p>
+<ul>
+<li><code>df.reindex</code>: 按照给定的 Index 重新产生 DataFrame, 如果给定的新的 Index 元素在原 Index 中没有, 则会填充 na 或设定的填充值或填充 method.</li>
+<li><code>df.reset_index</code>: 返回一个份把 Index 变成 column 的新的 DataFrame.</li>
+<li><code>df.set_index</code>: 返回一个把给定的列变成 Index 或 MultiIndex 的新的 DataFrame. 默认相应的 columns 会从 DataFrame 中被除去, 不过也可以设置保留 <code>drop = False</code>.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+<span class="o">#</span> <span class="n">Chinese</span>                          <span class="err">大斑啄木鸟</span>
+<span class="o">#</span> <span class="k">Count</span>                                <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Family</span>                         <span class="n">Picidae</span>
+<span class="o">#</span> <span class="k">Order</span>                       <span class="n">Piciformes</span>
+<span class="o">#</span> <span class="n">Scientific</span>           <span class="n">Dendrocopos</span> <span class="n">major</span>
+<span class="o">#</span> <span class="n">Species</span>       <span class="n">Great</span> <span class="n">Spotted</span> <span class="n">Woodpecker</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="n">ix</span><span class="p">[:,</span><span class="s1">&#39;Scientific&#39;</span><span class="p">]</span>
+<span class="o">#</span> <span class="mi">0</span>             <span class="n">Anas</span> <span class="n">platyrhynchos</span>
+<span class="o">#</span> <span class="mi">1</span>                  <span class="n">Aythya</span> <span class="n">nyroca</span>
+<span class="o">#</span> <span class="p">...</span>       <span class="p">...</span>       <span class="o">#</span>  <span class="err">省略了中间的部分</span><span class="mi">26</span>      <span class="n">Fringillidae</span>
+<span class="o">#</span> <span class="mi">26</span>                <span class="n">Chloris</span> <span class="n">sinica</span>
+<span class="o">#</span> <span class="mi">27</span>               <span class="n">Passer</span> <span class="n">montanus</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Scientific</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="o">#</span> <span class="s1">&#39;大斑啄木鸟&#39;</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Species&#39;</span><span class="p">]</span>
+<span class="o">#</span> <span class="s1">&#39;Great Spotted Woodpecker&#39;</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="n">icol</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">#</span> <span class="mi">0</span>        <span class="err">绿头鸭</span>
+<span class="o">#</span> <span class="mi">1</span>       <span class="err">白眼潜鸭</span>
+<span class="o">#</span> <span class="p">...</span>       <span class="p">...</span>       <span class="o">#</span>  <span class="err">省略了中间的部分</span>
+<span class="o">#</span> <span class="mi">26</span>       <span class="err">金翅雀</span>
+<span class="o">#</span> <span class="mi">27</span>        <span class="err">麻雀</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Chinese</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="n">irow</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">#</span> <span class="n">Chinese</span>                      <span class="err">绿头鸭</span>
+<span class="o">#</span> <span class="k">Count</span>                          <span class="mi">4</span>
+<span class="o">#</span> <span class="n">Family</span>                  <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="k">Order</span>               <span class="n">Anseriformes</span>
+<span class="o">#</span> <span class="n">Scientific</span>    <span class="n">Anas</span> <span class="n">platyrhynchos</span>
+<span class="o">#</span> <span class="n">Species</span>                  <span class="n">Mallard</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
+
+<span class="n">newindex</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">bird</span><span class="p">.</span><span class="k">reindex</span><span class="p">(</span><span class="n">newindex</span><span class="p">)</span>
+<span class="o">#</span> <span class="n">Chinese</span>  <span class="k">Count</span>        <span class="n">Family</span>        <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+<span class="o">#</span> <span class="mi">0</span>      <span class="err">绿头鸭</span>      <span class="mi">4</span>      <span class="n">Anatidae</span>   <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+<span class="o">#</span> <span class="mi">6</span>     <span class="err">普通秧鸡</span>      <span class="mi">1</span>      <span class="n">Rallidae</span>  <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+<span class="o">#</span> <span class="mi">8</span>     <span class="err">凤头麦鸡</span>     <span class="mi">20</span>  <span class="n">Charadriidae</span>  <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+<span class="o">#</span> <span class="mi">10</span>   <span class="err">大斑啄木鸟</span>      <span class="mi">1</span>       <span class="n">Picidae</span> <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">bird</span><span class="p">.</span><span class="k">copy</span><span class="p">()</span>
+<span class="n">tmp</span><span class="p">.</span><span class="k">index</span> <span class="o">=</span> <span class="n">bird</span><span class="p">.</span><span class="n">Family</span> <span class="o">+</span> <span class="s1">&#39;&amp;&#39;</span> <span class="o">+</span> <span class="n">bird</span><span class="p">.</span><span class="n">Species</span>
+<span class="n">tmp</span><span class="p">.</span><span class="n">reset_index</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">#</span>               <span class="k">index</span> <span class="n">Chinese</span>  <span class="k">Count</span>    <span class="n">Family</span>    <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+<span class="o">#</span> <span class="mi">0</span>  <span class="n">Anatidae</span><span class="o">&amp;</span><span class="n">Mallard</span>     <span class="err">绿头鸭</span>      <span class="mi">4</span>  <span class="n">Anatidae</span>  <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+
+<span class="n">tmp</span><span class="p">.</span><span class="n">reset_index</span><span class="p">().</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;Chinese&#39;</span><span class="p">])[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">#</span>                    <span class="k">index</span>  <span class="k">Count</span>    <span class="n">Family</span>     <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+<span class="o">#</span> <span class="n">Chinese</span>
+<span class="o">#</span> <span class="err">绿头鸭</span>      <span class="n">Anatidae</span><span class="o">&amp;</span><span class="n">Mallard</span>      <span class="mi">4</span>  <span class="n">Anatidae</span>  <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
+</pre></div>
+
+
+<p>正如数据库中有时会用到多列数据作为 key, DataFrame 和 Series 也可以使用多级 index, 即 MultiIndex. 对 MultiIndex 也可以使用包含每一级 index 值的 tuple 去取值. 或者使用 <code>df.xs</code> 方法, 可以指定单一的 level 的值去取值.</p>
+<p>如果想要增加一列或者删除一列, 可以使用多种方法.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">]</span>
+<span class="o">#</span> <span class="err">增加列</span>
+<span class="n">bird</span> <span class="o">=</span> <span class="n">bird</span><span class="p">.</span><span class="n">assign</span><span class="p">(</span><span class="n">Chinese2</span> <span class="o">=</span> <span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">])</span>
+<span class="o">#</span> <span class="err">增加列</span>
+<span class="n">bird</span><span class="p">.</span><span class="k">drop</span><span class="p">(</span><span class="s1">&#39;Chinese2&#39;</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="o">#</span> <span class="err">删除列</span>
+</pre></div>
+
+
+<h4>统计量与描述</h4>
+<ul>
+<li><code>df.info</code>: 返回 DataFrame 的基本情况, 类似 R 中的 <code>str</code> 函数.</li>
+<li><code>df.describe</code>: 对每一列计算各种统计量. percentiles 可以设置四分位点等.</li>
+<li><code>df.count</code>: 对行或列中的元素进行计数.</li>
+<li><code>df.sum</code>: 计算和. 常用的参数包括: <code>axis</code> 为 0 或者 1 来选择计算行和或者列和, 如果计算所有的和, 可以 <code>df.sum().sum()</code>; <code>skipna</code> 所接受的值为 bool 值, 是否忽略 <code>np.nan</code>.</li>
+<li><code>df.mean</code>: 计算平均值.</li>
+<li><code>df.mad</code>: 计算绝对离差, 距离平均数的差的绝对值的平均.</li>
+<li><code>df.median</code>: 计算中位数.</li>
+<li><code>df.min</code>: 计算最小值.</li>
+<li><code>df.max</code>: 计算最大值.</li>
+<li><code>df.mode</code>: 计算众数.</li>
+<li><code>df.abs</code>: 计算每个元素的绝对值.</li>
+<li><code>df.prod</code>: 计算给定 axis 的乘积.</li>
+<li><code>df.std</code>: 计算标准差.</li>
+<li><code>df.var</code>: 计算方差.</li>
+<li><code>df.sem</code>: 计算样本标准差. Standard error of the mean. std / sqrt(n - 1)</li>
+<li><code>df.skew</code>: 计算斜度, N-1 校正.</li>
+<li><code>df.kurt</code>: 计算峰度, N-1 校正.</li>
+<li><code>df.quantile</code>: 返回在给定 quantile 的值.</li>
+<li><code>df.cumsum</code>: 累积元素相加.</li>
+<li><code>df.cumprod</code>: 累积元素相乘.</li>
+<li><code>df.cummax</code>: 累积最大值.</li>
+<li><code>df.cummin</code>: 累积最小值.</li>
+</ul>
+<p>这些函数或方法多数可以接受 <code>axis</code>, <code>skipna</code>, <code>level</code> 参数. 其中, <code>axis</code> 可以取 0 或 1, 从而可以设定函数在行或者列的水平上进行运算. 参数 <code>skipna</code> 接受 <code>True</code> 或者 <code>False</code>, 在遇到 NaN 的时候会采取相应的操作, 需要注意的是 NaN 和任何数字的计算结果依然是 NaN. 参数 <code>level</code> 是在 multi-index 的情况下指定用哪个层次.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="n">mean</span><span class="p">()</span>
+<span class="o">#</span> <span class="mi">12</span><span class="p">.</span><span class="mi">0</span>
+
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="k">max</span><span class="p">()</span>
+<span class="o">#</span> <span class="mi">110</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="k">count</span><span class="p">()</span>
+<span class="o">#</span> <span class="n">Chinese</span>       <span class="mi">28</span>
+<span class="o">#</span> <span class="k">Count</span>         <span class="mi">28</span>
+<span class="o">#</span> <span class="n">Family</span>        <span class="mi">28</span>
+<span class="o">#</span> <span class="k">Order</span>         <span class="mi">28</span>
+<span class="o">#</span> <span class="n">Scientific</span>    <span class="mi">28</span>
+<span class="o">#</span> <span class="n">Species</span>       <span class="mi">28</span>
+<span class="o">#</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<p>除了一般的统计计算的函数, 还有 window 函数可以使用, 这些函数按照一定的窗口宽度去滑动计算统计量.</p>
+<ul>
+<li><code>pd.rolling_count</code></li>
+<li><code>pd.rolling_sum</code></li>
+<li><code>pd.rolling_mean</code></li>
+<li><code>pd.rolling_median</code></li>
+<li><code>pd.rolling_var</code>, <code>pd.rolling_std</code></li>
+<li><code>pd.rolling_skew</code>, <code>pd.rolling_kurt</code></li>
+<li><code>pd.rolling_min</code>, <code>pd.rolling_max</code></li>
+<li><code>pd.rolling_quantile</code></li>
+<li><code>pd.rolling_corr</code>, <code>pd.rolling_cov</code></li>
+<li><code>pd.rolling_apply</code></li>
+<li><code>pd.ewma</code></li>
+<li><code>pd.ewmvar</code>, <code>pd.ewmstd</code></li>
+<li><code>pd.ewmcorr</code>, <code>pd.ewmcov</code></li>
+</ul>
+<h4>逻辑计算和判断</h4>
+<ul>
+<li><code>df.isnull</code>: 判断元素中是否有 NA 值, 返回 bool 值的 Series 或 DataFrame.</li>
+<li><code>df.notnull</code>: 判断元素中是否有 NA 值, 返回 bool 值的 Series 或 DataFrame.</li>
+<li><code>df.any</code>: 接受 0 或 1 来整列或整行判断是否有至少一个 True.</li>
+<li><code>df.all</code>: 接受 0 或 1 来整列或整行判断是否全为 True.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="nv">bools</span> <span class="o">=</span> <span class="nv">pd</span>.<span class="nv">Series</span><span class="ss">(</span><span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="nv">True</span>, <span class="nv">False</span>], <span class="mi">5</span><span class="ss">))</span>
+<span class="nv">bools</span>
+# <span class="mi">0</span>    <span class="nv">False</span>
+# <span class="mi">1</span>    <span class="nv">False</span>
+# <span class="mi">2</span>     <span class="nv">True</span>
+# <span class="mi">3</span>     <span class="nv">True</span>
+# <span class="mi">4</span>    <span class="nv">False</span>
+# <span class="nv">dtype</span>: <span class="nv">bool</span>
+<span class="nv">bools</span>.<span class="nv">any</span><span class="ss">()</span>
+# <span class="nv">True</span>
+<span class="nv">bools</span>.<span class="nv">all</span><span class="ss">()</span>
+# <span class="nv">False</span>
+<span class="nv">somenull</span> <span class="o">=</span> <span class="nv">pd</span>.<span class="nv">Series</span><span class="ss">(</span>[<span class="mi">0</span>, <span class="mi">1</span>, <span class="nv">np</span>.<span class="nv">NaN</span>, <span class="mi">1</span>, <span class="mi">0</span>]<span class="ss">)</span>
+# <span class="mi">0</span>    <span class="mi">0</span>.<span class="mi">0</span>
+# <span class="mi">1</span>    <span class="mi">1</span>.<span class="mi">0</span>
+# <span class="mi">2</span>    <span class="nv">NaN</span>
+# <span class="mi">3</span>    <span class="mi">1</span>.<span class="mi">0</span>
+# <span class="mi">4</span>    <span class="mi">0</span>.<span class="mi">0</span>
+# <span class="nv">dtype</span>: <span class="nv">float64</span>
+<span class="nv">somenull</span>.<span class="nv">isnull</span><span class="ss">()</span>
+# <span class="mi">0</span>    <span class="nv">False</span>
+# <span class="mi">1</span>    <span class="nv">False</span>
+# <span class="mi">2</span>     <span class="nv">True</span>
+# <span class="mi">3</span>    <span class="nv">False</span>
+# <span class="mi">4</span>    <span class="nv">False</span>
+# <span class="nv">dtype</span>: <span class="nv">bool</span>
+<span class="nv">somenull</span>.<span class="nv">notnull</span><span class="ss">()</span>
+# <span class="mi">0</span>     <span class="nv">True</span>
+# <span class="mi">1</span>     <span class="nv">True</span>
+# <span class="mi">2</span>    <span class="nv">False</span>
+# <span class="mi">3</span>     <span class="nv">True</span>
+# <span class="mi">4</span>     <span class="nv">True</span>
+# <span class="nv">dtype</span>: <span class="nv">bool</span>
+</pre></div>
+
+
+<h4>集合运算</h4>
+<ul>
+<li><code>s.unique</code>: 返回 Series 中非重复的值.</li>
+<li><code>s.value_counts</code>: 计算 Series 中每个值出现的数量.</li>
+<li><code>s.isin</code>: 判断 Series 中元素是否在给定的值中.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">Family</span><span class="p">.</span><span class="k">unique</span><span class="p">()</span>
+<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="s1">&#39;Anatidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Phasianidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Podicipedidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Accipitridae&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Rallidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Charadriidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Laridae&#39;</span><span class="p">,</span> <span class="s1">&#39;Picidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Laniidae&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Corvidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Panuridae&#39;</span><span class="p">,</span> <span class="s1">&#39;Aegithalidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Pycnonotidae&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Phylloscopidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Sylviidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Muscicapidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Emberizidae&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Fringillidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Passeridae&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="k">object</span><span class="p">)</span>
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">].</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="o">#</span> <span class="n">Passeriformes</span>       <span class="mi">16</span>
+<span class="o">#</span> <span class="n">Podicipediformes</span>     <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Gruiformes</span>           <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Charadriiformes</span>      <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Anseriformes</span>         <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Piciformes</span>           <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Accipitriformes</span>      <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Galliformes</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Order</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+<span class="n">Anseriformes</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">Series</span><span class="p">(</span>
+    <span class="p">[</span><span class="s1">&#39;Anhimidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Anseranatidae&#39;</span><span class="p">,</span> <span class="s1">&#39;Anatidae&#39;</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">#</span> <span class="n">Anseriformes</span> <span class="err">中包含三个科</span><span class="p">.</span>
+<span class="n">Anseriformes</span><span class="p">.</span><span class="n">isin</span><span class="p">(</span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Family&#39;</span><span class="p">])</span>
+<span class="o">#</span> <span class="mi">0</span>    <span class="k">False</span>
+<span class="o">#</span> <span class="mi">1</span>    <span class="k">False</span>
+<span class="o">#</span> <span class="mi">2</span>     <span class="k">True</span>
+<span class="o">#</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">bool</span>
+</pre></div>
+
+
+<h4>缺失数据</h4>
+<p>在实际的数据分析中, 我们有时候难以保证数据的每一种情况都有值, 有时候因为各种人为或非人为的原因, 我们会遇到缺失值. 如前面提到的观鸟记录一般要用铅笔写, 防止水把字迹模糊, 如果用水性笔记录, 遇到记录本被水打湿, 有些数据就会模糊不清, 就会造成缺失数据. 在 Pandas 和 NumPy 中都有处理缺失数据的方法. 因为 Pandas 是建立在 NumPy 的基础上的, 所以, Pandas 使用了 NumPy 中缺失数据的表示方法 np.NaN (np.nan). 另外对于时间的缺失值, Pandas 有 pd.NaT 来表示.</p>
+<p>在处理缺失数据的时候有多种办法, Pandas 也提供了相应的方法的函数. 遇到 NA, 可以采取除去 NA 后再继续分析, <code>df.dropna</code> 函数可以除去包含 NA 的一整行或一整列. 需要注意的是对于 Pandas 中多数用于数值计算的函数, 如 pd.sum 等, 都是默认除去 NA 值后计算, 如果设置不除去 NA, 则计算结果总是 NA. 在遇到 NA 的时候除了扔掉 NA, 也可以根据先验知识给 NA 一定的值, 例如如果某种鸟类的数量丢失, 可以根据平时的数量进行估计, 或者直接设置为 0, 可以使用 <code>df.fillna</code> 对 NA 进行填充. 同时, 也有 <code>df.isnull</code> 和 <code>df.notnull</code> 来判断是否为缺失. </p>
+<ul>
+<li><code>df.dropna</code>: 把数据中的 na 项扔掉, 如果是 Series 则只扔掉相应的元素, 如果是 DataFrame 则根据 <code>axis</code> 参数的设置扔掉相应的行或列. 参数 <code>how</code> 可以设置为 'any' 或者 'all', 即只有在任何或所有元素都是 na 时才扔掉相应的行或者列. </li>
+<li><code>df.fillna</code>: 给数据中的 na 填充特定的值. 可以直接设置要填充的值, 也可以设置填充的 <code>method</code> 为 'bfill' (na 后面的值填充到 na) 或 'ffill' (na 前面的值填充到 na) 等. 对于 DataFrame 可以提供一个 key 为列名, value 为该列要填充的值的 dict 来对每列的 na 填充不同的值.</li>
+<li><code>df.isnull</code>: 判断元素是否为空.</li>
+<li><code>df.notnull</code>: 判断元素是否不为空.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">tmp</span> <span class="o">=</span> <span class="n">bird</span><span class="p">.</span><span class="k">copy</span><span class="p">()</span>
+<span class="n">tmp</span><span class="p">.</span><span class="n">ix</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">nan</span>
+<span class="n">tmp</span><span class="p">.</span><span class="n">ix</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">#</span>   <span class="n">Chinese</span>  <span class="k">Count</span>         <span class="n">Family</span>
+<span class="o">#</span> <span class="mi">0</span>     <span class="err">绿头鸭</span>    <span class="n">NaN</span>       <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="mi">1</span>    <span class="err">白眼潜鸭</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>       <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="mi">2</span>      <span class="err">雉鸡</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>    <span class="n">Phasianidae</span>
+<span class="o">#</span> <span class="mi">3</span>     <span class="err">小䴙䴘</span>    <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>  <span class="n">Podicipedidae</span>
+<span class="o">#</span> <span class="mi">4</span>    <span class="err">凤头䴙䴘</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>  <span class="n">Podicipedidae</span>
+<span class="n">tmp</span><span class="p">.</span><span class="n">dropna</span><span class="p">().</span><span class="n">ix</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">#</span>   <span class="n">Chinese</span>  <span class="k">Count</span>         <span class="n">Family</span>
+<span class="o">#</span> <span class="mi">1</span>    <span class="err">白眼潜鸭</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>       <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="mi">2</span>      <span class="err">雉鸡</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>    <span class="n">Phasianidae</span>
+<span class="o">#</span> <span class="mi">3</span>     <span class="err">小䴙䴘</span>    <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>  <span class="n">Podicipedidae</span>
+<span class="o">#</span> <span class="mi">4</span>    <span class="err">凤头䴙䴘</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>  <span class="n">Podicipedidae</span>
+<span class="n">tmp</span><span class="p">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">).</span><span class="n">ix</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">#</span>   <span class="n">Chinese</span>  <span class="k">Count</span>         <span class="n">Family</span>
+<span class="o">#</span> <span class="mi">0</span>     <span class="err">绿头鸭</span>    <span class="mi">0</span><span class="p">.</span><span class="mi">0</span>       <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="mi">1</span>    <span class="err">白眼潜鸭</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>       <span class="n">Anatidae</span>
+<span class="o">#</span> <span class="mi">2</span>      <span class="err">雉鸡</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>    <span class="n">Phasianidae</span>
+<span class="o">#</span> <span class="mi">3</span>     <span class="err">小䴙䴘</span>    <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>  <span class="n">Podicipedidae</span>
+<span class="o">#</span> <span class="mi">4</span>    <span class="err">凤头䴙䴘</span>    <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>  <span class="n">Podicipedidae</span>
+<span class="n">tmp</span><span class="p">.</span><span class="k">isnull</span><span class="p">().</span><span class="n">ix</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">#</span>   <span class="n">Chinese</span>  <span class="k">Count</span> <span class="n">Family</span>
+<span class="o">#</span> <span class="mi">0</span>   <span class="k">False</span>   <span class="k">True</span>  <span class="k">False</span>
+<span class="o">#</span> <span class="mi">1</span>   <span class="k">False</span>  <span class="k">False</span>  <span class="k">False</span>
+<span class="o">#</span> <span class="mi">2</span>   <span class="k">False</span>  <span class="k">False</span>  <span class="k">False</span>
+<span class="o">#</span> <span class="mi">3</span>   <span class="k">False</span>  <span class="k">False</span>  <span class="k">False</span>
+<span class="o">#</span> <span class="mi">4</span>   <span class="k">False</span>  <span class="k">False</span>  <span class="k">False</span>
+<span class="n">tmp</span><span class="p">.</span><span class="k">notnull</span><span class="p">().</span><span class="n">ix</span><span class="p">[:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+<span class="o">#</span>   <span class="n">Chinese</span>  <span class="k">Count</span> <span class="n">Family</span>
+<span class="o">#</span> <span class="mi">0</span>    <span class="k">True</span>  <span class="k">False</span>   <span class="k">True</span>
+<span class="o">#</span> <span class="mi">1</span>    <span class="k">True</span>   <span class="k">True</span>   <span class="k">True</span>
+<span class="o">#</span> <span class="mi">2</span>    <span class="k">True</span>   <span class="k">True</span>   <span class="k">True</span>
+<span class="o">#</span> <span class="mi">3</span>    <span class="k">True</span>   <span class="k">True</span>   <span class="k">True</span>
+<span class="o">#</span> <span class="mi">4</span>    <span class="k">True</span>   <span class="k">True</span>   <span class="k">True</span>
+</pre></div>
+
+
+<h4>向量化和 apply</h4>
+<p>当我们需要对 DataFrame 或者 Series 中每一个元素或近乎每一个元素都要操作的时候, 采用向量化的操作方法要比使用 for 循环一个个元素进行操作要高效得多. Pandas 中提供的数值计算等函数都是向量化对数据操作的. 而如果要把一个非向量化的函数应用到每一个元素, 使用 Pandas 提供的 map 和 apply 函数将会比使用 for 更清晰, 虽然性能上不会差太多. 在 R 语言中的 apply 函数则因为其减少了解析语句和赋值的次数而使得计算效率得到提升.</p>
+<ul>
+<li><code>s.map</code>: 接受一个函数或者 dict 把相应的元素转换为其他值, 如果 dict 或者函数对于某个值没有操作, 则返回 NA.</li>
+<li><code>s.replace</code>: 接受 list 或者 dict, 把元素替换为特定的值, 如果 dict 中没有, 则保持原值不修改, 这是和 map 不同的地方.</li>
+<li><code>df.rename</code>: index 和 columns 参数均接受一个函数或者 dict 来一一修改 index 或者 columns 的值, 相当于对于 index 和 columns 的 replace 函数.</li>
+<li><code>s.rename</code>: 接受函数或者 dict 来一一修改 index 的值, 相当于针对 index 的 replace 函数.</li>
+<li><code>df.apply</code>: 类似于 map, 不过是把函数应用于 DataFrame 的整行或者整列.</li>
+<li><code>df.applymap</code>: 类似于 map, 把函数应用于 DataFrame 的每一个元素.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">].</span><span class="k">unique</span><span class="p">()</span>
+<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="s1">&#39;Anseriformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Galliformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Podicipediformes&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Accipitriformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Gruiformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Charadriiformes&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Piciformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Passeriformes&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="k">object</span><span class="p">)</span>
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">].</span><span class="k">map</span><span class="p">(</span><span class="err">{</span><span class="s1">&#39;Passeriformes&#39;</span><span class="p">:</span> <span class="s1">&#39;finch&#39;</span><span class="p">,</span> <span class="s1">&#39;Anseriformes&#39;</span><span class="p">:</span> <span class="s1">&#39;goose&#39;</span><span class="err">}</span><span class="p">).</span><span class="k">unique</span><span class="p">()</span>
+<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="s1">&#39;goose&#39;</span><span class="p">,</span> <span class="n">nan</span><span class="p">,</span> <span class="s1">&#39;finch&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="k">object</span><span class="p">)</span>
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">].</span><span class="k">map</span><span class="p">(</span><span class="n">len</span><span class="p">)</span>  <span class="o">#</span> <span class="err">计算中文名的长度</span>
+<span class="o">#</span> <span class="mi">0</span>     <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">1</span>     <span class="mi">4</span>
+<span class="o">#</span> <span class="p">...</span>   <span class="p">...</span>
+<span class="o">#</span> <span class="mi">26</span>    <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">27</span>    <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">].</span><span class="k">replace</span><span class="p">(</span><span class="err">{</span><span class="s1">&#39;Passeriformes&#39;</span><span class="p">:</span> <span class="s1">&#39;finch&#39;</span><span class="p">,</span> <span class="s1">&#39;Anseriformes&#39;</span><span class="p">:</span> <span class="s1">&#39;goose&#39;</span><span class="err">}</span><span class="p">).</span><span class="k">unique</span><span class="p">()</span>
+<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="s1">&#39;goose&#39;</span><span class="p">,</span> <span class="s1">&#39;Galliformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Podicipediformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Accipitriformes&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Gruiformes&#39;</span><span class="p">,</span> <span class="s1">&#39;Charadriiformes&#39;</span><span class="p">,</span>
+<span class="o">#</span>        <span class="s1">&#39;Piciformes&#39;</span><span class="p">,</span> <span class="s1">&#39;finch&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="k">object</span><span class="p">)</span>
+<span class="n">bird</span><span class="p">.</span><span class="n">applymap</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">len</span><span class="p">(</span><span class="n">str</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>  <span class="o">#</span> <span class="err">计算每一个值转化为字符串的长度</span><span class="p">.</span>
+<span class="o">#</span>     <span class="n">Chinese</span>  <span class="k">Count</span>  <span class="n">Family</span>  <span class="k">Order</span>  <span class="n">Scientific</span>  <span class="n">Species</span>
+<span class="o">#</span> <span class="mi">0</span>         <span class="mi">3</span>      <span class="mi">1</span>       <span class="mi">8</span>     <span class="mi">12</span>          <span class="mi">18</span>        <span class="mi">7</span>
+<span class="o">#</span> <span class="mi">1</span>         <span class="mi">4</span>      <span class="mi">1</span>       <span class="mi">8</span>     <span class="mi">12</span>          <span class="mi">13</span>       <span class="mi">16</span>
+<span class="o">#</span> <span class="p">...</span>      <span class="p">...</span>    <span class="p">...</span>     <span class="p">...</span>   <span class="p">...</span>         <span class="p">...</span>      <span class="p">...</span>
+<span class="o">#</span> <span class="mi">26</span>        <span class="mi">3</span>      <span class="mi">1</span>      <span class="mi">12</span>     <span class="mi">13</span>          <span class="mi">14</span>       <span class="mi">19</span>
+<span class="o">#</span> <span class="mi">27</span>        <span class="mi">2</span>      <span class="mi">2</span>      <span class="mi">10</span>     <span class="mi">13</span>          <span class="mi">15</span>       <span class="mi">21</span>
+<span class="n">bird</span><span class="p">.</span><span class="n">apply</span><span class="p">(</span><span class="n">len</span><span class="p">)</span>  <span class="o">#</span> <span class="err">计算每一列的长度</span><span class="p">.</span>
+<span class="o">#</span> <span class="n">Chinese</span>       <span class="mi">28</span>
+<span class="o">#</span> <span class="k">Count</span>         <span class="mi">28</span>
+<span class="o">#</span> <span class="n">Family</span>        <span class="mi">28</span>
+<span class="o">#</span> <span class="k">Order</span>         <span class="mi">28</span>
+<span class="o">#</span> <span class="n">Scientific</span>    <span class="mi">28</span>
+<span class="o">#</span> <span class="n">Species</span>       <span class="mi">28</span>
+<span class="o">#</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<h4>分组计算 和 groupby</h4>
+<p>DataFrame 的 groupby 方法可以方便地对数据根据一定的水平分组进行计算. 在 R 中, 处理数据的时候会经常用到 Hadley Wickham 写的包, 其中对数据处理就会有按照一定地值对数据进行分组, 然后在分组中分别进行计算, 最后把结果合并起来. 这样的数据处理方式类似于数据库中对 group by 的表格进行窗口函数计算. groupby 方法可以接受 DataFrame 中的 column names 作为参数, 也可以直接接受 DataFrame 的 column 的值, Series 或者 list 等作为参数. groubpy 会返回 tuple 的 iter, tuple 中的第一个元素是 subgroup 的名字, 第二个元素是 subgroup 的 DataFrame.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">])[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="k">count</span><span class="p">()</span>  <span class="o">#</span> <span class="err">计算每个目中观测到的鸟类种数</span>
+<span class="o">#</span> <span class="k">Order</span>
+<span class="o">#</span> <span class="n">Accipitriformes</span>      <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Anseriformes</span>         <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Charadriiformes</span>      <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Galliformes</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Gruiformes</span>           <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Passeriformes</span>       <span class="mi">16</span>
+<span class="o">#</span> <span class="n">Piciformes</span>           <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Podicipediformes</span>     <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+
+<span class="n">bird</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">,</span> <span class="s1">&#39;Family&#39;</span><span class="p">]).</span><span class="k">Count</span><span class="p">.</span><span class="k">sum</span><span class="p">()</span>  <span class="o">#</span> <span class="err">计算每个科观测到的鸟类个数</span>
+<span class="o">#</span> <span class="k">Order</span>             <span class="n">Family</span>        
+<span class="o">#</span> <span class="n">Accipitriformes</span>   <span class="n">Accipitridae</span>        <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Anseriformes</span>      <span class="n">Anatidae</span>            <span class="mi">7</span>
+<span class="o">#</span> <span class="n">Charadriiformes</span>   <span class="n">Charadriidae</span>       <span class="mi">20</span>
+<span class="o">#</span>                   <span class="n">Laridae</span>            <span class="mi">35</span>
+<span class="o">#</span> <span class="n">Galliformes</span>       <span class="n">Phasianidae</span>         <span class="mi">3</span>
+<span class="o">#</span> <span class="n">Gruiformes</span>        <span class="n">Rallidae</span>            <span class="mi">3</span>
+<span class="o">#</span> <span class="n">Passeriformes</span>     <span class="n">Aegithalidae</span>        <span class="mi">1</span>
+<span class="o">#</span>                   <span class="n">Corvidae</span>           <span class="mi">42</span>
+<span class="o">#</span>                   <span class="n">Emberizidae</span>        <span class="mi">23</span>
+<span class="o">#</span>                   <span class="n">Fringillidae</span>        <span class="mi">1</span>
+<span class="o">#</span>                   <span class="n">Laniidae</span>            <span class="mi">2</span>
+<span class="o">#</span>                   <span class="n">Muscicapidae</span>        <span class="mi">6</span>
+<span class="o">#</span>                   <span class="n">Panuridae</span>           <span class="mi">3</span>
+<span class="o">#</span>                   <span class="n">Passeridae</span>         <span class="mi">70</span>
+<span class="o">#</span>                   <span class="n">Phylloscopidae</span>      <span class="mi">2</span>
+<span class="o">#</span>                   <span class="n">Pycnonotidae</span>        <span class="mi">1</span>
+<span class="o">#</span>                   <span class="n">Sylviidae</span>         <span class="mi">110</span>
+<span class="o">#</span> <span class="n">Piciformes</span>        <span class="n">Picidae</span>             <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Podicipediformes</span>  <span class="n">Podicipedidae</span>       <span class="mi">4</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="n">groupby</span><span class="p">([</span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Family&#39;</span><span class="p">],</span> <span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">]]).</span><span class="k">sum</span><span class="p">()</span>
+<span class="o">#</span> <span class="n">Family</span>          <span class="n">Chinese</span>
+<span class="o">#</span> <span class="n">Accipitridae</span>    <span class="err">白尾鹞</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Aegithalidae</span>    <span class="err">银喉长尾山雀</span>       <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Anatidae</span>        <span class="err">白眼潜鸭</span>         <span class="mi">3</span>
+<span class="o">#</span>                 <span class="err">绿头鸭</span>          <span class="mi">4</span>
+<span class="o">#</span> <span class="n">Charadriidae</span>    <span class="err">凤头麦鸡</span>        <span class="mi">20</span>
+<span class="o">#</span> <span class="n">Corvidae</span>        <span class="err">喜鹊</span>          <span class="mi">40</span>
+<span class="o">#</span>                 <span class="err">灰喜鹊</span>          <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Emberizidae</span>     <span class="err">小鹀</span>           <span class="mi">2</span>
+<span class="o">#</span>                 <span class="err">灰头鹀</span>          <span class="mi">1</span>
+<span class="o">#</span>                 <span class="err">苇鹀</span>          <span class="mi">20</span>
+<span class="o">#</span> <span class="n">Fringillidae</span>    <span class="err">金翅雀</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Laniidae</span>        <span class="err">棕背伯劳</span>         <span class="mi">1</span>
+<span class="o">#</span>                 <span class="err">楔尾伯劳</span>         <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Laridae</span>         <span class="err">红嘴鸥</span>         <span class="mi">35</span>
+<span class="o">#</span> <span class="n">Muscicapidae</span>    <span class="err">北红尾鸲</span>         <span class="mi">4</span>
+<span class="o">#</span>                 <span class="err">红胁蓝尾鸲</span>        <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Panuridae</span>       <span class="err">文须雀</span>          <span class="mi">3</span>
+<span class="o">#</span> <span class="n">Passeridae</span>      <span class="err">麻雀</span>          <span class="mi">70</span>
+<span class="o">#</span> <span class="n">Phasianidae</span>     <span class="err">雉鸡</span>           <span class="mi">3</span>
+<span class="o">#</span> <span class="n">Phylloscopidae</span>  <span class="err">黄眉柳莺</span>         <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Picidae</span>         <span class="err">大斑啄木鸟</span>        <span class="mi">1</span>
+<span class="o">#</span>                 <span class="err">灰头绿啄木鸟</span>       <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Podicipedidae</span>   <span class="err">凤头䴙䴘</span>         <span class="mi">3</span>
+<span class="o">#</span>                 <span class="err">小䴙䴘</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Pycnonotidae</span>    <span class="err">白头鹎</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Rallidae</span>        <span class="err">普通秧鸡</span>         <span class="mi">1</span>
+<span class="o">#</span>                 <span class="err">白骨顶</span>          <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Sylviidae</span>       <span class="err">棕头鸦雀</span>       <span class="mi">110</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<p>正如上面例子所展示出来的, 对于一个 DataFrame groupby 可以直接输入 column 的名称, 而对于一个 column 进行 groupby 则要输入 groupby 的具体的值. 所以如果要对 DataFrame 的一列单独进行分组操作, 那么下面的代码是等价的.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">])[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">].</span><span class="k">count</span><span class="p">()</span>
+<span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">].</span><span class="n">groupby</span><span class="p">([</span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">]]).</span><span class="k">count</span><span class="p">()</span>
+<span class="o">#</span> <span class="k">Order</span>
+<span class="o">#</span> <span class="n">Accipitriformes</span>      <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Anseriformes</span>         <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Charadriiformes</span>      <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Galliformes</span>          <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Gruiformes</span>           <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Passeriformes</span>       <span class="mi">16</span>
+<span class="o">#</span> <span class="n">Piciformes</span>           <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Podicipediformes</span>     <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Chinese</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<p>groupby 方法会按照输入的值来对 DataFrame 进行分组, 所以, 我们也可以给 groupby 传入一个可以返回值的函数, 来对 DataFrame 进行分组.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="n">groupby</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">).</span><span class="k">count</span><span class="p">()</span>
+<span class="o">#</span> <span class="k">False</span>    <span class="mi">11</span>
+<span class="o">#</span> <span class="k">True</span>     <span class="mi">17</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<p>Pandas 中有些函数是对 groupby 进行优化的, 这些函数也是对数据进行分组之后常用的操作. 如 count, sum, mean, median, std, var, min, max, prod, first, last 等. 也可以使用 agg (aggregate) 方法来把函数应用到每个小组.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">])[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="n">agg</span><span class="p">(</span><span class="k">sum</span><span class="p">)</span>
+<span class="o">#</span> <span class="k">Order</span>
+<span class="o">#</span> <span class="n">Accipitriformes</span>       <span class="mi">1</span>
+<span class="o">#</span> <span class="n">Anseriformes</span>          <span class="mi">7</span>
+<span class="o">#</span> <span class="n">Charadriiformes</span>      <span class="mi">55</span>
+<span class="o">#</span> <span class="n">Galliformes</span>           <span class="mi">3</span>
+<span class="o">#</span> <span class="n">Gruiformes</span>            <span class="mi">3</span>
+<span class="o">#</span> <span class="n">Passeriformes</span>       <span class="mi">261</span>
+<span class="o">#</span> <span class="n">Piciformes</span>            <span class="mi">2</span>
+<span class="o">#</span> <span class="n">Podicipediformes</span>      <span class="mi">4</span>
+<span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+
+
+<p>另外, transform 函数可以按照分组和传入的函数去计算值, 并返回一个 Series, 其 index 和原来的 DataFrame 的 index 是对应的.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">])[</span><span class="s1">&#39;Count&#39;</span><span class="p">].</span><span class="k">transform</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">mean</span><span class="p">)</span>
+<span class="o">#</span> <span class="mi">0</span>      <span class="mi">3</span><span class="p">.</span><span class="mi">5000</span>
+<span class="o">#</span> <span class="mi">1</span>      <span class="mi">3</span><span class="p">.</span><span class="mi">5000</span>
+<span class="o">#</span> <span class="p">...</span>     <span class="p">...</span> 
+<span class="o">#</span> <span class="mi">26</span>    <span class="mi">16</span><span class="p">.</span><span class="mi">3125</span>
+<span class="o">#</span> <span class="mi">27</span>    <span class="mi">16</span><span class="p">.</span><span class="mi">3125</span>
+<span class="o">#</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+
+
+<p>在 Excel 里面我们可以对一个表单建立数据透视表 (pivot table), pandas 的 DataFrame 也可以建立数据透视表, 使用 <code>df.pivot_table</code> 方法. <code>df.pivot_table</code> 的输出结果和 <code>df.groupby</code> 很像, <code>pivot_table</code> 实际上是用户友好的简化的 <code>df.groupby</code>.</p>
+<div class="highlight"><pre><span></span><span class="n">bird</span><span class="p">.</span><span class="n">pivot_table</span><span class="p">(</span>
+    <span class="k">data</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">],</span>
+    <span class="k">index</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">,</span> <span class="s1">&#39;Family&#39;</span><span class="p">],</span>
+    <span class="n">aggfunc</span> <span class="o">=</span> <span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="o">#</span>                                       <span class="n">Chinese</span>
+<span class="o">#</span> <span class="k">Order</span>            <span class="n">Family</span>                      
+<span class="o">#</span> <span class="n">Accipitriformes</span>  <span class="n">Accipitridae</span>             <span class="err">白尾鹞</span>
+<span class="o">#</span> <span class="n">Anseriformes</span>     <span class="n">Anatidae</span>            <span class="err">绿头鸭</span> <span class="err">白眼潜鸭</span>
+<span class="o">#</span> <span class="n">Charadriiformes</span>  <span class="n">Charadriidae</span>            <span class="err">凤头麦鸡</span>
+<span class="o">#</span>                  <span class="n">Laridae</span>                  <span class="err">红嘴鸥</span>
+<span class="o">#</span> <span class="n">Galliformes</span>      <span class="n">Phasianidae</span>               <span class="err">雉鸡</span>
+<span class="o">#</span> <span class="n">Gruiformes</span>       <span class="n">Rallidae</span>            <span class="err">普通秧鸡</span> <span class="err">白骨顶</span>
+<span class="o">#</span> <span class="n">Passeriformes</span>    <span class="n">Aegithalidae</span>          <span class="err">银喉长尾山雀</span>
+<span class="o">#</span>                  <span class="n">Corvidae</span>              <span class="err">灰喜鹊</span> <span class="err">喜鹊</span>
+<span class="o">#</span>                  <span class="n">Emberizidae</span>        <span class="err">小鹀</span> <span class="err">灰头鹀</span> <span class="err">苇鹀</span>
+<span class="o">#</span>                  <span class="n">Fringillidae</span>             <span class="err">金翅雀</span>
+<span class="o">#</span>                  <span class="n">Laniidae</span>           <span class="err">棕背伯劳</span> <span class="err">楔尾伯劳</span>
+<span class="o">#</span>                  <span class="n">Muscicapidae</span>      <span class="err">红胁蓝尾鸲</span> <span class="err">北红尾鸲</span>
+<span class="o">#</span>                  <span class="n">Panuridae</span>                <span class="err">文须雀</span>
+<span class="o">#</span>                  <span class="n">Passeridae</span>                <span class="err">麻雀</span>
+<span class="o">#</span>                  <span class="n">Phylloscopidae</span>          <span class="err">黄眉柳莺</span>
+<span class="o">#</span>                  <span class="n">Pycnonotidae</span>             <span class="err">白头鹎</span>
+<span class="o">#</span>                  <span class="n">Sylviidae</span>               <span class="err">棕头鸦雀</span>
+<span class="o">#</span> <span class="n">Piciformes</span>       <span class="n">Picidae</span>         <span class="err">大斑啄木鸟</span> <span class="err">灰头绿啄木鸟</span>
+<span class="o">#</span> <span class="n">Podicipediformes</span> <span class="n">Podicipedidae</span>       <span class="err">小䴙䴘</span> <span class="err">凤头䴙䴘</span>
+<span class="n">bird</span><span class="p">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">,</span> <span class="s1">&#39;Family&#39;</span><span class="p">])[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">].</span><span class="n">agg</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="o">#</span> <span class="err">也可以拿到和上面相同的结果</span><span class="p">.</span>
+</pre></div>
+
+
+<p>另外, 如果 pivot table 不方便使用, 还可以使用 <code>pd.crosstab</code>.</p>
+<div class="highlight"><pre><span></span><span class="nv">s1</span> <span class="o">=</span> <span class="nv">pd</span>.<span class="nv">Series</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">one</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> [<span class="s1">&#39;</span><span class="s">two</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> [<span class="s1">&#39;</span><span class="s">Three</span><span class="s1">&#39;</span>] <span class="o">*</span> <span class="mi">3</span><span class="ss">)</span>
+<span class="nv">s2</span> <span class="o">=</span> <span class="nv">pd</span>.<span class="nv">Series</span><span class="ss">(</span><span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>], <span class="mi">10</span><span class="ss">))</span>
+<span class="nv">pd</span>.<span class="nv">crosstab</span><span class="ss">(</span><span class="nv">s1</span>, <span class="nv">s2</span>, <span class="nv">margins</span> <span class="o">=</span> <span class="nv">True</span><span class="ss">)</span>
+# <span class="nv">col_0</span>  <span class="nv">A</span>  <span class="nv">B</span>  <span class="nv">C</span>  <span class="nv">D</span>  <span class="nv">E</span>  <span class="nv">All</span>
+# <span class="nv">row_0</span>                    
+# <span class="nv">Three</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">1</span>    <span class="mi">3</span>
+# <span class="nv">one</span>    <span class="mi">1</span>  <span class="mi">1</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">1</span>    <span class="mi">4</span>
+# <span class="nv">two</span>    <span class="mi">2</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">1</span>  <span class="mi">0</span>    <span class="mi">3</span>
+# <span class="nv">All</span>    <span class="mi">4</span>  <span class="mi">1</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">2</span>   <span class="mi">10</span>
+</pre></div>
+
+
+<p>还有一个与分组有关的函数是 <code>df.cut</code>, 该函数接受一个 bin 参数, 按照给定的值把 DataFrame 的某一列的值转换成区间或者一定的标签, 在分组或者计算数量的时候可以使用.</p>
+<h4>连接与结合</h4>
+<ul>
+<li>pd.merge: </li>
+</ul>
+<h4>时间序列</h4>
+<p>pd.date_range 或者 pd.DatetimeIndex 可以用来方便地产生时间序列.</p>
+<p>DateOffset 用来设置时间产生的间隔.</p>
+<table>
+<thead>
+<tr>
+<th>Class name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DateOffset</td>
+<td>Generic offset class, defaults to 1 calendar day</td>
+</tr>
+<tr>
+<td>BDay</td>
+<td>business day (weekday)</td>
+</tr>
+<tr>
+<td>CDay</td>
+<td>custom business day (experimental)</td>
+</tr>
+<tr>
+<td>Week</td>
+<td>one week, optionally anchored on a day of the week</td>
+</tr>
+<tr>
+<td>WeekOfMonth</td>
+<td>the x-th day of the y-th week of each month</td>
+</tr>
+<tr>
+<td>LastWeekOfMonth</td>
+<td>the x-th day of the last week of each month</td>
+</tr>
+<tr>
+<td>MonthEnd</td>
+<td>calendar month end</td>
+</tr>
+<tr>
+<td>MonthBegin</td>
+<td>calendar month begin</td>
+</tr>
+<tr>
+<td>BMonthEnd</td>
+<td>business month end</td>
+</tr>
+<tr>
+<td>BMonthBegin</td>
+<td>business month begin</td>
+</tr>
+<tr>
+<td>CBMonthEnd</td>
+<td>custom business month end</td>
+</tr>
+<tr>
+<td>CBMonthBegin</td>
+<td>custom business month begin</td>
+</tr>
+<tr>
+<td>SemiMonthEnd</td>
+<td>15th (or other day_of_month) and calendar month end</td>
+</tr>
+<tr>
+<td>SemiMonthBegin</td>
+<td>15th (or other day_of_month) and calendar month begin</td>
+</tr>
+<tr>
+<td>QuarterEnd</td>
+<td>calendar quarter end</td>
+</tr>
+<tr>
+<td>QuarterBegin</td>
+<td>calendar quarter begin</td>
+</tr>
+<tr>
+<td>BQuarterEnd</td>
+<td>business quarter end</td>
+</tr>
+<tr>
+<td>BQuarterBegin</td>
+<td>business quarter begin</td>
+</tr>
+<tr>
+<td>FY5253Quarter</td>
+<td>retail (aka 52-53 week) quarter</td>
+</tr>
+<tr>
+<td>YearEnd</td>
+<td>calendar year end</td>
+</tr>
+<tr>
+<td>YearBegin</td>
+<td>calendar year begin</td>
+</tr>
+<tr>
+<td>BYearEnd</td>
+<td>business year end</td>
+</tr>
+<tr>
+<td>BYearBegin</td>
+<td>business year begin</td>
+</tr>
+<tr>
+<td>FY5253</td>
+<td>retail (aka 52-53 week) year</td>
+</tr>
+<tr>
+<td>BusinessHour</td>
+<td>business hour</td>
+</tr>
+<tr>
+<td>CustomBusinessHour</td>
+<td>custom business hour</td>
+</tr>
+<tr>
+<td>Hour</td>
+<td>one hour</td>
+</tr>
+<tr>
+<td>Minute</td>
+<td>one minute</td>
+</tr>
+<tr>
+<td>Second</td>
+<td>one second</td>
+</tr>
+<tr>
+<td>Milli</td>
+<td>one millisecond</td>
+</tr>
+<tr>
+<td>Micro</td>
+<td>one microsecond</td>
+</tr>
+<tr>
+<td>Nano</td>
+<td>one nanosecond</td>
+</tr>
+</tbody>
+</table>
+<p>缩写</p>
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B</td>
+<td>business day frequency</td>
+</tr>
+<tr>
+<td>C</td>
+<td>custom business day frequency (experimental)</td>
+</tr>
+<tr>
+<td>D</td>
+<td>calendar day frequency</td>
+</tr>
+<tr>
+<td>W</td>
+<td>weekly frequency</td>
+</tr>
+<tr>
+<td>M</td>
+<td>month end frequency</td>
+</tr>
+<tr>
+<td>SM</td>
+<td>semi-month end frequency (15th and end of month)</td>
+</tr>
+<tr>
+<td>BM</td>
+<td>business month end frequency</td>
+</tr>
+<tr>
+<td>CBM</td>
+<td>custom business month end frequency</td>
+</tr>
+<tr>
+<td>MS</td>
+<td>month start frequency</td>
+</tr>
+<tr>
+<td>SMS</td>
+<td>semi-month start frequency (1st and 15th)</td>
+</tr>
+<tr>
+<td>BMS</td>
+<td>business month start frequency</td>
+</tr>
+<tr>
+<td>CBMS</td>
+<td>custom business month start frequency</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>quarter end frequency</td>
+</tr>
+<tr>
+<td>BQ</td>
+<td>business quarter endfrequency</td>
+</tr>
+<tr>
+<td>QS</td>
+<td>quarter start frequency</td>
+</tr>
+<tr>
+<td>BQS</td>
+<td>business quarter start frequency</td>
+</tr>
+<tr>
+<td>A</td>
+<td>year end frequency</td>
+</tr>
+<tr>
+<td>BA</td>
+<td>business year end frequency</td>
+</tr>
+<tr>
+<td>AS</td>
+<td>year start frequency</td>
+</tr>
+<tr>
+<td>BAS</td>
+<td>business year start frequency</td>
+</tr>
+<tr>
+<td>BH</td>
+<td>business hour frequency</td>
+</tr>
+<tr>
+<td>H</td>
+<td>hourly frequency</td>
+</tr>
+<tr>
+<td>T, min</td>
+<td>minutely frequency</td>
+</tr>
+<tr>
+<td>S</td>
+<td>secondly frequency</td>
+</tr>
+<tr>
+<td>L, ms</td>
+<td>milliseconds</td>
+</tr>
+<tr>
+<td>U, us</td>
+<td>microseconds</td>
+</tr>
+<tr>
+<td>N</td>
+<td>nanoseconds</td>
+</tr>
+</tbody>
+</table>
+<p>固定间隔</p>
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>W-SUN</td>
+<td>weekly frequency (sundays). Same as ‘W’</td>
+</tr>
+<tr>
+<td>W-MON</td>
+<td>weekly frequency (mondays)</td>
+</tr>
+<tr>
+<td>W-TUE</td>
+<td>weekly frequency (tuesdays)</td>
+</tr>
+<tr>
+<td>W-WED</td>
+<td>weekly frequency (wednesdays)</td>
+</tr>
+<tr>
+<td>W-THU</td>
+<td>weekly frequency (thursdays)</td>
+</tr>
+<tr>
+<td>W-FRI</td>
+<td>weekly frequency (fridays)</td>
+</tr>
+<tr>
+<td>W-SAT</td>
+<td>weekly frequency (saturdays)</td>
+</tr>
+<tr>
+<td>(B)Q(S)-DEC</td>
+<td>quarterly frequency, year ends in December. Same as ‘Q’</td>
+</tr>
+<tr>
+<td>(B)Q(S)-JAN</td>
+<td>quarterly frequency, year ends in January</td>
+</tr>
+<tr>
+<td>(B)Q(S)-FEB</td>
+<td>quarterly frequency, year ends in February</td>
+</tr>
+<tr>
+<td>(B)Q(S)-MAR</td>
+<td>quarterly frequency, year ends in March</td>
+</tr>
+<tr>
+<td>(B)Q(S)-APR</td>
+<td>quarterly frequency, year ends in April</td>
+</tr>
+<tr>
+<td>(B)Q(S)-MAY</td>
+<td>quarterly frequency, year ends in May</td>
+</tr>
+<tr>
+<td>(B)Q(S)-JUN</td>
+<td>quarterly frequency, year ends in June</td>
+</tr>
+<tr>
+<td>(B)Q(S)-JUL</td>
+<td>quarterly frequency, year ends in July</td>
+</tr>
+<tr>
+<td>(B)Q(S)-AUG</td>
+<td>quarterly frequency, year ends in August</td>
+</tr>
+<tr>
+<td>(B)Q(S)-SEP</td>
+<td>quarterly frequency, year ends in September</td>
+</tr>
+<tr>
+<td>(B)Q(S)-OCT</td>
+<td>quarterly frequency, year ends in October</td>
+</tr>
+<tr>
+<td>(B)Q(S)-NOV</td>
+<td>quarterly frequency, year ends in November</td>
+</tr>
+<tr>
+<td>(B)A(S)-DEC</td>
+<td>annual frequency, anchored end of December. Same as ‘A’</td>
+</tr>
+<tr>
+<td>(B)A(S)-JAN</td>
+<td>annual frequency, anchored end of January</td>
+</tr>
+<tr>
+<td>(B)A(S)-FEB</td>
+<td>annual frequency, anchored end of February</td>
+</tr>
+<tr>
+<td>(B)A(S)-MAR</td>
+<td>annual frequency, anchored end of March</td>
+</tr>
+<tr>
+<td>(B)A(S)-APR</td>
+<td>annual frequency, anchored end of April</td>
+</tr>
+<tr>
+<td>(B)A(S)-MAY</td>
+<td>annual frequency, anchored end of May</td>
+</tr>
+<tr>
+<td>(B)A(S)-JUN</td>
+<td>annual frequency, anchored end of June</td>
+</tr>
+<tr>
+<td>(B)A(S)-JUL</td>
+<td>annual frequency, anchored end of July</td>
+</tr>
+<tr>
+<td>(B)A(S)-AUG</td>
+<td>annual frequency, anchored end of August</td>
+</tr>
+<tr>
+<td>(B)A(S)-SEP</td>
+<td>annual frequency, anchored end of September</td>
+</tr>
+<tr>
+<td>(B)A(S)-OCT</td>
+<td>annual frequency, anchored end of October</td>
+</tr>
+<tr>
+<td>(B)A(S)-NOV</td>
+<td>annual frequency, anchored end of November</td>
+</tr>
+</tbody>
+</table>
+<h4>输入输出</h4>
+<h5>输入</h5>
+<ul>
+<li>pd.read_csv: 可以从 CSV 文件或者 URL 读取数据, 使用英文对号作为默认分隔符. </li>
+<li>pd.read_table: 从文件或者 URL 读取数据, 使用 tab ('\t') 作为默认分隔符.</li>
+<li>pd.read_fwf: 宽度固定读取数据, 即没有分隔符.</li>
+<li>pd.read_clipboard: 用于读取网页的表格.</li>
+</ul>
+<p>参数:</p>
+<table>
+<thead>
+<tr>
+<th align="center">参数</th>
+<th align="right">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">path</td>
+<td align="right">文件的地址, URL 或者文件对象</td>
+</tr>
+<tr>
+<td align="center">sep 或 delimiter</td>
+<td align="right">分隔符, 可以是正则表达式</td>
+</tr>
+<tr>
+<td align="center">header</td>
+<td align="right">第 n 行作为 column names. 如果没有则设置为 None</td>
+</tr>
+<tr>
+<td align="center">index_col</td>
+<td align="right">用作 index 的列号或者列名</td>
+</tr>
+<tr>
+<td align="center">names</td>
+<td align="right">列名的 list</td>
+</tr>
+<tr>
+<td align="center">skiprows</td>
+<td align="right">略过不读, 可以是数字表示前 n 行, 也可以是略过的行号的 list</td>
+</tr>
+<tr>
+<td align="center">skip_footer</td>
+<td align="right">文件尾若干行不读</td>
+</tr>
+<tr>
+<td align="center">na_values</td>
+<td align="right">填充 NA 的值</td>
+</tr>
+<tr>
+<td align="center">comment</td>
+<td align="right">注释符号</td>
+</tr>
+<tr>
+<td align="center">nrows</td>
+<td align="right">读取文件前 n 行</td>
+</tr>
+<tr>
+<td align="center">iterator</td>
+<td align="right">返回一个文件的 iter</td>
+</tr>
+<tr>
+<td align="center">chunksize</td>
+<td align="right">返回 iter 用来一部分一部分读取文件</td>
+</tr>
+<tr>
+<td align="center"></td>
+<td align="right"></td>
+</tr>
+</tbody>
+</table>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Tue 16 August 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/python.html">#python, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/python-xue-xi-bi-ji-pandas.html&text=Python 学习笔记: pandas&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/python-xue-xi-bi-ji-pandas.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/python-xue-xi-bi-ji-pandas.html&t=Python 学习笔记: pandas"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/python-xue-xi-bi-ji-pandas.html&title=Python 学习笔记: pandas" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Python 学习笔记: pandas&amp;body=Viens découvrir un article à propos de [Python 学习笔记: pandas] sur le site de Wolfson Liu. ../../archive/2016/python-xue-xi-bi-ji-pandas.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/python-xue-xi-bi-ji-pandas.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

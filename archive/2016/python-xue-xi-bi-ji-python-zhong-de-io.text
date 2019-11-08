@@ -1,0 +1,16 @@
+Title: Python 学习笔记: Python 中的 IO
+Date: 2016-09-26 18:48
+Modified: 2016-09-26 18:48
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: Python 中的 IO 相关.
+
+### stdin, stdout, stderr ###
+
+### StringIO ###
+
+```
+from StringIO import StringIO
+```
+

@@ -1,0 +1,743 @@
+Title: Python 学习笔记: pandas
+Date: 2016-08-16 21:35
+Modified: 2016-11-04 22:25
+Category: 壹零零壹
+Tags: python
+Authors: Wolfson Liu
+Summary: 使用 pandas.
+
+Pandas 是 Python 进行数据分析的基础包. R 语言一直作为一门统计分析语言, 在数据分析中扮演着重要的角色, 其所具有的 data.frame, list 等数据结构和向量化的函数使得 R 语言成为一门非常好用的数据分析语言. Python 作为一个通用语言本身并没有很好的数据分析的工具和方法, 基于 NumPy 的 Pandas 包提供了类似于 R 语言中的 data.frame 的类 DataFrame 和若干方便进行向量化计算的工具和函数, 使得 Python 能够非常方便地用于数据分析和处理. R 语言的另一个强项, 统计绘图, 则可以通过 Python 的 matplotlib 等包来实现, 这些会在未来介绍. Pandas 本身也使用了 matplotlib 来完成一定简单的绘图, 本文先不做介绍, 而会主要介绍使用 Pandas 进行数据分析的入门知识. 
+
+### 函数和方法 ###
+
+这里用 df 代表一个具体的 DataFrame, s 代表一个具体的 Series, p 代表一个具体的 Panel, 而 pd 代表 pandas 包, np 代表 numpy 包. 主要以 2016 年 10 月 23 日在北京野鸭湖湿地公园的一个鸟类记录为例子来演示 pandas 的函数和方法的使用.
+
+
+#### 创建 DataFrame ####
+
+可以用来创建 DataFrame 的数据类型有:
+
+1. 2D ndarray: row 和 column 分别对应创建的 DataFrame 的 index 和 column
+2. 由 array, list, 或者 tuple 为值的 dict: dict 的 key 作为 column name, dict 的 value 作为 column. 其中所有的 value 必须等长.
+3. Numpy 的 structure/record array: 按照类似于 dict 的方式处理.
+4. 由 Pandas Series 为值的 dict: dict 的 key 作为 column name, 而 Series 作为对应的列.
+5. 由 dict 为值的 dict: 第一层的 dict key 作为 column name, 第二层的 dict key 作为 index.
+6. list of dicts or Series: dict 的 key 作为 column name, 不同 dict 对应同样的 key 的 value 作为每一列的值. 对于每一个 Series 作为一列.
+7. List of lists or tuples: 类似于 dict 和 Series 的 list, 只不过数据本身没有指定 index 和 columns.
+8. pandas DataFrame: 其他的 DataFrame
+9. NumPy MaskedArray
+
+```
+bird = pd.DataFrame(
+{ 'Chinese': ['绿头鸭', '白眼潜鸭', '雉鸡', '小䴙䴘', '凤头䴙䴘',
+'白尾鹞', '普通秧鸡', '白骨顶', '凤头麦鸡', '红嘴鸥',
+'大斑啄木鸟', '灰头绿啄木鸟', '棕背伯劳', '楔尾伯劳', '灰喜鹊',
+'喜鹊', '文须雀', '银喉长尾山雀', '白头鹎', '黄眉柳莺',
+'棕头鸦雀', '红胁蓝尾鸲', '北红尾鸲', '小鹀', '灰头鹀',
+'苇鹀', '金翅雀', '麻雀'],
+'Species': ['Mallard', 'Ferruginous Duck', 'Ring-necked Pheasant',
+'Little Grebe', 'Great Crested Grebe', 'Northern Harrier',
+'Brown-cheeked Rail', 'Eurasian Coot', 'Northern Lapwing', 
+'Black-headed Gull', 'Great Spotted Woodpecker', 'Gray-headed Woodpecker', 
+'Long-tailed Shrike', 'Chinese Gray Shrike', 'Azure-winged Magpie', 
+'Eurasian Magpie', 'Bearded Reedling', 'Silver-throated Tit', 
+'Light-vented Bulbul', "Pallas's Leaf Warbler", 'Vinous-throated Parrotbill', 
+'Red-flanked Bluetail', 'Daurian Redstart', 'Little Bunting', 
+'Black-faced Bunting', "Pallas's Bunting", 'Oriental Greenfinch', 
+'Eurasian Tree Sparrow'],
+'Scientific': ['Anas platyrhynchos', 'Aythya nyroca', 'Phasianus colchicus',
+'Tachybaptus ruficollis', 'Podiceps cristatus', 'Circus cyaneus',
+'Rallus indicus', 'Fulica atra', 'Vanellus vanellus',
+'Chroicocephalus ridibundus', 'Dendrocopos major', 'Picus canus',
+'Lanius schach', 'Lanius sphenocercus', 'Cyanopica cyanus',
+'Pica pica', 'Panurus biarmicus', 'Aegithalos glaucogularis',
+'Pycnonotus sinensis', 'Phylloscopus proregulus', 'Sinosuthora webbiana',
+'Tarsiger cyanurus', 'Phoenicurus auroreus', 'Emberiza pusilla',
+'Emberiza spodocephala', 'Emberiza pallasi', 'Chloris sinica',
+'Passer montanus'],
+'Family': ['Anatidae', 'Anatidae', 'Phasianidae',
+'Podicipedidae', 'Podicipedidae', 'Accipitridae',
+'Rallidae', 'Rallidae', 'Charadriidae',
+'Laridae', 'Picidae', 'Picidae',
+'Laniidae', 'Laniidae', 'Corvidae',
+'Corvidae', 'Panuridae', 'Aegithalidae',
+'Pycnonotidae', 'Phylloscopidae', 'Sylviidae',
+'Muscicapidae', 'Muscicapidae', 'Emberizidae',
+'Emberizidae', 'Emberizidae', 'Fringillidae',
+'Passeridae'],
+'Order': ['Anseriformes', 'Anseriformes', 'Galliformes',
+'Podicipediformes', 'Podicipediformes', 'Accipitriformes',
+'Gruiformes', 'Gruiformes', 'Charadriiformes',
+'Charadriiformes', 'Piciformes', 'Piciformes',
+'Passeriformes', 'Passeriformes', 'Passeriformes',
+'Passeriformes', 'Passeriformes', 'Passeriformes',
+'Passeriformes', 'Passeriformes', 'Passeriformes',
+'Passeriformes', 'Passeriformes', 'Passeriformes',
+'Passeriformes', 'Passeriformes', 'Passeriformes',
+'Passeriformes'],
+'Count': [4, 3, 3, 1, 3, 1, 1, 2, 20, 35, 1, 1, 1, 1, 2, 40, 3, 1, 1, 2, 110, 2, 4, 2, 1, 20, 1, 70]
+}
+)
+df = pd.DataFrame(np.random.randn(12).reshape(3,4))
+#           0         1         2         3
+# 0 -0.489887  0.112742 -0.971154  2.585245
+# 1 -0.863345  0.262259 -1.024552  1.629240
+# 2 -0.055451  1.775159 -1.079502  0.518504
+```
+
+
+#### 行列操作 ####
+
+DataFrame 或者 Series 的 Index 在本质上和 DataFrame 的列或者 Series 没有太大差别, 适用于 DataFrame 列或者 Series 的部分 method 在 index 中也都有.
+
+因为在数据分析中有大量的任务是针对整列操作的, 所以 pandas 的 DataFrame 取列的设计是容易的. 可以像 dict 一样利用列名去取列, 同时 DataFrame 的每一列也都是 attribute, 可以像 attribute 一样取.
+
+```
+bird['Chinese']
+# 0        绿头鸭
+# 1       白眼潜鸭
+# ...       ...       #  省略了中间的部分
+# 26       金翅雀
+# 27        麻雀
+# Name: Chinese, dtype: object
+
+bird.Size
+# 0           Anatidae
+# 1           Anatidae
+# ...       ...       #  省略了中间的部分26      Fringillidae
+# 27        Passeridae
+# Name: Family, dtype: object
+```
+
+在进行 DataFrame 的操作的时候, 我们会需要去取特定地行, 有的时候是取符合一定要求的行, 有的时候是取特定的行. 需要说明的是取特定的行的时候, 我们可以根据行的号来取, 也可以根据行的 index 来取, 这两者是不一样的.
+
+如果想要根据 index 或者 column 来取行列, 则可以使用 `df.ix['index']` 或者 `df['column']` 来取特定的行列, `df.ix[row, col]` 则可以用来取特定的位置的元素. 而如果想要根据行号或者列号来取, 则要使用 `df.irow(n)` 或者 `df.icol(n)` 方法.
+
+* `df.reindex`: 按照给定的 Index 重新产生 DataFrame, 如果给定的新的 Index 元素在原 Index 中没有, 则会填充 na 或设定的填充值或填充 method.
+* `df.reset_index`: 返回一个份把 Index 变成 column 的新的 DataFrame.
+* `df.set_index`: 返回一个把给定的列变成 Index 或 MultiIndex 的新的 DataFrame. 默认相应的 columns 会从 DataFrame 中被除去, 不过也可以设置保留 `drop = False`.
+
+```
+bird.ix[10]
+# Chinese                          大斑啄木鸟
+# Count                                1
+# Family                         Picidae
+# Order                       Piciformes
+# Scientific           Dendrocopos major
+# Species       Great Spotted Woodpecker
+# Name: 10, dtype: object
+
+bird.ix[:,'Scientific']
+# 0             Anas platyrhynchos
+# 1                  Aythya nyroca
+# ...       ...       #  省略了中间的部分26      Fringillidae
+# 26                Chloris sinica
+# 27               Passer montanus
+# Name: Scientific, dtype: object
+
+bird.ix[10, 0]
+# '大斑啄木鸟'
+
+bird.ix[10, 'Species']
+# 'Great Spotted Woodpecker'
+
+bird.icol(0)
+# 0        绿头鸭
+# 1       白眼潜鸭
+# ...       ...       #  省略了中间的部分
+# 26       金翅雀
+# 27        麻雀
+# Name: Chinese, dtype: object
+
+bird.irow(0)
+# Chinese                      绿头鸭
+# Count                          4
+# Family                  Anatidae
+# Order               Anseriformes
+# Scientific    Anas platyrhynchos
+# Species                  Mallard
+# Name: 0, dtype: object
+
+newindex = [0, 6, 8, 10]
+bird.reindex(newindex)
+# Chinese  Count        Family        ... # 省略后面内容
+# 0      绿头鸭      4      Anatidae   ... # 省略后面内容
+# 6     普通秧鸡      1      Rallidae  ... # 省略后面内容
+# 8     凤头麦鸡     20  Charadriidae  ... # 省略后面内容
+# 10   大斑啄木鸟      1       Picidae ... # 省略后面内容
+
+tmp = bird.copy()
+tmp.index = bird.Family + '&' + bird.Species
+tmp.reset_index()[0:1]
+#               index Chinese  Count    Family    ... # 省略后面内容
+# 0  Anatidae&Mallard     绿头鸭      4  Anatidae  ... # 省略后面内容
+
+tmp.reset_index().set_index(['Chinese'])[0:1]
+#                    index  Count    Family     ... # 省略后面内容
+# Chinese
+# 绿头鸭      Anatidae&Mallard      4  Anatidae  ... # 省略后面内容
+```
+
+正如数据库中有时会用到多列数据作为 key, DataFrame 和 Series 也可以使用多级 index, 即 MultiIndex. 对 MultiIndex 也可以使用包含每一级 index 值的 tuple 去取值. 或者使用 `df.xs` 方法, 可以指定单一的 level 的值去取值.
+
+如果想要增加一列或者删除一列, 可以使用多种方法.
+
+```
+bird['Chinese2'] = bird['Chinese']
+# 增加列
+bird = bird.assign(Chinese2 = bird['Chinese'])
+# 增加列
+bird.drop('Chinese2', axis = 1)
+# 删除列
+```
+
+#### 统计量与描述 ####
+
+* `df.info`: 返回 DataFrame 的基本情况, 类似 R 中的 `str` 函数.
+* `df.describe`: 对每一列计算各种统计量. percentiles 可以设置四分位点等.
+* `df.count`: 对行或列中的元素进行计数.
+* `df.sum`: 计算和. 常用的参数包括: `axis` 为 0 或者 1 来选择计算行和或者列和, 如果计算所有的和, 可以 `df.sum().sum()`; `skipna` 所接受的值为 bool 值, 是否忽略 `np.nan`.
+* `df.mean`: 计算平均值.
+* `df.mad`: 计算绝对离差, 距离平均数的差的绝对值的平均.
+* `df.median`: 计算中位数.
+* `df.min`: 计算最小值.
+* `df.max`: 计算最大值.
+* `df.mode`: 计算众数.
+* `df.abs`: 计算每个元素的绝对值.
+* `df.prod`: 计算给定 axis 的乘积.
+* `df.std`: 计算标准差.
+* `df.var`: 计算方差.
+* `df.sem`: 计算样本标准差. Standard error of the mean. std / sqrt(n - 1)
+* `df.skew`: 计算斜度, N-1 校正.
+* `df.kurt`: 计算峰度, N-1 校正.
+* `df.quantile`: 返回在给定 quantile 的值.
+* `df.cumsum`: 累积元素相加.
+* `df.cumprod`: 累积元素相乘.
+* `df.cummax`: 累积最大值.
+* `df.cummin`: 累积最小值.
+
+这些函数或方法多数可以接受 `axis`, `skipna`, `level` 参数. 其中, `axis` 可以取 0 或 1, 从而可以设定函数在行或者列的水平上进行运算. 参数 `skipna` 接受 `True` 或者 `False`, 在遇到 NaN 的时候会采取相应的操作, 需要注意的是 NaN 和任何数字的计算结果依然是 NaN. 参数 `level` 是在 multi-index 的情况下指定用哪个层次.
+
+```
+bird['Count'].mean()
+# 12.0
+
+bird['Count'].max()
+# 110
+
+bird.count()
+# Chinese       28
+# Count         28
+# Family        28
+# Order         28
+# Scientific    28
+# Species       28
+# dtype: int64
+```
+
+除了一般的统计计算的函数, 还有 window 函数可以使用, 这些函数按照一定的窗口宽度去滑动计算统计量.
+
+* `pd.rolling_count`
+* `pd.rolling_sum`
+* `pd.rolling_mean`
+* `pd.rolling_median`
+* `pd.rolling_var`, `pd.rolling_std`
+* `pd.rolling_skew`, `pd.rolling_kurt`
+* `pd.rolling_min`, `pd.rolling_max`
+* `pd.rolling_quantile`
+* `pd.rolling_corr`, `pd.rolling_cov`
+* `pd.rolling_apply`
+* `pd.ewma`
+* `pd.ewmvar`, `pd.ewmstd`
+* `pd.ewmcorr`, `pd.ewmcov`
+
+#### 逻辑计算和判断 ####
+
+* `df.isnull`: 判断元素中是否有 NA 值, 返回 bool 值的 Series 或 DataFrame.
+* `df.notnull`: 判断元素中是否有 NA 值, 返回 bool 值的 Series 或 DataFrame.
+* `df.any`: 接受 0 或 1 来整列或整行判断是否有至少一个 True.
+* `df.all`: 接受 0 或 1 来整列或整行判断是否全为 True.
+
+```
+bools = pd.Series(np.random.choice([True, False], 5))
+bools
+# 0    False
+# 1    False
+# 2     True
+# 3     True
+# 4    False
+# dtype: bool
+bools.any()
+# True
+bools.all()
+# False
+somenull = pd.Series([0, 1, np.NaN, 1, 0])
+# 0    0.0
+# 1    1.0
+# 2    NaN
+# 3    1.0
+# 4    0.0
+# dtype: float64
+somenull.isnull()
+# 0    False
+# 1    False
+# 2     True
+# 3    False
+# 4    False
+# dtype: bool
+somenull.notnull()
+# 0     True
+# 1     True
+# 2    False
+# 3     True
+# 4     True
+# dtype: bool
+```
+
+#### 集合运算 ####
+
+* `s.unique`: 返回 Series 中非重复的值.
+* `s.value_counts`: 计算 Series 中每个值出现的数量.
+* `s.isin`: 判断 Series 中元素是否在给定的值中.
+
+```
+bird.Family.unique()
+# array(['Anatidae', 'Phasianidae', 'Podicipedidae', 'Accipitridae',
+#        'Rallidae', 'Charadriidae', 'Laridae', 'Picidae', 'Laniidae',
+#        'Corvidae', 'Panuridae', 'Aegithalidae', 'Pycnonotidae',
+#        'Phylloscopidae', 'Sylviidae', 'Muscicapidae', 'Emberizidae',
+#        'Fringillidae', 'Passeridae'], dtype=object)
+bird['Order'].value_counts()
+# Passeriformes       16
+# Podicipediformes     2
+# Gruiformes           2
+# Charadriiformes      2
+# Anseriformes         2
+# Piciformes           2
+# Accipitriformes      1
+# Galliformes          1
+# Name: Order, dtype: int64
+Anseriformes = pd.Series(
+    ['Anhimidae', 'Anseranatidae', 'Anatidae']
+) # Anseriformes 中包含三个科.
+Anseriformes.isin(bird['Family'])
+# 0    False
+# 1    False
+# 2     True
+# dtype: bool
+```
+
+#### 缺失数据 ####
+
+在实际的数据分析中, 我们有时候难以保证数据的每一种情况都有值, 有时候因为各种人为或非人为的原因, 我们会遇到缺失值. 如前面提到的观鸟记录一般要用铅笔写, 防止水把字迹模糊, 如果用水性笔记录, 遇到记录本被水打湿, 有些数据就会模糊不清, 就会造成缺失数据. 在 Pandas 和 NumPy 中都有处理缺失数据的方法. 因为 Pandas 是建立在 NumPy 的基础上的, 所以, Pandas 使用了 NumPy 中缺失数据的表示方法 np.NaN (np.nan). 另外对于时间的缺失值, Pandas 有 pd.NaT 来表示.
+
+在处理缺失数据的时候有多种办法, Pandas 也提供了相应的方法的函数. 遇到 NA, 可以采取除去 NA 后再继续分析, `df.dropna` 函数可以除去包含 NA 的一整行或一整列. 需要注意的是对于 Pandas 中多数用于数值计算的函数, 如 pd.sum 等, 都是默认除去 NA 值后计算, 如果设置不除去 NA, 则计算结果总是 NA. 在遇到 NA 的时候除了扔掉 NA, 也可以根据先验知识给 NA 一定的值, 例如如果某种鸟类的数量丢失, 可以根据平时的数量进行估计, 或者直接设置为 0, 可以使用 `df.fillna` 对 NA 进行填充. 同时, 也有 `df.isnull` 和 `df.notnull` 来判断是否为缺失. 
+
+* `df.dropna`: 把数据中的 na 项扔掉, 如果是 Series 则只扔掉相应的元素, 如果是 DataFrame 则根据 `axis` 参数的设置扔掉相应的行或列. 参数 `how` 可以设置为 'any' 或者 'all', 即只有在任何或所有元素都是 na 时才扔掉相应的行或者列. 
+* `df.fillna`: 给数据中的 na 填充特定的值. 可以直接设置要填充的值, 也可以设置填充的 `method` 为 'bfill' (na 后面的值填充到 na) 或 'ffill' (na 前面的值填充到 na) 等. 对于 DataFrame 可以提供一个 key 为列名, value 为该列要填充的值的 dict 来对每列的 na 填充不同的值.
+* `df.isnull`: 判断元素是否为空.
+* `df.notnull`: 判断元素是否不为空.
+
+```
+tmp = bird.copy()
+tmp.ix[0, 1] = np.nan
+tmp.ix[:4, 0:3]
+#   Chinese  Count         Family
+# 0     绿头鸭    NaN       Anatidae
+# 1    白眼潜鸭    3.0       Anatidae
+# 2      雉鸡    3.0    Phasianidae
+# 3     小䴙䴘    1.0  Podicipedidae
+# 4    凤头䴙䴘    3.0  Podicipedidae
+tmp.dropna().ix[:4, 0:3]
+#   Chinese  Count         Family
+# 1    白眼潜鸭    3.0       Anatidae
+# 2      雉鸡    3.0    Phasianidae
+# 3     小䴙䴘    1.0  Podicipedidae
+# 4    凤头䴙䴘    3.0  Podicipedidae
+tmp.fillna(0).ix[:4, 0:3]
+#   Chinese  Count         Family
+# 0     绿头鸭    0.0       Anatidae
+# 1    白眼潜鸭    3.0       Anatidae
+# 2      雉鸡    3.0    Phasianidae
+# 3     小䴙䴘    1.0  Podicipedidae
+# 4    凤头䴙䴘    3.0  Podicipedidae
+tmp.isnull().ix[:4, 0:3]
+#   Chinese  Count Family
+# 0   False   True  False
+# 1   False  False  False
+# 2   False  False  False
+# 3   False  False  False
+# 4   False  False  False
+tmp.notnull().ix[:4, 0:3]
+#   Chinese  Count Family
+# 0    True  False   True
+# 1    True   True   True
+# 2    True   True   True
+# 3    True   True   True
+# 4    True   True   True
+```
+
+#### 向量化和 apply ####
+
+当我们需要对 DataFrame 或者 Series 中每一个元素或近乎每一个元素都要操作的时候, 采用向量化的操作方法要比使用 for 循环一个个元素进行操作要高效得多. Pandas 中提供的数值计算等函数都是向量化对数据操作的. 而如果要把一个非向量化的函数应用到每一个元素, 使用 Pandas 提供的 map 和 apply 函数将会比使用 for 更清晰, 虽然性能上不会差太多. 在 R 语言中的 apply 函数则因为其减少了解析语句和赋值的次数而使得计算效率得到提升.
+
+* `s.map`: 接受一个函数或者 dict 把相应的元素转换为其他值, 如果 dict 或者函数对于某个值没有操作, 则返回 NA.
+* `s.replace`: 接受 list 或者 dict, 把元素替换为特定的值, 如果 dict 中没有, 则保持原值不修改, 这是和 map 不同的地方.
+* `df.rename`: index 和 columns 参数均接受一个函数或者 dict 来一一修改 index 或者 columns 的值, 相当于对于 index 和 columns 的 replace 函数.
+* `s.rename`: 接受函数或者 dict 来一一修改 index 的值, 相当于针对 index 的 replace 函数.
+* `df.apply`: 类似于 map, 不过是把函数应用于 DataFrame 的整行或者整列.
+* `df.applymap`: 类似于 map, 把函数应用于 DataFrame 的每一个元素.
+
+```
+bird['Order'].unique()
+# array(['Anseriformes', 'Galliformes', 'Podicipediformes',
+#        'Accipitriformes', 'Gruiformes', 'Charadriiformes',
+#        'Piciformes', 'Passeriformes'], dtype=object)
+bird['Order'].map({'Passeriformes': 'finch', 'Anseriformes': 'goose'}).unique()
+# array(['goose', nan, 'finch'], dtype=object)
+bird['Chinese'].map(len)  # 计算中文名的长度
+# 0     3
+# 1     4
+# ...   ...
+# 26    3
+# 27    2
+# Name: Count, dtype: int64
+bird['Order'].replace({'Passeriformes': 'finch', 'Anseriformes': 'goose'}).unique()
+# array(['goose', 'Galliformes', 'Podicipediformes', 'Accipitriformes',
+#        'Gruiformes', 'Charadriiformes',
+#        'Piciformes', 'finch'], dtype=object)
+bird.applymap(lambda x: len(str(x)))  # 计算每一个值转化为字符串的长度.
+#     Chinese  Count  Family  Order  Scientific  Species
+# 0         3      1       8     12          18        7
+# 1         4      1       8     12          13       16
+# ...      ...    ...     ...   ...         ...      ...
+# 26        3      1      12     13          14       19
+# 27        2      2      10     13          15       21
+bird.apply(len)  # 计算每一列的长度.
+# Chinese       28
+# Count         28
+# Family        28
+# Order         28
+# Scientific    28
+# Species       28
+# dtype: int64
+```
+
+#### 分组计算 和 groupby ####
+
+DataFrame 的 groupby 方法可以方便地对数据根据一定的水平分组进行计算. 在 R 中, 处理数据的时候会经常用到 Hadley Wickham 写的包, 其中对数据处理就会有按照一定地值对数据进行分组, 然后在分组中分别进行计算, 最后把结果合并起来. 这样的数据处理方式类似于数据库中对 group by 的表格进行窗口函数计算. groupby 方法可以接受 DataFrame 中的 column names 作为参数, 也可以直接接受 DataFrame 的 column 的值, Series 或者 list 等作为参数. groubpy 会返回 tuple 的 iter, tuple 中的第一个元素是 subgroup 的名字, 第二个元素是 subgroup 的 DataFrame.
+
+```
+bird.groupby(['Order'])['Count'].count()  # 计算每个目中观测到的鸟类种数
+# Order
+# Accipitriformes      1
+# Anseriformes         2
+# Charadriiformes      2
+# Galliformes          1
+# Gruiformes           2
+# Passeriformes       16
+# Piciformes           2
+# Podicipediformes     2
+# Name: Count, dtype: int64
+
+bird.groupby(['Order', 'Family']).Count.sum()  # 计算每个科观测到的鸟类个数
+# Order             Family        
+# Accipitriformes   Accipitridae        1
+# Anseriformes      Anatidae            7
+# Charadriiformes   Charadriidae       20
+#                   Laridae            35
+# Galliformes       Phasianidae         3
+# Gruiformes        Rallidae            3
+# Passeriformes     Aegithalidae        1
+#                   Corvidae           42
+#                   Emberizidae        23
+#                   Fringillidae        1
+#                   Laniidae            2
+#                   Muscicapidae        6
+#                   Panuridae           3
+#                   Passeridae         70
+#                   Phylloscopidae      2
+#                   Pycnonotidae        1
+#                   Sylviidae         110
+# Piciformes        Picidae             2
+# Podicipediformes  Podicipedidae       4
+# Name: Count, dtype: int64
+
+bird['Count'].groupby([bird['Family'], bird['Chinese']]).sum()
+# Family          Chinese
+# Accipitridae    白尾鹞          1
+# Aegithalidae    银喉长尾山雀       1
+# Anatidae        白眼潜鸭         3
+#                 绿头鸭          4
+# Charadriidae    凤头麦鸡        20
+# Corvidae        喜鹊          40
+#                 灰喜鹊          2
+# Emberizidae     小鹀           2
+#                 灰头鹀          1
+#                 苇鹀          20
+# Fringillidae    金翅雀          1
+# Laniidae        棕背伯劳         1
+#                 楔尾伯劳         1
+# Laridae         红嘴鸥         35
+# Muscicapidae    北红尾鸲         4
+#                 红胁蓝尾鸲        2
+# Panuridae       文须雀          3
+# Passeridae      麻雀          70
+# Phasianidae     雉鸡           3
+# Phylloscopidae  黄眉柳莺         2
+# Picidae         大斑啄木鸟        1
+#                 灰头绿啄木鸟       1
+# Podicipedidae   凤头䴙䴘         3
+#                 小䴙䴘          1
+# Pycnonotidae    白头鹎          1
+# Rallidae        普通秧鸡         1
+#                 白骨顶          2
+# Sylviidae       棕头鸦雀       110
+# Name: Count, dtype: int64
+```
+
+正如上面例子所展示出来的, 对于一个 DataFrame groupby 可以直接输入 column 的名称, 而对于一个 column 进行 groupby 则要输入 groupby 的具体的值. 所以如果要对 DataFrame 的一列单独进行分组操作, 那么下面的代码是等价的.
+
+```
+bird.groupby(['Order'])['Chinese'].count()
+bird['Chinese'].groupby([bird['Order']]).count()
+# Order
+# Accipitriformes      1
+# Anseriformes         2
+# Charadriiformes      2
+# Galliformes          1
+# Gruiformes           2
+# Passeriformes       16
+# Piciformes           2
+# Podicipediformes     2
+# Name: Chinese, dtype: int64
+```
+
+groupby 方法会按照输入的值来对 DataFrame 进行分组, 所以, 我们也可以给 groupby 传入一个可以返回值的函数, 来对 DataFrame 进行分组.
+
+```
+bird['Count'].groupby(lambda x: x > 10).count()
+# False    11
+# True     17
+# Name: Count, dtype: int64
+```
+
+Pandas 中有些函数是对 groupby 进行优化的, 这些函数也是对数据进行分组之后常用的操作. 如 count, sum, mean, median, std, var, min, max, prod, first, last 等. 也可以使用 agg (aggregate) 方法来把函数应用到每个小组.
+
+```
+bird.groupby(['Order'])['Count'].agg(sum)
+# Order
+# Accipitriformes       1
+# Anseriformes          7
+# Charadriiformes      55
+# Galliformes           3
+# Gruiformes            3
+# Passeriformes       261
+# Piciformes            2
+# Podicipediformes      4
+# Name: Count, dtype: int64
+```
+
+另外, transform 函数可以按照分组和传入的函数去计算值, 并返回一个 Series, 其 index 和原来的 DataFrame 的 index 是对应的.
+
+```
+bird.groupby(['Order'])['Count'].transform(np.mean)
+# 0      3.5000
+# 1      3.5000
+# ...     ... 
+# 26    16.3125
+# 27    16.3125
+# dtype: float64
+```
+
+在 Excel 里面我们可以对一个表单建立数据透视表 (pivot table), pandas 的 DataFrame 也可以建立数据透视表, 使用 `df.pivot_table` 方法. `df.pivot_table` 的输出结果和 `df.groupby` 很像, `pivot_table` 实际上是用户友好的简化的 `df.groupby`.
+
+```
+bird.pivot_table(
+    data   = ['Chinese'],
+    index  = ['Order', 'Family'],
+    aggfunc = lambda x: ' '.join(x)
+)
+#                                       Chinese
+# Order            Family                      
+# Accipitriformes  Accipitridae             白尾鹞
+# Anseriformes     Anatidae            绿头鸭 白眼潜鸭
+# Charadriiformes  Charadriidae            凤头麦鸡
+#                  Laridae                  红嘴鸥
+# Galliformes      Phasianidae               雉鸡
+# Gruiformes       Rallidae            普通秧鸡 白骨顶
+# Passeriformes    Aegithalidae          银喉长尾山雀
+#                  Corvidae              灰喜鹊 喜鹊
+#                  Emberizidae        小鹀 灰头鹀 苇鹀
+#                  Fringillidae             金翅雀
+#                  Laniidae           棕背伯劳 楔尾伯劳
+#                  Muscicapidae      红胁蓝尾鸲 北红尾鸲
+#                  Panuridae                文须雀
+#                  Passeridae                麻雀
+#                  Phylloscopidae          黄眉柳莺
+#                  Pycnonotidae             白头鹎
+#                  Sylviidae               棕头鸦雀
+# Piciformes       Picidae         大斑啄木鸟 灰头绿啄木鸟
+# Podicipediformes Podicipedidae       小䴙䴘 凤头䴙䴘
+bird.groupby(['Order', 'Family'])['Chinese'].agg(lambda x: ' '.join(x))
+# 也可以拿到和上面相同的结果.
+```
+
+另外, 如果 pivot table 不方便使用, 还可以使用 `pd.crosstab`.
+
+```
+s1 = pd.Series(['one'] * 4 + ['two'] * 3 + ['Three'] * 3)
+s2 = pd.Series(np.random.choice(['A', 'B', 'C', 'D', 'E'], 10))
+pd.crosstab(s1, s2, margins = True)
+# col_0  A  B  C  D  E  All
+# row_0                    
+# Three  1  0  0  1  1    3
+# one    1  1  1  0  1    4
+# two    2  0  0  1  0    3
+# All    4  1  1  2  2   10
+```
+
+还有一个与分组有关的函数是 `df.cut`, 该函数接受一个 bin 参数, 按照给定的值把 DataFrame 的某一列的值转换成区间或者一定的标签, 在分组或者计算数量的时候可以使用.
+
+#### 连接与结合 ####
+
+* pd.merge: 
+
+
+#### 时间序列 ####
+
+pd.date_range 或者 pd.DatetimeIndex 可以用来方便地产生时间序列.
+
+DateOffset 用来设置时间产生的间隔.
+
+| Class name         | Description                                           |
+|--------------------|-------------------------------------------------------|
+| DateOffset         | Generic offset class, defaults to 1 calendar day      |
+| BDay               | business day (weekday)                                |
+| CDay               | custom business day (experimental)                    |
+| Week               | one week, optionally anchored on a day of the week    |
+| WeekOfMonth        | the x-th day of the y-th week of each month           |
+| LastWeekOfMonth    | the x-th day of the last week of each month           |
+| MonthEnd           | calendar month end                                    |
+| MonthBegin         | calendar month begin                                  |
+| BMonthEnd          | business month end                                    |
+| BMonthBegin        | business month begin                                  |
+| CBMonthEnd         | custom business month end                             |
+| CBMonthBegin       | custom business month begin                           |
+| SemiMonthEnd       | 15th (or other day_of_month) and calendar month end   |
+| SemiMonthBegin     | 15th (or other day_of_month) and calendar month begin |
+| QuarterEnd         | calendar quarter end                                  |
+| QuarterBegin       | calendar quarter begin                                |
+| BQuarterEnd        | business quarter end                                  |
+| BQuarterBegin      | business quarter begin                                |
+| FY5253Quarter      | retail (aka 52-53 week) quarter                       |
+| YearEnd            | calendar year end                                     |
+| YearBegin          | calendar year begin                                   |
+| BYearEnd           | business year end                                     |
+| BYearBegin         | business year begin                                   |
+| FY5253             | retail (aka 52-53 week) year                          |
+| BusinessHour       | business hour                                         |
+| CustomBusinessHour | custom business hour                                  |
+| Hour               | one hour                                              |
+| Minute             | one minute                                            |
+| Second             | one second                                            |
+| Milli              | one millisecond                                       |
+| Micro              | one microsecond                                       |
+| Nano               | one nanosecond                                        |
+
+缩写
+
+| Alias  | Description                                      |
+|--------|--------------------------------------------------|
+| B      | business day frequency                           |
+| C      | custom business day frequency (experimental)     |
+| D      | calendar day frequency                           |
+| W      | weekly frequency                                 |
+| M      | month end frequency                              |
+| SM     | semi-month end frequency (15th and end of month) |
+| BM     | business month end frequency                     |
+| CBM    | custom business month end frequency              |
+| MS     | month start frequency                            |
+| SMS    | semi-month start frequency (1st and 15th)        |
+| BMS    | business month start frequency                   |
+| CBMS   | custom business month start frequency            |
+| Q      | quarter end frequency                            |
+| BQ     | business quarter endfrequency                    |
+| QS     | quarter start frequency                          |
+| BQS    | business quarter start frequency                 |
+| A      | year end frequency                               |
+| BA     | business year end frequency                      |
+| AS     | year start frequency                             |
+| BAS    | business year start frequency                    |
+| BH     | business hour frequency                          |
+| H      | hourly frequency                                 |
+| T, min | minutely frequency                               |
+| S      | secondly frequency                               |
+| L, ms  | milliseconds                                     |
+| U, us  | microseconds                                     |
+| N      | nanoseconds                                      |
+
+固定间隔
+
+| Alias       | Description                                             |
+|-------------|---------------------------------------------------------|
+| W-SUN       | weekly frequency (sundays). Same as ‘W’                 |
+| W-MON       | weekly frequency (mondays)                              |
+| W-TUE       | weekly frequency (tuesdays)                             |
+| W-WED       | weekly frequency (wednesdays)                           |
+| W-THU       | weekly frequency (thursdays)                            |
+| W-FRI       | weekly frequency (fridays)                              |
+| W-SAT       | weekly frequency (saturdays)                            |
+| (B)Q(S)-DEC | quarterly frequency, year ends in December. Same as ‘Q’ |
+| (B)Q(S)-JAN | quarterly frequency, year ends in January               |
+| (B)Q(S)-FEB | quarterly frequency, year ends in February              |
+| (B)Q(S)-MAR | quarterly frequency, year ends in March                 |
+| (B)Q(S)-APR | quarterly frequency, year ends in April                 |
+| (B)Q(S)-MAY | quarterly frequency, year ends in May                   |
+| (B)Q(S)-JUN | quarterly frequency, year ends in June                  |
+| (B)Q(S)-JUL | quarterly frequency, year ends in July                  |
+| (B)Q(S)-AUG | quarterly frequency, year ends in August                |
+| (B)Q(S)-SEP | quarterly frequency, year ends in September             |
+| (B)Q(S)-OCT | quarterly frequency, year ends in October               |
+| (B)Q(S)-NOV | quarterly frequency, year ends in November              |
+| (B)A(S)-DEC | annual frequency, anchored end of December. Same as ‘A’ |
+| (B)A(S)-JAN | annual frequency, anchored end of January               |
+| (B)A(S)-FEB | annual frequency, anchored end of February              |
+| (B)A(S)-MAR | annual frequency, anchored end of March                 |
+| (B)A(S)-APR | annual frequency, anchored end of April                 |
+| (B)A(S)-MAY | annual frequency, anchored end of May                   |
+| (B)A(S)-JUN | annual frequency, anchored end of June                  |
+| (B)A(S)-JUL | annual frequency, anchored end of July                  |
+| (B)A(S)-AUG | annual frequency, anchored end of August                |
+| (B)A(S)-SEP | annual frequency, anchored end of September             |
+| (B)A(S)-OCT | annual frequency, anchored end of October               |
+| (B)A(S)-NOV | annual frequency, anchored end of November              |
+
+
+#### 输入输出 ####
+
+##### 输入 #####
+
+* pd.read_csv: 可以从 CSV 文件或者 URL 读取数据, 使用英文对号作为默认分隔符. 
+* pd.read_table: 从文件或者 URL 读取数据, 使用 tab ('\t') 作为默认分隔符.
+* pd.read_fwf: 宽度固定读取数据, 即没有分隔符.
+* pd.read_clipboard: 用于读取网页的表格.
+
+参数:
+
+|       参数       |                                                        描述 |
+|:----------------:|------------------------------------------------------------:|
+|       path       |                                文件的地址, URL 或者文件对象 |
+| sep 或 delimiter |                                    分隔符, 可以是正则表达式 |
+|      header      |             第 n 行作为 column names. 如果没有则设置为 None |
+|     index_col    |                                   用作 index 的列号或者列名 |
+|       names      |                                                 列名的 list |
+|     skiprows     | 略过不读, 可以是数字表示前 n 行, 也可以是略过的行号的 list  |
+| skip_footer      |                                            文件尾若干行不读 |
+|     na_values    |                                                填充 NA 的值 |
+|      comment     |                                                    注释符号 |
+|       nrows      |                                             读取文件前 n 行 |
+|     iterator     |                                         返回一个文件的 iter |
+|     chunksize    |                          返回 iter 用来一部分一部分读取文件 |
+|                  |                                                             |
+

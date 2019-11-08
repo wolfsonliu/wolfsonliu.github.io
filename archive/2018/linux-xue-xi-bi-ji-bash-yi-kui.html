@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Linux 学习笔记: Bash 一窥</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html">
+<meta name="twitter:title" content="Wolf Cave ~ Linux 学习笔记: Bash 一窥">
+<meta name="twitter:description" content="Linux 系统基本命令行工具">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ Linux 学习笔记: Bash 一窥" />
+<meta property="og:description" content="Linux 系统基本命令行工具" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html" rel="bookmark" title="Permalink to Linux 学习笔记: Bash 一窥">Linux 学习笔记: Bash 一窥</a></h2>
+        <div class="entry-content blog-post">
+            <p>这里主要是对于 bash 和一些基本命令行工具的简单介绍，就是窥探一下，心中有数。</p>
+<p>bash毕竟是得操作才行，这里准备一些文件做操作，具体文件内容见最后。</p>
+<h2>寻求帮助</h2>
+<p>对于 bash 本身（builtin）的命令，使用 help 跟命令名来查询其帮助，例如：</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">help</span> <span class="nb">cd</span>
+</pre></div>
+
+
+<p>对于其他非 bash 本身的命令使用 man 命令（不懂就找男人，BTW，emacs的
+eshell下面帮助命令是woman）</p>
+<div class="highlight"><pre><span></span>$ man ls
+</pre></div>
+
+
+<h2>路径操作</h2>
+<ul>
+<li>绝对路径：从根目录开始的路径，<code>/home/wolfson/Documents/README.md</code>。</li>
+<li>相对路径：相对于工作目录的路径，<code>./</code>当前目录，<code>../</code>父目录。</li>
+<li>
+<p>家目录：<code>~</code> 代表当前用户（假设是wolfson）的家目录，一般情况下可能是
+  <code>/home/wolfson</code>，或者 <code>~wolffather</code> 代表 wolffather 用户的家目录，一般情况下
+  可能是 <code>/home/wolffather</code></p>
+</li>
+<li>
+<p>cd：change directory，切换目录，cd 后面跟目标路径作为参数，则可以从
+  当前目录切换到目标目录</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 通过绝对路径前往 /home/wolfson/Documents</span>
+$ <span class="nb">cd</span> /home/wolfson/Documents
+<span class="c1"># 前往上级目录 /home/wolfson</span>
+$ <span class="nb">cd</span> ..
+<span class="c1"># 前往上次所在的目录 /home/wolfson/Documents</span>
+$ <span class="nb">cd</span> -
+<span class="c1"># 通过相对路径前往 /home/wolfson/Downloads</span>
+$ <span class="nb">cd</span> ../Downloads
+<span class="c1"># 前往用户家目录 /home/wolfson</span>
+$ <span class="nb">cd</span> ~
+$ <span class="nb">cd</span>
+</pre></div>
+
+
+<ul>
+<li>pwd：print working directory，显示当前的路径，其默认输出的值与 <code>$PWD</code>
+变量中的值是一样的。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+<span class="c1"># 输出 $PWD 环境变量中的值（接受链接），也是默认输出</span>
+$ <span class="nb">pwd</span> -L
+<span class="c1"># 输出物理路径，可以避免路径中出现链接</span>
+$ <span class="nb">pwd</span> -P
+</pre></div>
+
+
+<ul>
+<li>mkdir：make directory，创建一个新目录</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 到家目录去</span>
+$ <span class="nb">cd</span> ~
+<span class="c1"># 创建一个叫 sequence 的新目录</span>
+$ mkdir sequence
+<span class="c1"># 递归创建目录</span>
+$ mkdir -p study/seq
+</pre></div>
+
+
+<ul>
+<li>rmdir：remove directory，删除一个空目录，可以说rmdir是mkdir的反面</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 删除一个叫 sequence 的空目录</span>
+$ rmdir sequence
+<span class="c1"># 递归删除目录</span>
+$ rmdir -p study/seq
+</pre></div>
+
+
+<h3>$PATH 变量</h3>
+<p>系统根据PATH变量中的路径去寻找命令，PATH中的目录根据冒号来分割。系统首
+先在第一个路径中去寻找命令，如果找到则使用该命令，如果没有找到则去下一
+个目录寻找该命令。如果所有的目录都没有找到命令，则报错。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+/home/wolfson/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+</pre></div>
+
+
+<p>想要把非PATH路径中的命令也加入到系统搜索目录中，只需要修改 PATH 变量。</p>
+<div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/new/path/to/add:<span class="nv">$PATH</span>
+</pre></div>
+
+
+<p>查看某个非bash内置命令实际的路径可以使用 which。</p>
+<div class="highlight"><pre><span></span>$ which ls
+/bin/ls
+</pre></div>
+
+
+<h2>文件及文件夹权限</h2>
+<ul>
+<li>用户：linux下面的用户，文件的所有者。root用户是管理员。</li>
+<li>用户组：一个或多个用户组成的有相同用户性质的组，方便系统管理员管理。
+  用户组的名字可以和用户一样。如root用户组。</li>
+</ul>
+<p>使用 ls 命令可以列出当前文件夹中的文件内容及文件权限：</p>
+<div class="highlight"><pre><span></span>$ ls -al
+total <span class="m">460</span>
+drwxr-xr-x <span class="m">55</span> wolfson wolfson  <span class="m">4096</span> Dec <span class="m">13</span> <span class="m">23</span>:12 .
+drwxr-xr-x  <span class="m">3</span> root    root     <span class="m">4096</span> Jul <span class="m">31</span>  <span class="m">2017</span> ..
+drwxr-x---  <span class="m">2</span> root    root     <span class="m">4096</span> Sep <span class="m">10</span>  <span class="m">2017</span> .android
+drwxrwxr-x  <span class="m">8</span> wolfson wolfson  <span class="m">4096</span> Nov <span class="m">19</span>  <span class="m">2017</span> .atom
+-rw-rw-r--  <span class="m">1</span> wolfson wolfson   <span class="m">330</span> Oct <span class="m">23</span> <span class="m">13</span>:41 .bash_aliases
+-rw-------  <span class="m">1</span> wolfson wolfson <span class="m">53135</span> Dec <span class="m">13</span> <span class="m">23</span>:12 .bash_history
+-rw-r--r--  <span class="m">1</span> wolfson wolfson   <span class="m">220</span> Jul <span class="m">31</span>  <span class="m">2017</span> .bash_logout
+-rw-r--r--  <span class="m">1</span> wolfson wolfson  <span class="m">3985</span> Aug  <span class="m">2</span>  <span class="m">2017</span> .bashrc
+</pre></div>
+
+
+<p>最开头的十个字符分别表示文件类别和不同用户对该文件的权限。
+例如 <code>-rw-r--r--  1 wolfson wolfson  3985 Aug  2  2017 .bashrc</code></p>
+<ol>
+<li>第一个字符代表文件类别：例子中是 <code>-</code> 代表的是普通文件</li>
+<li><code>-</code> 代表普通文件</li>
+<li><code>d</code> 代表目录</li>
+<li><code>l</code> 代表连接文件</li>
+<li><code>b</code> 代表设备文件中的可存储设备</li>
+<li><code>c</code> 代表设备文件中的串行端口设备，如键盘鼠标</li>
+<li>第二到第四个字符为拥有该文件的用户的权限：例子中是 <code>rw-</code>，代表可读可写</li>
+<li><code>-</code> 为占位符，无权限</li>
+<li><code>r</code> 可读权限，数字表示为 4</li>
+<li><code>w</code> 可写权限，数字表示为 2</li>
+<li><code>x</code> 可执行权限，数字表示为 1</li>
+<li>第五个到第七个字符为文件所有者所在用户组的成员权限：例子中是 <code>r--</code>，代表可读</li>
+<li>第八个到第十个字符为文件除了文件所有者与其用户组成员外的其他人的权
+   限：例子中是 <code>r--</code>，代表可读权限</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>字符标记</th>
+<th>数字标记</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>----------</code></td>
+<td>0000</td>
+<td>无权限</td>
+</tr>
+<tr>
+<td><code>-rwx------</code></td>
+<td>0700</td>
+<td>用户可读可写可执行</td>
+</tr>
+<tr>
+<td><code>-rwxrwx---</code></td>
+<td>0770</td>
+<td>用户和用户组可读可写可执行</td>
+</tr>
+<tr>
+<td><code>-rwxrwxrwx</code></td>
+<td>0777</td>
+<td>用户，用户组和其他人可读可写可执行</td>
+</tr>
+<tr>
+<td><code>---x--x--x</code></td>
+<td>0111</td>
+<td>所有人可执行</td>
+</tr>
+<tr>
+<td><code>--w--w--w-</code></td>
+<td>0222</td>
+<td>所有人可写</td>
+</tr>
+<tr>
+<td><code>--wx-wx-wx</code></td>
+<td>0333</td>
+<td>所有人可写可执行</td>
+</tr>
+<tr>
+<td><code>-r--r--r--</code></td>
+<td>0444</td>
+<td>所有人可读</td>
+</tr>
+<tr>
+<td><code>-r-xr-xr-x</code></td>
+<td>0555</td>
+<td>所有人可读可执行</td>
+</tr>
+<tr>
+<td><code>-rw-rw-rw-</code></td>
+<td>0666</td>
+<td>所有人可读可写</td>
+</tr>
+<tr>
+<td><code>-rwxr-----</code></td>
+<td>0740</td>
+<td>用户可读可写可执行，用户组可读</td>
+</tr>
+</tbody>
+</table>
+<p>权限管理有一些命令：</p>
+<ul>
+<li>chown：change owner，改变文件或文件夹的所有者</li>
+<li>chgrp：change group，改变文件或者文件夹的用户组</li>
+<li>chmod：change mode，改变文件或者文件夹的权限</li>
+</ul>
+<div class="highlight"><pre><span></span>$ chrgrp root sgRNA.txt
+$ chrgrp wolfson sgRNA.txt
+$ chrown dog sgRNA.txt
+$ chrown wolfson sgRNA.txt
+$ chmod u+x sgRNA.txt
+$ chmod g+w sgRNA.txt
+$ chmod <span class="m">644</span> sgRNA.txt
+</pre></div>
+
+
+<h2>文件操作</h2>
+<p>常用的文件操作就是显示属性，复制，删除，重命名，移动等。</p>
+<ul>
+<li>ls：list，查看文件和目录，隐藏文件是以 <code>.</code> 开头命令的文件，使用 <code>-a</code> 参数查看</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 只是简单看一下家目录下有啥</span>
+$ ls ~
+<span class="c1"># 看一下家目录下所有的文件，包括隐藏文件</span>
+$ ls -a ~
+<span class="c1"># 看一下家目录下所有的文件的具体信息</span>
+$ ls -al ~
+<span class="c1"># 列出文件夹及子文件夹中内容</span>
+$ ls -R ~
+</pre></div>
+
+
+<ul>
+<li>cp：copy，复制文件或者文件夹</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 先创建一个文件夹 ./library/data</span>
+$ mkdir -p library/data
+<span class="c1"># 把 sgRNA.txt 复制到新创建的 ./library/data 文件夹中</span>
+$ cp sgRNA.txt ./library/data/
+<span class="c1"># 也可以</span>
+$ cp sgRNA.txt ./library/data/sgRNA.txt
+<span class="c1"># 复制一个文件夹</span>
+$ cp -r ./library ./library2
+<span class="c1"># 复制一个文件</span>
+$ cp sgRNA.txt sgRNA2.txt
+</pre></div>
+
+
+<ul>
+<li>rm：remove，删除文件或者文件夹。删除命令很危险，一旦删除恢复起来就很
+  难了，最好使用 -i 或者 -I 参数来设置提醒。</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 删除一个文件</span>
+$ rm -i sgRNA2.txt
+<span class="c1"># 删除包含文件的文件夹</span>
+$ rm -ri library2
+</pre></div>
+
+
+<ul>
+<li>mv：move，移动或者重命名文件或者文件夹</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 复制一个文件</span>
+$ cp sgRNA.txt sgRNA3.txt
+<span class="c1"># 重命名一个文件</span>
+$ mv sgRNA3.txt sgRNA4.txt
+<span class="c1"># 移动一个文件</span>
+$ mv sgRNA4.txt ./library/
+<span class="c1"># 也可以</span>
+$ mv sgRNA4.txt ./library/sgRNA4.txt
+</pre></div>
+
+
+<h2>查看文件内容</h2>
+<ul>
+<li>cat：catenate，把文件从第一行输出到终端，可以连接多个文件</li>
+<li>tac：从文件最后一行输出到终端，连接多个文件，cat反过来</li>
+<li>nl: 输出文件并显示行号，类似 <code>cat -n</code></li>
+<li>more：一页页显示内容</li>
+<li>less：比more更强大，可以翻页，less is more</li>
+<li>head：显示文件前几行</li>
+<li>tail：显示文件后几行</li>
+</ul>
+<h2>编辑与抓取流内容</h2>
+<ul>
+<li>grep：抓取符合模式的行</li>
+<li>egrep：支持扩展的正则表达式即 <code>grep -E</code></li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 抓取有连着三个T的sgRNA</span>
+$ cat sgRNA.txt <span class="p">|</span> egrep <span class="s2">&quot;T{3}&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>cut：按照分隔符分列，并输出选择的列</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 以逗号做分隔符，选择第二列</span>
+$ cat sgRNA.txt <span class="p">|</span> cut -d<span class="s2">&quot;,&quot;</span> -f2
+$ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt
+</pre></div>
+
+
+<ul>
+<li>tr：替换字符串</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 互补配对序列</span>
+$ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt <span class="p">|</span> tr <span class="s2">&quot;ATCG&quot;</span> <span class="s2">&quot;TAGC&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>rev：字符串顺序反转</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="c1"># 互补配对序列</span>
+$ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt <span class="p">|</span> tr <span class="s2">&quot;ATCG&quot;</span> <span class="s2">&quot;TAGC&quot;</span> <span class="p">|</span> rev
+</pre></div>
+
+
+<ul>
+<li>sed：流编辑器</li>
+<li>awk：文本编辑语言</li>
+</ul>
+<h2>输入输出和管道（pipeline）</h2>
+<p>一般bash下的命令都支持简单的标准输入输出，通过利用标准输入输出可以简化
+任务（使用符号 &lt;&gt; 等）。另外，bash 还支持把一个程序的输出转为另一个程
+序的输入，用比喻来说就像是石油管道（pipeline）一样，把流动的字符串从一
+个命令导向另一个命令（使用符号 | ）。</p>
+<p>标准的输出输出包括三个：</p>
+<ol>
+<li>标准输入：/dev/stdin</li>
+<li>标准输出：/dev/stdout，序号为 1，默认输出到屏幕</li>
+<li>标准错误输出：/dev/stderr，序号为 2，默认输出到屏幕</li>
+</ol>
+<p>例如 cat 命令就把其标准输入的字符串输出到标准输出：</p>
+<div class="highlight"><pre><span></span>$ cat
+I have seen things you people woundn<span class="s1">&#39;t believe</span>
+<span class="s1">I have seen things you people woundn&#39;</span>t believe
+</pre></div>
+
+
+<p>很多时候我们需要重定向标准输出或者标准输入，比如从一个文件向向一个程序
+输入而不是通过键盘敲入；或者把一个程序的输出结果输出到文件而不是屏幕。</p>
+<p>如果要把一个文件传入一个命令的标准输入，即重定向标准输入，需要使用 &lt;
+符号。</p>
+<div class="highlight"><pre><span></span>$ rev &lt; sgRNA.txt
+</pre></div>
+
+
+<p>rev 命令是把每行的字符串反向并输出到标准输出，'&lt;' 把文件 /etc/passwd
+的内容导向rev命令的标准输入。</p>
+<p>如果我们想要把上条命令反向后的内容输出到一个文件，即重定向标准输出，则
+需要使用 '&gt;'。</p>
+<div class="highlight"><pre><span></span>$ rev &lt; sgRNA.txt &gt; ./revpasswd
+</pre></div>
+
+
+<p>如果我们是把一个程序的输出结果重定向到另一个程序的输入，则需要使用管道
+（pipeline），在bash中是 <code>|</code>。</p>
+<p>例如把 cat 的结果输出到 rev 命令。</p>
+<div class="highlight"><pre><span></span>$ cat sgRNA.txt <span class="p">|</span> rev
+</pre></div>
+
+
+<p>管道是可以连接多个命令的。</p>
+<div class="highlight"><pre><span></span>$ cat sgRNA.txt <span class="p">|</span> rev <span class="p">|</span> head -1
+</pre></div>
+
+
+<ul>
+<li>标准输出：<code>1&gt;</code></li>
+<li>标准错误输出：<code>2&gt;</code></li>
+<li>标准错误输出导入标准输出：<code>2&gt;&amp;1</code></li>
+</ul>
+<h2>任务管理</h2>
+<h3>串联命令</h3>
+<p>有的时候两个命令运行，第二个命令是否运行依赖于第一个命令是否运行成功，
+这种情况下我们可以使用 <code>&amp;&amp;</code> 把两个命令串联起来。只有在第一个命令成功运
+行后，才会运行第二个命令。</p>
+<p>例如，sleep 命令是让bash“睡眠”也就是暂停运行下面的命令一段时间，date
+命令则可以输出日期和时间。</p>
+<div class="highlight"><pre><span></span>$ date <span class="o">&amp;&amp;</span> sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date
+</pre></div>
+
+
+<p>除了 <code>&amp;&amp;</code> 起到了 AND 的作用，还可以使用 <code>||</code> OR 的作用。当使用 <code>||</code>连
+接两个命令的时候，当前面的命令正常运行的时候，后面的命令是不会运行的。
+而当前面的命令运行失败的时候，后面的命令才会运行。</p>
+<div class="highlight"><pre><span></span><span class="c1"># 假如我们已经有了 sgRNA.txt 这个文件</span>
+$ <span class="o">[</span> -e sgRNA.txt <span class="o">]</span> <span class="o">&amp;&amp;</span> date
+Tue Dec <span class="m">25</span> <span class="m">20</span>:33:05 CST <span class="m">2018</span>
+$ <span class="o">[</span> ! -e sgRNA.txt <span class="o">]</span> <span class="o">&amp;&amp;</span> date
+$ <span class="o">[</span> -e sgRNA.txt <span class="o">]</span> <span class="o">||</span> date
+$ <span class="o">[</span> ! -e sgRNA.txt <span class="o">]</span> <span class="o">||</span> date
+Tue Dec <span class="m">25</span> <span class="m">20</span>:33:43 CST <span class="m">2018</span>
+</pre></div>
+
+
+<h3>在后台运行任务</h3>
+<p>打开一个 shell 之后，你的所有操作都在这个 shell 中进行。如果有程序占用
+了shell，比如正在输出，你就不能进行其他操作。很多时候我们并不需要看着
+程序输出信息，而是把任务放到后台。把运行的命令放在后台，只需要在运行命
+令的时候在命令后面加上 <code>&amp;</code> 。</p>
+<p>我们可以把 sleep 命令放后台运行。</p>
+<div class="highlight"><pre><span></span>$ date
+$ sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date <span class="p">&amp;</span>
+</pre></div>
+
+
+<p>如果我们只是使用 <code>&amp;</code> 把命令放后台，当我们登出 shell 的时候，shell 有可
+能会发送终止信号把我们程序停止掉。如果我们希望程序能在我们退出 shell
+的时候继续运行，则需要进行一定设置。我们可以直接设置 bash 让其不发出终
+止信号，或者我们写脚本，可以去处理信号不让程序停止，但是对于一般的一条
+命令的任务，这样做还是比较复杂。这样的情况下，我们可以使用 nohup 命令。</p>
+<div class="highlight"><pre><span></span>$ nohup sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date &gt; nohup.out <span class="p">&amp;</span>
+</pre></div>
+
+
+<p>这样就算我们退出 bash，命令依然会运行，并且把输出到标准输出的结果输入
+到 nohup.out 文件中。</p>
+<h3>前台后台调度任务</h3>
+<p>要查看当前在后台的任务，我们可以使用 jobs命令。jobs 输出结果前面方括号
+中的标号就是后台命令编号。</p>
+<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span> <span class="p">&amp;</span>
+$ sleep <span class="m">20</span><span class="p">&amp;</span>
+$ <span class="nb">jobs</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
+<span class="o">[</span><span class="m">2</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
+</pre></div>
+
+
+<p>如果我们要把 1 号任务提交到前台，则需要使用 fg 命令。</p>
+<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span> <span class="p">&amp;</span>
+$ sleep <span class="m">20</span> <span class="p">&amp;</span>
+$ <span class="nb">jobs</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
+<span class="o">[</span><span class="m">2</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
+$ <span class="nb">fg</span> <span class="m">1</span>
+</pre></div>
+
+
+<p>如果我们想要暂停命令，则使用 CTRL-Z。</p>
+<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span>
+<span class="c1"># CTRL-Z</span>
+$ <span class="nb">jobs</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span>+  Stopped                 sleep <span class="m">20</span>
+</pre></div>
+
+
+<p>如果我们需要把暂停的命令放到前台去运行，则使用 fg 命令，如果要把暂停的
+命令放在后台运行则使用 bg 命令。</p>
+<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span>
+<span class="c1"># CTRL-Z</span>
+$ <span class="nb">jobs</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span>+  Stopped                 sleep <span class="m">20</span>
+$ <span class="nb">bg</span>
+$ <span class="nb">jobs</span>
+<span class="o">[</span><span class="m">1</span><span class="o">]</span>+  Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
+</pre></div>
+
+
+<h3>在子 shell 中运行命令</h3>
+<p>如果我们需要获得文件建立时候的时间做文件名，就需要在文件建立的时候运行
+一个 <code>date</code> 命令来获取时间这样就需要命令能够在子shell中运行并返回结果。
+有两种表示可以在子shell运行命令。</p>
+<ul>
+<li>使用 "`" 符号：</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nv">thetime</span><span class="o">=</span><span class="sb">`</span>date<span class="sb">`</span>
+$ <span class="nb">echo</span> <span class="nv">$thetime</span>
+</pre></div>
+
+
+<ul>
+<li>使用小括号：</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nv">thetime</span><span class="o">=</span><span class="k">$(</span>date<span class="k">)</span>
+$ <span class="nb">echo</span> <span class="nv">$thetime</span>
+</pre></div>
+
+
+<h3>管理任务</h3>
+<p>在 Windows 下面有任务管理器，在bash中也可以查看和管理任务。ps命令可以
+根据参数输出命令信息到标准输出。top命令则是交互式的任务管理命令。kill
+命令可以终止任务。</p>
+<p>kill 命令常用的是：</p>
+<ul>
+<li><code>kill -9 PID</code> 直接杀掉任务，没有任何后续处理</li>
+<li><code>kill -15 PID</code> 按照正常情况终止任务，更推荐</li>
+</ul>
+<p>ps 命令可以把当前运行的程序都输出：</p>
+<ul>
+<li><code>ps -elf</code> 输出所有命令到标准输出，可以把结果导入到 grep 函数</li>
+</ul>
+<p>top 命令可以交互式实时显示运行的任务，类似 Windows 或者 Mac OS 下的任
+务管理器。</p>
+<ul>
+<li>&lt; 和 &gt;: 用于选择用于排序的列.</li>
+<li>P: 按照CPU使用排序显示进程.</li>
+<li>M: 按照内存使用量排序显示进程.</li>
+<li>F: 选择需要显示的列.</li>
+<li>u: 选择要显示的用户的进程.</li>
+<li>z: 显示颜色并高亮当前运行进程.</li>
+<li>Z: 设置颜色</li>
+<li>l: 上机时间统计显示.</li>
+<li>m: Memory 统计显示.</li>
+<li>t: Task/CPU 统计显示.</li>
+<li>1: 显示每个线程的情况</li>
+<li>k: kill 相应的进程.</li>
+<li>q: 退出 top.</li>
+</ul>
+<h2>样本文件</h2>
+<p>把下面文件内容存成相应文件就可以用了。建议在 shell 下使用 cat 或者 emacs/vim 去存。</p>
+<div class="highlight"><pre><span></span>$ cat <span class="s">&lt;&lt; EOF &gt; 文件名.txt</span>
+<span class="s"># 要输入的内容</span>
+<span class="s">EOF</span>
+</pre></div>
+
+
+<p>sgRNA.txt</p>
+<div class="highlight"><pre><span></span><span class="n">k1007_a_990</span><span class="p">,</span><span class="n">TATAGGCTAGAGGATTAGAG</span>
+<span class="n">k1007_s_616</span><span class="p">,</span><span class="n">TTTGCAATTCACCATCCTTC</span>
+<span class="n">k1007_s_784</span><span class="p">,</span><span class="n">AGAGACTTCTTGAAAGGGCG</span>
+<span class="n">k1007_a_62</span><span class="p">,</span><span class="n">GCGCAAGTCCAGAGTTTCCA</span>
+<span class="n">k1007_a_615</span><span class="p">,</span><span class="n">TACAACCAACACCCGAAGGA</span>
+<span class="n">k1007_s_529</span><span class="p">,</span><span class="n">TCACATCACAAGAAGTTCGA</span>
+<span class="n">k1007_s_293</span><span class="p">,</span><span class="n">TCAGAGGAGCTGCAATGAGA</span>
+<span class="n">k1007_s_1014</span><span class="p">,</span><span class="n">TCTAGCCTATAAGCCCTGTG</span>
+<span class="n">k1007_s_801</span><span class="p">,</span><span class="n">GCGAGGAAGCTTCTCTGTGA</span>
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Fri 14 December 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/linux.html">#linux, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html&text=Linux 学习笔记: Bash 一窥&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html&t=Linux 学习笔记: Bash 一窥"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html&title=Linux 学习笔记: Bash 一窥" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=Linux 学习笔记: Bash 一窥&amp;body=Viens découvrir un article à propos de [Linux 学习笔记: Bash 一窥] sur le site de Wolfson Liu. ../../archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/linux-xue-xi-bi-ji-bash-yi-kui.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

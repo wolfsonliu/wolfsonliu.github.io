@@ -1,0 +1,433 @@
+Title: Linux 学习笔记: Bash Script 入门
+Date: 2018-12-23 21:37
+Modified: 2018-12-27 23:41
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: Bash Script 入门
+
+## 什么是脚本 ##
+
+* 一个记录了shell命令的文本文件（文件扩展名是.sh）（在linux下，文件扩
+  展名的意义和 Windows 不同，文件扩展名更多是给人看的）
+* 拥有编程语言的基本特性，可以认为是一个语言
+* 协调不同软件的工作
+* 自动化，减轻工作量
+
+## 一个简单的脚本 ##
+
+我们写第一个简单的脚本，脚本名字叫：`hello_world.sh`
+
+```{shell}
+#! /bin/bash
+
+echo "Hello World!"
+```
+
+在 bash script 中的注释是 `#` 后面的部分，bash 不会运行注释。在上面例
+子里面，第一行为 `#!` 是特殊的注释，这里是告诉bash，使用哪个命令来运行
+该脚本。在 `#!` 后面跟着具体的命令的绝对路径，因为这里是 bash 脚本，则
+使用的是 `/bin/bash`；如果是 R 脚本，可以是 `/usr/bin/env R`；或者是
+awk 脚本的话，则应该是 `/usr/bin/awk -f`。在我们把脚本权限设置可执行的
+时候，bash 会用指定的解释器运行该脚本。例如运行 `./hello_world.sh`，相
+当于 `/bin/bash ./hello_world.sh`。
+
+## 脚本与函数 ##
+
+我们可以把所有需要运行的命令都写在一个文本文件中，这样就完成了一个脚本。
+但是有的时候我们会需要在脚本中重复地运行若干命令，这样的情况下就可以把
+相应重复的命令打包成一个函数，在脚本中就可以减少重复代码的数量。使用函
+数可以让脚本更简洁明了，方便维护。bash script 的函数很简单，就是把相应
+的命令放在函数体中。
+
+如 hello_world2.sh：
+
+```{shell}
+#! /bin/bash
+
+function hello {
+    echo "Hello!"
+}
+
+world() {
+    echo "World!"
+}
+
+hello
+world
+```
+
+## 变量 ##
+
+在 bash 中可以定义变量，引用变量的时候需要在变量名前加上 `$`，如
+`$HOME`。在 bash 中有若干预先定义好的以大写字母命令的变量，被称为环境
+变量，用户在定义自己的变量的时候除非是有意如此，最好不要和环境变量重名，
+否则可能会引起一些命令不能正常运行。
+
+用户可以自己定义变量。需要注意的是，如果所要定义变量的值中有空格，需要
+使用引号引起来。双引号和单引号在 bash 中是不一样的，双引号中的变量名会
+替换为变量对应的值，而对于单引号中的变量名则不会自动替换，单引号中的字
+符就是其原始字符。
+
+```{shell}
+$ myname=Wolfson
+$ MYGRATE="Hello World!"
+$ echo $mygrate I am $myname
+Hello World! I am Wolfson
+$ echo "$MYGRATE I am $myname"
+$ echo '$MYGRATE I am $myname'
+$MYGRATE I am $myname'
+```
+
+### 位置变量 ###
+
+对于脚本和函数都支持位置变量。`$0` 是该脚本的名称或者函数的名称；`$1`
+是该脚本或者该函数后面的第一个参数；`$2`是该脚本或者该函数后面的第二个
+参数，依次类推。
+
+例如 hello.sh 脚本：
+
+```{shell}
+#! /bin/bash
+echo “Hello, $1! I am $2.”
+```
+
+可以给运行该脚本，给参数或不给：
+
+```{shell}
+$ ./hello.sh
+Hello, ! I am .
+$ ./hello.sh "Han Meimei" "Li Lei"
+Hello, Han Meimei! I am Li Lei.
+```
+
+对于函数也如此，例如 hello2.sh脚本：
+
+```{shell}
+#! /bin/bash
+function grate {
+    echo “Hello, $1! I am $2.”
+}
+grate
+grate "Han Meimei" "Li Lei"
+```
+
+运行改脚本：
+
+```{shell}
+$ ./hello2.sh
+Hello, ! I am .
+Hello, Han Meimei! I am Li Lei.
+$ ./hello2.sh "Zhang San" "Li Si"
+Hello, ! I am .
+Hello, Han Meimei! I am Li Lei.
+```
+
+## 流程控制 ##
+
+流程控制是为了使得脚本可以非线性地运行以达到任务目的。bash中有多种流程控制：
+
+* if/else：用于条件判断
+* for：用于执行一定计数的循环
+* while：当一定条件成立（真）的情况下执行循环
+* until：当一定条件不成立（假）的情况下执行循环
+* case：在若干条件中选择
+
+### if/else ###
+
+当需要根据一个条件来确定是否要执行或者要执行什么样的命令的情况下需要用
+到 if/else 做条件判断。
+
+```{shell}
+if (condition); then
+    (statement)
+[elif (condition); then]
+[    (statement)]
+[else]
+[    (statement)]
+fi
+```
+
+在bash script中，可以使用 `[]` test 语句做条件判断，具体参考 `man test`。
+
+例如，我们可以在文件夹不存在的时候去创建文件夹，而在文件夹存在的时候不采取操作：
+
+```{shell}
+if [ ! -e ~/seq ]; then
+    mkdir ~/seq
+fi
+```
+
+### for ###
+
+如果有同样的任务需要运行特定的次数，则可以使用 for 循环语句。
+
+```{shell}
+for (name) [in list]; do
+    (statement)
+done
+```
+
+比如我们想输出 1 到 10：
+
+```{shell}
+for x in `seq 1 10`; do
+    echo $x
+done
+```
+
+或者我们可以把要逐个处理的值用空格隔开：
+
+```{shell}
+for x in one two three four; do
+    echo $x
+done
+```
+
+写个 for 循环可以容易地批量实现文件重命名：
+
+```{shell}
+mkdir tmp
+
+for x in `seq 1 10`; do
+    touch tmp/${x}.txt
+done
+echo "Initial files:"
+ls tmp
+
+for x in `ls tmp`; do
+    mv tmp/${x} tmp/file${x}
+done
+echo "Renamed files:"
+ls tmp
+```
+
+### while 和 until ###
+
+有时候我们希望一个命令不断执行，直到条件发生变化，这个时候我们可以用
+while 或者 until。两者区别在于， 如果初始条件为假，则while一次也不会执
+行，而until则会执行一次。只需要把条件取反，就能把while变成untile。
+
+```{shell}
+while (condition); do
+    (statement)
+done
+until (not condition); do
+    (statement)
+done
+```
+
+例如我们写一个while 循环找到最后一层目录：
+
+```{shell}
+dirs=one/two/three/four/five
+
+mkdir -p ${dirs}
+
+pdirs=one
+
+echo "Dirs: ${pdirs}"
+i=1
+while [ `ls ${pdirs} | wc -l` -ne 0 ]; do
+    echo "[$i] Dirs     : ${pdirs}"
+    pdirs=${pdirs}/`ls ${pdirs} | head -1`
+    echo "[$i] Dirs Grow: ${pdirs}"
+    i=$((i+1))
+done
+```
+
+如果我们要拓展一下，用上面 while 循环实现类似于 `rmdir -p` 的功能：
+
+```{shell}
+dirs=one/two/three/four/five
+
+mkdir -p ${dirs}
+
+pdirs=./one
+
+echo "Dirs: ${pdirs}"
+i=1
+while [ ${pdirs} != "." ]; do
+    echo "[$i] Dir: ${pdirs}"
+    if [ `ls ${pdirs} | wc -l` -eq 0 ]; then
+        rmdir ${pdirs}
+        echo "[$i] Del: ${pdirs}"
+        pdirs=`dirname ${pdirs}`
+    else
+        pdirs=${pdirs}/`ls ${pdirs} | head -1`
+    fi
+    echo "[$i] Dir: ${pdirs}"
+    i=$((i+1))
+done
+```
+
+### man test ###
+
+```{shell}
+TEST(1)                          User Commands                         TEST(1)
+
+NAME
+       test - check file types and compare values
+
+SYNOPSIS
+       test EXPRESSION
+       test
+
+       [ EXPRESSION ]
+       [ ]
+       [ OPTION
+
+DESCRIPTION
+       Exit with the status determined by EXPRESSION.
+
+       --help display this help and exit
+
+       --version
+              output version information and exit
+
+       An omitted EXPRESSION defaults to false.  Otherwise, EXPRESSION is true
+       or false and sets exit status.  It is one of:
+
+       ( EXPRESSION )
+              EXPRESSION is true
+
+       ! EXPRESSION
+              EXPRESSION is false
+
+       EXPRESSION1 -a EXPRESSION2
+              both EXPRESSION1 and EXPRESSION2 are true
+
+       EXPRESSION1 -o EXPRESSION2
+              either EXPRESSION1 or EXPRESSION2 is true
+
+       -n STRING
+              the length of STRING is nonzero
+
+       STRING equivalent to -n STRING
+
+       -z STRING
+              the length of STRING is zero
+
+       STRING1 = STRING2
+              the strings are equal
+
+       STRING1 != STRING2
+              the strings are not equal
+
+       INTEGER1 -eq INTEGER2
+              INTEGER1 is equal to INTEGER2
+
+       INTEGER1 -ge INTEGER2
+              INTEGER1 is greater than or equal to INTEGER2
+
+       INTEGER1 -gt INTEGER2
+              INTEGER1 is greater than INTEGER2
+
+       INTEGER1 -le INTEGER2
+              INTEGER1 is less than or equal to INTEGER2
+
+       INTEGER1 -lt INTEGER2
+              INTEGER1 is less than INTEGER2
+
+       INTEGER1 -ne INTEGER2
+              INTEGER1 is not equal to INTEGER2
+
+       FILE1 -ef FILE2
+              FILE1 and FILE2 have the same device and inode numbers
+
+       FILE1 -nt FILE2
+              FILE1 is newer (modification date) than FILE2
+
+       FILE1 -ot FILE2
+              FILE1 is older than FILE2
+
+       -b FILE
+              FILE exists and is block special
+
+       -c FILE
+              FILE exists and is character special
+
+       -d FILE
+              FILE exists and is a directory
+
+       -e FILE
+              FILE exists
+
+       -f FILE
+              FILE exists and is a regular file
+
+       -g FILE
+              FILE exists and is set-group-ID
+
+       -G FILE
+              FILE exists and is owned by the effective group ID
+
+       -h FILE
+              FILE exists and is a symbolic link (same as -L)
+
+       -k FILE
+              FILE exists and has its sticky bit set
+
+       -L FILE
+              FILE exists and is a symbolic link (same as -h)
+
+       -O FILE
+              FILE exists and is owned by the effective user ID
+
+       -p FILE
+              FILE exists and is a named pipe
+
+       -r FILE
+              FILE exists and read permission is granted
+
+       -s FILE
+              FILE exists and has a size greater than zero
+
+       -S FILE
+              FILE exists and is a socket
+
+       -t FD  file descriptor FD is opened on a terminal
+
+       -u FILE
+              FILE exists and its set-user-ID bit is set
+
+       -w FILE
+              FILE exists and write permission is granted
+
+       -x FILE
+              FILE exists and execute (or search) permission is granted
+
+       Except for -h and  -L,  all  FILE-related  tests  dereference  symbolic
+       links.   Beware  that  parentheses  need  to be escaped (e.g., by back‐
+       slashes) for shells.  INTEGER may also be -l STRING, which evaluates to
+       the length of STRING.
+
+       NOTE:  Binary  -a  and -o are inherently ambiguous.  Use 'test EXPR1 &&
+       test EXPR2' or 'test EXPR1 || test EXPR2' instead.
+
+       NOTE: [ honors the --help and --version options,  but  test  does  not.
+       test treats each of those as it treats any other nonempty STRING.
+
+       NOTE:  your shell may have its own version of test and/or [, which usu‐
+       ally supersedes the version  described  here.   Please  refer  to  your
+       shell's documentation for details about the options it supports.
+
+AUTHOR
+       Written by Kevin Braunsdorf and Matthew Bradburn.
+
+REPORTING BUGS
+       GNU coreutils online help: <http://www.gnu.org/software/coreutils/>
+       Report [ translation bugs to <http://translationproject.org/team/>
+
+COPYRIGHT
+       Copyright  ©  2017  Free Software Foundation, Inc.  License GPLv3+: GNU
+       GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
+       This is free software: you are free  to  change  and  redistribute  it.
+       There is NO WARRANTY, to the extent permitted by law.
+
+SEE ALSO
+       Full documentation at: <http://www.gnu.org/software/coreutils/[>
+       or available locally via: info '(coreutils) test invocation'
+
+GNU coreutils 8.28               January 2018                          TEST(1)
+```

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>RNA-Seq 分析流程</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/rna-seq-fen-xi-liu-cheng.html">
+<meta name="twitter:title" content="Wolf Cave ~ RNA-Seq 分析流程">
+<meta name="twitter:description" content="RNA-Seq 分析的总结.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ RNA-Seq 分析流程" />
+<meta property="og:description" content="RNA-Seq 分析的总结." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/rna-seq-fen-xi-liu-cheng.html" rel="bookmark" title="Permalink to RNA-Seq 分析流程">RNA-Seq 分析流程</a></h2>
+        <div class="entry-content blog-post">
+            <h2>RNA-Seq 简介</h2>
+<h3>实验设计</h3>
+<p>RNA-Seq 实验中，需要把 RNA 从样品中提取出来。在样品提取的过程中，需要
+把占据所有RNA量 90% 的 rRNA 给去处，留下 1% 到 2%的研究关注的
+mRNA(Conesa et al., 2016)。对于真核细胞而言，mRNA在成熟之后都会加有
+polyA的尾巴，所以可以根据polyA的尾巴，从总RNA中，利用粘有polyT的磁珠抓
+取mRNA。</p>
+<h3>Raw data 预处理</h3>
+<p>获得的 RNA-Seq 数据需要先像其他的测序数据分析一样进行质量控制和预处理。
+RNA-seq 数据做质量控制可以使用FastQC和NGSQC软件，对于一些超过 30% 的
+outlier可以扔掉。对于测序数据靠近3'端的数据的测序质量是逐渐降低的，所
+以可以把低于一定测序质量的序列剪去，FASTX-Toolkit，Trimmomatic，picard
+等都是可以选择的软件。</p>
+<h3>Reads alignment</h3>
+<p>处理过的 reads 会被匹配到参考基因组上。常用的匹配软件有 bowtie 或者
+BWA等。一般情况下应该至少有70%到90%的序列可以匹配到参考基因组上。如果
+是直接匹配到基因组上，匹配率会高一些，而如果是匹配到转录组上，匹配度会
+低一些，因为一些未知的转录序列会被丢掉。</p>
+<hr>
+<h4>参考文献</h4>
+<ol>
+<li>Conesa, A., Madrigal, P., Tarazona, S., Gomez-Cabrero, D., Cervera,
+   A., McPherson, A., Szcześniak, M.W., Gaffney, D.J., Elo, L.L.,
+   Zhang, X., et al. (2016). A survey of best practices for RNA-seq
+   data analysis. Genome Biology 17.</li>
+</ol>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sat 12 March 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/bioinformatics.html">#bioinformatics, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/rna-seq-fen-xi-liu-cheng.html&text=RNA-Seq 分析流程&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/rna-seq-fen-xi-liu-cheng.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/rna-seq-fen-xi-liu-cheng.html&t=RNA-Seq 分析流程"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/rna-seq-fen-xi-liu-cheng.html&title=RNA-Seq 分析流程" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=RNA-Seq 分析流程&amp;body=Viens découvrir un article à propos de [RNA-Seq 分析流程] sur le site de Wolfson Liu. ../../archive/2016/rna-seq-fen-xi-liu-cheng.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/rna-seq-fen-xi-liu-cheng.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>同步文件</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>Modified date 2017-05-19 15:25</p>
+<h3>Git</h3>
+<p>对于脚本文件和代码, 我使用 Git 软件进行管理. Git 软件实在是好用.</p>
+<p>在网上免费托管也很好, 可以分别在 Github 和 Bitbucket 上面申请账号.
+因为 Github 上面私人的空间是需要付费用的, 而在 Bitbucket 上面则不用付费用.
+在我的代码还不希望被别人看到的时候, 我就把代码托管在 Bitbucket 上面, 而等我觉得可以公开的时候再托管到 Github 上.</p>
+<h3>[MEGA]{https://mega.nz/}</h3>
+<p>对于同步盘来说, 国内的金山已经不能在 linux 下用了.
+而 dropbox 的起始容量有限, 且墙内不方便使用.
+MEGA 的 50 G 免费空间则脱颖而出, 并且 MEGA 还有很良好的 linux 版本支持.
+现在是我的主力同步盘.</p>
+<h3>[坚果云]{https://www.jianguoyun.com/}</h3>
+<p>坚果云的计算容量方式是按照流量来的, 不设定空间限制, 但是每个月有有限的免费上传和下载的流量.
+坚果云提供很好的 WebDAV 服务, 配合 zotero 来管理文献实在是好使到不行!</p>
+<h3>rsync</h3>
+<p>前两天 (20170512) 的WannCry勒索软件的问题让我认识到了经常用硬盘备份数据的重要性.
+rsync 是很好使用的可以去同步本地或者远程文件的软件, 可以自动同步经过改变的文件,
+把我的硬盘上的文件去和移动硬盘上相应的文件夹去同步很方便.
+我应该养成每周去同步一次的习惯.</p>
+<hr>
+<h2>过去式</h2>
+<p>下面给出的是我之前使用的方法, 由于种种原因现在不再使用了.</p>
+<h3>同步文献等文件</h3>
+<p>我喜欢使用 Jabref 管理文献, 但是 Jabref 不能实现不同电脑间的同步.
+如果我使用两台电脑的话, 可能需要同步文献, 如果使用优盘拷贝, 还是很麻烦的.
+所以, 我尝试使用 Mendeley 来管理文献, 但是 Mendeley 在我的笔记本上有问题, 打开报错, 还不能建立分组.
+哎, 懒得搞. 突发奇想, 为何不用快盘去同步呢? 快盘不是有 Ubuntu Kylin 的客户端么? 我现在使用 Fedora (23) 是不是也能安装呢?</p>
+<p>于是我在网上找了在 Fedora 安装快盘客户端的方法.
+很简单, 只需要下载快盘的 deb 文件, 解压该文件, 可以得到 data.tar.xz, 再次解压 data tarball.
+在 data tarball 中有 /opt/ 和 /usr/, 把相关的文件放在合适的地方, 最后再设置好 link 就好了.</p>
+<p>在我使用的时候, 发现报错, 快盘依赖的一些包我电脑上没有, 还需要安装 boost 库, 和 libqxt 库, dnf install 之后就可以正常使用了.</p>
+<p>由于 linux 下的快盘客户端是同步盘, 我们只要稍稍设置就好. 于是我把所有的文献都转移到快盘同步盘下, 搞定!
+在另一台电脑上, 我也安装快盘的客户端, 设置同步盘, 于是文献实现了不同电脑之间的同步. 通过 Jabref 管理文献也能实现不同电脑之间的同步了.</p>
+<p>同步盘的好处在于方便, 不用设置很多项目, 但是劣势就是如果同步和修改内容时间有问题, 在不同电脑上的同步会造成混乱.
+需要注意的是, 同步盘所参考的是文件的时间, 所以, 在修改一个电脑上的文件之前应该先完成同步, 这样才能避免文件的丢失和同步的混乱.
+如果能够在文件同步上也采用 Git 的方法则可以更方便地进行管理.</p>
+<p>在 2016 年 6 月, 快盘说自己会停止服务, 所以我就没办法继续使用快盘的 linux 客户端了, 在几个月后,
+我在试图配置 Mendeley 和 Zotero 的同步文献的时候偶然知道了<a href="https://www.jianguoyun.com">坚果云</a>,
+这个国内的盘很不错, 有 linux 的客户端, 虽然不像百度云一样给海量的空间, 但是其免费的流量除了头一次同步已经将就着够用了.
+而且其还支持 WebDAV 的同步存储方式, 很适合开发者用. 我且继续使用 JabRef 和坚果云.</p>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

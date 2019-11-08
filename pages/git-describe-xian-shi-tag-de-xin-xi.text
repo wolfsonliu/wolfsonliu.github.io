@@ -1,0 +1,42 @@
+Title: Git describe 显示 tag 的信息
+Date: 2018-11-06 09:10
+Modified: 2018-11-06 09:10
+Category: 壹零零壹
+Tags: git
+Authors: Wolfson Liu
+Summary: Git describe 命令
+
+`git describe` 是根据 tag 信息等产生出阅读友好的指定的分支的信息。
+
+如我们可以给当前的分支设立一个 tag：
+
+```{shell}
+git tag v0.1.0 -m "first release"
+```
+
+然后我们就可以使用 `describe` 来显示信息：
+
+```{shell}
+git describe master
+# v0.1.0
+```
+
+如果我们需要其显示该 tag 对应的 commit 的 SHA-1 前几个数字，需要加上
+`--long` 参数：
+
+```{shell}
+git describe --long master
+# v0.1.0-0-geb7a01a
+```
+
+最后的几个字母就是 SHA-1 的前几位，而中间多出的 '0' 是 master 分支
+中在该 tag 之上的 commit 的数目，因为当前 master 分支的 tag 是刚刚建立，
+还没有新的 commit，所以是 0。
+
+使用 `git describe --long master` 可以为版本文件命名，如：
+
+```
+git archive master --prefix='project/' | gzip > `git describe master --long`.tar.gz 
+ls *.tar.gz
+# v0.1.0-0-geb7a01a.tar.gz
+```

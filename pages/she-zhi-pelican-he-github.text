@@ -1,0 +1,162 @@
+Title: 设置 Pelican 和 GitHub
+Date: 2015-11-14 20:44
+Modified: 2016-02-15 00:03
+Category: 壹零零壹
+Tags: pelican, git
+Authors: Wolfson Liu
+Summary: 如何利用 Pelican 快速建立自己的 GitHub 静态博客
+
+我一直以来想要练习写作能力，可是总是由于各种借口不能开始。自从了解到静态博客可以挂载在 GitHub 上的时候，我爱探索的性子就迫不及待的想要尝试了。然而，是真的没有时间了。最近，又见到了柯石英学长，他刚从国外回来，想要从事科普写作的工作，也给我看了几篇发表的和未发表的文章。我的内心又肿胀起来。好吧，先把博客建立起来再说。
+
+之前是听说过 Jekyll 的，在我准备尝试 Jekyll 的时候看到一个[网站](https://www.staticgen.com/)上面列出了很多的静态网站生成软件。当然，Jekyll是第一名，这也是为什么我最早知道Jekyll的原因吧。然而，我看到Jekyll是用Ruby写的，我并没有尝试学习过Ruby，内心里有了一份纠结，难道我还得花时间学Ruby？接着看，发现了 Pelican 是用 Python 写的，而且排名也比较靠前。啊，我刚好学 Python，真好，就用 Pelican 了。另外一查，Pelican 是鹈鹕的意思，嘿嘿，就它没说了！
+
+正好周六，鼓捣鼓捣吧。我开始查找如何使用 Pelican 生成静态网页，如何建立 GitHub 的页面。[Pelican 的简单使用说明](http://docs.getpelican.com/en/3.6.3/quickstart.html)还是要看一下的。不过，这个对于我想快速建立来说，还是有点麻烦。，找到了别人建立静态博客的[说明](http://mathamy.com/migrating-to-github-pages-using-pelican.html)，于是我就按着说明一步一步来做了。我写的这段小文，也是参考了这篇文章的。
+
+-----------
+
+####建立 GitHub 页面
+
+* 按照[说明](https://pages.github.com/)建立 GitHub 页面
+
+首先还是要有一个页面的，要不没有地方看呀。如果有域名当然好，我没有域名，就用 GitHub 提供的了。
+
+####配置 Pelican
+
+* 安装 Pelican: [Pelican 的说明网站](http://docs.getpelican.com/en/3.6.3/quickstart.html)上有如何安装 Pelican 的方法和需要安装的包。因为我主要用 Markdown 所以除了 Pelican 之外就 `pip install Markdown`。
+* 建立博客文件夹: 在安装好软件之后，就要在自己的硬盘上面找一个地方来放自己的博客页面文件。也是需要 Pelican 处理的主文件。
+
+```
+mkdir ~/myblog
+cd ~/myblog
+```
+
+* 运行 `pelican-quickstart`: 因为我没有时间去钻研 Pelican 具体该怎么用，所以就用傻瓜式操作了，Pelican 写了很方便的脚本来辅助建立项目。只要回答一些问题就好了。每个问题后面的方括号中的是默认设置，圆括号中是选项。有一点需要注意的是时区的设置，名称可以参考 [wikipedia](http://en.wikipedia.org/wiki/List_of_tz_database_time_zones)。
+
+```
+$ pelican-quickstart
+Welcome to pelican-quickstart v3.6.3.
+
+This script will help you create a new Pelican-based website.
+
+Please answer the following questions so this script can generate the files
+needed by Pelican.
+
+    
+Where do you want to create your new web site? [.]
+>
+What will be the title of this web site?
+> Wolfson's Blog
+Who will be the author of this web site?
+> Wolfson
+What will be the default language of this web site? [en]
+> zh
+Do you want to specify a URL prefix? e.g., http://example.com   (Y/n)
+> y
+What is your URL prefix? (see above example; no trailing slash)
+> http://wolfson.github.io
+Do you want to enable article pagination? (Y/n)
+> y
+How many articles per page do you want? [10]
+>
+What is your time zone? [Europe/Paris]
+> Asia/Shanghai
+Do you want to generate a Fabfile/Makefile to automate generation and publishing? (Y/n)
+> y
+Do you want an auto-reload & simpleHTTP script to assist with theme and site development? (Y/n)
+> y
+Do you want to upload your website using FTP? (y/N)
+> n
+Do you want to upload your website using SSH? (y/N)
+> n
+Do you want to upload your website using Dropbox? (y/N)
+> n
+Do you want to upload your website using S3? (y/N)
+> n
+Do you want to upload your website using Rackspace Cloud Files? (y/N)
+> n
+Do you want to upload your website using GitHub Pages? (y/N) y
+Is this your personal page (username.github.io)? (y/N)
+> n
+Done. Your new project is available at ~/Wolfson
+```
+
+当这些问题回答完后, Pelican 会自动建立所需要的文件和文件夹。
+
+```
+$ tree
+.
+├── Makefile
+├── content
+├── develop_server.sh
+├── fabfile.py
+├── output
+├── pelicanconf.py
+└── publishconf.py
+```
+
+简要说下各个文件和文件夹的用途：
+* `Makefile` 使用 `make` 来生成页面的文件；
+* `content` 放图片和 Markdown 文件的文件夹，还可以在其中新建文件夹，只要在 `pelicanconf.py` 中列出就可以；
+* `develop_server.sh`，我没太明白，`Makefile` 需要使用的脚本；
+* `fabfile.py` 是使用 Python 写的 [fabric](http://www.fabfile.org/) 程序的脚本，可以取代 `make` 的作用；
+* `output`是 Pelican 放生成的页面的地方，也是应该 push 到 GitHub 的文件的存放文件夹；
+* `pelicanconf.py` 是设置 Pelican 的文件加，里面定义了很多参数；
+* `publishconf.py` 也是设置的文件，快速设置中回答的一些问题的答案在配置文件中。
+
+####Pelican 主题
+
+* 从 GitHub 上面 [Pelican Theme](https://github.com/getpelican/pelican-themes) 可以获得，放在自己的博客文件夹中即可。
+
+```
+git clone https://github.com/getpelican/pelican-themes
+```
+
+* 设置自己喜欢的主题，可以通过 Pelican 程序提供的 [pelican-themes](http://docs.getpelican.com/en/3.3.0/pelican-themes.html) 设置，也可以在 `pelicanconf.py` 中设置。
+
+```
+THEME = "pelican-themes/pelican-blue"
+```
+
+####增加 Disqus 评论####
+
+因为是静态博客, 所以 Pelican 生成的页面本身没有评论的功能, 但是可以很方便地通过 Disqus 来增加评论功能.
+
+首先, 需要在 Disqus 上面注册账号, 然后点击小齿轮出现的 "增加 Disqus 到其他网站", 跟着相关的设置就好. 设置完成后, 需要记下设置的 Disqus 网页名称. 接着, 在 pelicanconf.py 中进行设置就可以了.
+
+```
+DISQUS_SITENAME = u"wolfsonliu"
+```
+
+####生成网页####
+
+* devserver 生成本地网页
+
+当有了 Markdown 文章之后，可以生成网页。
+
+```
+$ cd myblog
+$ make devserver
+```
+
+命令运行之后，output 文件夹中会有相应的网页生成。在浏览器中打开：http://localhost:8000 就可以进入生成的网页，可以看看效果然后修改错误之类的。
+
+
+####推送到 GitHub
+
+* 页面生成无误后就可以推送到 GitHub 仓库，并通过设定的网址查看了。
+
+```
+$ touch README.md
+$ git init
+$ git add README.md
+$ git add *
+$ git commit -m "first commit"
+$ git remote add origin https://github.com/wolfsonliu/wolfsonliu.github.io.git
+$ git push -u origin master
+```
+
+----------
+
+终于有了自己的博客了，可以好好写东西了。当然，还有很多需要调试需要修改的地方，有时间了可以弄一下。比如，修改下主题，增加些新的特性等。
+
+

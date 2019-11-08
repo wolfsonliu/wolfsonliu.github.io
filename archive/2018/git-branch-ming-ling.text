@@ -1,0 +1,190 @@
+Title: Git branch 命令
+Date: 2018-11-06 09:07
+Modified: 2018-11-06 09:07
+Category: 壹零零壹
+Tags: git
+Authors: Wolfson Liu
+Summary: Git branch 命令简析
+
+`git branch` 或者 `man git branch` 命令是用来显示，创建和删除分支（branch）的。
+
+## 显示分支信息 ##
+
+如果只需要看有哪些分支，只需要 `git branch` 命令即可。
+
+`git branch` 和 `git branch --list` 输出内容一致，都是仅仅输出分支的名称。
+```{shell}
+git branch
+# * dev
+#  master
+```
+
+如果要列出每个分支的最后一个commit，需要跟上 `-v` 参数：
+
+```{shell}
+git branch -v
+# * dev    333abc2 modified git branch
+#   master 7ad5046 add git commit usage
+```
+
+使用参数 `-vv` 则可以显示远程分支的信息：
+```{shell}
+git branch -vv
+# * dev    333abc2 modified git branch
+#   master 734cfcc [origin/master] add git command branch
+```
+
+如果只想要列出于当前的分支合并过的分支，则加上 `--merged` 参数：
+```{shell}
+git branch --merged
+# * dev
+#   master
+```
+
+同样，如果只想要列出没有和当前分支合并过的分支，则加上 `--no-mergedd` 参数：
+
+```{shell}
+git branch --no-merged
+```
+
+如果要显示所有的分支信息，包括本地的远程的信息，则需要 `-a` 或者 `--all` 参数：
+
+```{shell}
+git branch -a
+# * dev
+#  master
+#  remotes/origin/master
+```
+
+如果要显示包含或者不包含有特定提交（commit）的分支，则需要增加参数
+`--contains <SHA-1>` 或者 `--no-contains <SHA-1>`。这里的 SHA-1 可以只
+是最前面的几个字母。
+
+```{shell}
+git branch -vv --contains 734cfcc
+# * dev    333abc2 modified git branch
+#   master 734cfcc [origin/master] add git command branch
+```
+
+`-v`，`-vv`，`-a`， `--merged`，`--no-merged`，`--contains <SHA-1>` 或者 `--no-contains <SHA-1>` 等参数也可以相互配合使用：
+
+```{shell}
+git branch -a -vv
+# * dev                   333abc2 modified git branch
+#   master                734cfcc [origin/master] add git command branch
+#   remotes/origin/master 734cfcc add git command branch
+```
+
+
+## 复制分支 ##
+
+`git branch -c <branch>` 和 `git branch -C <branch>` 是用来复制分支的。
+对于参数 `-c`，其只会在目标不存在的时候进行复制，`-C` 参数则不管目标是
+否存在都会复制。`-c -f` 可以实现和 `-C` 相同的效果。
+
+如我们要把当前的分支复制到名称为 test 的分支，因为之前没有 test 分支，
+则可以正常复制。
+
+```{shell}
+git branch -c test
+git branch -v
+# * dev    333abc2 modified git branch
+#   master 734cfcc add git command branch
+#   test   333abc2 modified git branch
+```
+
+现在已经有了 test 分支，如果我们再使用 `-c` 参数则会报错，而使用 `-c
+-f` 或者 `-C` 参数则可以强制复制。
+
+```{shell}
+git branch -c test
+# fatal: A branch named 'test' already exists.
+git branch -c -f test
+git branch -C test
+```
+
+## 移动和重命名分支 ##
+
+`git branch -m <branch>` 和 `git branch -M <branch>` 是用来移动和重命名分支的。
+类似 `-c` 参数，对于参数 `-m`，其只会在目标不存在的时候进行移动和重命名，`-M` 参数则不管目标是否存在都会移动和重命名。
+`-m -f` 可以实现和 `-M` 相同的效果。
+
+如我们把 test 分支重命名为 newtest：
+
+```{shell}
+git checkout test
+git branch -m newtest
+git branch
+# * dev
+#   master
+#   newtest
+```
+
+## 删除分支 ##
+
+如果想要删除分支，则应该加上 `-d` 参数：
+
+```{shell}
+git branch -d <name>
+```
+
+需要注意的是，如果该分支还未被合并到其他分支，则删除时会报错。因为没有
+被合并的分支一旦删除就会永久丢失，这样能够避免误操作使得错误无法恢复。
+而对于合并过的分支而言，删除之后几乎总是可以恢复。如果不管是否合并都要
+删除，则应该使用 `-D` 参数，但是这会比较危险，有可能删除没有合并的分支。
+
+例如我们要删除 test 分支。
+
+```{shell}
+git checkout dev
+git branch -d test
+# Deleted branch test (was 333abc2).
+```
+
+## git branch -h ##
+
+`git branch -h` 可以显示其完整使用帮助：
+
+```{shell}
+usage: git branch [<options>] [-r | -a] [--merged | --no-merged]
+   or: git branch [<options>] [-l] [-f] <branch-name> [<start-point>]
+   or: git branch [<options>] [-r] (-d | -D) <branch-name>...
+   or: git branch [<options>] (-m | -M) [<old-branch>] <new-branch>
+   or: git branch [<options>] (-c | -C) [<old-branch>] <new-branch>
+   or: git branch [<options>] [-r | -a] [--points-at]
+   or: git branch [<options>] [-r | -a] [--format]
+
+Generic options
+    -v, --verbose         show hash and subject, give twice for upstream branch
+    -q, --quiet           suppress informational messages
+    -t, --track           set up tracking mode (see git-pull(1))
+    -u, --set-upstream-to <upstream>
+                          change the upstream info
+    --unset-upstream      Unset the upstream info
+    --color[=<when>]      use colored output
+    -r, --remotes         act on remote-tracking branches
+    --contains <commit>   print only branches that contain the commit
+    --no-contains <commit>
+                          print only branches that don't contain the commit
+    --abbrev[=<n>]        use <n> digits to display SHA-1s
+
+Specific git-branch actions:
+    -a, --all             list both remote-tracking and local branches
+    -d, --delete          delete fully merged branch
+    -D                    delete branch (even if not merged)
+    -m, --move            move/rename a branch and its reflog
+    -M                    move/rename a branch, even if target exists
+    -c, --copy            copy a branch and its reflog
+    -C                    copy a branch, even if target exists
+    --list                list branch names
+    -l, --create-reflog   create the branch's reflog
+    --edit-description    edit the description for the branch
+    -f, --force           force creation, move/rename, deletion
+    --merged <commit>     print only branches that are merged
+    --no-merged <commit>  print only branches that are not merged
+    --column[=<style>]    list branches in columns
+    --sort <key>          field name to sort on
+    --points-at <object>  print only branches of the object
+    -i, --ignore-case     sorting and filtering are case insensitive
+    --format <format>     format to use for the output
+```

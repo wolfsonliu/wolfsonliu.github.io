@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：表达式</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html">
+<meta name="twitter:title" content="Wolf Cave ~ R 学习笔记：表达式">
+<meta name="twitter:description" content="R 语言表达式.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ R 学习笔记：表达式" />
+<meta property="og:description" content="R 语言表达式." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html" rel="bookmark" title="Permalink to R 学习笔记：表达式">R 学习笔记：表达式</a></h2>
+        <div class="entry-content blog-post">
+            <h2>表达式基础</h2>
+<ul>
+<li>变量名 (name) 也被叫作 symbol, 指代变量, 而不是变量的值.</li>
+<li>调用 (call) 是对方程的调用.</li>
+</ul>
+<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">&lt;-</span> <span class="nf">call</span><span class="p">(</span><span class="s">&quot;print&quot;</span><span class="p">,</span> <span class="nf">Sys.time</span><span class="p">())</span>
+<span class="n">b</span> <span class="o">&lt;-</span> <span class="nf">call</span><span class="p">(</span><span class="s">&quot;print&quot;</span><span class="p">,</span> <span class="nf">quote</span><span class="p">(</span><span class="nf">Sys.time</span><span class="p">()))</span>
+<span class="nf">eval</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="nf">Sys.sleep</span><span class="p">(</span><span class="m">1</span><span class="p">);</span> <span class="nf">eval</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="c1">#&gt; [1] &quot;2013-12-22 20:23:12 CST&quot;</span>
+<span class="c1">#&gt; [1] &quot;2013-12-22 20:23:12 CST&quot;</span>
+<span class="nf">eval</span><span class="p">(</span><span class="n">b</span><span class="p">);</span> <span class="nf">Sys.sleep</span><span class="p">(</span><span class="m">1</span><span class="p">);</span> <span class="nf">eval</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="c1">#&gt; [1] &quot;2013-12-22 20:23:13 CST&quot;</span>
+<span class="c1">#&gt; [1] &quot;2013-12-22 20:23:14 CST&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>sys.call</li>
+<li>match.call</li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Wed 29 June 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html&text=R 学习笔记：表达式&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html&t=R 学习笔记：表达式"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html&title=R 学习笔记：表达式" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：表达式&amp;body=Viens découvrir un article à propos de [R 学习笔记：表达式] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-biao-da-shi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-biao-da-shi.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

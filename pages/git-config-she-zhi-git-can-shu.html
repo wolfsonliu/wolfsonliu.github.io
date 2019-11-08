@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Git config 设置 Git 参数</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>Git 软件有许多可以去设置的参数，如用户名，用户邮箱，Git 的服务器等，这些参数的设置可以通过 git config 命令进行设置。而设置的参数会保存在相应的配置文件中。
+1. <code>/etc/gitconfig</code>：该文件存放系统级的参数。该文件是系统级的文件，只有root用户可以设置，其中包括的是适用于所有用户的参数设置。如果要设置系统级参数，使用 <code>git config</code> 的时候需要有 root 权限，并且加上选项 <code>--system</code>。
+2. <code>~/.gitconfig</code> 或者 <code>~/.config/git/config</code>：该文件中保存本用户的通用参数，不同的项目如果没有项目特殊性的参数则都会读取该文件中的参数。该文件是全局参数的配置文件。设置全局参数，需要在 <code>git config</code> 加上<code>--global</code> 选项。
+3. <code>.git/config</code>：在项目目录的 <code>.git</code> 目录下面有项目的 <code>config</code> 文件。该文件中存储的参数是该项目独有的参数。设置项目自己的参数时候，只需要 <code>git config</code> 命令即可。
+三个级别的配置文件的优先级不一样，项目自己的配置文件的优先级要高于用户全局配置文件，而用户全局配置文件的优先级要高于系统级的配置文件。如果某个参数在项目自己的 config 文件中和用户全局配置文件 <code>~/.gitconfig</code> 文件中都有，但是值不一样，则会优先选择使用项目自己的 config 文件中的值。</p>
+<h2>设置用户</h2>
+<div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="c1">--global user.name &quot;Er Wang&quot;</span>
+<span class="n">git</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="c1">--global user.email wanger@microsoft.com</span>
+</pre></div>
+
+
+<p>这样就会在 <code>~/.gitconfig</code> 文件中看到：</p>
+<div class="highlight"><pre><span></span><span class="k">[user]</span>
+        <span class="na">email</span> <span class="o">=</span> <span class="s">wanger@microsoft.com</span>
+<span class="s">        name = Er Wang</span>
+</pre></div>
+
+
+<p>如果设置项目级别或者系统级别，也会在相应的配置文件中找到相应的值。</p>
+<h2>设置编辑器</h2>
+<p>因为 git 在使用中需要对信息进行编辑，就需要编辑器的支持。如果没有设置编辑器的话，git 会使用系统默认 编辑器，一般类 Unix 系统的默认编辑器是 vim。如果需要设置编辑器，也可以通过 git config 进行。</p>
+<div class="highlight"><pre><span></span>git config --global core.editor emacs
+</pre></div>
+
+
+<p>这样就可以把编辑器设置为 Emacs。相应也可以在配置文件中看到设置。</p>
+<div class="highlight"><pre><span></span><span class="o">[</span>core<span class="o">]</span>
+        <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span>
+        <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">false</span>
+        <span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+        <span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+        <span class="nv">editor</span> <span class="o">=</span> emacs
+</pre></div>
+
+
+<h2>显示设置的参数</h2>
+<p>如果需要显示当前的参数设置，可以使用 <code>git config</code> 命令加上参数名。</p>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span>  <span class="n">core</span><span class="p">.</span><span class="n">editor</span>
+<span class="o">#</span> <span class="n">emacs</span>
+</pre></div>
+
+
+<p>如果需要显示所有的参数，可以使用 <code>--list</code> 选项。</p>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="c1">--list</span>
+</pre></div>
+
+
+<p>而如果只想要显示项目特有参数（local）或者用户全局参数（global），又或者系统参数（system）也可以通过加上相应选项来实现。</p>
+<p>如显示项目特有参数：</p>
+<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="c1">--list --local</span>
+</pre></div>
+
+
+<h2>参数文件</h2>
+<p>因为 <code>git</code> 的参数都是存于前面提到的三个文件中，也可以直接手动或者程序去修改文件，从而改变参数。</p>
+<p>使用命令 <code>git config --help</code> 可以列出 <code>git config</code> 的帮助文档，其中包含了所有可以设置的参数的介绍。Git 的参数基本可以分为客户端的设置和服务器端的设置。常用参数的介绍如下：</p>
+<h3>客户端常用配置</h3>
+<ul>
+<li><code>core.editor</code>: 设置基本的编辑器，默认是vim。</li>
+<li><code>commit.template</code>：可以设置在 commit 时候信息的模板，指定该模板的路径。</li>
+<li><code>core.pager</code>：制定 Git 在显示更多内容的时候的分页程序，默认的是 less，可以设置为其他程序。</li>
+<li><code>user.signingkey</code>：设置签名所用的密钥。</li>
+<li><code>core.excludesfile</code>：指定一个包含有不要进入git的文件名信息的文件。与 .gitignore 文件作用一样。
+还可以指定终端中显示的颜色：</li>
+<li><code>color.ui</code>：所有的操作是否显示颜色，可以选择 true， false或者 always。</li>
+<li><code>color.branch</code>：指定 branch 操作是否显示颜色，可以选择 true， false或者 always。</li>
+<li><code>color.diff</code>：指定 diff 操作是否显示颜色，可以选择 true， false或者 always。</li>
+<li><code>color.interactive</code>：指定 interactive 操作是否显示颜色，可以选择 true， false或者 always。</li>
+<li><code>color.status</code>：指定 interactive 操作是否显示颜色，可以选择 true， false或者 always。
+这些都有自选项，可以覆盖父选项的值。</li>
+</ul>
+<h3>服务器常用配置</h3>
+<ul>
+<li><code>receive.fsckObjects</code>：可以设置是否需要每次与服务器交换数据都检查文件一致性，可以选择设置为 true 或 false。设置为 true 则会强制每次都检查，相对比较耗费时间。</li>
+<li><code>receive.denyDeletes</code>：设置不许用户删除服务器上的分支。可以设置为 true，即不允许删除，或者 false， 允许删除。</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

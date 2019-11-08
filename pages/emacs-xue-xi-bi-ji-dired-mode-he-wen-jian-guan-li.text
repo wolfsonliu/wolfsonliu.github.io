@@ -1,0 +1,67 @@
+Title: Emacs 学习笔记：Dired mode 和文件管理
+Date: 2016-03-22 21:24
+Modified: 2016-03-22 21:24
+Category: 壹零零壹
+Tags: emacs
+Authors: Wolfson Liu
+Summary: Emacs dire mode 和文件管理.
+
+
+Dired 是 Emacs 管理文件的模式, 相当于一个简单的档案管理器. Dired 有相应的操作方法. 使用 **C-x d** 或者 **M-x dired** 开启 Dired.
+
+* **?**:   dired-summary                 简单的帮助.
+* **h**:   describe-mode                 帮助.
+* **q**:   quit-window                   退出窗口.
+
+--------------------------------------------------------------------------------
+
+## 命令 ##
+
+### 移动操作 ###
+
+* **p**:   dired-previous-line           向上移动一行.
+* **n**:   dired-next-line               向下移动一行.
+* **DEL**: dired-unmark-backward         向上移动一行并去除标记.
+* **SPC**: dired-next-line               向下移动一行.
+* **<**:   dired-prev-dirline            移动到上一个目录行, 跳过文件行.
+* **>**:   dired-next-dirline            移动到下一个目录行, 跳过文件行.
+* **^**:   dired-up-directory            向上移动一级目录.
+* **j**:   dired-goto-file               移动到文件.
+
+### 文件管理 ###
+
+* **m**:   dired-mark                    标记.
+* **~**:   dired-flag-backup-files       标记所有的以 ~ 结尾的备份文件.
+* **#**:                                 标记自动保存的文件.
+* **u**:   dired-unmark                  去除标记.
+* **U**:   dired-unmark-all-marks        去除所有标记.
+* **d**:   dired-flag-file-deletion      标记删除.
+* **x**:   dired-do-flagged-delete       删除标记删除的文件.
+* **R**:   dired-do-rename               重命名文件或者移动文件.
+* **C**:   dired-do-copy                 复制标记的文件文件.
+* **D**:   dired-do-delete               删除标记的文件.
+* **+**:   dired-create-directory        新建文件夹.
+
+### 浏览操作 ###
+
+* **A**:   dired-do-search               按照正则表达式搜索文件, 在第一个结果处停下.
+* **v**:   dired-view-file               浏览文件内容
+* **o**:   dired-find-file-other-window  在另一个窗口打开选中窗口的子目录.
+* **i**:   dired-maybe-insert-subdir     在当前窗口插入选中窗口的子目录.
+* **s**:   dired-sort-toggle-or-edit     对列表进行按照名字或日期的排序.
+* **l**:   dired-do-redisplay            重新显示.
+
+
+### 功能操作 ###
+
+* **!**:   dired-do-shell-command        运行 shell 命令.
+* **&**:   dired-do-async-shell-command  后台运行 shell 命令.
+* **=**:   dired-diff                    对比两个文件的不同. **M-=** 比较文件和其备份.
+* **H**:   dired-do-hardlink             建立硬链接.
+* **S**:   dired-do-softlink             建立软链接.
+* **G**:   dired-do-chgrp                改变组.
+* **O**:   dired-do-chown                改变所属.
+* **M**:   dired-do-chmod                改变权限.
+* **P**:   dired-do-print                打印.
+* **T**:   dired-do-touch                新建文件.
+* **Z**:   dired-do-compress             压缩和解压缩.

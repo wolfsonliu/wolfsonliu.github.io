@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：R 色彩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html">
+<meta name="twitter:title" content="Wolf Cave ~ R 学习笔记：R 色彩">
+<meta name="twitter:description" content="R 色彩相关.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ R 学习笔记：R 色彩" />
+<meta property="og:description" content="R 色彩相关." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html" rel="bookmark" title="Permalink to R 学习笔记：R 色彩">R 学习笔记：R 色彩</a></h2>
+        <div class="entry-content blog-post">
+            <h2>色彩理论</h2>
+<p>色彩本身所含有很多信息, 对色彩的研究可以称为色彩学. 对于绘图选择颜色,
+不需要掌握色彩学的知识, 但也应该了解基本的色彩和色彩空间 (color space)
+的知识.</p>
+<p>色彩空间 (color space) 是计算机上颜色的组成形式. 常见的如 RGB, HSV, HCL 等. 不同的色彩空间可以相互转换.</p>
+<h3>RGB</h3>
+<p>RGB (Red Green Blue) 的色彩空间参考了人眼所能察觉的自然光的搭配方式,
+红绿蓝做为三基色, 可以按照一定的比例搭配出来各种色彩, 其色彩空间是以红
+绿蓝三个颜色的比例作为坐标轴的坐标系. 红蓝绿的一样的情况下产生白光, 全
+都没有的情况下是黑色, 而剩下的情况则根据颜色的比例不同显示不同的光. 这
+样的颜色显示方式也是三基色显示屏显示颜色的原理.</p>
+<p><img alt="RGB" src="https://commons.wikimedia.org/wiki/File:RGB_Cube_Show_lowgamma_cutout_b.png#/media/File:RGB_Cube_Show_lowgamma_cutout_b.png"></p>
+<h3>HSV</h3>
+<p>HSV (Hue Saturation Value/Brighness, 色调 饱和度 亮度) 的色彩空间实际
+上是对 RGB 的色彩空间做了坐标变换, HSV 是一个圆柱坐标系, H 为角度, S
+为半径, V 为高度. 对于 HSV (假设 S 最大为 1, V 最大为 1), 纯色的饱和度
+为 1, 亮度为 1. HSV 色彩空间更符合我们人对颜色的直觉认知. 使用 HSV 色
+彩空间, 我们就会趋向于使用饱和度较高的色彩.</p>
+<h3>HSL</h3>
+<p>HSL (Hue Saturation Luminance/Lightness, 色调 饱和度 明度) 的色彩空间
+和 HSV 很像, 也是对 RGB 色彩空间的坐标变换, 是一个圆柱坐标系, H 为角度,
+S 为半径, L 为高度. 而在 HSL 中, 饱和度的定义和 HSV 的饱和度的定义不太
+一样, 同时明度和亮度的定义也不同. 对于我们通常认为的纯色, 就是红色等,
+其饱和度在两种色彩空间中都是 1, 但是对于 HSL, 其明度为 1/2, 而在 HSV
+中其亮度为 1. 因为 HSL 中的饱和度和我们所认为的颜色的饱和度不太一样,
+所以也被称为色品 (chroma) 来和 HSV 中的饱和度进行区分.</p>
+<p><img alt="HSL and HSV" src="https://commons.wikimedia.org/wiki/File:Hsl-hsv_models.svg#/media/File:Hsl-hsv_models.svg"></p>
+<h3>坐标转换</h3>
+<p>RGB 和 HSV, HSL 坐标系可以进行坐标转换. 即把直角坐标系转换为相应的圆柱坐标系.</p>
+<p><img alt="RGB HSL HSV" src="https://commons.wikimedia.org/wiki/File:Hsl-and-hsv.svg#/media/File:Hsl-and-hsv.svg"></p>
+<h3>CMYK</h3>
+<p>CMYK 代表青色 (cyan), 品红 (magenta), 黄色 (yellow) 和黑色 (key,
+black). CMYK 和 RGB 靠颜色相加搭配颜色不同, CMYK 采用的是相减的办法,
+CMY 三种颜色配合起来是黑色, 而减少其中一种或几种颜色的量就会产生其他颜
+色, 如果一种颜色也没有则是白色. CMYK 是印刷业中采用的方法, 为了节约成
+本和取得更好的印刷效果, 直接搭配黑色, 而不使用三种颜色来组合为黑色.</p>
+<h2>R 中的色彩与调色板包和函数</h2>
+<p>在绘制统计图的时候, 选择合适的颜色会对最后的呈现效果产生巨大的影响. 对
+于选择颜色, 有很多需要注意的细节, 自己一个个颜色去调选, 毕竟是费时费力,
+而结果又不见得好的事情. R 中定义了很多颜色, 同时, R 中也有很多帮助调选
+颜色和调色板的颜色, 可以方便地获得所需要的颜色或者调色板.</p>
+<h3>grDevices</h3>
+<p>grDevices 是 R core 维护的包, 提供了对于 R 基本绘图的设备色彩和字体的
+支持, 其中有一些方便操作色彩的函数.</p>
+<p>colors 函数可以返回一个在 R 中已经定义名称的色彩的向量, 共有 657 个<a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf">色
+彩</a>. R 使用十六
+进制的数字去表示颜色, 例如 "#FF0000" 代表 "red" 和 <code>rgb(1,0,0)</code>. rgb
+函数, hsv 函数和 hcl 函数分别采用 RGB HSV 和 CIELUV 的色彩空间去定义颜
+色, 这三个函数会返回十六进制的代表颜色的代码. rgb 函数和 hsv 函数的三
+个维度的取值范围均是 0 到 1, 而 hcl 函数的参数相对复杂, h 的取值范围在
+0 到 360, 其中 0 为 red, l 的取值在 0 到 100, c 的取值依赖于 h 和 l.</p>
+<div class="highlight"><pre><span></span><span class="n">rgb</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;#FF0000&quot;</span>
+<span class="n">hsv</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;#FF0000&quot;</span>
+<span class="n">hcl</span><span class="p">(</span><span class="n">h</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span> <span class="k">c</span> <span class="o">=</span> <span class="mi">500</span><span class="p">)</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;#FF0000&quot;</span>
+</pre></div>
+
+
+<p>如果知道 R 中定义的颜色的名称或者, 可以使用 col2rgb 把名称或者十六进制
+代码转换为 RGB 色彩. 也可以使用 rgb2hsv 把 RGB 转换为 HSV 色彩空间. 另
+外 convertColor 是更为通用的转换色彩空间的函数, 支持 colorspaces 对象
+中所列出的色彩空间.</p>
+<div class="highlight"><pre><span></span><span class="n">col2rgb</span><span class="p">(</span><span class="ss">&quot;red&quot;</span><span class="p">)</span>
+<span class="o">#</span>      <span class="p">[,</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">#</span><span class="n">red</span>    <span class="mi">255</span>
+<span class="o">#</span><span class="n">green</span>    <span class="mi">0</span>
+<span class="o">#</span><span class="n">blue</span>     <span class="mi">0</span>
+<span class="n">col2rgb</span><span class="p">(</span><span class="ss">&quot;#FF0000&quot;</span><span class="p">)</span>
+<span class="o">#</span>      <span class="p">[,</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">#</span><span class="n">red</span>    <span class="mi">255</span>
+<span class="o">#</span><span class="n">green</span>    <span class="mi">0</span>
+<span class="o">#</span><span class="n">blue</span>     <span class="mi">0</span>
+<span class="n">rgb2hsv</span><span class="p">(</span><span class="n">r</span> <span class="o">=</span> <span class="mi">255</span><span class="p">,</span> <span class="k">g</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="o">#</span>  <span class="p">[,</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">#</span><span class="n">h</span>    <span class="mi">0</span>
+<span class="o">#</span><span class="n">s</span>    <span class="mi">1</span>
+<span class="o">#</span><span class="n">v</span>    <span class="mi">1</span>
+<span class="n">rgb2hsv</span><span class="p">(</span><span class="n">col2rgb</span><span class="p">(</span><span class="ss">&quot;#FF0000&quot;</span><span class="p">))</span>
+<span class="o">#</span>  <span class="p">[,</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">#</span><span class="n">h</span>    <span class="mi">0</span>
+<span class="o">#</span><span class="n">s</span>    <span class="mi">1</span>
+<span class="o">#</span><span class="n">v</span>    <span class="mi">1</span>
+</pre></div>
+
+
+<p>在 grDevices 中有一些定义好的函数可以方便地输出特定类型的颜色序列.</p>
+<ul>
+<li>rainbow: 输出各种彩虹色.</li>
+<li>heat.colors: 输出热图色, 为红色经过黄色到白色的渐变色.</li>
+<li>terrain.colors: 输出地形图中会出现的颜色, 为绿色经过黄褐色到白色的渐变色.</li>
+<li>topo.colors: 输出蓝色经过绿色到黄褐色的渐变色.</li>
+<li>cm.colors: 输出从青色经过白色到品红的渐变色.</li>
+<li>gray: 或者 grey. 输出一系列的灰色, 参数 level 代表亮度, 0 为 black, 1 为 white.</li>
+<li>gray.colors: 或者 grey.colors. 输出一个灰色向量.</li>
+</ul>
+<p>方便使用的色彩生成函数限制了其使用地灵活性, 如果上面的函数不能满足需求,
+还可以使用 colorRamp 和 colorRampPalette 函数. 这两个函数会接受一个色
+彩向量作为输入, 指定颜色变换的节点, 其返回值均是一个函数, 该返回的函数
+可以根据需要返回计算出的位于指定的颜色节点之间的过渡颜色. 区别在于,
+colorRamp 的返回函数接受的输入值为 0 到 1 的数字, 返回相对应的 RGB 颜
+色, 而 colorRampPalette 则接受一个整数, 返回相应数量的颜色作为调色板.</p>
+<div class="highlight"><pre><span></span><span class="n">myReds</span> <span class="o">&lt;-</span> <span class="nf">colorRamp</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="s">&quot;white&quot;</span><span class="p">))</span>
+<span class="nf">myReds</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0.5</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+<span class="c1">#     [,1]  [,2]  [,3]</span>
+<span class="c1">#[1,]  255   0.0   0.0</span>
+<span class="c1">#[2,]  255 127.5 127.5</span>
+<span class="c1">#[3,]  255 255.0 255.0</span>
+<span class="n">myBlues</span> <span class="o">&lt;-</span> <span class="nf">colorRampPalette</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;blue&quot;</span><span class="p">,</span> <span class="s">&quot;white&quot;</span><span class="p">))</span> 
+<span class="nf">myBlues</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
+<span class="c1">#[1] &quot;#0000FF&quot; &quot;#3F3FFF&quot; &quot;#7F7FFF&quot; &quot;#BFBFFF&quot; &quot;#FFFFFF&quot;</span>
+</pre></div>
+
+
+<h3>RColorBrewer</h3>
+<p>RColorBrewer 包中设置好的固定的调色板是来自于
+<a href="colorbrewer.org">colorbrewer</a> 网站的. 可以使用
+<code>RColorBrewer::display.brewer.all()</code> 函数来绘制出该包中设置好的调色板.</p>
+<p>而在 brewer.pal.info 变量中保存了这些调色板的信息, 包括名称, 颜色数量类型和是否是色盲友好型. </p>
+<p>brewer.pal.info 的结果如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">PALETTE</th>
+<th align="center">MAXCOLORS</th>
+<th align="center">CATEGORY</th>
+<th align="center">COLORBLIND</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">BrBG</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">PiYG</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">PRGn</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">PuOr</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">RdBu</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">RdGy</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">RdYlBu</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">RdYlGn</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Spectral</td>
+<td align="center">11</td>
+<td align="center">div</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Accent</td>
+<td align="center">8</td>
+<td align="center">qual</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Dark2</td>
+<td align="center">8</td>
+<td align="center">qual</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Paired</td>
+<td align="center">12</td>
+<td align="center">qual</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Pastel1</td>
+<td align="center">9</td>
+<td align="center">qual</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Pastel2</td>
+<td align="center">8</td>
+<td align="center">qual</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Set1</td>
+<td align="center">9</td>
+<td align="center">qual</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Set2</td>
+<td align="center">8</td>
+<td align="center">qual</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Set3</td>
+<td align="center">12</td>
+<td align="center">qual</td>
+<td align="center">FALSE</td>
+</tr>
+<tr>
+<td align="center">Blues</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">BuGn</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">BuPu</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">GnBu</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Greens</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Greys</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Oranges</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">OrRd</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">PuBu</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">PuBuGn</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">PuRd</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Purples</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">RdPu</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">Reds</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">YlGn</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">YlGnBu</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">YlOrBr</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+<tr>
+<td align="center">YlOrRd</td>
+<td align="center">9</td>
+<td align="center">seq</td>
+<td align="center">TRUE</td>
+</tr>
+</tbody>
+</table>
+<p>brewer.pal 函数可以用来返回所需要的若干数量的颜色. 因为 RColorBrewer
+定义好了许多不同类型的调色板, 通过 brewer.pal 函数得到的颜色往往搭配很
+好. 使用 display.brewer.pal 函数可以用图像显示出所选择的颜色. 每个调色
+板有颜色数量的限制, 所选择的颜色数量应该在 3 到最大值之间.</p>
+<h3>colorspace</h3>
+<p>colorspace 包专注于不同的色彩空间的颜色选择和相互转换. colorspace 包中
+有 RGB, sRGB, HSV, HLS, XYZ, LUV, LAB 等多种色彩空间的创建函数可以用来
+创建色彩对象, 其返回值是一个 S4 的对象. 同时也有 hex 函数来把 S4 色彩
+对象转换为 R 中的十六进制色彩代码. hex2RGB 则可以把十六进制色彩代码转
+换为 RGB 对象.</p>
+<p>对于不同的色彩空间的对象, 可以通过 as 函数来转换. 可以使用 coords 函数获得色彩对象在对应色彩空间的具体的值.</p>
+<div class="highlight"><pre><span></span><span class="n">myred.rgb</span>  <span class="o">&lt;-</span> <span class="nf">RGB</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">)</span>
+<span class="p">(</span><span class="n">myred.hls</span> <span class="o">&lt;-</span> <span class="nf">as</span><span class="p">(</span><span class="n">myred.rgb</span><span class="p">,</span> <span class="s">&quot;HLS&quot;</span><span class="p">))</span>
+<span class="c1">#     H   L S</span>
+<span class="c1">#[1,] 0 0.5 1</span>
+<span class="nf">isS4</span><span class="p">(</span><span class="n">myred.hls</span><span class="p">)</span>
+<span class="c1">#[1] TRUE</span>
+<span class="p">(</span><span class="n">myred.hls.coord</span> <span class="o">&lt;-</span> <span class="nf">coords</span><span class="p">(</span><span class="n">myred.hls</span><span class="p">))</span>
+<span class="c1">#     H   L S</span>
+<span class="c1">#[1,] 0 0.5 1</span>
+<span class="nf">class</span><span class="p">(</span><span class="n">myred.hls.coord</span><span class="p">)</span>
+<span class="c1">#[1] &quot;matrix&quot;</span>
+</pre></div>
+
+
+<p>mixcolor 函数可以计算两个颜色调配出的颜色. desaturate 函数可以在
+HCL 色彩空间内把输入的颜色 (十六位进制代码) 转换为相应亮度的灰度.</p>
+<div class="highlight"><pre><span></span><span class="n">mixcolor</span><span class="p">(</span>
+    <span class="n">alpha</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">color1</span> <span class="o">=</span> <span class="n">hex2RGB</span><span class="p">(</span><span class="ss">&quot;#FF0000&quot;</span><span class="p">),</span>
+    <span class="n">color2</span> <span class="o">=</span> <span class="n">hex2RGB</span><span class="p">(</span><span class="ss">&quot;#0000FF&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="o">#</span>       <span class="n">R</span> <span class="k">G</span>   <span class="n">B</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">,]</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span> <span class="mi">0</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span>
+<span class="n">desaturate</span><span class="p">(</span><span class="ss">&quot;#FF0000&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;#7F7F7F&quot;</span>
+</pre></div>
+
+
+<p>choose_palette 函数提供了一个图形化的选择调色板的界面, 可以直观地选择颜色和设置调色板.</p>
+<h2>Palette</h2>
+<h3><a href="http://colorbrewer2.org/">ColorBrewer</a></h3>
+<p>|   BrBG<br>
+|   PiYG <br>
+|   PRGn <br>
+|   PuOr <br>
+|   RdBu <br>
+|   RdGy <br>
+|  RdYlBu<br>
+|  RdYlGn<br>
+| Spectral 
+|  Accent<br>
+|   Dark2<br>
+|  Paired<br>
+|  Pastel1 
+|  Pastel2 
+|   Set1 <br>
+|   Set2 <br>
+|   Set3 <br>
+|   Blues<br>
+|   BuGn <br>
+|   BuPu <br>
+|   GnBu <br>
+|  Greens<br>
+|   Greys<br>
+|  Oranges 
+|   OrRd <br>
+|   PuBu <br>
+|  PuBuGn<br>
+|   PuRd <br>
+|  Purples 
+|   RdPu <br>
+|   Reds <br>
+|   YlGn <br>
+|  YlGnBu<br>
+|  YlOrBr<br>
+|  YlOrRd</p>
+<h3>Multi Color System</h3>
+<div class="highlight"><pre><span></span><span class="n">tropical</span>    <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;darkorange&quot;</span><span class="p">,</span><span class="s">&quot;dodgerblue&quot;</span><span class="p">,</span><span class="s">&quot;hotpink&quot;</span><span class="p">,</span><span class="s">&quot;limegreen&quot;</span><span class="p">,</span><span class="s">&quot;yellow&quot;</span><span class="p">)</span>
+<span class="n">springtime</span>  <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#f6eb7b&quot;</span><span class="p">,</span> <span class="s">&quot;#e5769e&quot;</span><span class="p">,</span> <span class="c1">#b3f281&quot;, &quot;#73a8e3&quot;, #c184ec&quot;)</span>
+<span class="n">amy</span>         <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#ee693f&quot;</span><span class="p">,</span> <span class="s">&quot;#b3de81&quot;</span><span class="p">,</span> <span class="s">&quot;#e8a735&quot;</span><span class="p">,</span> <span class="s">&quot;#3a5199&quot;</span><span class="p">,</span> <span class="s">&quot;#ffec5c&quot;</span><span class="p">)</span>
+<span class="n">cbPalette</span>   <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#999999&quot;</span><span class="p">,</span> <span class="s">&quot;#E69F00&quot;</span><span class="p">,</span> <span class="s">&quot;#56B4E9&quot;</span><span class="p">,</span> <span class="s">&quot;#009E73&quot;</span><span class="p">,</span> <span class="s">&quot;#F0E442&quot;</span><span class="p">,</span> <span class="s">&quot;#0072B2&quot;</span><span class="p">,</span> <span class="s">&quot;#D55E00&quot;</span><span class="p">,</span> <span class="s">&quot;#CC79A7&quot;</span><span class="p">)</span>
+<span class="n">cbbPalette</span>  <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#000000&quot;</span><span class="p">,</span> <span class="s">&quot;#E69F00&quot;</span><span class="p">,</span> <span class="s">&quot;#56B4E9&quot;</span><span class="p">,</span> <span class="s">&quot;#009E73&quot;</span><span class="p">,</span> <span class="s">&quot;#F0E442&quot;</span><span class="p">,</span> <span class="s">&quot;#0072B2&quot;</span><span class="p">,</span> <span class="s">&quot;#D55E00&quot;</span><span class="p">,</span> <span class="s">&quot;#CC79A7&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Single Color System</h3>
+<div class="highlight"><pre><span></span><span class="n">springgreen</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#7aa14c&quot;</span><span class="p">,</span> <span class="s">&quot;#86b251&quot;</span><span class="p">,</span> <span class="s">&quot;#a3d468&quot;</span><span class="p">,</span> <span class="s">&quot;#b7ea7b&quot;</span><span class="p">,</span> <span class="s">&quot;#cff99e&quot;</span><span class="p">)</span>
+<span class="n">cleanwater</span>  <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#0669a5&quot;</span><span class="p">,</span> <span class="s">&quot;#0479c1&quot;</span><span class="p">,</span> <span class="s">&quot;#038de1&quot;</span><span class="p">,</span> <span class="s">&quot;#18a5fb&quot;</span><span class="p">,</span> <span class="s">&quot;#4cbbff&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<h4>Reference</h4>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/RGB_color_space">Wikipedia: RGB</a></li>
+<li><a href="https://en.wikipedia.org/wiki/RGB_color_space">Wikipedia: HSL and HSV</a></li>
+<li><a href="http://eeecon.uibk.ac.at/~zeileis/papers/Zeileis+Hornik+Murrell-2009.pdf">PDF: Escaping RGBland: Selecting Colors for Statistical Graphics</a></li>
+<li><a href="https://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf">PDF: CRAN-colorspace vignettes</a></li>
+</ul>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sun 28 February 2016</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html&text=R 学习笔记：R 色彩&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html&t=R 学习笔记：R 色彩"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html&title=R 学习笔记：R 色彩" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：R 色彩&amp;body=Viens découvrir un article à propos de [R 学习笔记：R 色彩] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-r-se-cai.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-r-se-cai.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

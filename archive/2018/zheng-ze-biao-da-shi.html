@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>正则表达式</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2018/zheng-ze-biao-da-shi.html">
+<meta name="twitter:title" content="Wolf Cave ~ 正则表达式">
+<meta name="twitter:description" content="正则表达式">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ 正则表达式" />
+<meta property="og:description" content="正则表达式" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2018/zheng-ze-biao-da-shi.html" rel="bookmark" title="Permalink to 正则表达式">正则表达式</a></h2>
+        <div class="entry-content blog-post">
+            <p>正则表达式（regular expression）是用一系列字符串去表示一个搜索的模式（pattern）的，
+符合该匹配的字符串将被作为搜索结果。使用正则表达式可以完成复杂的文本处理任务。</p>
+<p>寻找字符串的模式及找规律，例如，sunday，monday，tuesday的规律是若干个
+字符后面有三个一样的字符“day”，那么模式可以表示为<code>(sun | mon |
+tues)day</code>。</p>
+<h2>正则表达式基本概念</h2>
+<p>正则表达式在不同的语言有相同或者相似的实现，也有不同语言的特色，同时
+POSIX规定的正则表达式有基础正则表达式和扩展正则表达式之分，但是大多数
+的正则表达式都包括：或（or），分组（group），数量（quantification），
+通配符（wildcard）等。</p>
+<p><code>grep</code> 默认支持的是基础正则表达式，<code>grep -E</code> 或者 <code>egrep</code> 支持的是扩展
+正则表达式。两者有一定区别，使用时需要稍稍注意。</p>
+<ul>
+<li>或：字符串符合若干模式中的一种，在正则表达式中一般以 <code>pattern1 |
+  pattern2</code> 来表示。例如：<code>sunday | saturday</code> 可以用来匹配 “sunday” 或
+  者 “saturday”。在基础正则表达式中是使用 <code>\|</code> 来表示或的，<code>|</code>则表示该符
+  号本身。在扩展正则表达式中则反过来，<code>|</code>是表示或的，<code>\|</code>表示该符号。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;sunday\|saturday&quot;</span>
+sunday
+$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;sunday|saturday&quot;</span>
+$ <span class="nb">echo</span> <span class="s2">&quot;sunday|&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;sunday|saturday&quot;</span>
+$ <span class="nb">echo</span> monday <span class="p">|</span> grep <span class="s2">&quot;sunday\|saturday&quot;</span>
+$ <span class="nb">echo</span> sunday <span class="p">|</span> egrep <span class="s2">&quot;sunday\|saturday&quot;</span>
+$ <span class="nb">echo</span> sunday <span class="p">|</span> egrep <span class="s2">&quot;sunday|saturday&quot;</span>
+sunday
+</pre></div>
+
+
+<ul>
+<li>分组：对于一个表达式中的一部分进行分组，可以在后面只输出分组中
+  的内容，一般用小括号<code>(pattern)</code>表示分组。例如：<code>(sun|mon|tues)day</code>，
+  使用分组可以把要匹配的可变部分和后面不可变的部分进行区分。许多语言也
+  支持把小括号中的匹配单独输出，例如去匹配 “sunday” 并输出分组中的内容
+  的时候就可以输出 “sun”，而去匹配 “tuesday” 的时候可以输出分组内容
+  “tues”。一个正则表达式中可以有多个分组，一些语言也支持把多个分组选择
+  性输出。在基础正则表达式中是使用 <code>\(\)</code> 来表示分组的，<code>()</code>则表示小括
+  号本身。在扩展正则表达式中则反过来，<code>()</code>是表示分组的，<code>\(\)</code>表示小括
+  号。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;\(sun\|satur\)day&quot;</span>
+sunday
+$ <span class="nb">echo</span> <span class="s2">&quot;sunday&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;(sun|satur)day&quot;</span>
+sunday
+$ <span class="nb">echo</span> <span class="s2">&quot;sunday&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;(sun|satur)day&quot;</span>
+$ <span class="nb">echo</span> <span class="s2">&quot;monday&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;(sun|satur)day&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>数量：使用数量匹配符号，可以对其前面的字符指定匹配的数量。</li>
+<li><code>?</code>：匹配零个或一个字符，例如 “ab?c” 匹配的只会是 “ac”，“abc”</li>
+<li><code>*</code>：匹配零个或多个字符，例如 “ab*c” 匹配的会是 “ac”，“abc”，“abbc”，“abbbc”等等。</li>
+<li><code>+</code>：匹配一个或多个字符，例如 “ab+c” 匹配的会是 “abc”，“abbc”，“abbbc”，“abbbbc”等等</li>
+<li><code>{n}</code>：匹配 n 个字符，例如 “a{3}bc” 只会匹配 “aaabc”</li>
+<li><code>{min,}</code>：匹配最少 min 个字符，例如 “ab{3,}c” 会匹配 “abbbc”，“abbbbc”，“abbbbbc” 等等。
+    “ab{0,}c” 相当于 “ab*c”；“ab{1,}c” 相当于“ab+c”。</li>
+<li><code>{min,max}</code>：匹配最少 min 个字符，最多 max 个字符，例如 “ab{3,6}c”
+    只会匹配 “abbbc”，“abbbbc”，“abbbbbc”，“abbbbbbc”。“ab{0,1}c”相当
+    于“ab?c”。</li>
+<li>类似前面，在基础正则表达式中，<code>\{\}</code> 用来作为正则表达式。在扩展正则表达式中则相反，使用 <code>{}</code>。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;AGCGTTTTGT&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;T{4,}&quot;</span>
+AGCGTTTTGT
+$ <span class="nb">echo</span> <span class="s2">&quot;AGCGTTTTGT&quot;</span> <span class="p">|</span> egpre <span class="s2">&quot;GT+G&quot;</span>
+AGCGTTTTGT
+</pre></div>
+
+
+<ul>
+<li>通配符：有的时候我们需要抓取的字符的组合非常多，这个时候就需要使用通
+  配符，而不需要把所有组合都自己打出来。利用通配符，我们可以使用一个记
+  号去表示多种字符。需要注意的是，不管通配符本身包含多少字符，通配符自
+  己只会匹配一个字符。</li>
+<li><code>.</code>：可以匹配任何单个字符。</li>
+<li><code>[]</code>：匹配中括号中包括的所有字符，例如 <code>[a123.]</code>，可以匹配 “a”，
+    “1”，“2”，“3”，“.”。<code>[a-z]</code>匹配所有的小写字母，<code>[A-Z]</code>匹配所有的大
+    写字母，<code>[0-9]</code>匹配所有的数字。</li>
+<li><code>[^]</code>：匹配不在中括号中的其他字符，例如 <code>[^a1]</code>，匹配除了 “a” 和 “1” 之外的其他字符。</li>
+<li><code>[:upper:]</code>：匹配所有大写字母，相当于 <code>[A-Z]</code>。</li>
+<li><code>[:lower:]</code>：匹配所有小写字母，相当于 <code>[a-z]</code>。</li>
+<li><code>[:alpha:]</code>：匹配所有大写和小写字母，相当于 <code>[[:upper:][:lower:]]</code>。</li>
+<li><code>[:alnum:]</code>：匹配所有的大小写字母和数字，相当于 <code>[[:alpha:][:digit:]]</code>。</li>
+<li><code>[:digit:]</code>：匹配所有的数字 <code>[0-9]</code>。</li>
+<li><code>[:xdigit:]</code>：匹配十六进制数字 <code>[0-9A-Fa-f]</code>。</li>
+<li><code>[:punct:]</code>：匹配标点符号 <code>[.,!?:…]</code>。</li>
+<li><code>[:blank:]</code>：匹配空格和制表符 <code>[ \t]</code>。</li>
+<li><code>[:space:]</code>：匹配空白字符，空格，制表符，回车，新行，新页等，相当于<code>[ \t\n\r\f\v]</code>。</li>
+<li><code>[:cntrl:]</code>：控制字符。</li>
+<li><code>[:graph:]</code>：能看得到的字符，相当于<code>[^ \t\n\r\f\v]</code></li>
+<li><code>[:print:]</code>：可打印字符，能看得到的字符和空格 <code>[^\t\n\r\f\v]</code>。</li>
+</ul>
+<div class="highlight"><pre><span></span>$ cat sample.fq <span class="p">|</span> grep <span class="s2">&quot;ACCG([ATCG]{20})GTTT&quot;</span> &gt; reads_with_sgRNA.txt
+</pre></div>
+
+
+<p>对于字符串开头和结尾，可以使用 <code>^</code> <code>$</code> 来进行定位。</p>
+<ul>
+<li><code>^</code>：指定字符串起始位置</li>
+<li><code>$</code>：指定字符串结束位置</li>
+</ul>
+<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;two&quot;</span>
+one two three
+$ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;^two&quot;</span>
+$ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;^one&quot;</span>
+one two three
+$ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;three</span>$<span class="s2">&quot;</span>
+one two three
+</pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Fri 14 December 2018</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/regular-expression.html">#regular expression, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2018/zheng-ze-biao-da-shi.html&text=正则表达式&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2018/zheng-ze-biao-da-shi.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2018/zheng-ze-biao-da-shi.html&t=正则表达式"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2018/zheng-ze-biao-da-shi.html&title=正则表达式" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=正则表达式&amp;body=Viens découvrir un article à propos de [正则表达式] sur le site de Wolfson Liu. ../../archive/2018/zheng-ze-biao-da-shi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2018/zheng-ze-biao-da-shi.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

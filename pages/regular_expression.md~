@@ -1,0 +1,21 @@
+Title: 正则表达式
+Date: 2018-12-14 20:38
+Modified: 2018-12-27 23:42
+Category: 壹零零壹
+Tags: regular expression
+Authors: Wolfson Liu
+Summary: 正则表达式
+
+正则表达式（regular expression）是用一系列字符串去表示一个搜索的模式（pattern）的，
+符合该匹配的字符串将被作为搜索结果。使用正则表达式可以完成复杂的文本处理任务。
+
+寻找字符串的模式及找规律，例如，sunday，monday，tuesday的规律是若干个
+字符后面有三个一样的字符“day”，那么模式可以表示为`(sun | mon |
+tues)day`。
+
+## 正则表达式基本概念 ##
+
+正则表达式在不同的语言有相同或者相似的实现，也有不同语言的特色，同时
+POSIX规定的正则表达式有基础正则表达式和扩展正则表达式之分，但是大多数
+的正则表达式都包括：或（or），分组（group），数量（quantification），
+通配符（wildcard）。

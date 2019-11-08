@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>LaTeX 学习笔记：字体</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html">
+<meta name="twitter:title" content="Wolf Cave ~ LaTeX 学习笔记：字体">
+<meta name="twitter:description" content="LaTeX 字体相关.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="Wolf Cave ~ LaTeX 学习笔记：字体" />
+<meta property="og:description" content="LaTeX 字体相关." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html" rel="bookmark" title="Permalink to LaTeX 学习笔记：字体">LaTeX 学习笔记：字体</a></h2>
+        <div class="entry-content blog-post">
+            <h2>字体属性</h2>
+<p>普通字体: <code>\textnormal{}</code> 或者 <code>\normalfont</code>, 相当于 <code>\rmfamily\mdseries\upshape</code>.
+另外还有强调命令也会改变字体, 但是含义和直接对字体属性的改变不同, <code>\emph{}</code> 或者 <code>\em</code>.</p>
+<h3>Font Family 字体族</h3>
+<table>
+<thead>
+<tr>
+<th>字体族 family</th>
+<th>参数命令</th>
+<th>声明命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>罗马</td>
+<td><code>\textrm{}</code></td>
+<td><code>\rmfamily</code></td>
+<td>表现出 serif 的笔锋收缩或扩张效果</td>
+</tr>
+<tr>
+<td>无衬字</td>
+<td><code>\textsf{}</code></td>
+<td><code>\sffamily</code></td>
+<td>表现出 sans serif 的笔画等宽效果</td>
+</tr>
+<tr>
+<td>打字机</td>
+<td><code>\texttt{}</code></td>
+<td><code>\ttfamily</code></td>
+<td>等宽字, mono</td>
+</tr>
+</tbody>
+</table>
+<h3>Font Shape 字体形状</h3>
+<table>
+<thead>
+<tr>
+<th>字体形状 shape</th>
+<th>参数命令</th>
+<th>声明命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>直立</td>
+<td><code>\textup{}</code></td>
+<td><code>\upshape</code></td>
+<td>正常的直立的字体</td>
+</tr>
+<tr>
+<td>意大利</td>
+<td><code>\textit{}</code></td>
+<td><code>\itshape</code></td>
+<td>意大利, 是单独设计的</td>
+</tr>
+<tr>
+<td>倾斜</td>
+<td><code>\textsl{}</code></td>
+<td><code>\slshape</code></td>
+<td>倾斜, 是把直立直接拉斜</td>
+</tr>
+<tr>
+<td>小型大写</td>
+<td><code>\textsc{}</code></td>
+<td><code>\scshape</code></td>
+<td>小写字母用小的大写字母代替</td>
+</tr>
+</tbody>
+</table>
+<h3>Font Series 字体系列</h3>
+<table>
+<thead>
+<tr>
+<th>字体系列 series</th>
+<th>参数命令</th>
+<th>声明命令</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中等</td>
+<td><code>\textmd{}</code></td>
+<td><code>\mdseries</code></td>
+<td>中等宽度字体</td>
+</tr>
+<tr>
+<td>加宽加粗</td>
+<td><code>\textbf{}</code></td>
+<td><code>\bfseries</code></td>
+<td>粗体</td>
+</tr>
+</tbody>
+</table>
+<h3>字体大小的调整</h3>
+<table>
+<thead>
+<tr>
+<th align="center">命令</th>
+<th align="center">10pt</th>
+<th align="center">11pt</th>
+<th align="center">12pt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>\tiny</code></td>
+<td align="center">5</td>
+<td align="center">6</td>
+<td align="center">6</td>
+</tr>
+<tr>
+<td align="center"><code>\scriptsize</code></td>
+<td align="center">7</td>
+<td align="center">8</td>
+<td align="center">8</td>
+</tr>
+<tr>
+<td align="center"><code>\footnotesize</code></td>
+<td align="center">8</td>
+<td align="center">9</td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td align="center"><code>\small</code></td>
+<td align="center">9</td>
+<td align="center">10</td>
+<td align="center">10.95</td>
+</tr>
+<tr>
+<td align="center"><code>\normalsize</code></td>
+<td align="center">10</td>
+<td align="center">10.95</td>
+<td align="center">12</td>
+</tr>
+<tr>
+<td align="center"><code>\large</code></td>
+<td align="center">12</td>
+<td align="center">12</td>
+<td align="center">14.4</td>
+</tr>
+<tr>
+<td align="center"><code>\Large</code></td>
+<td align="center">14.4</td>
+<td align="center">14.4</td>
+<td align="center">17.28</td>
+</tr>
+<tr>
+<td align="center"><code>\LARGE</code></td>
+<td align="center">17.28</td>
+<td align="center">17.28</td>
+<td align="center">20.74</td>
+</tr>
+<tr>
+<td align="center"><code>\huge</code></td>
+<td align="center">20.74</td>
+<td align="center">20.74</td>
+<td align="center">24.88</td>
+</tr>
+<tr>
+<td align="center"><code>\Huge</code></td>
+<td align="center">24.88</td>
+<td align="center">24.88</td>
+<td align="center">24.88</td>
+</tr>
+</tbody>
+</table>
+<h2>查看系统字体</h2>
+<p>使用 fc-list 命令可以列出系统中可以使用的字体. 使用参数 <code>fc-list :lang=zh</code> 可以单独列出支持中文的字体. </p>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Sat 29 April 2017</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/latex.html">#latex, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html&text=LaTeX 学习笔记：字体&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html&t=LaTeX 学习笔记：字体"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html&title=LaTeX 学习笔记：字体" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=LaTeX 学习笔记：字体&amp;body=Viens découvrir un article à propos de [LaTeX 学习笔记：字体] sur le site de Wolfson Liu. ../../archive/2017/latex-xue-xi-bi-ji-zi-ti.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+        <div class="comments">
+            <h2>Comments !</h2>
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+            var disqus_identifier = "archive/2017/latex-xue-xi-bi-ji-zi-ti.html";
+            (function() {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] ||
+                 document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+            </script>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

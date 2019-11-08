@@ -1,0 +1,27 @@
+Title: 好玩的 linux
+Date: 2015-12-29 11:46
+Modified: 2015-12-29 11:46
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: 一些好玩的 linux 程序.
+
+
+看到一些好玩的 linux 程序, 记录下来.
+
+## Bash ##
+
+Bash 下面的一些好玩的 linux 程序.
+
+* [sl 小火车](http://www.tkl.iis.u-tokyo.ac.jp/~toyoda/index_e.html): 有的时候会把 ls 打错为 sl, 用该程序治愈以下. 会在 terminal 出现小火车, 还有多种选项.
+* [asciiview](https://manned.org/asciiview): 可以使用符号在 terminal 上面显示位图.
+* [cowsay](http://cowsay.morecode.org/): 在 terminal 显示一头说话的牛.
+* [figlet](http://www.figlet.org/): 可以根据参数给的字符画出来更大的字符画.
+* [toilet](caca.zoy.org/wiki/toilet): 和 figlet 类似, 也是根据给定的字符画更大的字符画.
+* [fortune](http://software.clapper.org/fortune/): fortune 是一个 python 程序, 可以随机地输出一个名言警句.
+* [cmatrix](http://www.asty.org/cmatrix/): 用来在终端上产生类似于 *The Matrix* 电影中出现的那种绿色的字符雨.
+* sudo: 在 /etc/sudoers 的文件中的 Defaults 选项后面加上 "insults", 这样在每次输入密码错误后, sudo 会嘲笑用户.
+
+## 桌面 ##
+
+* xeyes: 打开一个 GUI 程序, 两只眼睛会盯着鼠标.

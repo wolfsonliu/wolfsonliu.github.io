@@ -1,0 +1,170 @@
+Title: R 学习笔记：对字符串的处理
+Date: 2015-12-30 18:00
+Modified: 2016-04-19 09:52
+Category: 壹零零壹
+Tags: R
+Authors: Wolfson Liu
+Summary: R 对字符串的基本处理方法.
+
+## 常用字符处理函数 ##
+
+* nchar: 计算字符串中字符数量或者存储大小, 返回相应值, 与多数函数一样, nchar 是可以接受并返回向量的. 同时, nzchar 可以判断字符串是否非空, 非空返回 TRUE, 空则返回 FALSE.
+* substr: 或者 substring 函数, 返回一个字符串的子串, `substr(x, start, end)`, 也可以直接赋值给 substr, 从而能改变 x 的值 `substring(x, first, last) <- "0"`, 需要注意的是替换字符的数量是相同的.
+* sub: 替换第一个出现的符合匹配的字符串, `sub(pattern, replacement, x, ignore.case=FALSE, fixed=FALSE)`.
+* gsub: 替换所有符合匹配的字符串.
+* strsplit: 接受一个字符串, 设置 split 根据的字符, 输出一个 list. 需要注意的是 split 是正则表达式, 如果用 "." 等则需要使用正则表达式的方法.
+* toupper: 转换为大写字母.
+* tolower: 转换为小写字母.
+* paste: 连接字符串, 也可以使用 paste0 函数, 默认不在两个字符串之间加入字符. collapse 参数是设置向量之内的连接字符, 而 sep 是设置向量之间的连接字符.
+
+
+* grep: 按照一定 pattern 去查找向量中是否含有该类型字符. 如果有, 默认返回对应的下标, 如果 `value = TRUE`, 则直接返回对应的值. 如果没有匹配, 则返回空, 可以使用 any 函数或者 length 函数结果是否为 0 去判断是否有匹配.
+* print: 把字符输出到终端.
+* cat: 连接字符并输出到终端或文件.
+
+## 正则表达式 ##
+
+R 是支持 POSIX 规范的正则表达式的, 有许多需要比对的函数接受正则表达式, 如 strsplit, grep 等. 需要注意的是, "\" 在正则表达式中是为了把一个保留字符转义为普通字符, 如 "\." 把匹配任意字符的 "." 转义为句点, 那么在 R 中, 如果把相应的正则表达式保存在字符串中, 则应该使用两个 "\", 如我要转义正则表达式中匹配任意字符的 "." 为句点, `reg.exp <- "\\.txt"` (有的时候可以使用方括号 `"[.]txt"`). 如果使用 readline 函数从终端读取, 则只用使用一个 "\", R 解释器可以解读.
+
+### 保留字符 ###
+
+在 R 中正则表达式有一些保留字符, 这些保留字符在正则表达式中有特殊含义, 如果字符串中有该字符, 需要进行转意. R 使用 POSIX 兼容的正则表达式, 和 linux 终端下的很接近.
+
+```
+. ^ $ + ? * ( ) [ ] { } | \
+```
+
+### 基本用法 ###
+
+#### 字符与字符集 ####
+
+在正则表达式中, 一个字符或者一个字符集本身只代表一个值. 一个字符代表的就是自身, 而字符集代表的是符合集合的任意一个字符, 更多的字符匹配需要通过指定数量来获得. 下面所列的几个地为是一样的, 如 "a" 的地位和 "[:alpha:]" 的地为一样, 在 "a" 外面需要一个方括号的地方, 如 `[a]`, 在 "[:alpha:]" 也需要, 如 `[[alpha:]]`
+
+* .: 匹配任意一个字符.
+* \.: 在 R 中或者 "\\.", 代表句点, 需要转义.
+* a: 代表一个字符 "a", 其他字符类似.
+* [:alnum:]: 所有的字母和数字, A-Z, a-z, 0-9, alpha and number.
+* [:alpha:]: 所有的字母, A-Z, a-z.
+* [:blank:]: space and tab, 空格和制表符.
+* [:cntrl:]: 控制字符, 响铃, 退格, 水平制表符, 归位, 转义等.
+* [:digit:]: 数字, 0-9.
+* [:graph:]: 可视字符, 所有的数字, 字母, 标点等可以看到的字符.
+* [:lower:]: 小写字母, a-z.
+* [:print:]: 可打印字符, 包括空格和可视字符.
+* [:punct:]: 标点, `][!"#$%&'()*+,./:;<=>?@\\^_\`{|}~-`.
+* [:space:]: 空白符号, 空格制表符等.
+* [:upper:]: 大写字母, A-Z.
+* [:xdigit:]: 十六进制数字.
+
+#### 逻辑与分组 ####
+
+* |: 逻辑或, 代表两者中取一个
+* (): 分组, 与 | 一起用, 代表在所包含的模式中符合一个, `(a|b)`.
+* []: 匹配一个, 匹配其中包含的一个字符或字符集, `[a[:digit:]]`.
+* [^]: 不匹配其中任何一个.
+
+#### 数量 ####
+
+数量符号指明其前面的字符重复的数量.
+
+* ?: 前面的字符重复 0 次或 1 次.
+* *: 前面的字符重复 0 次或多次.
+* +: 前面的字符重复 1 次或多次.
+* {n}: 前面的字符重复 n 次.
+* {min,}: 前面的字符重复至少 min 次.
+* {min, max}: 前面的字符重复 min 次到 max 次.
+
+#### 位置 ####
+
+有的时候需要匹配位置.
+
+* ^: 把位置锚定在行首.
+* $: 把位置锚定在行尾.
+
+## 常见字符串处理问题 ##
+
+### 取字符串的部分字符 ###
+
+主要使用 strsplit 函数.
+
+丽莎问了一个问题, 想要提取一系列的物种学名中的属名, 这些学名有的有亚种加词, 有的没有.
+
+```
+species <- c("Corvus_corone",
+             "Cyanopica_cyanus",
+             "Pica_pica_serica",
+             "Corvus_macrorhynchos")
+genus <- unname(sapply(species, function(m){unlist(strsplit(m,split="_"))[1]}))
+```
+
+上面的代码可以解决这个问题. 
+
+* unlist: 把 strsplit 输出的 list 变成向量.
+* sapply: 把一个操作用在一个向量上. FUN 可以为 "[" 就可以提取 list 中特定的部分, `sapply(list, "[", 1)`.
+* unname: sapply 得到的结果有 names, 使用 unname 可以去掉 names.
+
+### 取字符串中的单个字母 ###
+
+如果需要对字符串中的单个字母进行操作或判断, 则应该先把整个字符串转换为单个字母的向量, 这个任务能通过 substr 来完成.
+
+```
+state <- ’Mississippi’
+len   <- nchar(state)
+ltrs  <- substr(state,1:len,1:len)
+ltrs
+[1] "M" "i" "s" "s" "i" "s" "s" "i" "p" "p" "i"
+```
+
+### 除去字符串最后一个字符 ###
+
+石强问怎么把一些字符串最后的句号给去掉, 查了网站, 没看到类似 python rstrip 之类的函数, 那就用多个函数组合吧. 需要注意的是英文句号本身是正则表达式里面的符号, 需要用方括号括起来.
+
+```
+some <- c("my.", "name", "is", "Wolfson.")
+substr(x     = some[grep(pattern = "[.]$", x = some)],
+       start = c(1,1),
+       stop  = nchar(some[grep(pattern = "[.]$", x = some)]) - 1)
+```
+
+### 字符和对象的转换, 运行字符串中的命令 ###
+
+有的时候需要把接下来需要运行的命令保存在字符串中, 然后再运行. 这种情况下, 需要 parse, eval, call, get 等函数.
+
+```
+rna.time.conditions <- c(0, 6, 24, 48)
+rna.time.names <- vector()
+for (i in c(1:4)) {
+  rna.time.names[i] <- paste("rna.time.",
+                             rna.time.conditions[i],
+                             sep = "")
+  ## setting names.
+  tmp.load.rna.data <- paste(rna.time.names[i],
+                             " <- ",
+                             "ballgown(dataDir = rna.data.parent.dir, ",
+                             'samplePattern = "*-',
+                             rna.time.conditions[i],
+                             '-*", meas = "all")',
+                             sep = '')
+  ## excute strings
+  eval(parse(text = tmp.load.rna.data))  # excute
+  write(x    = get(rna.time.names[i]),
+        file = paste(rna.time.conditions[i], "_data.txt", sep = ''))
+  ## write data to file.
+  ## write the differencial expressed gene list to file.
+}
+```
+
+* parse: 把字符串转化为 R 表达式, file 指定输入的文件, 或者使用 text 指定包含所需字符串的对象.
+* deparse: 把表达式转换为字符串.
+* eval: 运行 R 表达式, 需要先使用 parse 把字符串转化为 R 表达式.
+* call: 把字符串转化为函数表达式, `call(FUNCTIONNAME)`.
+* get: 通过名称来获得数据对象, `get(DATANAME)`.
+* substitute: 返回 parse tree, 可以和 deparse 配合, 获得函数参数实际的变量名.
+
+我们也许需要一个函数的参数或函数名都按照需求有所变化, 也就是说, 希望能通过函数名调用参数, 而又可以单独去赋予该函数参数, 这个时候就需要 do.call 函数.
+
+```
+sortframe = function(df,...)df[do.call(order,list(...)),]  # 对 data.frame 的每一列进行排序.
+```
+
+* do.call, do.call 接受一个函数名和该函数的参数的 list, 并且调用该函数.

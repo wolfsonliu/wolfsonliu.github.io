@@ -1,0 +1,106 @@
+Title: Linux 学习笔记：Bash 判断条件
+Date: 2016-01-30 14:48
+Modified: 2016-01-30 14:48
+Category: 壹零零壹
+Tags: linux, shell
+Authors: Wolfson Liu
+Summary: Bash 中判断条件的使用方法.
+
+在 Bash 中判断条件的方法比较多, 同时也就比较繁琐.
+
+需要注意的是, bash 中程序正常结束返回的状态值是0, 可以理解为在 bash 下 0 代表 true, 1 代表 false. 所以, 条件判断中的返回值也以 0 代表 true, 相应的 1 代表 false.
+
+# 如何进行判断 #
+
+在 Bash 中可以对变量进行条件判断, 可以判断字符, 数字和文件.
+
+主要使用的是条件判断表达式, 即使用 `test` 或者 `[ ]`.
+
+* `EXPRESSION1 -a EXPRESSION2`: 逻辑与.
+* `EXPRESSION1 -o EXPRESSION2`: 逻辑或.
+* `!EXPRESSION`: 逻辑非.
+* `-v VAR`: 如果 $VAR 被 set 则返回真, 0.
+* `-R VAR`: 如果 $VAR 被 set 且是 name reference 则返回真, 0.
+
+## 判断字符 ##
+
+可以使用 `test` `[ ]` 条件表达式来判断, `test EXPRESSION` 或者 `[ EXPRESSION ]`, 使用方括号的话, 表达式两边均需要一个空格.
+
+可选择的判断条件如下:
+
+* `-z STRING`: 若 STRING 为空, 返回真, 0.
+* `-n STRING`: 若 STRING 不为空, 即长度不等于 0, 则返回真, 0. 需要注意的是, 如果判断变量, 则最好放在双引号里面, 否则如果变量不存在, 该判断依然会返回真, 而放入双引号的不存在的变量会产生一个空字符串, 则返回假. `-n "$VAR"`
+* `STRING1 = STRING2`: 如果 STRING1 和 STRING2 相等, 则返回真. 需要注意的是, 判断符号为一个等号.
+* `STRING1 != STRING2`: 如果 STRING1 和 STRING2 不相等, 则返回真.
+* `STRING1 < STRING2`: 如果按字典排序 STRING1 在 STRING2 前面, 则返回真.
+* `STRING1 > STRING2`: 如果按字典排序 STRING1 在 STRING2 后面, 则返回真.
+
+## 判断数字 ##
+
+判断数字可以使用 `test` `[ ]`, 也可以使用专门计算数字的环境 `(( ))`.
+
+对于 `test` 的方法, 也可以是 `[ EXPRESSION ]` 由于相应的判断符号被字符判断使用, 在进行数字判断的时候就需要别的符号, 条件判断如下:
+
+* `NUM1 -eq NUM2`: NUM1 等于 NUM2.
+* `NUM1 -ne NUM2`: NUM1 不等于 NUM2.
+* `NUM1 -lt NUM2`: NUM1 小于 NUM2.
+* `NUM1 -le NUM2`: NUM1 小于等于 NUM2.
+* `NUM1 -gt NUM2`: NUM1 大于 NUM2.
+* `NUM1 -ge NUM2`: NUM1 大于等于 NUM2.
+
+还可以利用计算数字的环境, 对于 `(( ))` 环境本身, 如果其中的表达式为真, 则返回 0 的状态值, 而如果其中表达式为假, 则返回 1 的状态值. 而其中的数学表达式则是真的时候值为 1, 假的时候值为 0. 所以, `$((EXPRESSION))` 如果表达式为真的时候, 该变量值是 1, 而为假的时候, 该变量值为 0. 数学环境中的算子如下.
+
+* ++: 自增符号, 可前可后, 类C.
+* --: 自减符号, 可前可后, 类C.
+* +, -, *, /: 加, 减, 乘, 除.
+* %: 取余.
+* **: 乘方.
+* <<, >>, &, |, ~, ^: 位操作符, 左移, 右移, 位与, 位或, 位非, 位非包含或.
+* !, &&, ||: 逻辑非, 逻辑与, 逻辑或.
+* ==: 等于.
+* !=: 不等于.
+* <: 小于.
+* <=: 小于等于.
+* >: 大于.
+* >=: 大于等于.
+
+需要注意的是, 这些操作符号只能在双小括号中使用, 出了小括号就要使用 test 的形式.
+
+下面的几种形式是等价的, 均表示判断 NUM1 小于 NUM2 并且 大于 NUM3
+```
+[ $NUM1 -lt $NUM2 -a $NUM1 -gt $NUM3 ]
+[ $NUM1 -lt $NUM2 ] && [ $NUM1 -gt $NUM3 ]
+[ $((($NUM1 < $NUM2) && ($NUM1 > $NUM3))) = 1 ]
+((($NUM1 < $NUM2) && ($NUM1 > $NUM3)))
+(($NUM2 < $NUM2)) && (($NUM1 < $NUM3))
+```
+
+# 判断文件 #
+
+test 在判断文件上面很好用.
+
+* `-a FILE`: 如果 FILE 存在则返回真.
+* `-b FILE`: 如果 FILE 是 block special, 一般是设备文件, 则返回真.
+* `-c FILE`: 如果 FILE 是 character special, 一般是普通文件, 则返回真.
+* `-d FILE`: 如果是文件夹则返回真.
+* `-e FILE`: 如果文件存在则返回真.
+* `-f FILE`: 如果文件存在并且是普通文件则返回真.
+* `-g FILE`: True if file is set-group-id.
+* `-h FILE`: 如果文件是软链接, symbolic link, 则返回真.
+* `-L FILE`: 如果文件是软链接, symbolic link, 则返回真.
+* `-k FILE`: True if file has its `sticky' bit set.
+* `-p FILE`: 如果文件是管道文件则返回真.
+* `-r FILE`: 如果文件权限是只读则返回真.
+* `-s FILE`: 如果文件存在并且非空则返回真.
+* `-S FILE`: True if file is a socket.
+* `-t FD  `: True if FD is opened on a terminal.
+* `-u FILE`: True if the file is set-user-id.
+* `-w FILE`: 如果文件是可写则返回真.
+* `-x FILE`: 如果文件是可执行则返回真.
+* `-O FILE`: 如果文件所有人是用户则返回真.
+* `-G FILE`: 如果文件所有组是用户所在组则返回真.
+* `-N FILE`: 如果从文件上次读取之后被修改则返回真.
+* `FILE1 -nt FILE2`: 如果 FILE1 比 FILE2 新则返回真.
+* `FILE1 -ot FILE2`: 如果 FILE1 比 FILE2 旧则返回真.
+* `FILE1 -ef FILE2`: 如果 FILE1 是 FILE2 的硬链接则返回真.
+

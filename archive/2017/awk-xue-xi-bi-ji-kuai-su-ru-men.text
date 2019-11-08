@@ -1,0 +1,602 @@
+Title: AWK 学习笔记: 快速入门
+Date: 2017-01-25 15:27
+Modified: 2017-03-09 13:48
+Category: 壹零零壹
+Tags: linux, awk
+Authors: Wolfson Liu
+Summary: 使用 awk.
+
+awk 有两种运行方式:
+* 从命令行直接运行一段程序.
+* 把程序写入文本文件, 通过 awk 运行.
+* 在 awk 中行是 record, 列是 field.
+
+```
+$ awk 'BEGIN { print "Don\47t Panic!" }'
+$ cat <<EOF > advice
+> BEGIN {print "Dont' Panic"}
+> EOF
+$ awk -f advice
+```
+
+* awk 中的注释符号是 '#'.
+* 如果一行内容过长 awk 中可以用 '\' 来换行.
+* awk 每一行是一条命令, 如果在一行中放多条命令, 需要在一条命令后面加上 ';'.
+
+
+## 选项 ##
+
+* `-F fs` 或者 `--field-separator fs`: 把 `FS` 变量设置为 fs, 用于分割 field.
+* `-f source-file` 或者 `--file source-file`: 从 `source-file` 中运行命令.
+* `-v var=val` 或者 `--assign var=val`: 设置变量. v 后面只能设置一个变量, 不过可以使用多次.
+* `-e program-text` 或者 `--source program-text`: `program-text` 是在命令行输入的命令,
+  `-e` 和 `-f` 参数配合可以把命令行和文件中的命令联合使用.
+* `-E file` 或者 `--exec file`: 类似于 `-f` 命令, 但是不允许在命令行的参数设置等.
+* `-i source-file` 或者 `--include source-file`: 相当于 source file 中的 `@include`.
+  类似于 `-f` 命令, 但是 `-f` 命令每次都会加载文件, 而对于 `-i` 如果文件已经加载过, 则不会再次加载.
+* `-p[file]` 或者 `--profile[=file]`: 允许配置 awk.
+* `-S` 或者 `--sandbox`: 禁止使用 `system()` 函数, 防止运行的命令对系统造成危害.
+
+### 预设变量 ###
+
+#### 行列设置变量 ####
+
+* RS: record separator, 用于分割记录的字符, 默认是 '\n'.
+* FS: field separator, 用于分割输入文件的列的字符, 默认是空格或者TAB.
+  需要注意的是对于空格作为 FS, 如果 FS 设置为 " ", 则两个相邻的空格只会认为是一个, 而如果是 "[ ]", 则两个相邻的空格会被认为中间有一个空列.
+* FIELDWIDTHS: 设置读取固定宽度的数据. 如果想要重新变为按照分隔符号读取, 则只要设置 `FS = FS`.
+* FPAT: FPAT 值是正则表达式, 如果设置 FPAT, awk 会根据 FPAT 的值来分隔列, 而非使用 FS 或者 FIELDWIDTHS.
+* OFS: output field separator, 用于分割输出文件(包括print)的列的字符.
+* ORS: output raw separator, 用于分割输出文件(包括print)的行的字符.
+* OFMT: C 风格的格式化输出的字符串, print 的输出会根据 OFMT 的格式调用 sprintf 格式化输出. 如 "%.2f".
+
+#### 字符串相关预设变量 ####
+
+* CONVFMT: 在不同类型变量运算的时候转换类型的规则, 默认是 "%.6g".
+  需要的时候如果没有另外的设置, 则会按照 CONVFMT 把小数转换为字符串.
+* IGNORECASE: 如果 IGNORECASE 的值为 True (不是 0 或者空字符串), 那么应用到字符匹配的地方就会忽略大小写.
+包括正则表达式, gensub(), gsub(), index(), match(), patsplit(), split() 和 sub() 等.
+
+#### 数字相关预设变量 ####
+
+* PREC: 浮点数的工作精度, 默认是 53 位.
+* ROUNDMODE: 浮点数舍入规则, 默认是 'N'.
+* SUBSEP: 在数组中用于分隔不同的索引的符号, 默认是 ','.
+
+#### 传递信息的预设变量 ####
+
+* NR: 读取的所有记录数, 不会自动设为 0.
+* FNR: 当前文件读取的记录(record)数, 每当开始读取新文件的时候会被自动设置为 0.
+* NF: 当前记录的列数.
+* RT: RT 中保存的是当前的实际对应于 RS 的值.
+  如果 RS 是单一字符, RT 也是单一字符. 如果 RS 是正则表达式, RT 对应的是当前行的匹配正则表达式的具体的值.
+* ARGC, ARGV: 命令行的参数数量和值分别被存在 ARGC 和 ARGV 中.
+  ARGC 是数字, 命令行参数个数. ARGV 是数组, 其索引从 0 开始到 ARGC - 1.
+  awk 的命令行参数和命令行程序不会包括在 ARGC 和 ARGV 中, ARGV 中除了第一个, 后面的值主要是处理的文件名.
+* FILENAME: 当前处理的文件的文件名.
+* ARGIND: 当前处理的文件在 ATGV 中的索引. `FILENAME == ARGV[ARGIND]`
+* ENVIRON: 数组, 存储当前运行环境中的环境变量, 索引是环境变量的变量名. 如, ENVIRON["HOME"] 是用户的家目录.
+* ERRNO: 当 awk 运行 getline 产生错误, 错误提示会被保存在 ERRNO 中.
+* FUNCTAB: 数组, 索引和值是所有内置或用户自定义函数.
+* SYMTAB: 数组, 索引是程序中所有定义的变量和数组名.
+  可以使用 isarray() 来判断 SYMTAB 中的元素是否是数组.
+* RSTART: 由 match() 匹配的子字符串相对于原字符串的起始.
+* RLENGTH: 由 match() 匹配的子字符串的长度.
+* PROCINFO: 数组, 提供了当前运行的 awk 程序中的若干变量.
+  * PROCINFO["euid"]: `geteuid()` 的结果.
+  * PROCINFO["egid"]: `getegid()` 的结果.
+  * PROCINFO["uid"]: `getuid()` 的结果.
+  * PROCINFO["gid"]: `getgid()` 的结果.
+  * PROCINFO["pid"]: 当前进程的进程 ID.
+  * PROCINFO["ppid"]: 当前进程的父进程 ID.
+  * PROCINFO["pgrid"]: 当前进程的组进程 ID.
+  * PROCINFO["FS"]: 如果有设置则是按照 FS 中的值去分列,
+    相应的 "FILEDWIDTHS" 是按照 FILEDWIDTHS 设置的等宽分列,
+    对应 "FPAT" 是按照 FPAT 设置的按照模式分列.
+  * PROCINFO["strftime"]: 默认的 `strftime()` 输出的格式.
+## 变量 ##
+
+### 变量类型 ###
+
+awk 中有三种变量类型: STRING, NUMERIC, STRNUM.
+1. STRING: 就是字符串型.
+2. NUMERIC: 数字型, 都是浮点数字.
+3. STRNUM: 像数字的字符串, 即字符串中实际上是数字, 可以含有正负号和小数点等.
+
+awk 中的变量实际上对类型的处理是模糊的, 一个变量可以被赋予任何类型的值, 不同类型的值也可以相互比较, 其类型会隐式转换.
+三种类型在相互比较和计算的时候的类型转换规则如下表, 其实就是但凡比较或运算的一边是 STRING 类型, 则比较会按照 STRING 类型的比较来.
+
+|         | STRING | NUMERIC |  STRNUM |
+|:-------:|:------:|:-------:|:-------:|
+|  STRING | string |  string |  string |
+| NUMERIC | string | numeric | numeric |
+|  STRNUM | string | numeric | numeric |
+
+在向 awk 中输入数据的时候, 字符会被处理成 STRING, 而数字则会被处理为 STRNUM.
+值的注意的一点是, 只有用户输入的数字会被处理为 STRNUM, 而在 awk 程序中定义的所有字符串, 不论是否是数字都会被定义为 STRING.
+
+另外, 在程序中也会定义一些常量.
+
+* 数字常量: 由数字组成, 没有双引号.
+* 字符常量: 字符常量由双引号所包围, 如 "string".
+* 正则表达式常量: 正则表达式常量由斜杠所包围, 如 /[[:digit:]]+/.
+
+### 运算符号 ###
+
+需要注意的是在 awk 中, 所有的数字被认为是浮点型.
+
+* `x ^ y` 或 `x ** y`: 幂运算.
+* `x + y`: 加法运算.
+* `x - y`: 减法运算.
+* `x * y`: 乘法运算.
+* `x / y`: 除法运算.
+* `x % y`: 取余运算. 如果 x 是负数, 则余数也是负数.
+
+另外有一类运算赋值符, 可以计算并赋值.
+
+* `lvalue += increment`: 把 increment 加到 lvalue 并赋值给 lvalue.
+* `lvalue -= decrement`: 从 lvalue 中减去 decrement 并赋值给 lvalue.
+* `lvalue *= coefficient`: lvalue 乘以 coefficient 并赋值给 lvalue.
+* `lvalue /= divisor`: lvalue 除以 divisor 并赋值给 lvalue.
+* `lvalue %= modulus`: 把 lvalue 设置为其对 modulus 的余数.
+* `lvalue ^= power` 或 `lvalue **= power`: 把 lvalue 的 power 次方赋值给 lvalue.
+
+还有类似于 C 语言中的自增自减符号.
+
+* `c++`: c 的值加 1, 该表达式的值为 c 加 1 之前的值.
+* `++c`: c 的值加 1, 该表达式的值为 c 加 1 之后的值.
+* `c--`: c 的值减 1, 该表达式的值为 c 减 1 之前的值.
+* `--c`: c 的值减 1, 该表达式的值为 c 减 1 之后的值.
+
+```
+BEGIN {
+    a = 1; print a, a++, a;
+    b = 1; print b, ++b, b;
+    c = 1; print c, c--, c;
+    d = 1; print d, --d, d;
+}
+```
+
+### 布尔运算与比较运算 ###
+
+在 awk 中的布尔值的定义很简单, 和 C 类似: 0 代表 False; 非 0 的数代表 True.
+另外需要注意的是: 空字符串 "" 为 False; 而非空字符串, 如 "0" 则为 True.
+
+* `bool1 && bool2`: 与, bool1 和 bool2 都为 True 的时候返回 True, 否则返回 False.
+* `bool1 || bool2`: 或, bool1 和 bool2 中至少一个为 True 的时候返回 True, 全为 False 则返回 False.
+* `! bool`: 非, 对 bool 取反.
+
+awk 的比较运算符是很灵活的, 其两边的变量的类型可以不一样, 当类型不一样的时候, 变量就会按照前面提到的规则隐式地转换.
+其转换方式会使用 CONVFMT 定义的规则.
+对于数字的比较则按照算术的方法比较大小, 如果是字符串, 则按照 ASCII 码去一位一位比较, 直到在第一个不同的位比较出大小.
+
+* `x < y`: 小于, 若 x 小于 y 返回 True.
+* `x <= y`: 小于等于, 若 x 小于等于 y 返回 True.
+* `x > y`: 大于, 若 x 大于 y 返回 True.
+* `x >= y`: 大于等于, 若 x 大于等于 y 返回 True.
+* `x == y`: 等于, 若 x 等于 y 返回 True. 一定要注意是两个等号 "==".x
+* `x != y`: 不等于, 若 x 不等于 y 返回 True.
+* `x ～ y`: 若字符串 x 匹配正则表达式 y 则返回 True.
+* `x ！～ y`: 若字符串 x 不匹配正则表达式 y 则返回 True.
+
+在两种情况下来选择不同的结果输出的时候可以使用 if else 也可以使用三目的条件表达式.
+`selector ? if-true-exp : if-false-exp`,
+当 selector 为 True 的时候表达式的返回值是 if-true-exp,
+当 selector 为 False 的时候, 表达式返回值是 if-false-exp.
+
+### 数组 ###
+
+数组的索引默认是没有顺序的, 如果要设定索引的顺序, 可以通过设置 `PROCINFO["sorted_in"]` 的值.
+需要注意的是, 再改变其值之前可以保存旧值, 之后再把旧值赋值回去.
+
+* `"@unsorted"`: awk 默认选项, 按照索引出现的顺序来.
+* `"@ind_str_asc"`: 把索引作为字符串按照升序排序.
+* `"@ind_num_asc"`: 把索引作为数字升序排序, 非数字会被当作是 0.
+* `"@val_type_asc"`: 按照值进行排序, 数字会排在字符串前面, 子数组会排在最后.
+* `"@val_str_asc"`: 把值都作为字符串进行升序排序.
+* `"@val_num_asc"`: 把值都作为数字进行升序排序, 子数组会排在最后.
+* `"@val_str_desc"`: 把值都作为字符串进行降序排序.
+* `"@val_num_asc"`: 把值都作为数字进行降序排序, 子数组会排在最前.
+
+从 awk 数组索引的特点我们可以理解, 实际上 awk 中所有数组的索引都是作为字符串处理的, 数字作为索引也会被理解为字符串.
+awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能使用顺序数字去索引.
+
+#### 多维数组 ####
+
+awk 的数组也支持多维的, 如 `a[1, 2]`.
+不过 awk 的多维数组并不是存储方式的改变, 而只是改变了索引.
+`SUBSEP` 存储多维数组不同维分隔符, 那么总有 `a[1, 2]` 和 `a[1 SUBSEP 2]` 是等价的.
+如果我们把 `SUBSEP` 设置为 "@", 那么 `a[1, 2]` 实际上就是 `a["1@2"]`.
+
+需要遍历多维数组的每一行列元素的时候, 可以使用 split 函数把多维数组的索引的不同维度的值分开.
+
+```
+for (combined in a) {
+    split(combined, index, SUBSEP)
+    print a[index[1], index[2]]
+}
+```
+
+#### 数组的数组 ####
+
+gawk 提供真正的多维数组, 实际上是数组的元素又是一个数组. 数组的每一个元素并不要求一定是同样的类型.
+
+```
+a[1][1] = 1
+a[1][2] = 2
+```
+
+## 函数 ##
+
+函数是一组相关的操作的合集.
+在 awk 中, 函数的调用需要是函数名加括号, 括号中输入函数的参数, 不同参数用逗号分隔.
+如果函数没有参数, 则要在函数名后加空括号.
+
+### 内置函数 ###
+
+在不同的 awk 实现中都有一类内置的函数, 来保证代码在不同的 awk 实现中能够兼容.
+
+#### 数学函数 ####
+
+* `atan2(y, x)`: arctangent of `y / x` in radians.
+* `cos(x)`: 返回 x 的余弦 cosine 值.
+* `exp(x)`: e 的 x 次方.
+* `int(x)`: 返回 x 的整数部分.
+* `log(x)`: 返回 x 的 log 值, 如果 x 为负数, 则给出警告.
+* `rand()`: 返回 0 和 1 之间符合平均分布的随机数.
+* `sin(x)`: 返回 x 的正弦 sine 值.
+* `sqrt(x)`: 返回 x 的平方根.
+* `srand([x])`: 设置随机数的种子, 可以给定 x 或者空缺.
+
+#### 字符串处理函数 ####
+
+* `sub(regexp, replacement [ , target ])`: 把符合 regexp 的第一个字符串替换成后面给定的字符串.
+  按照 regexp 搜寻 target 中的字符串, 把 最左侧遇到的最长的符合项替换成 replacement 所指定的字符串.
+  如果 target 忽略, 则默认输入是 $0; 如果设置 target 参数, 则应该是可以存储 string 的变量,
+  被替换后的字符串将被存入 target.
+  在 replacement 中出现的 "&" 用来表示 regexp 所匹配的出现在 target 中的字符串.
+  "&" 也是可以用作普通符号, "\&" 是字符原意思, 但是用在字符串中的时候像其他用于字符串中的特殊字符一样需要两个反斜线, `"\\&"`.
+
+```
+string = "one"
+sub(/one/, "& two", string)
+# string: "one two"
+```
+
+* `gsub(regexp, replacement [ , target ])`: 把符合条件的最长的, 全部的字符串均替换, 'g' 在这里代表的是 "global".
+* `gensub(regexp, replacement, how [, target])`: 正则表达式替换.
+  how 如果是 'g' 则替换所有匹配, 如果设置为数字, 则替换对应的匹配, 以 1 作为起始的索引.
+  replacement 可以指定 regexp 中的小括号所指定的分组 `\N` N 为数字, 但是作为字符串, 需要两个反斜线代表一个斜线 `"\\N"`.
+  如果没有找到相应的匹配, gensub 则返回原来的字符串.
+* `index(in, find)`: 返回 in 字符串中第一次出现字符串 find 的地方, 如果没有则返回 0.
+* `length(string)`: 返回 string 中字符数, 如果是 string 是数字则返回数字数目.
+* `match(string, regexp [, array])`: 在 string 中搜寻最长的最左出现的匹配 regexp 的字符串,
+  返回第一个匹配的位置, 同时 RSTART 被设置为起始位点, RLENGTH 设置为匹配字符串的长度;
+  如果没有则返回 0, 同时 RSTART 被设置为起始位点, RLENGTH 设置为 -1.
+  如果有 array, 则 array 的第 0 位是 string, array 后面的元素则是 匹配序列按照小括号分割的组的字符串.
+* `patsplit(string, array [, fieldpat [, seps]])`: 按照 filedpat 或者 FPAT
+  所给出的分割列的正则表达式把 string 字符串分割成不同的列, 结果保存在 array 中.
+  array 的 0 号元素是整个 string 的值, 后面的是相应的列.
+  如果给出了 fieldpat 则按照 fieldpat 来分割, 如果没有, 则根据 FPAT 来分割.
+* `split(string, array [, fieldsep [, seps]])`: split 是根据 fieldsep 或者 FS
+  来把 string 分割成列, 结果保存在 array 中.
+  array 的 0 号元素是整个 string 的值, 后面的是相应的列.
+  如果没有 fieldsep, 则使用 FS.
+  split 可以用来分割多维数组的索引, `split(combinedindex, index, SUBSEP)`.
+* `strtonum(str)`: 把值为数字的字符串转换为数字, 如果是纯数字, 则认为是十进制的数字,
+  如果是 "0x" 或者 "0X" 则认为是十六进制的数字.
+* `substr(string, start [, length ])`: 从 string 中选取部分字符串, start 指定选取字符串的起始部分,
+  length 指定选取的字符串的长度, 如果没有设置 length 则默认从 start 直到字符串末尾.
+* `tolower`: 字符串转换为小写.
+* `toupper`: 字符串转换为大写.
+
+
+关于使用反斜线的规则：
+
+|   输入   | sub() 得到 | sub() 产生 |
+|:-------:|:----------:|:----------:|
+| \&      |     &      | 匹配的字符串 |
+| \\&     |     \&     | 字符 "&"   |
+| \\\&    |     \&     | 字符 "&"   |
+| \\\\&   |     \\&    | 字符 "\&"  |
+| \\\\\&  |     \\&    | 字符 "\&"  |
+| \\\\\\& |     \\\&   | 字符 "\\&" |
+| \\q     |     \q     | 字符 "\q"  |
+
+|   输入   | gensub() 得到 |    gensub() 产生  |
+|:-------:|:-------------:|:----------------:|
+| &       |     &         | 匹配的字符串       |
+| \\&     |     \&        | 字符 "&"          |
+| \\\\    |     \\        | 字符 "\"          |
+| \\\\&   |     \\&       | 字符 "\" 和匹配字符 |
+| \\\\\\& |     \\\&      | 字符 "\&"         |
+| \\q     |     \q        | 字符 "\q"         |
+
+#### 数组处理函数 ####
+
+* `isarray(a)`: 判断 a 是否是数组.
+* `asort(source [, dest [, how ]])`: 对 source 数组提供的值进行排序, 用数字取代之前的索引.
+  如果有提供数组 dest, 则排序后的结果保存在 dest 中, 否则在 source 原位排序. 返回值是数组的元素个数.
+* `asorti(source [, dest [, how ]])`: 和 asort 函数类似, 对 source 数组提供的索引进行排序和保存.
+  把排序的索引作为数组的值, 并使用数字作为新的索引.
+  如果有提供数组 dest, 则排序后的结果保存在 dest 中, 否则在 source 原位排序. 返回值是数组的元素个数.
+
+```
+
+a["three"] = "last"
+a["one"]   = "first"
+a["two"]   = "middle"
+
+asort(a, b)
+
+# b[1] == "first"
+# b[2] == "last"
+# b[3] == "middle"
+
+asorti(a, b)
+
+# b[1] == "one"
+# b[2] == "three"
+# b[3] == "two"
+```
+
+#### 其他函数 ####
+
+* `system(command)`: 运行系统的命令.
+* `mktime(datespec)`: 把时间转换为距离计算机元年的秒, 即距离 1970 年 1 月 1 日的秒.
+  datespec 的字符串应该符合形式 "YYYY MM DD HH MM SS [DST]".
+* `strftime([format [, timestamp [, utc-flag]]])`: 对时间格式化.
+  format 是用于指定时间格式, 默认为 `PROCINFO["strftime"]` 的值 "%a %b %e %H:%M:%S %Z %Y".
+  timestamp 是用于转换格式的时间, 如果没有指定, 则默认是当前时间.
+* `systime()`: 返回当前系统时间, 为到 1970-01-01 00:00:00 UTC 的秒数.
+
+### 创建函数 ###
+
+awk 允许自己定义函数. 因为 awk 在运行程序之前会把所有代码都扫描一边, 所以函数的定义并不要要求出现在代码最前面.
+
+```
+function name([parameter])
+{
+    # function-body ...
+}
+```
+
+在函数的定义中出现在参数列表中的是参数名和局部变量名, 如果在调用参数的时候有给参数赋值, 则函数中使用参数值,
+如果没有给参数赋值, 则参数表现像是局部变量, 引用时候根据使用场景表现为空字符串或者数字 0.
+需要注意的是, 在 awk 中所有的变量默认都是全局的, 所以在函数中可以改变外面的变量的值,
+想要把函数中的变量限制为局部变量, 只要在定义函数的时候, 在参数列表中加入声明.
+
+```
+function foo(x,    i)
+{
+    i = x  # i 为局部变量
+    return i
+}
+
+function bar(y)
+{
+    i = x # i 为全局变量
+    return i
+}
+
+BEGIN {
+    i = 5
+    print "全局 i = " i
+    print "foox = " 1
+    print "foo i = " foo(1)
+    print "全局 i = " i
+    print "barx = " 2
+    print "bar i = " bar(2)
+    print "全局 i = " i
+}
+```
+输出结果会是:
+```
+全局 i = 5
+foox = 1
+foo i = 1
+全局 i = 5
+barx = 2
+bar i = 2
+全局 i = 2
+```
+
+当参数是数组的时候, 参数传递的是数组本身, 而如果参数是普通的变量的时候, 参数传递的是值, 这一点是和 C 语言类似的.
+
+### 间接引用 ###
+
+有的时候使用的函数需要在运行的时候决定, 这个时候可以去提供函数名, 然后通过间接引用的方式去调用函数.
+间接引用函数见下面例子.
+```
+BEGIN {
+    funcname = "exp"
+    print @funcname(1)
+}
+```
+输出为 `2.71828`。使用 `@` 符号可以调用函数名变量所保存的字符串所指代的函数。
+
+##### close #####
+
+* `close(filename)`: 用来关闭打开的文件. 关闭文件后将可以再次从头开始读取文件. filename 也可以是一段命令.
+  关闭一个文件或管道, 所用的文件名或命令必须完全一样.
+  例如如果要关闭 sort 管道,  `"sort -r names" | getline foo`, 则应使用命令 `close("sort -r names")`.
+* `fflush([filename])`: 使得 filename 指定的 buffer 输出,
+  如果没有指定 filename 则使得所有的
+
+### 特殊的文件 ###
+
+* /dev/tty
+* `/dev/stdin` 或 `/dev/fd/0`: 可以从标准输入读取字符串, 但必须用双引号, 如 `"/dev/stdin"`.
+* `/dev/stdout` 或 `/dev/fd/1`: 可以把字符串输出到标准输出, 但必须用双引号, 如 `"/dev/stdout"`.
+* `/dev/stderr` 或 `/dev/fd/2`: 可以把字符串输出到标准错误输出, 但必须用双引号, 如 `"/dev/stderr"`.
+
+
+## 模式和操作 ##
+
+awk 语言对文本数据的处理方式是针对符合一定模式的行和列进行一定的操作.
+当有字符串或文件输入 awk 程序时, awk 程序会根据预先设定的参数把字符串或文件划分为若干行和列.
+针对符合一定模式的行或者列, awk 程序采取一定的操作, 操作往往在大括号中, 多个操作用分号或者换行分隔.
+就像是一个扫描仪, 对每一行进行扫描后, 生成一定的结果.
+
+### 模式元素 Pattern ###
+
+包含在 awk 中的模式元素有以下几种:
+* `/regular expression/`: 正则表达式, 用来匹配行列中的字符串.
+* 表达式: 当表达式的结果不为 0 的时候, 匹配相应的行列.
+* `beginpattern, endpattern`: 匹配由逗号分隔的一对模式, 对包括匹配的两端在内的所有行进行操作.
+* `BEGIN` 和 `END`: 指定 awk 程序开始或结束的特殊的模式.
+* `BEGINFILE` 和 `ENDFILE`: 指定文件开始读取和结束读取的特殊的模式.
+* 空模式: 空模式匹配每一行.
+
+#### BEGIN 和 END ####
+
+现在的 gawk 支持多个 BEGIN 和 END, 这些 BEGIN 和 END 会在程序开始和结束按照出现的顺序进行运行.
+在 BEGIN 和 END 中, $0 和 NF 是没有定义的.
+
+#### BEGINFILE 和 ENDFILE ####
+
+BEGINFILE 和 ENDFILE 是用来在命令行输入的文件进行切换时采取的操作.
+在 gawk 中, 支持多个 BEGINFILE 和 ENDFILE, 但这些 BEGINFILE 和 ENDFILE 中的表达式会分别融合后执行.
+在FILENAME 会被设置为当前 FILE 的名称, 而 FNR 会被设置为 0.
+BEGINFILE 中的代码会在 awk 刚要读取文件第一行数据之前运行.
+在 BEGINFILE 中, 可以通过 ERRNO 来判断是否可以读取文件, ERRNO 不为零的时候, 可以使用 nextfile.
+ENDFILE 则会在 awk 处理完文件最后一行数据之后运行, 即使是空文件, ENDFILE 也会执行.
+除了 nextfile 语句可以用于 BEGINFILE 中外, next 语句不能用于 BEGINFILE 和 ENDFILE 中.
+
+### 操作元素 Action ###
+
+操作元素是根据模式对行或列做出的一定的计算, 操作往往用大括号包围, 不同的操作用换行符或者分号分隔.
+操作中包含一个或多个 awk 语句(statement).
+
+awk 语句包括:
+* 表达式(expression): 调用函数或者变量赋值和计算.
+* 控制语句(control statement): 控制程序流, 包括类似于 C 语言的 if, for, while, do while 等.
+* 复合语句(compound statement): 用大括号包围的若干语句, 往往出现在控制语句后面.
+* 输入语句(input statement): 控制文件输入的语句, getline, next, nextfile 等.
+* 输出语句(output statement): 控制输出的语句, print, printf 等.
+* 清除语句(deletion statement): 用于删除数组元素.
+
+#### 控制语句 ####
+
+awk 中的控制语句和 C 语言的控制语句十分相像. 如果控制语句后面只有一个语句, 则可以不用加大括号, 否则需要用大括号.
+
+if else 语句.
+
+```
+if (x % 2 == 0) {
+    print "Even"
+} else {
+    print "Odd"
+}
+```
+
+while 语句.
+
+```
+i = 0
+while (i <= 3) {
+    print i
+    ++i
+}
+```
+
+do while 语句.
+
+```
+i = 0
+do {
+    print i
+    ++i
+} while (i <= 3)
+```
+
+for 语句.
+
+```
+for (i = 0; i <=3; ++i) {
+    print i
+}
+```
+
+如果是对数组进行操作的话, for 语句还可以如下.
+
+```
+for (i = 0; i < 5; ++i)
+    a[i] = i + 1
+for (i in a)
+    print a[i]
+```
+
+switch 语句是 gawk 中的, 在兼容模式中没有.
+
+```
+switch (a) {
+    case "1":
+        print "one"
+        break
+    case "2":
+        print "two"
+        break
+    default:
+        print "test"
+}
+```
+
+break 语句和 continue 语句是用来控制循环的, 仅能用于 for, while, do 循环.
+另外, break 还可以用于 switch 中, 来跳出 switch 的操作.
+break 语句会中止其所在位置的循环.
+而 continue 语句则会使得 awk 不再执行循环中其出现后方的代码, 而直接开始下一次循环.
+
+next 语句会强行中止当前行的所有操作, 而开始下一行的操作.
+如果把 awk 处理所有的数据当作一个 for 循环的话, next 就相当于 for 循环中出现的 continue.
+
+nextfile 语句类似于 next, 不同在于 next 只是停止对当前行的操作, 开始下一行, nextfile 是停止对当前文件的操作, 开始下个文件.
+
+exit 语句是用来中止整个 awk 程序的, 其后可以跟随一个返回值, 如果没有给定返回值, awk 将返回执行完成的值, 也就是 0.
+如果 exit 位于 BEGIN 中, 那么程序将立即中止, 没有行会被读入, 但是如果程序还有 END, 则 END 中的语句将被执行.
+如果 exit 位于 END 中, 那么程序将立即中止.
+如果 exit 不在 BEGIN 和 END 中, 那么程序将停止读入, 直接跳转到 END, 执行 END 中的语句并中止程序.
+当 exit 执行的时候, BEGINFILE 和 ENDFILE 的语句都会被忽略.
+
+```
+exit 1
+```
+
+#### 输入输出语句 ####
+
+##### getline #####
+
+* `getline`: 用于读取文件到awk中.
+*`getline var < file` 会把 file 的内容读取到 var 中, $0, NR 都不会变化;
+* `getline < file` 则直接把 file 的内容读取到 $0 中, NR, NF, RT 都会变化.
+* `command | getline` 和 `command | getline var` 则是把命令的输出作为输入.
+* `command1 |& command2; command2 |& getline` 和 `command1 |& command2; command2 | getline var` 则是用于把 command1 的结果输出到 command2, 然后把 command2 处理后的结果返回到 getline.
+
+```
+BEGIN {
+    print "10.2 * 5" |& "bc"
+    "bc" |& getline one
+    print one
+}
+```
+
+##### printf #####
+
+* `printf`: 用于格式化输出的函数. `printf format, item1, item2 ...`, 其变量在使用 pipe 的时候需要用小括号括起来.
+* OFS, ORS 对于 printf 是没有作用的.
+* 另外, 不同于 print, printf 不会向输出的行后面自动添加 '\n'.
+* printf 还可以动态地设置输出字符的长度 `printf "%*.*s", w, p, string`.
+
+```
+BEGIN {
+    OFS = ","; ORS = "\[newline\]";
+    w = 5
+    p = 3
+    printf("%*.*f\n", w, p, 2.71828)
+}
+```
+
+#### 清除语句 ####
+
+* `delete`: 可以用于清除数组或数组中的元素 `delete array` 或者 `delete array[i]`.
+  需要注意的是, 删掉值的数组的类型依然是数组, 不能用数组名作为其他类型变量名.

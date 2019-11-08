@@ -1,0 +1,244 @@
+Title: Sed 快餐
+Date: 2018-12-28 14:27
+Modified: 2018-12-29 13:27
+Category: 壹零零壹
+Tags: linux, sed
+Authors: Wolfson Liu
+Summary: sed 命令的基础使用
+
+sed 是一个流编辑器（**s**tream **ed**iter）。不同于平时我们常常使用 的
+“所见即所得”的编辑器，sed的操作对象不是文本文件本身，而是从标准输入或
+者管道导入 sed 命令的输入流。sed 的操作是针对于每一行进行的，所以我们
+只要想好对于输入的每一行会有怎样的操作，就能去推测对于全部的行的操作。
+
+## 替换命令 s ##
+
+替换 s 是最常使用的 sed 的命令，据说不少人使用sed只去使用替换命令。替
+换命令是根据正则表达式把旧的字符串进行替换为新的字符串。
+
+例如我们把 monday 替换成 sunday 实际上非常容易。
+
+```{shell}
+$ echo monday | sed s/mon/sun/
+sunday
+```
+
+对于 sed 的替换命令有四部分：
+
+1. s：替换命令
+2. /old/new/：分隔符，也可以使用其他符号，例如 `s:old:new:`，或者
+   `s|/bin/bash|/usr/bin/bash|`
+3. old：需要替换的字符串模式
+4. new：替换为的字符串模式
+
+除了四部分必须要有的，还可以在替换命令后面加上旗标（flag），来完成特殊的功能。
+
+### 使用 & 去表示匹配字符串 ###
+
+我们可以在新字符串中使用`&`字符串去代替匹配到的字符串。
+
+```{shell}
+$ echo 'sunday monday tuesday' | sed "s/sunday/& & &/"
+sunday sunday sunday monday tuesday
+$ echo 'sunday monday tuesday' | sed "s/s[a-z]*day/& & &/"
+sunday sunday sunday monday tuesday
+```
+
+### 使用小括号去匹配分组并选择分组 ###
+
+使用 `&` 代表被匹配的所有字符，而如果在正则表示中加入小括号作为分组，
+我们可以使用 `\1` `\2`直到 `\9` 来代表匹配到第一到第九个括号中正则表达
+式的字符串。
+
+```{shell}
+$ echo 'saturday sunday monday tuesday' | sed "s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/"
+saturday sunday saturday sunday monday tuesday
+```
+
+### flag ###
+
+上面的栗子是否注意到了，其实仅仅按照正则表达式匹配结果并不唯一，如果我
+们想要匹配的是所有的情况，而不是第一个匹配的情况，或者想要匹配的是第二
+种情况则需要使用旗标（flag）来指定。flag是加在 s 命令后面的若干字符，
+用来表示需要进行的特殊操作。
+
+* /g：用于匹配所有符合正则表达式的字符串，默认只会匹配第一个匹配到的。
+
+```{shell}
+$ echo '1a 2b 3c' | sed -E "s/[0-9][a-z]/ha ha/"
+ha ha 2b 3c
+$ echo '1a 2b 3c' | sed -E "s/[0-9][:lower:]/ha ha/g"
+ha ha ha ha ha ha
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/"
+saturday sunday saturday sunday monday tuesday
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/g"
+saturday sunday saturday sunday monday tuesday monday tuesday
+```
+
+* /1：诸如 1，2，3用于指定是第几个匹配。
+
+```{shell}
+$ echo '1a 2b 3c' | sed -E "s/[:digit:][:lower:]/ha ha/"
+ha ha 2b 3c
+$ echo '1a 2b 3c' | sed -E "s/[:digit:][:alpha:]/ha ha/2"
+1b ha ha 3c
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/"
+saturday sunday saturday sunday monday tuesday
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2"
+saturday sunday monday tuesday monday tuesday
+```
+
+* /p：输出符合匹配的序列。
+
+```{shell}
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day)/&/"
+saturday sunday monday tuesday
+$ echo 'saturday sunday monday tuesday' | sed -n -E "s/([a-z]*day)/&/"
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day)/&/p"
+saturday sunday monday tuesday
+saturday sunday monday tuesday
+$ echo 'saturday sunday monday tuesday' | sed -n -E "s/([a-z]*day)/&/p"
+saturday sunday monday tuesday
+$ cat lib.1.fq | sed -n -E "s/ACCG([ATCG]{19,20})GTTT/\1/p" > sgRNAs.seq
+$ cat sgRNAs.seq | sort | uniq -c > sgRNA.count
+```
+
+* /w：输出到文件
+
+```{shell}
+$ echo 'saturday sunday monday tuesday' | sed -E "s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2 w tmp"
+saturday sunday monday tuesday monday tuesday
+$ cat tmp
+saturday sunday monday tuesday monday tuesday
+```
+
+## 选择特定的列 ##
+
+sed 可以根据位置（即行数），正则表达式去选择特定的行进行操作，而忽略其他的行。
+
+* 指定行数：
+  * `n`: 只对特定的行操作，如 `sed '1 s/new/old/'` 只会对第1行进行替换操
+    作，其他行不会操作。
+  * `min,max`：只对从第min到第max的行进行操作，如 `sed '1,20 s/new/old/'`
+    只会对第1行到第20行进行替换操作，其他行不会操作。
+  * `n,$`：对从第n行到最后一行进行操作，如 `sed '100,$ s/new/old/'`
+    只会对第100行到最后进行替换操作，其他行不会操作。
+
+```{shell}
+$ sed '1, 20 s/.*bin.*/BIN/' /etc/passwd
+```
+
+* 匹配正则表达式：
+  * `/pattern/`：只对匹配正则表达式的行进行操作。
+  * `/pattern1/,/pattern2/`：对在所有匹配两个正则表达式的行进行操作。
+
+```{shell}
+$ sed '/@.*/,/\+/' lib.1.fq | less
+$ sed '/@.*/,/\+/ {
+    /@.*/n
+    /\+/!p
+}' lib.1.fq | less
+```
+
+## 输出命令 p ##
+
+前面已经见到过输出命令 p 如何使用，我们可以根据各种符合匹配的情况使用
+输出命令，可以是替换命令，可以是指定特定的行，或者符合一定正则表达式的
+行等等。输出命令 p 会把符合要求的行或者修改后的行重新输出一遍，如果没
+有配合 `-n`，则会使得符合要求的行输出两遍。而sed加上 `-n` 参数后，则默
+认不输出任何东西，所有只有符合一定规则的有输出命令 p 的行才会输出。在
+p 前面加感叹号，就是不输出的意思。
+
+```{shell}
+$ sed -n '/^@.*/ p' lib.1.fq | less
+$ egrep '^@.*' lib.1.fq | less
+$ sed '/^@.*/ !p' lib.1.fq | less
+$ egrep -v '^@.*' lib.1.fq | less
+$ sed '/^@.*/ !p' lib.1.fq | less
+$ sed -n '1,16 p' lib.1.fq | less
+$ head -16 lib.1.fq
+```
+
+## 删除命令 d ##
+
+删除命令可以指定符合要求的行从结果中删除，在一定程度上 `d` 相当于 `!p`。
+
+关于 d，p 和 ! 的关系如下([sed 教程](http://www.grymoire.com/Unix/Sed.html#uh-35a))：
+
+| Sed    | Range | Command | Result |
+|:------:|:-----:|:-------:|:------:|
+| sed -n | 1,10  | p       | Print first 10 lines |
+| sed -n | 11,$  | !p      | Print first 10 lines |
+| sed    | 1,10  | !d      | Print first 10 lines |
+| sed    | 11,$  | d       | Print first 10 lines |
+| sed -n | 1,10  | !p      | Print last 10 lines |
+| sed -n | 11,$  | p       | Print last 10 lines |
+| sed    | 1,10  | d       | Print last 10 lines |
+| sed    | 11,$  | !d      | Print last 10 lines |
+| sed -n | 1,10  | d       | Nothing printed |
+| sed -n | 1,10  | !d      | Nothing printed |
+| sed -n | 11,$  | d       | Nothing printed |
+| sed -n | 11,$  | !d      | Nothing printed |
+| sed    | 1,10  | p       | Print first 10 lines twice, then next 10 lines once |
+| sed    | 11,$  | !p      | Print first 10 lines twice, then last 10 lines once |
+| sed    | 1,10  | !p      | Print first 10 lines once, then last 10 lines twice |
+| sed    | 11,$  | p       | Print first 10 lines once, then last 10 lines twice |
+
+```{shell}
+$ sed '/^@.*/ !d' lib.1.fq | less
+$ egrep '^@.*' lib.1.fq | less
+$ sed '/^@.*/ d' lib.1.fq | less
+$ egrep -v '^@.*' lib.1.fq | less
+$ sed -n '/^@.*/ !d' lib.1.fq | less
+$ sed '1,16 !d' lib.1.fq | less
+$ head -16 lib.1.fq
+```
+
+## 附加命令 a，改变命令 c，插入命令 i ##
+
+sed 也可以利用附加命令a，改变命令c，插入命令i来改变流的内容。
+
+* a：在目标行后面增加新行。
+* c：把目标行替换内容。
+* i：在目标行前面增加新行。
+
+```{shell}
+$ sed '/@.*/ a haha' lib.1.fq | less
+$ sed '/@.*/ c haha' lib.1.fq | less
+$ sed '/@.*/ i haha' lib.1.fq | less
+```
+
+## 输出行号 ##
+
+`=` 可以用来输出行号。
+
+```{shell}
+$ sed -n '/@.*/ =' lib.1.fq | less
+```
+
+## 转换命令 y ##
+
+除了替换命令，sed 还支持字符转换命令 y，实现类似于 `tr` 的命令。转换命
+令的语法很接近替换命令，只是要求转换前和转换后的字符串一一匹配。
+
+例如，我们要实现DNA序列的互补配对，我们可以利用转换命令：
+
+```{shell}
+$ echo TATAGGCTAGAGGATTAGAG | sed y/ATCG/TAGC/
+ATATCCGATCTCCTAATCTC
+$ echo TATAGGCTAGAGGATTAGAG | tr ATCG TAGC
+ATATCCGATCTCCTAATCTC
+```
+
+从上面的栗子，我们可以看到转换命令和替换命令的相似性，其在flag使用上也
+是类似的。
+
+如果我们需要的是反向互补序列呢？只需要使用shell下的管道，把sed的结果导
+向 rev 命令即可。
+
+```{shell}
+$ echo TATAGGCTAGAGGATTAGAG | sed y/ATCG/TAGC/ | rev
+CTCTAATCCTCTAGCCTATA
+$ echo TATAGGCTAGAGGATTAGAG | tr ATCG TAGC | rev
+CTCTAATCCTCTAGCCTATA
+```

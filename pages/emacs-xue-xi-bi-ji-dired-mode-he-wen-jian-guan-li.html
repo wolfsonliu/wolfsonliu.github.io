@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Emacs 学习笔记：Dired mode 和文件管理</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>Dired 是 Emacs 管理文件的模式, 相当于一个简单的档案管理器. Dired 有相应的操作方法. 使用 <strong>C-x d</strong> 或者 <strong>M-x dired</strong> 开启 Dired.</p>
+<ul>
+<li><strong>?</strong>:   dired-summary                 简单的帮助.</li>
+<li><strong>h</strong>:   describe-mode                 帮助.</li>
+<li><strong>q</strong>:   quit-window                   退出窗口.</li>
+</ul>
+<hr>
+<h2>命令</h2>
+<h3>移动操作</h3>
+<ul>
+<li><strong>p</strong>:   dired-previous-line           向上移动一行.</li>
+<li><strong>n</strong>:   dired-next-line               向下移动一行.</li>
+<li><strong>DEL</strong>: dired-unmark-backward         向上移动一行并去除标记.</li>
+<li><strong>SPC</strong>: dired-next-line               向下移动一行.</li>
+<li><strong>&lt;</strong>:   dired-prev-dirline            移动到上一个目录行, 跳过文件行.</li>
+<li><strong>&gt;</strong>:   dired-next-dirline            移动到下一个目录行, 跳过文件行.</li>
+<li><strong>^</strong>:   dired-up-directory            向上移动一级目录.</li>
+<li><strong>j</strong>:   dired-goto-file               移动到文件.</li>
+</ul>
+<h3>文件管理</h3>
+<ul>
+<li><strong>m</strong>:   dired-mark                    标记.</li>
+<li><strong>~</strong>:   dired-flag-backup-files       标记所有的以 ~ 结尾的备份文件.</li>
+<li><strong>#</strong>:                                 标记自动保存的文件.</li>
+<li><strong>u</strong>:   dired-unmark                  去除标记.</li>
+<li><strong>U</strong>:   dired-unmark-all-marks        去除所有标记.</li>
+<li><strong>d</strong>:   dired-flag-file-deletion      标记删除.</li>
+<li><strong>x</strong>:   dired-do-flagged-delete       删除标记删除的文件.</li>
+<li><strong>R</strong>:   dired-do-rename               重命名文件或者移动文件.</li>
+<li><strong>C</strong>:   dired-do-copy                 复制标记的文件文件.</li>
+<li><strong>D</strong>:   dired-do-delete               删除标记的文件.</li>
+<li><strong>+</strong>:   dired-create-directory        新建文件夹.</li>
+</ul>
+<h3>浏览操作</h3>
+<ul>
+<li><strong>A</strong>:   dired-do-search               按照正则表达式搜索文件, 在第一个结果处停下.</li>
+<li><strong>v</strong>:   dired-view-file               浏览文件内容</li>
+<li><strong>o</strong>:   dired-find-file-other-window  在另一个窗口打开选中窗口的子目录.</li>
+<li><strong>i</strong>:   dired-maybe-insert-subdir     在当前窗口插入选中窗口的子目录.</li>
+<li><strong>s</strong>:   dired-sort-toggle-or-edit     对列表进行按照名字或日期的排序.</li>
+<li><strong>l</strong>:   dired-do-redisplay            重新显示.</li>
+</ul>
+<h3>功能操作</h3>
+<ul>
+<li><strong>!</strong>:   dired-do-shell-command        运行 shell 命令.</li>
+<li><strong>&amp;</strong>:   dired-do-async-shell-command  后台运行 shell 命令.</li>
+<li><strong>=</strong>:   dired-diff                    对比两个文件的不同. <strong>M-=</strong> 比较文件和其备份.</li>
+<li><strong>H</strong>:   dired-do-hardlink             建立硬链接.</li>
+<li><strong>S</strong>:   dired-do-softlink             建立软链接.</li>
+<li><strong>G</strong>:   dired-do-chgrp                改变组.</li>
+<li><strong>O</strong>:   dired-do-chown                改变所属.</li>
+<li><strong>M</strong>:   dired-do-chmod                改变权限.</li>
+<li><strong>P</strong>:   dired-do-print                打印.</li>
+<li><strong>T</strong>:   dired-do-touch                新建文件.</li>
+<li><strong>Z</strong>:   dired-do-compress             压缩和解压缩.</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：Package 基础</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>R package, 中文是 R 包. R 包是一种包装 R 代码, 数据和文档的方式.
+R 包是 R 语言强大的扩展性和灵活性的基础, R 发行版本身就包括三十多个高质量的 R 包.</p>
+<h2>使用已经安装的包</h2>
+<p>R 发行版中的包已经有强大的功能, 仅仅使用 R 发行版中的包已经可以干几乎所有 R 能干的事情.
+但是在打开一个 R 实例的时候, 并不是所有想用的包都包括在其中了. 想要方便地使用已经安装的包, 则需要先加载包.</p>
+<p>加载包分别可以用 <code>library</code> 函数和 <code>require</code> 函数.
+<code>library</code> 函数和 <code>require</code> 函数都可以接受在 lib.loc 所指明的 library 路径中的 R 包的名字,
+并把 R 包的命名空间加载到 R 的搜索路径中去.
+两者的不同在于, <code>library</code> 函数会直接加载 R 包, 而不管 R 包本身是否已经加载,
+而 <code>require</code> 函数则会在 R 包没有加载的时候加载而在已经加载 R 包的时候不加载.
+另外, 如果加载成功, <code>library</code> 函数会返回已经加载到搜索路径的的 R 包的名称, 而 <code>require</code> 函数则返回 <code>TRUE</code>;
+如果加载失败 <code>library</code> 函数会返回错误, 而 <code>require</code> 函数则返回 <code>FALSE</code>.
+可以用参数 lib.loc 来指定特定的 R 包搜索路径.
+如果 <code>library</code> 的 R 包名称的参数为空, 则返回所有在 R library 搜索路径上的 R 包的名称.</p>
+<div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="ss">&quot;whatever&quot;</span><span class="p">)</span>
+<span class="n">library</span><span class="p">(</span><span class="ss">&quot;whatever&quot;</span><span class="p">,</span> <span class="n">lib</span><span class="p">.</span><span class="n">loc</span> <span class="o">=</span> <span class="ss">&quot;~/Rlib&quot;</span><span class="p">)</span>
+<span class="n">require</span><span class="p">(</span><span class="ss">&quot;whatever&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>有的包在加载的时候会显示很多信息, 可以使用 <code>suppressPackageStartupMessages</code> 函数来抑制这些信息的输出.</p>
+<div class="highlight"><pre><span></span><span class="n">suppressPackageStartupMessages</span><span class="p">(</span><span class="n">library</span><span class="p">(</span><span class="ss">&quot;whatever&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>还需要提及的是如何从 R 的搜索路径移去已经加载的 R 包.
+可以使用 <code>search</code> 函数, 其会列出现在已经加载的包, 名字为 "package:" 加上包的名称.
+如果想要移去某个包, 则可以使用 <code>detach</code> 函数, <code>detach("package:whatever")</code>.</p>
+<h2>安装已经有的包</h2>
+<p>很多时候需要借用别人写好并发布在 <a href="https://cran.r-project.org/">CRAN</a> 上的 R 包,
+但是如果本地电脑上没有安装的话, 则需要先安装 R 包才能使用.
+安装 <a href="https://cran.r-project.org/">CRAN</a> 上的包, 需要使用 <code>install.packages</code> 函数.
+<code>install.packages</code> 函数接受需要安装的包的名字作为参赛, 可以是一个, 或者多个的字向量.</p>
+<h2>R 包的结构</h2>
+<p>一个 R 包的源代码 (source) 文件夹中有两个文件和若干子文件夹.
+文件包括 <strong>DESCRIPTION</strong> 和 <strong>NAMESPACE</strong> 分别描述包的信息和命名空间的信息,
+有的时候还会有其他文件, 如描述 R 包更新的 <strong>NEWS</strong>, <strong>ChangeLog</strong>,
+描述协议的 <strong>LICENSE</strong> 或 <strong>LICENCE</strong>, <strong>INDEX</strong>, <strong>configure</strong>, <strong>cleanup</strong> 等.
+若干子文件夹包含其他文件,
+包括 <em>R</em>, <em>data</em>, <em>demo</em>, <em>exec</em>, <em>inst</em>,
+<em>man</em>, <em>po</em>, <em>src</em>, <em>tests</em>, <em>tools</em> 和 <em>vignettes</em> 等文件夹
+(这些文件夹有的是可以没有或空的, 有的必须要有并且不为空, 不同的包不同).
+除了这些文件和文件夹之外, 源代码文件夹中也可以放其他的文件或文件夹, 但是这些自行添加的文件或文件夹会被 R 忽略.</p>
+<h2>利用 devtools 开发 R 包</h2>
+<p>一个 R 包包括复杂的结构, 纯粹手写会很繁琐, 可以利用 devtools 包来帮助开发 R 包.
+devtools 包会调用 roxygen2 包, roxygen2 可以把根据特殊语法写在 R 代码文件中的信息转化为 R 函数的 man 文件.</p>
+<h3>加载包</h3>
+<p>如果已经开发好一个包, 想要做一下测试使用, 可以使用函数 <code>load_all</code> 函数, 加载 R 包中的函数.
+例如, 正在开发的 R 包的地址为 <code>path/to/package</code>:</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">load_all</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>加载包后, 相应的帮助文档也会被加载.</p>
+<p>如果不是利用 R 函数生成的 R 包的框架的话, 在加载包之前, 应该先查看包的相关文件是否存在.
+在包的目录中应该包含 DESCRIPTION 文档, 其中说明了包的基本信息.</p>
+<p>例如:</p>
+<div class="highlight"><pre><span></span><span class="n">Package</span><span class="o">:</span> <span class="n">enrich</span>
+<span class="n">Title</span><span class="o">:</span> <span class="n">Gene</span> <span class="n">list</span> <span class="n">enrichment</span> <span class="n">on</span> <span class="n">KEGG</span> <span class="n">pathway</span><span class="o">,</span> <span class="n">GO</span> <span class="n">term</span><span class="o">,</span> <span class="n">Transcript</span> <span class="n">Factor</span> <span class="n">Targets</span>
+    <span class="n">and</span> <span class="n">so</span> <span class="n">on</span><span class="o">.</span>
+<span class="n">Description</span><span class="o">:</span>
+<span class="n">Version</span><span class="o">:</span> <span class="mf">0.1</span>
+<span class="n">Author</span><span class="o">:</span> <span class="n">Wolfson</span> <span class="n">Liu</span> <span class="o">&lt;</span><span class="n">wolfsonliu</span><span class="err">@</span><span class="n">gmail</span><span class="o">.</span><span class="na">com</span><span class="o">&gt;</span>
+<span class="n">Maintainer</span><span class="o">:</span> <span class="n">Wolfson</span> <span class="n">Liu</span> <span class="o">&lt;</span><span class="n">wolfsonliu</span><span class="err">@</span><span class="n">gmail</span><span class="o">.</span><span class="na">com</span><span class="o">&gt;</span>
+<span class="n">License</span><span class="o">:</span> <span class="n">LGPL</span><span class="o">-</span><span class="mi">3</span>
+<span class="n">URL</span><span class="o">:</span>
+<span class="n">Imports</span><span class="o">:</span>
+    <span class="n">memoise</span><span class="o">,</span>
+    <span class="n">utils</span><span class="o">,</span>
+    <span class="n">methods</span>
+<span class="n">RoxygenNote</span><span class="o">:</span> <span class="mf">5.0</span><span class="o">.</span><span class="mi">1</span>
+</pre></div>
+
+
+<h3>生成文档</h3>
+<p>如果想要自动生成 R 帮助文档, 可以使用 <code>document</code> 函数, 该函数调用 roxygen2 包生成 R 帮助文档.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">document</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>生成的文档会保存在 R 包目录下面的 man 文件夹中.</p>
+<p>文档是通过 roxygen2 来生成的, 其支持特定的语法.</p>
+<h3>测试包</h3>
+<p>如果在 test 文件夹中有相应的测试文件的话, 可以使用 <code>test</code> 函数来运行测试文件.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">test</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>test</code> 函数会调用 R 包目录下的 test 文件夹中的测试函数.</p>
+<p>如果没有写专用的测试函数, 也可以使用 <code>devtools</code> 包中提供的通用测试函数 <code>check</code>.</p>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">check</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><code>check</code> 函数会做所有的通用测试, 如果只想要测试帮助文档中的示例, 可以用 <code>run_examples</code> 函数.</p>
+<h3>安装包</h3>
+<p><code>devtools</code> 提供了若干方便安装包的函数.</p>
+<ul>
+<li><code>install_github()</code>: 从 <a href="https://github.com">Github</a> 安装包</li>
+<li><code>install_bitbucket()</code>: 从 <a href="https://bitbucket.org">Bitbucket</a> 安装包</li>
+<li><code>install_gitorious()</code>: 从 <a href="https://gitorious.org">Gitorious</a> 安装包</li>
+<li><code>install_url()</code>: 从 url 安装包</li>
+<li><code>install_cran()</code>: 从 <a href="https://cran.r-project.org/">CRAN</a> 安装包</li>
+<li><code>uninstall()</code>: 卸载相应的包</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -180,12 +180,12 @@ texlive 的分包如下可以有更大块的 (scheme), 和更为细分的 (colle
 包的使用方法, 结果根本找不到文档, 因为所需要的包的 pdf 文档并没有安装
 到本地. 这就需要自己再从源上去安装这些文档. 可以通过下面的命令方便地安
 装所缺失的 pdf 文档.</p>
-<div class="highlight"><pre><span></span><span class="nv">packages</span><span class="o">=</span>$<span class="ss">(</span><span class="nv">dnf</span> <span class="nv">search</span> <span class="nv">installed</span> <span class="o">|</span> <span class="nv">grep</span> <span class="s1">&#39;</span><span class="s">texlive</span><span class="s1">&#39;</span> <span class="o">|</span> <span class="nv">cut</span> <span class="o">-</span><span class="nv">d</span><span class="s1">&#39;</span><span class="s"> </span><span class="s1">&#39;</span> <span class="o">-</span><span class="nv">f1</span> <span class="o">|</span> <span class="nv">sed</span> <span class="s1">&#39;</span><span class="s">s/\.x86_64/-doc/</span><span class="s1">&#39;</span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><code>packages=$(dnf search installed | grep &#39;texlive&#39; | cut -d&#39; &#39; -f1 | sed &#39;s/\.x86_64/-doc/&#39;)
 
-<span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> ${<span class="nv">packages</span>}<span class="c1">; do</span>
-    <span class="nv">yes</span> <span class="o">|</span> <span class="nv">sudo</span> <span class="nv">dnf</span> <span class="nv">install</span> ${<span class="nv">x</span>}
-<span class="nv">done</span>
-</pre></div>
+for x in <span class="cp">${</span><span class="n">packages</span><span class="cp">}</span>; do
+    yes | sudo dnf install <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
+done
+</code></pre></div>
 
 
 <p>当文档安装完成后, 就可以在 bash 中使用 texdoc 程序方便地调出相应的 texlive 包的说明文档了.</p>

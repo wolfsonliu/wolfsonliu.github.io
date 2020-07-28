@@ -86,28 +86,28 @@
 * 程序结束后不自动释放内存的系统. </p>
 <p>Python 有很好的 Garbage Collection 系统, 这也是我在使用 Python 的时候根本没有考虑内存泄漏的原因. 而 C/C++ 没有自动的 Garbage Collection, 我在写程序的时候没有去注意这个问题, 所以程序出现了内存泄漏, 以至于计算较多抽样的时候程序会持续消耗内存直到被系统终止. 常畅学长说了一句话, C/C++ 十分信赖程序员, 所以没有自动的内存管理系统. 当然, 使用自动的内存管理会很方便编程, 同时, 也会消耗一定性能. 我还是个初学者, 技艺不精, 得努力才好. </p>
 <p>在 C/C++ 编程的时候会采用 Resource Acquisition Is Initialization RAII 的方法, 即在起始阶段动态分配内存, 那么在使用结束之后要删除. 使用 RAII 这种方法, 最需要注意的就是, 该类型对象需要自己对内存释放负责, 即应该包含能够释放内存的成员函数. 对于 C++ 的一些容器, 因为有了良好的设计, 也会有自动释放内存的能力, 但是自己编写的类则需要注意. </p>
-<div class="highlight"><pre><span></span><span class="o">//</span> <span class="nv">C</span> <span class="nv">version</span>
-#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">stdlib</span>.<span class="nv">h</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// C version</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
 
-<span class="nv">void</span> <span class="nv">f</span><span class="ss">(</span><span class="nv">int</span> <span class="nv">n</span><span class="ss">)</span>
-{
-  <span class="nv">int</span><span class="o">*</span> <span class="nv">array</span> <span class="o">=</span> <span class="nv">calloc</span><span class="ss">(</span><span class="nv">n</span>, <span class="nv">sizeof</span><span class="ss">(</span><span class="nv">int</span><span class="ss">))</span><span class="c1">; // apply memory here.</span>
-  <span class="nv">do_some_work</span><span class="ss">(</span><span class="nv">array</span><span class="ss">)</span><span class="c1">;</span>
-  <span class="nv">free</span><span class="ss">(</span><span class="nv">array</span><span class="ss">)</span><span class="c1">; // free memory here.</span>
-}
-</pre></div>
+<span class="kt">void</span> <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="kt">int</span><span class="o">*</span> <span class="n">array</span> <span class="o">=</span> <span class="n">calloc</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span> <span class="c1">// apply memory here.</span>
+  <span class="n">do_some_work</span><span class="p">(</span><span class="n">array</span><span class="p">);</span>
+  <span class="n">free</span><span class="p">(</span><span class="n">array</span><span class="p">);</span> <span class="c1">// free memory here.</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="o">//</span> <span class="nv">C</span><span class="o">++</span> <span class="nv">version</span>
-#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">vector</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// C++ version</span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
 
-<span class="nv">void</span> <span class="nv">f</span><span class="ss">(</span><span class="nv">int</span> <span class="nv">n</span><span class="ss">)</span>
-{
-  <span class="nv">std</span>::<span class="nv">vector</span><span class="o">&lt;</span><span class="nv">int</span><span class="o">&gt;</span> <span class="nv">array</span> <span class="ss">(</span><span class="nv">n</span><span class="ss">)</span><span class="c1">;</span>
-  <span class="nv">do_some_work</span><span class="ss">(</span><span class="nv">array</span><span class="ss">)</span><span class="c1">;</span>
-  <span class="o">//</span> <span class="nv">memory</span> <span class="nv">managed</span> <span class="nv">by</span> <span class="nv">vector</span>.
-}
-</pre></div>
+<span class="kr">void</span> <span class="nf">f</span><span class="p">(</span><span class="kr">int</span> <span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kr">int</span><span class="o">&gt;</span> <span class="kr">array</span> <span class="p">(</span><span class="n">n</span><span class="p">);</span>
+  <span class="n">do_some_work</span><span class="p">(</span><span class="kr">array</span><span class="p">);</span>
+  <span class="c1">// memory managed by vector.</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <p>所以, 如果需要动态申请空间, 就应该在使用结束后进行释放. 内存泄漏发生在指针的使用, 如果在指针所指的内存未释放就将指针重新设置, 则会造成内存泄漏的问题. 实际上, 可以采用 Rule of Five 来指导 C++ 编程: 如果一个类需要编写自定义的 destructor, copy/move constructor, copy/move assignment 中任意一种, 那么也需要自定义其他四种. 这样在 destructor 中就可以处理内存释放问题. 如果使用智能指针, 将更方便管理内存使用.</p>
@@ -138,83 +138,83 @@
 <p>C++ 11 中有智能指针的 library, 可以通过 <code>#include &lt;memory&gt;</code> 来实现（编译的时候需要添加 <code>-std=c++11</code> 选项）. 其中的智能指针包括三种：shared ptr；weak ptr；unique ptr. shared ptr 可以指向实际的对象, 并且通过该类型进行赋值之后, 该类型的计数器会记录, 等到指向对象的计数器为 0 的时候, 将自动释放对象. 如果只使用 shared ptr 会出现一个问题, 如果若干个 shared ptr 出现环, 那么将无法最终释放. 所以, 在这种情况下需要使用 weak ptr, weak ptr 不会影响对象的生存期, 却知道什么时候该对象的生存期结束, 同时将释放. shared ptr 和 weak ptr 均指向 manager object, manager object 中有 shared ptr 和 weak ptr 的计数器和指向 managed object 的指针. 当 shared ptr 的计数器为 0 的时候 managed object 将被释放, 当 shared ptr 和 weak ptr 的计数器均为 0 的时候, manager object 将被释放. </p>
 <h5>Shared ptr</h5>
 <p>使用智能指针, 需要在定义智能指针的时候就对其进行赋值, 而不应该留下空智能指针. 如果确实需要留下空智能指针, 在后面赋值的时候需要使用 reset() 函数 <code>oneshared_ptr.reset(new int(10))</code>. 对于 shared ptr, 可以通过 get() 函数获得内置的指针类型, 但是这样做并不好. 如果使用智能指针, 就应该在所有地方都应用智能指针, 尽量不再使用内置的指针类型, 否则会造成对象无法正常释放. </p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">Base</span> {};
-<span class="k">class</span> <span class="n">Derived</span> : <span class="n">public</span> <span class="n">Base</span> {};
-...
-<span class="n">shared_ptr</span><span class="s">&lt;Derived&gt;</span> <span class="n">dp1</span>(<span class="nb">new</span> <span class="n">Derived</span>);
-// <span class="n">two</span> <span class="n">allocation:</span> <span class="n">manager</span> <span class="n">obj</span> <span class="o">and</span> <span class="n">managed</span> <span class="n">obj</span>. <span class="n">slow</span>.
-<span class="n">shared_ptr</span><span class="s">&lt;Base&gt;</span> <span class="n">bp1</span> = <span class="n">dp1</span>;
-<span class="n">shared_ptr</span><span class="s">&lt;Base&gt;</span> <span class="n">bp2</span>(<span class="n">dp1</span>);
-<span class="n">shared_ptr</span><span class="s">&lt;Base&gt;</span> <span class="n">bp3</span>(<span class="nb">new</span> <span class="n">Derived</span>);
-<span class="n">shared_ptr</span><span class="s">&lt;Base&gt;</span> <span class="n">bp</span>(<span class="n">make_shared</span><span class="s">&lt;Derived&gt;</span>(<span class="n">argument</span> <span class="n">list</span>));
-// <span class="k">only</span> <span class="nb">one</span> <span class="n">allocation</span>! <span class="n">fast</span>.
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">class Base {};</span>
+<span class="err">class Derived : public Base {};</span>
+<span class="err">...</span>
+<span class="err">shared_ptr&lt;Derived&gt; dp1(new Derived);</span>
+<span class="err">// two allocation: manager obj and managed obj. slow.</span>
+<span class="err">shared_ptr&lt;Base&gt; bp1 = dp1;</span>
+<span class="err">shared_ptr&lt;Base&gt; bp2(dp1);</span>
+<span class="err">shared_ptr&lt;Base&gt; bp3(new Derived);</span>
+<span class="err">shared_ptr&lt;Base&gt; bp(make_shared&lt;Derived&gt;(argument list));</span>
+<span class="err">// only one allocation! fast.</span>
+</code></pre></div>
 
 
 <p>在使用智能指针的时候, 相关的类中都需要有 virtual 的析构函数, 这样才能使得智能指针在释放对象的时候选择正确的方式进行析构. 可以使用 make shared 函数, 这样就避免了直接使用 new, make shared 函数和 shared ptr 使得 new 和 delete 都不用显示地进行使用, 使得代码更可靠. </p>
 <p>在 boost 库中, shared ptr 可以支持 array, 可以通过 <code>shared_ptr&lt;int[10]&gt; a</code> 实现, 方括号中如果写具体数字, 则会限制 [] 调用到一定的范围之内. 而在 memory 中不支持 array.</p>
 <h5>Weak ptr</h5>
 <p>对于 weak ptr, 其没有定义 * 和 -&gt; 操作符, 也没有 get(), 所以使用 weak ptr 不会因为没有注意到产生指针指向问题和内存泄漏问题. 如果要将 weak ptr 的指向赋值给 shared ptr, 需要使用 weak ptr 的 lock() 函数, 而不能直接使用赋值操作符. </p>
-<div class="highlight"><pre><span></span><span class="nv">void</span> <span class="nv">do_it</span><span class="ss">(</span><span class="nv">weak_ptr</span><span class="o">&lt;</span><span class="nv">Thing</span><span class="o">&gt;</span> <span class="nv">wp</span><span class="ss">)</span>{
-<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Thing</span><span class="o">&gt;</span> <span class="nv">sp</span> <span class="o">=</span> <span class="nv">wp</span>.<span class="nv">lock</span><span class="ss">()</span><span class="c1">; // get shared_ptr from weak_ptr</span>
-<span class="k">if</span><span class="ss">(</span><span class="nv">sp</span><span class="ss">)</span>
-<span class="nv">sp</span><span class="o">-&gt;</span><span class="nv">defrangulate</span><span class="ss">()</span><span class="c1">; // tell the Thing to do something</span>
-<span class="k">else</span>
-<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">The Thing is gone!</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">endl</span><span class="c1">;</span>
-}
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">void do_it(weak_ptr&lt;Thing&gt; wp){</span>
+<span class="err">shared_ptr&lt;Thing&gt; sp = wp.lock(); // get shared_ptr from weak_ptr</span>
+<span class="err">if(sp)</span>
+<span class="err">sp-&gt;defrangulate(); // tell the Thing to do something</span>
+<span class="err">else</span>
+<span class="err">cout &lt;&lt; &quot;The Thing is gone!&quot; &lt;&lt; endl;</span>
+<span class="err">}</span>
+</code></pre></div>
 
 
 <p>当使用从 weak ptr 赋值的 shared ptr 的时候, 需要使用 if 去检验 shared ptr 对象是否存在, 直接检验即可得到 true or false 的结果. </p>
 <h5>Unique ptr</h5>
 <p>如果需要使用指向 array 的指针的时候, 需要使用 unique ptr, 因为 unique ptr 支持 delete [] 的释放操作, 而对于没有增加函数的 shared ptr 则只会调用 delete, 这样就会造成 array 除了第一项后面的内存泄漏. </p>
-<div class="highlight"><pre><span></span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="nb">int</span><span class="p">[]</span><span class="o">&gt;</span> <span class="n">p</span><span class="p">(</span><span class="k">new</span> <span class="nb">int</span><span class="p">[</span><span class="mi">10</span><span class="p">]);</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">unique_ptr&lt;int[]&gt; p(new int[10]);</span>
+</code></pre></div>
 
 
 <p>因为 <code>unique_ptr</code> 没有定义 operator+, 所以 <code>unique_ptr</code> 不能像 build-in 的指针那样指定数组的时候可以直接使用 + 来指向数组的某一位. 如果要使用, 就可以考虑在程序内部使用传统的方法建立和释放动态存储空间来使用诸如 <code>max_element</code> 等泛型函数. 在一个小范围内可控地使用 new 和 delete 还是可以的. </p>
 <p>在 boost 库中, 相应的为 <code>scoped_ptr</code></p>
 <h5>shared this pointer</h5>
 <p>在类中, 不免要用到 this 指针, 最好使得 this 指针也是 shared ptr. 在 memory 头文件中也定义了一个可继承的类：<code>enable_shared_from_this&lt;&gt;</code>. 当自己编写的类继承该类, 就可以在类成员函数中是用 <code>shared_from_this()</code> 来得到 <code>shared_ptr</code> 类型的 this 指针. 网上的例子如下. </p>
-<div class="highlight"><pre><span></span>#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">memory</span><span class="o">&gt;</span>
-#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">iostream</span><span class="o">&gt;</span>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
-<span class="nv">struct</span> <span class="nv">Good</span>: <span class="nv">std</span>::<span class="nv">enable_shared_from_this</span><span class="o">&lt;</span><span class="nv">Good</span><span class="o">&gt;</span>
-{
-    <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Good</span><span class="o">&gt;</span> <span class="nv">getptr</span><span class="ss">()</span> {
-        <span class="k">return</span> <span class="nv">shared_from_this</span><span class="ss">()</span><span class="c1">;</span>
-    }
-}<span class="c1">;</span>
+<span class="kr">struct</span> <span class="nl">Good</span><span class="p">:</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span> <span class="n">getptr</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">shared_from_this</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">};</span>
 
-<span class="nv">struct</span> <span class="nv">Bad</span>
-{
-    <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Bad</span><span class="o">&gt;</span> <span class="nv">getptr</span><span class="ss">()</span> {
-        <span class="k">return</span> <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Bad</span><span class="o">&gt;</span><span class="ss">(</span><span class="nv">this</span><span class="ss">)</span><span class="c1">;</span>
-    }
-    <span class="o">~</span><span class="nv">Bad</span><span class="ss">()</span> { <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">Bad::~Bad() called</span><span class="se">\n</span><span class="s2">&quot;</span><span class="c1">; }</span>
-}<span class="c1">;</span>
+<span class="kr">struct</span> <span class="n">Bad</span>
+<span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Bad</span><span class="o">&gt;</span> <span class="n">getptr</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Bad</span><span class="o">&gt;</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">~</span><span class="n">Bad</span><span class="p">()</span> <span class="p">{</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Bad::~Bad() called</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">};</span>
 
-<span class="nv">int</span> <span class="nv">main</span><span class="ss">()</span>
-{
-    <span class="o">//</span> <span class="nv">Good</span>: <span class="nv">the</span> <span class="nv">two</span> <span class="nv">shared_ptr</span><span class="s1">&#39;</span><span class="s">s share the same object</span>
-    <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Good</span><span class="o">&gt;</span> <span class="nv">gp1</span><span class="ss">(</span><span class="nv">new</span> <span class="nv">Good</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Good</span><span class="o">&gt;</span> <span class="nv">gp2</span> <span class="o">=</span> <span class="nv">gp1</span><span class="o">-&gt;</span><span class="nv">getptr</span><span class="ss">()</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">gp2.use_count() = </span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">gp2</span>.<span class="nv">use_count</span><span class="ss">()</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="c1">;</span>
+<span class="kr">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// Good: the two shared_ptr&#39;s share the same object</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span> <span class="n">gp1</span><span class="p">(</span><span class="k">new</span> <span class="n">Good</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span> <span class="n">gp2</span> <span class="o">=</span> <span class="n">gp1</span><span class="o">-&gt;</span><span class="n">getptr</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;gp2.use_count() = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">gp2</span><span class="p">.</span><span class="n">use_count</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 
-    <span class="o">//</span> <span class="nv">Bad</span>, <span class="nv">each</span> <span class="nv">shared_ptr</span> <span class="nv">thinks</span> <span class="nv">it</span><span class="s1">&#39;</span><span class="s">s the only owner of the object</span>
-    <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Bad</span><span class="o">&gt;</span> <span class="nv">bp1</span><span class="ss">(</span><span class="nv">new</span> <span class="nv">Bad</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">shared_ptr</span><span class="o">&lt;</span><span class="nv">Bad</span><span class="o">&gt;</span> <span class="nv">bp2</span> <span class="o">=</span> <span class="nv">bp1</span><span class="o">-&gt;</span><span class="nv">getptr</span><span class="ss">()</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">bp2.use_count() = </span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">bp2</span>.<span class="nv">use_count</span><span class="ss">()</span> <span class="o">&lt;&lt;</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="c1">;</span>
-} <span class="o">//</span> <span class="nv">UB</span>: <span class="nv">double</span><span class="o">-</span><span class="nv">delete</span> <span class="nv">of</span> <span class="nv">Bad</span>
-</pre></div>
+    <span class="c1">// Bad, each shared_ptr thinks it&#39;s the only owner of the object</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Bad</span><span class="o">&gt;</span> <span class="n">bp1</span><span class="p">(</span><span class="k">new</span> <span class="n">Bad</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Bad</span><span class="o">&gt;</span> <span class="n">bp2</span> <span class="o">=</span> <span class="n">bp1</span><span class="o">-&gt;</span><span class="n">getptr</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;bp2.use_count() = &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">bp2</span><span class="p">.</span><span class="n">use_count</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
+<span class="p">}</span> <span class="c1">// UB: double-delete of Bad</span>
+</code></pre></div>
 
 
 <p>输出结果如下：</p>
-<div class="highlight"><pre><span></span><span class="n">gp2</span><span class="p">.</span><span class="n">use_count</span><span class="p">()</span> <span class="o">=</span> <span class="mi">2</span>
-<span class="n">bp2</span><span class="p">.</span><span class="n">use_count</span><span class="p">()</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="n">Bad</span><span class="p">::</span><span class="o">~</span><span class="n">Bad</span><span class="p">()</span> <span class="k">called</span>
-<span class="n">Bad</span><span class="p">::</span><span class="o">~</span><span class="n">Bad</span><span class="p">()</span> <span class="k">called</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">gp2.use_count() = 2</span>
+<span class="err">bp2.use_count() = 1</span>
+<span class="c">Bad::~Bad() called</span>
+<span class="c">Bad::~Bad() called</span>
+</code></pre></div>
 
 
 <hr>
@@ -251,20 +251,6 @@
 
                 <span class="mail"><a href="mailto:?subject=C++ 学习笔记：内存泄漏与内存管理&amp;body=Viens découvrir un article à propos de [C++ 学习笔记：内存泄漏与内存管理] sur le site de Wolfson Liu. ../../archive/2015/c-xue-xi-bi-ji-nei-cun-xie-lou-yu-nei-cun-guan-li.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2015/c-xue-xi-bi-ji-nei-cun-xie-lou-yu-nei-cun-guan-li.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

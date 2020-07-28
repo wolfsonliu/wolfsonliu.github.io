@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>GATK4 germline variant calling 分析流程</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>Wolf Cave</h1>
+      <p>Nature Beauty Freedom</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>通过对基因组高通量测序数据的分析可以从中获取Genome Varient的信息。这个
+过程被称为Call variant，现在已经有很多成熟的软件和流程来完成这个任务。
+本笔记主要记录了使用<a href="https://gatk.broadinstitute.org">GATK4</a>软件来分析
+Variant的方法。</p>
+<h2>软件安装</h2>
+<p>为了方便，我直接使用conda的环境来安装Call variant所需要的软件。主要的
+软件版本入下：
+* GATK4: 4.1.8，主要的分析软件
+* Picard: 2.22.8，SAM/BAM处理软件
+* BWA: 0.7.17，Mapping 软件</p>
+<p>bioconda的channel中包含这些生信分析的软件，bioconda的添加参考<a href="https://wolfsonliu.github.io/archive/2020/python-xue-xi-bi-ji-bioconda-channel.html">介
+绍
+</a>
+。</p>
+<p>因为GATK4使用Java 1.8，为了防止和其他软件冲突，最好还是在一个独立的环境中安装。</p>
+<div class="highlight"><pre><span></span><code>$ conda create -n gatk gatk4 picard bwa samtools bcftools
+</code></pre></div>
+
+
+<p>这样，我们就创建了一个gatk的环境，其中安装了我们需要的GATK和Picard等软件。</p>
+<h2>Call variant 流程</h2>
+<p>使用GATK4来进行Variant calling主要参考了<a href="https://github.com/gatk-workflows/gatk4-germline-snps-indels">官方 Germline Variant Calling
+流程</a>。
+这个分析流程是从已经处理好的BAM文件开始的。生成可以使用的BAM文件则参考
+了<a href="https://github.com/gatk-workflows/gatk4-data-processing">官方 Data processing 流
+程</a>。</p>
+<h3>测序数据比对到基因组</h3>
+<p>所得到的原始测序数据是FASTQ格式的，经过预先质量控制（Quality Control）
+后就可以比对（Mapping）到基因组。GATK4软件推荐的比对软件是由Heng Li开
+发的<a href="http://bio-bwa.sourceforge.net/">BWA</a>。这里用到的参考基因组是由
+illumina整理好的hg38/GRCh38
+<a href="https://support.illumina.com/sequencing/sequencing_software/igenome.html">iGenome</a>
+人类参考基因组。</p>
+<div class="highlight"><pre><span></span><code><span class="nv">REF_BWA</span><span class="o">=</span>./reference/genome.fa
+<span class="nv">THREAD</span><span class="o">=</span><span class="m">4</span>
+<span class="nv">FQ1</span><span class="o">=</span>./data/sample.1.fq
+<span class="nv">FQ2</span><span class="o">=</span>./data/sample.2.fq
+
+bwa mem -t <span class="si">${</span><span class="nv">THREAD</span><span class="si">}</span> <span class="si">${</span><span class="nv">REF_BWA</span><span class="si">}</span> <span class="si">${</span><span class="nv">FQ1</span><span class="si">}</span> <span class="si">${</span><span class="nv">FQ2</span><span class="si">}</span> <span class="p">|</span> <span class="se">\</span>
+    samtools view -@ <span class="k">$((</span>THREAD-1<span class="k">))</span> -b - &gt; ./data/sample.raw.bam
+</code></pre></div>
+
+
+<ul>
+<li>bwa mem 可以接受双端测序（paired-end），默认会把比对结果输出到标准输
+  出（stdout）。</li>
+<li>bwa mem 还有一个 <code>-R</code> 参数，可以加上值 '@RG\tID:foo\tSM:bar' 指定读
+  取分组，如果设置错误GATK处理会有问题。这个RG可以在比对的时候添加，也
+  可以用Picard进行添加，见下面。</li>
+<li>使用 samtools view 可以把bwa mem的SAM格式的标准输出转为二进制的BAM格式。</li>
+<li><code>$((THREAD-1))</code>是bash变量的数学计算，这里的实际结果是<code>4 - 1=3</code>。
+  samtools view 的 <code>-@</code> 参数接受的是增加的线程数，所以这里要减一。</li>
+</ul>
+<h3>用Picard修改BAM文件的Read Group</h3>
+<p>如果在序列比对的时候没有在 bwa mem 中设置Read Group，可以用Picard的
+<code>AddOrReplaceReadGroups</code>命令来完成。Read Group主要是表示这些序列是同一
+次测序出来的结果，在后面的一些矫正是在一次测序内部进行的，所以需要设置
+一下。如果BAM文件中的序列只有单一来源的话，就只要设置这些Read Group完
+全一样就可以。下面是通过 Picard 来修改和添加 Read Group。</p>
+<div class="highlight"><pre><span></span><code>picard AddOrReplaceReadGroups <span class="se">\</span>
+    -I ./data/sample.raw.bam <span class="se">\</span>
+    -O ./data/sample.AddOrReplaceReadGroups.bam <span class="se">\</span>
+    --RGID sample1 <span class="se">\</span>
+    --RGLB lib1 <span class="se">\</span>
+    --RGPL illumina <span class="se">\</span>
+    --RGPU unit1 <span class="se">\</span>
+    --RGSM sample1 <span class="se">\</span>
+    --VALIDATION_STRINGENCY LENIENT <span class="se">\</span>
+    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+</code></pre></div>
+
+
+<ul>
+<li><code>--VALIDATION_STRINGENCY LENIENT</code>这里是为了避免Picard因为检查Header
+  不不符合规范而报错终止。</li>
+<li><code>-Xms1g</code> 是 Java Virtual Machine的参数，设置最小内存为1G。</li>
+<li><code>-Xmx10g</code> 也是 Java Virtual Machine的参数，设置最大内存为10G。</li>
+<li><code>-XX:ParallelGCThreads=4</code> 还是 Java Virtual Machine的参数，设置并行
+  线程为4。</li>
+</ul>
+<h3>标注重复序列</h3>
+<p>在做基因组测序的时候，序列会因为PCR的缘故而扩增太多，产生的许多重复序
+列（Duplicates）会影响到后面计算比例，所以需要区分出那些序列是由于扩增
+引起的。这里用Picard的 <code>MarkDuplicates</code> 命令来标注重复序列。这些序列不
+会从BAM中被剔除，而只会在
+<a href="https://broadinstitute.github.io/picard/explain-flags.html">FLAG</a>处被
+标注为重复序列。</p>
+<div class="highlight"><pre><span></span><code>picard MarkDuplicates <span class="se">\</span>
+    -I ./data/sample.AddOrReplaceReadGroups.bam <span class="se">\</span>
+    -O ./data/sample.MarkDuplicates.bam <span class="se">\</span>
+    -M ./data/sample.MarkDuplicates.matrics <span class="se">\</span>
+    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+</code></pre></div>
+
+
+<h3>对BAM文件进行排序</h3>
+<p>在标注完重复序列后，需要对BAM文件按照染色体坐标进行排序。</p>
+<div class="highlight"><pre><span></span><code>picard SortSam <span class="se">\</span>
+    -I ./data/sample.MarkDuplicates.bam <span class="se">\</span>
+    -O ./data/sample.SortSam.bam <span class="se">\</span>
+    -SO <span class="s2">&quot;coordinate&quot;</span> <span class="se">\</span>
+    --CREATE_INDEX <span class="nb">false</span> <span class="se">\</span>
+    --CREATE_MD5_FILE <span class="nb">false</span> <span class="se">\</span>
+    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+</code></pre></div>
+
+
+<h3>设置其他SAM标签</h3>
+<p>为了方便后面计算，可以设置SAM文件的几个标签：NM、MD和UQ。NM是编辑距离，
+即序列可以经过多少编辑变为参考序列。MD是表示错配的字符串。UQ是以Phred
+形式表示的匹配到参考序列位置的概率。</p>
+<div class="highlight"><pre><span></span><code><span class="nv">REF_FA</span><span class="o">=</span>./Reference/genome.fa
+
+picard SetNmMdAndUqTags <span class="se">\</span>
+    -I ./data/sample.SortSam.bam <span class="se">\</span>
+    -O ./data/sample.tagged.bam <span class="se">\</span>
+    --CREATE_INDEX <span class="nb">true</span> <span class="se">\</span>
+    --CREATE_MD5_FILE <span class="nb">true</span> <span class="se">\</span>
+    --REFERENCE_SEQUENCE <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
+    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+</code></pre></div>
+
+
+<h3>矫正碱基质量得分（Base Quality Score）</h3>
+<p>碱基质量是对每个碱基在测序时候估计测序错误概率得出的分值。而测序仪在评
+估碱基质量的时候会由于种种原因出现偏差。因为碱基质量得分在后面的Call
+Variant过程中会被用做评估碱基的可信程度，所以需要在预处理数据中进行矫
+正，避免测序仪的系统偏差。这里利用GATK4 的 <code>BaseRecalibrator</code> 和
+<code>ApplyBQSR</code> 命令来进行矫正。其中 <code>Baserecalibrator</code> 通过已知的一些位点
+在测序数据中的质量的情况来建立机器学习模型，然后 <code>ApplyBQSR</code> 把模型应
+用到所有位点进行矫正。</p>
+<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">REF_FA</span><span class="o">=</span>./Reference/genome.fa
+<span class="nb">export</span> <span class="nv">REF_dbSNP</span><span class="o">=</span>./Reference/Homo_sapiens_assembly38.dbsnp138.vcf.gz
+<span class="nb">export</span> <span class="nv">REF_Millsindel</span><span class="o">=</span>./Reference/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
+<span class="nb">export</span> <span class="nv">REF_knownindel</span><span class="o">=</span>./Reference/Homo_sapiens_assembly38.known_indels.vcf.gz
+
+gatk BaseRecalibrator <span class="se">\</span>
+    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
+    -I ./data/sample.tagged.bam <span class="se">\</span>
+    -O ./data/sample.bqsr.table <span class="se">\</span>
+    --use-original-qualities <span class="se">\</span>
+    --known-sites <span class="si">${</span><span class="nv">REF_dbSNP</span><span class="si">}</span> <span class="se">\</span>
+    --known-sites <span class="si">${</span><span class="nv">REF_Millsindel</span><span class="si">}</span> <span class="se">\</span>
+    --known-sites <span class="si">${</span><span class="nv">REF_knownindel</span><span class="si">}</span>
+
+gatk ApplyBQSR <span class="se">\</span>
+    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
+    -I ./sample.tagged.bam <span class="se">\</span>
+    -O ./data/sample.bqsr.bam <span class="se">\</span>
+    -bqsr ./data/sample.bqsr.table <span class="se">\</span>
+    --static-quantized-quals <span class="m">10</span> <span class="se">\</span>
+    --static-quantized-quals <span class="m">20</span> <span class="se">\</span>
+    --static-quantized-quals <span class="m">30</span> <span class="se">\</span>
+    --add-output-sam-program-record <span class="se">\</span>
+    --create-output-bam-md5 <span class="se">\</span>
+    --use-original-qualities
+</code></pre></div>
+
+
+<ul>
+<li>其中所用到的已经知道的VCF文件需要使用 <code>bgzip</code> 来压缩，并利用 <code>tabix</code>
+  来建立索引。</li>
+</ul>
+<h3>Call Variant</h3>
+<p>有了经过矫正的BAM文件后,可以通过GATK的<code>HaplotypeCaller</code>命令来获取基本
+的VCF。</p>
+<div class="highlight"><pre><span></span><code>gatk --java-options <span class="s2">&quot;-Xmx10G -XX:ParallelGCThreads=4&quot;</span> <span class="se">\</span>
+    HaplotypeCaller <span class="se">\</span>
+    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
+    -I ./data/sample.bqsr.bam <span class="se">\</span>
+    -O ./data/sample.g.vcf.gz <span class="se">\</span>
+    -OVI <span class="se">\</span>
+    -contamination <span class="m">0</span> <span class="se">\</span>
+    -G StandardAnnotation <span class="se">\</span>
+    -G StandardHCAnnotation <span class="se">\</span>
+    -G AS_StandardAnnotation <span class="se">\</span>
+    -GQB <span class="m">10</span> -GQB <span class="m">20</span> -GQB <span class="m">30</span> -GQB <span class="m">40</span> -GQB <span class="m">50</span> -GQB <span class="m">60</span> -GQB <span class="m">70</span> -GQB <span class="m">80</span> -GQB <span class="m">90</span> <span class="se">\</span>
+    -ERC GVCF <span class="se">\</span>
+    -bamout ./data/sample.HaplotypeCaller.bam
+</code></pre></div>
+
+
+<ul>
+<li><code>HaplotypeCaller</code> 可以直接输出压缩的 GVCF，并且可以建立
+  index（<code>-OVI</code>）。</li>
+<li><code>HaplotypeCaller</code> 还可以把Variant附近的序列输出到BAM文件（<code>-bamout</code>）。</li>
+</ul>
+<h3>对 SNP Variant 得分的矫正</h3>
+<p>为了更准确地过滤 VCF，可以对 Variant 的打分进行矫正。对 Variant 的矫正
+也类似对碱基的矫正，有两个步骤，需要 GATK 的 <code>VariantRecalibrator</code> 和
+<code>ApplyVQSR</code> 两个命令。其中 <code>VariantRecalibrator</code> 也是从已知的 SNP 中建
+立模型，而在 <code>ApplyVQSR</code> 中进行矫正。需要注意的是，当前的版本只能每次
+单独对 SNP 进行矫正或者对 Indel 进行矫正，而不能同时矫正两个。这里主要
+矫正 SNP。</p>
+<div class="highlight"><pre><span></span><code>gatk VariantRecalibrator <span class="se">\</span>
+    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
+    -V ./data/sample.g.vcf.gz <span class="se">\</span>
+    --resource:hapmap,known<span class="o">=</span>false,training<span class="o">=</span>true,truth<span class="o">=</span>true,prior<span class="o">=</span><span class="m">15</span>.0 hapmap_3.3.hg38.sites.vcf.gz <span class="se">\</span>
+    --resource:omni,known<span class="o">=</span>false,training<span class="o">=</span>true,truth<span class="o">=</span>false,prior<span class="o">=</span><span class="m">12</span>.0 1000G_omni2.5.hg38.sites.vcf.gz <span class="se">\</span>
+    --resource:1000G,known<span class="o">=</span>false,training<span class="o">=</span>true,truth<span class="o">=</span>false,prior<span class="o">=</span><span class="m">10</span>.0 1000G_phase1.snps.high_confidence.hg38.vcf.gz <span class="se">\</span>
+    --resource:dbsnp,known<span class="o">=</span>true,training<span class="o">=</span>false,truth<span class="o">=</span>false,prior<span class="o">=</span><span class="m">2</span>.0 Homo_sapiens_assembly38.dbsnp138.vcf.gz <span class="se">\</span>
+    -an QD -an MQ -an MQRankSum -an ReadPosRankSum -an FS -an SOR <span class="se">\</span>
+    -mode SNP <span class="se">\</span>
+    -O ./data/sample.recal <span class="se">\</span>
+    --tranches-file ./data/sample.tranches <span class="se">\</span>
+    --rscript-file ./data/sample.plots.R
+
+gatk ApplyVQSR <span class="se">\</span>
+    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
+    -V ./data/sample.g.vcf.gz <span class="se">\</span>
+    -O ./data/sample.recalibrated.g.vcf.gz <span class="se">\</span>
+    -OVI <span class="se">\</span>
+    --truth-sensitivity-filter-level <span class="m">99</span>.0 <span class="se">\</span>
+    --tranches-file ./data/sample.tranches <span class="se">\</span>
+    --recal-file ./data/sample.recal <span class="se">\</span>
+    -mode SNP
+</code></pre></div>
+
+
+<h2>多任务并行</h2>
+<p>在有的时候需要处理的测序样品比较多，想要同时处理多个数据，可以考虑使用<code>xargs</code>来同时运行多个数据。</p>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -e <span class="s2">&quot;sample1 ./bam/sample1.bam&quot;</span> &gt; files.txt
+
+<span class="nb">export</span> <span class="nv">DIR_WK</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+
+<span class="k">function</span> MarkDuplicates <span class="o">{</span>
+    <span class="nv">LAB</span><span class="o">=</span><span class="nv">$1</span>
+    <span class="nv">BAM</span><span class="o">=</span><span class="nv">$2</span>
+    <span class="nv">OUTDIR</span><span class="o">=</span><span class="si">${</span><span class="nv">DIR_WK</span><span class="si">}</span>/bam_Sorted
+    <span class="nv">TMPDIR</span><span class="o">=</span><span class="si">${</span><span class="nv">DIR_WK</span><span class="si">}</span>/tmp
+    mkdir -p <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span>
+    mkdir -p <span class="si">${</span><span class="nv">TMPDIR</span><span class="si">}</span>
+    <span class="nv">OUTBAM</span><span class="o">=</span><span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">LAB</span><span class="si">}</span>.Markduplicates.bam
+    <span class="nv">OUTTXT</span><span class="o">=</span><span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">LAB</span><span class="si">}</span>.MarkDuplicates.matrics
+    picard MarkDuplicates <span class="se">\</span>
+           -I <span class="si">${</span><span class="nv">BAM</span><span class="si">}</span> <span class="se">\</span>
+           -O <span class="si">${</span><span class="nv">OUTBAM</span><span class="si">}</span> <span class="se">\</span>
+           -M <span class="si">${</span><span class="nv">OUTTXT</span><span class="si">}</span> <span class="se">\</span>
+           -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+<span class="o">}</span>
+
+<span class="nb">export</span> -f MarkDuplicates
+
+cat files.txt <span class="p">|</span> xargs -P <span class="m">4</span> -n <span class="m">1</span> -I <span class="o">{}</span> bash -c <span class="s1">&#39;MarkDuplicates $@&#39;</span> _ <span class="o">{}</span>
+</code></pre></div>
+
+
+<ul>
+<li><code>files.txt</code>中保存着需要处理的数据，数据有两列，第一列是样品名称，第
+  二列是BAM文件的路径。</li>
+<li>xargs 的 <code>-P</code>参数指定了并行的任务的数量。</li>
+<li>使用 xargs来传参数到自定义的方程需要使用<code>bash -c</code>来运行命令行形式的
+  bash脚本，后面的<code>_ {}</code>中的<code>_</code>是用来站第0位的参数的，这样函数中的参数
+  <code>$1</code>对应的就是数据文件中的第一列，<code>$2</code>对应的是数据的第二列。</li>
+<li>为了使得函数内和<code>bash -c</code>使用变量，就需要<code>export</code>所用到的变量。</li>
+</ul>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

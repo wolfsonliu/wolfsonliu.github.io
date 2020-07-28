@@ -67,14 +67,14 @@
         <p>我需要把一些文件加密, 所以需要了解在 linux 下加密文件的办法, 当然, 还要知道解密的办法.</p>
 <h2>Openssl</h2>
 <p>openssl 支持多种加密方法, 其加密文件的命令如下:</p>
-<div class="highlight"><pre><span></span>$ openssl enc -aes-128-ecb -in file -out file.encrypted
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ openssl enc -aes-128-ecb -in file -out file.encrypted
+</code></pre></div>
 
 
 <p>然后会需要输入加密密码.</p>
 <p>其解密文件只要加上 <code>-d</code>, 需要命令如下:</p>
-<div class="highlight"><pre><span></span>$ openssl enc -aes-128-ecb -d -in file.encrypted -out file
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ openssl enc -aes-128-ecb -d -in file.encrypted -out file
+</code></pre></div>
 
 
 <p>或者 aes-256-ecb 来编码.</p>

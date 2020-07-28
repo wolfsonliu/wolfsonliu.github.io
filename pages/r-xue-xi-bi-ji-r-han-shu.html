@@ -80,7 +80,7 @@
 </ul>
 <h3>参数解析</h3>
 <p>R 函数对于参数的解析是很方便的. R 函数的参数可以按照顺序进行分配, 也可以通过参数名称进行指定. 所有的参数会把直接通过参数名赋值的参数进行对应赋值, 然后剩下的没有通过参数名赋值的, 按照顺序排列, 通过按顺序赋值的方式进行赋值.</p>
-<div class="highlight"><pre><span></span><span class="n">myfunc1</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="n">myfunc1</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
     <span class="nf">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
     <span class="nf">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
@@ -89,47 +89,47 @@
 <span class="c1">#[1] 1</span>
 <span class="c1">#[1] 3</span>
 <span class="c1">#[1] 2</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>R 函数还可以指定默认值. 直接在参数表中加上等号来设置默认参数. 需要注意的是, 有默认值的参数也会按照顺序进行赋值, 并不会跳过有默认值的参数.</p>
-<div class="highlight"><pre><span></span><span class="n">myfunc2</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="n">myfunc2</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="p">{</span>
     <span class="nf">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
     <span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
 <span class="p">}</span>
 <span class="nf">myfunc2</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 <span class="c1">#[1] 1</span>
 <span class="c1">#[1] 3</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>可以通过 missing() 函数来判断某个参数是否缺失.</p>
-<div class="highlight"><pre><span></span><span class="n">myfunc3</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="n">myfunc3</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span>
     <span class="nf">c</span><span class="p">(</span><span class="nf">missing</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="nf">missing</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
 <span class="p">}</span>
 <span class="nf">myfunc3</span><span class="p">(</span><span class="n">b</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
 <span class="c1">#[1]  TRUE FALSE</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>另外只有用到的参数才会实际上解析, 没有用到的参数就不会解析, 这样也不会耗费时间. 如果强制对某个没有用到的参数进行解析, 可以使用 force 函数.</p>
 <p>需要提及的是 <code>...</code> 参数. 这个参数可以匹配任何没有被匹配的参数, 并可以方便地传递到其他函数. 但是这个参数并不会去验证正确性, 所以即是有打字错误, 外部函数并不会报错.</p>
-<div class="highlight"><pre><span></span><span class="n">myfunc4</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="n">myfunc4</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
     <span class="nf">names</span><span class="p">(</span><span class="nf">list</span><span class="p">(</span><span class="kc">...</span><span class="p">))</span>
 <span class="p">}</span>
 <span class="nf">myfunc4</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="c1">#[1] &quot;a&quot; &quot;b&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>返回函数</h3>
 <p>如果没有使用 return 函数去指定函数的返回值, 则默认返回函数体中最后一条执行的命令的结果. 尽管函数只能返回一个结果, 但这个结果可以是一个数值, 可以是一个列表, 也可以是一个函数, 所以实际上一个函数可以返回符合需要的值.</p>
 <p>如果不希望返回值被打印, 可以使用 invisable 函数. invisable 的结果可以被赋值, 但不会打印在屏幕, 不过总可以通过把其值包含在小括号中来打印出来.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">invisable</span><span class="p">(</span><span class="m">2</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="nf">invisable</span><span class="p">(</span><span class="m">2</span><span class="p">))</span>
 <span class="c1">#[1] 2</span>
 <span class="p">(</span><span class="n">a</span> <span class="o">&lt;-</span> <span class="m">2</span><span class="p">)</span>
 <span class="c1">#[1] 2</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>on.exit 函数可以设置当一个函数结束时采取什么动作. 其中可以是改变工作区间, 也可以删除临时变量等.</p>
@@ -137,25 +137,25 @@
 <p>R 语言中有两类特殊函数: 中置函数 (infix function), 替换函数 (replacement function).</p>
 <h3>中置函数</h3>
 <p>经常用到的很多函数都是前置的, 就是一个函数名, 然后后面是括号和括号里面的参数. 有一些函数是中置的. R 中内部定义了一些: <code>::, $, @, ˆ, *, /, +, -, &gt;, &gt;=, &lt;, &lt;=, ==, !=, !, &amp;, &amp;&amp;, |, ||, ~, &lt;-, &lt;&lt;-</code>. 自己定义的中置函数需要在前后加上百分号, 如一些已经定义好的函数: <code>%%, %*%, %/%, %in%, %o%, %x%</code>. 这些中置函数也可以像前置函数那样使用, 不过需使用引号来标明函数名.</p>
-<div class="highlight"><pre><span></span><span class="s">&quot;%+%&quot;</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="nf">paste</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="s">&quot;%+%&quot;</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="nf">paste</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;&quot;</span><span class="p">)</span>
 <span class="s">&quot;new&quot;</span> <span class="o">%+%</span> <span class="s">&quot;string&quot;</span>
 <span class="c1">#[1] &quot;newstring&quot;</span>
 <span class="nf">`%+%`</span><span class="p">(</span><span class="s">&quot;new&quot;</span><span class="p">,</span> <span class="s">&quot; string&quot;</span><span class="p">)</span>
 <span class="c1">#[1] &quot;newstring&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>替换函数</h3>
 <p>替换函数有着特殊的名称形式 <code>xxx&lt;-</code>, 可以直接对内容进行替换. 常见的如 dim, names 等函数. 替换函数, 看上去是对变量内容的直接替换, 实际上在 R 里面是新建了一个变量, 所以效率依然是不高的.</p>
-<div class="highlight"><pre><span></span><span class="s">&quot;myfunc5&lt;-&quot;</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">x[2]</span> <span class="o">&lt;-</span> <span class="n">value</span>
+<div class="highlight"><pre><span></span><code><span class="s">&quot;myfunc5&lt;-&quot;</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">x</span><span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="n">value</span>
     <span class="n">x</span>
     <span class="p">}</span>
 <span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span>
 <span class="nf">myfunc5</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="m">10</span>
 <span class="n">x</span>
 <span class="c1">#[1]  1 10  3  4  5</span>
-</pre></div>
+</code></pre></div>
 </section>
   </article>
 

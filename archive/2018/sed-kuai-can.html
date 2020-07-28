@@ -84,9 +84,9 @@
 <p>替换 s 是最常使用的 sed 的命令，据说不少人使用sed只去使用替换命令。替
 换命令是根据正则表达式把旧的字符串进行替换为新的字符串。</p>
 <p>例如我们把 monday 替换成 sunday 实际上非常容易。</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> monday <span class="p">|</span> sed s/mon/sun/
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> monday <span class="p">|</span> sed s/mon/sun/
 sunday
-</pre></div>
+</code></pre></div>
 
 
 <p>对于 sed 的替换命令有四部分：</p>
@@ -100,20 +100,20 @@ sunday
 <p>除了四部分必须要有的，还可以在替换命令后面加上旗标（flag），来完成特殊的功能。</p>
 <h3>使用 &amp; 去表示匹配字符串</h3>
 <p>我们可以在新字符串中使用<code>&amp;</code>字符串去代替匹配到的字符串。</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/sunday/&amp; &amp; &amp;/&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/sunday/&amp; &amp; &amp;/&quot;</span>
 sunday sunday sunday monday tuesday
 $ <span class="nb">echo</span> <span class="s1">&#39;sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/s[a-z]*day/&amp; &amp; &amp;/&quot;</span>
 sunday sunday sunday monday tuesday
-</pre></div>
+</code></pre></div>
 
 
 <h3>使用小括号去匹配分组并选择分组</h3>
 <p>使用 <code>&amp;</code> 代表被匹配的所有字符，而如果在正则表示中加入小括号作为分组，
 我们可以使用 <code>\1</code> <code>\2</code>直到 <code>\9</code> 来代表匹配到第一到第九个括号中正则表达
 式的字符串。</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/&quot;</span>
 saturday sunday saturday sunday monday tuesday
-</pre></div>
+</code></pre></div>
 
 
 <h3>flag</h3>
@@ -124,7 +124,7 @@ saturday sunday saturday sunday monday tuesday
 <ul>
 <li>/g：用于匹配所有符合正则表达式的字符串，默认只会匹配第一个匹配到的。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[0-9][a-z]/ha ha/&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[0-9][a-z]/ha ha/&quot;</span>
 ha ha 2b 3c
 $ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[0-9][:lower:]/ha ha/g&quot;</span>
 ha ha ha ha ha ha
@@ -132,13 +132,13 @@ $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tues
 saturday sunday saturday sunday monday tuesday
 $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/g&quot;</span>
 saturday sunday saturday sunday monday tuesday monday tuesday
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>/1：诸如 1，2，3用于指定是第几个匹配。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[:digit:][:lower:]/ha ha/&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[:digit:][:lower:]/ha ha/&quot;</span>
 ha ha 2b 3c
 $ <span class="nb">echo</span> <span class="s1">&#39;1a 2b 3c&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/[:digit:][:alpha:]/ha ha/2&quot;</span>
 1b ha ha 3c
@@ -146,13 +146,13 @@ $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tues
 saturday sunday saturday sunday monday tuesday
 $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2&quot;</span>
 saturday sunday monday tuesday monday tuesday
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>/p：输出符合匹配的序列。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
 saturday sunday monday tuesday
 $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -n -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
 $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/p&quot;</span>
@@ -162,17 +162,17 @@ $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tues
 saturday sunday monday tuesday
 $ cat lib.1.fq <span class="p">|</span> sed -n -E <span class="s2">&quot;s/ACCG([ATCG]{19,20})GTTT/\1/p&quot;</span> &gt; sgRNAs.seq
 $ cat sgRNAs.seq <span class="p">|</span> sort <span class="p">|</span> uniq -c &gt; sgRNA.count
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>/w：输出到文件</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2 w tmp&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/2 w tmp&quot;</span>
 saturday sunday monday tuesday monday tuesday
 $ cat tmp
 saturday sunday monday tuesday monday tuesday
-</pre></div>
+</code></pre></div>
 
 
 <h2>选择特定的列</h2>
@@ -186,8 +186,8 @@ saturday sunday monday tuesday monday tuesday
 <li><code>n,$</code>：对从第n行到最后一行进行操作，如 <code>sed '100,$ s/new/old/'</code>
     只会对第100行到最后进行替换操作，其他行不会操作。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;1, 20 s/.*bin.*/BIN/&#39;</span> /etc/passwd
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ sed <span class="s1">&#39;1, 20 s/.*bin.*/BIN/&#39;</span> /etc/passwd
+</code></pre></div>
 
 
 <ul>
@@ -195,12 +195,12 @@ saturday sunday monday tuesday monday tuesday
 <li><code>/pattern/</code>：只对匹配正则表达式的行进行操作。</li>
 <li><code>/pattern1/,/pattern2/</code>：对在所有匹配两个正则表达式的行进行操作。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;/@.*/,/\+/&#39;</span> lib.1.fq <span class="p">|</span> less
+<div class="highlight"><pre><span></span><code>$ sed <span class="s1">&#39;/@.*/,/\+/&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;/@.*/,/\+/ {</span>
 <span class="s1">    /@.*/n</span>
 <span class="s1">    /\+/!p</span>
 <span class="s1">}&#39;</span> lib.1.fq <span class="p">|</span> less
-</pre></div>
+</code></pre></div>
 
 
 <h2>输出命令 p</h2>
@@ -210,14 +210,14 @@ $ sed <span class="s1">&#39;/@.*/,/\+/ {</span>
 有配合 <code>-n</code>，则会使得符合要求的行输出两遍。而sed加上 <code>-n</code> 参数后，则默
 认不输出任何东西，所有只有符合一定规则的有输出命令 p 的行才会输出。在
 p 前面加感叹号，就是不输出的意思。</p>
-<div class="highlight"><pre><span></span>$ sed -n <span class="s1">&#39;/^@.*/ p&#39;</span> lib.1.fq <span class="p">|</span> less
+<div class="highlight"><pre><span></span><code>$ sed -n <span class="s1">&#39;/^@.*/ p&#39;</span> lib.1.fq <span class="p">|</span> less
 $ egrep <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;/^@.*/ !p&#39;</span> lib.1.fq <span class="p">|</span> less
 $ egrep -v <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;/^@.*/ !p&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed -n <span class="s1">&#39;1,16 p&#39;</span> lib.1.fq <span class="p">|</span> less
 $ head -16 lib.1.fq
-</pre></div>
+</code></pre></div>
 
 
 <h2>删除命令 d</h2>
@@ -331,14 +331,14 @@ $ head -16 lib.1.fq
 </tr>
 </tbody>
 </table>
-<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;/^@.*/ !d&#39;</span> lib.1.fq <span class="p">|</span> less
+<div class="highlight"><pre><span></span><code>$ sed <span class="s1">&#39;/^@.*/ !d&#39;</span> lib.1.fq <span class="p">|</span> less
 $ egrep <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;/^@.*/ d&#39;</span> lib.1.fq <span class="p">|</span> less
 $ egrep -v <span class="s1">&#39;^@.*&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed -n <span class="s1">&#39;/^@.*/ !d&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;1,16 !d&#39;</span> lib.1.fq <span class="p">|</span> less
 $ head -16 lib.1.fq
-</pre></div>
+</code></pre></div>
 
 
 <h2>附加命令 a，改变命令 c，插入命令 i</h2>
@@ -348,38 +348,38 @@ $ head -16 lib.1.fq
 <li>c：把目标行替换内容。</li>
 <li>i：在目标行前面增加新行。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ sed <span class="s1">&#39;/@.*/ a haha&#39;</span> lib.1.fq <span class="p">|</span> less
+<div class="highlight"><pre><span></span><code>$ sed <span class="s1">&#39;/@.*/ a haha&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;/@.*/ c haha&#39;</span> lib.1.fq <span class="p">|</span> less
 $ sed <span class="s1">&#39;/@.*/ i haha&#39;</span> lib.1.fq <span class="p">|</span> less
-</pre></div>
+</code></pre></div>
 
 
 <h2>输出行号</h2>
 <p><code>=</code> 可以用来输出行号。</p>
-<div class="highlight"><pre><span></span>$ sed -n <span class="s1">&#39;/@.*/ =&#39;</span> lib.1.fq <span class="p">|</span> less
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ sed -n <span class="s1">&#39;/@.*/ =&#39;</span> lib.1.fq <span class="p">|</span> less
+</code></pre></div>
 
 
 <h2>转换命令 y</h2>
 <p>除了替换命令，sed 还支持字符转换命令 y，实现类似于 <code>tr</code> 的命令。转换命
 令的语法很接近替换命令，只是要求转换前和转换后的字符串一一匹配。</p>
 <p>例如，我们要实现DNA序列的互补配对，我们可以利用转换命令：</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> sed y/ATCG/TAGC/
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> sed y/ATCG/TAGC/
 ATATCCGATCTCCTAATCTC
 $ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> tr ATCG TAGC
 ATATCCGATCTCCTAATCTC
-</pre></div>
+</code></pre></div>
 
 
 <p>从上面的栗子，我们可以看到转换命令和替换命令的相似性，其在flag使用上也
 是类似的。</p>
 <p>如果我们需要的是反向互补序列呢？只需要使用shell下的管道，把sed的结果导
 向 rev 命令即可。</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> sed y/ATCG/TAGC/ <span class="p">|</span> rev
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> sed y/ATCG/TAGC/ <span class="p">|</span> rev
 CTCTAATCCTCTAGCCTATA
 $ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> tr ATCG TAGC <span class="p">|</span> rev
 CTCTAATCCTCTAGCCTATA
-</pre></div>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -403,20 +403,6 @@ CTCTAATCCTCTAGCCTATA
 
                 <span class="mail"><a href="mailto:?subject=Sed 快餐&amp;body=Viens découvrir un article à propos de [Sed 快餐] sur le site de Wolfson Liu. ../../archive/2018/sed-kuai-can.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/sed-kuai-can.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

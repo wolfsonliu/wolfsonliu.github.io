@@ -65,24 +65,24 @@
 <section id="content" class="body">
         
         <p>在 R 语言中, for 循环不像 C 语言中的 for 那么快速. 因为在 R 的 for 循环中, 需要 R 解释器去解析每个字符, 而 C 则通过编译把代码转为了电脑可以直接运行的机器码. 在 R 中, 单纯地在循环中增加括号, 就能够使得循环的速度下降.</p>
-<div class="highlight"><pre><span></span><span class="nv">m</span> <span class="o">&lt;-</span> <span class="mi">0</span>
-<span class="nv">system</span>.<span class="nv">time</span><span class="ss">(</span>{
-    <span class="k">for</span> <span class="ss">(</span><span class="nv">i</span> <span class="nv">in</span> <span class="mi">1</span>:<span class="mi">10000000</span><span class="ss">)</span> {
-        <span class="nv">m</span> <span class="o">&lt;-</span> <span class="nv">m</span> <span class="o">+</span> <span class="nv">i</span>
-    }
-}<span class="ss">)</span>
-# <span class="nv">user</span>  <span class="nv">system</span> <span class="nv">elapsed</span>
-# <span class="mi">4</span>.<span class="mi">266</span>   <span class="mi">0</span>.<span class="mi">014</span>   <span class="mi">4</span>.<span class="mi">289</span>
+<div class="highlight"><pre><span></span><code><span class="n">m</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="nf">system.time</span><span class="p">({</span>
+    <span class="nf">for </span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10000000</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">m</span> <span class="o">&lt;-</span> <span class="n">m</span> <span class="o">+</span> <span class="n">i</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+<span class="c1"># user  system elapsed</span>
+<span class="c1"># 4.266   0.014   4.289</span>
 
-<span class="nv">m</span> <span class="o">&lt;-</span> <span class="mi">0</span>
-<span class="nv">system</span>.<span class="nv">time</span><span class="ss">(</span>{
-    <span class="k">for</span> <span class="ss">(</span><span class="nv">i</span> <span class="nv">in</span> <span class="mi">1</span>:<span class="mi">10000000</span><span class="ss">)</span> {
-        <span class="ss">(((((((</span><span class="nv">m</span> <span class="o">&lt;-</span> <span class="nv">m</span> <span class="o">+</span> <span class="nv">i</span><span class="ss">)))))))</span>
-    }
-}<span class="ss">)</span>
-# <span class="nv">user</span>  <span class="nv">system</span> <span class="nv">elapsed</span>
-# <span class="mi">10</span>.<span class="mi">920</span>   <span class="mi">0</span>.<span class="mi">013</span>  <span class="mi">10</span>.<span class="mi">953</span>
-</pre></div>
+<span class="n">m</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<span class="nf">system.time</span><span class="p">({</span>
+    <span class="nf">for </span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10000000</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">(((((((</span><span class="n">m</span> <span class="o">&lt;-</span> <span class="n">m</span> <span class="o">+</span> <span class="n">i</span><span class="p">)))))))</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+<span class="c1"># user  system elapsed</span>
+<span class="c1"># 10.920   0.013  10.953</span>
+</code></pre></div>
 
 
 <p>有的时候我们需要做的只是简单地对列表或者数据框的每一行或列数据使用同样的函数, 在 C 语言中, 同样的问题通过 for loop 或者 while 来解决是十分直观和方便高效的. 而由于上面提到了 R 的特点, 使用 for loop 尤其是多层 for loop 则会很慢. 这样的情况下, 就应该取考虑映射 (mapping), 即在一系列数据上重复地去使用同一个函数, 即把该函数映射到数据上.</p>
@@ -93,30 +93,30 @@
 <h3>apply</h3>
 <p>apply 函数本身的运算速度其实和 for loop 很接近, 但是由于其语句少, 结构简单, 在进行大量重复应用相同函数到同一个数据集的时候效率似乎要比 for loop 要高一些. apply 函数有三个主要参数: 一个是数据集, array, matrix, data.frame, list 都可以; 一个是 MARGIN, MARGIN 为 1 的时候对 matrix 的每一行运行函数, MARGIN 为 2 的时候对 matrix 的每一列运行函数, 如果是 array 则可能是更高维; 一个是要对数据集运行的函数.</p>
 <p>有的时候我需要对一个向量计算若干项的平均值, 比如说要把这个向量按顺序分成不重和的若干组, 每组三个, 然后计算其平均值. 这个时候就可以把该向量先转换成一个有一个维度为 3 的矩阵, 然后使用 apply 进行计算.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">12</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">12</span>
 <span class="nf">apply</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">ncol</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span> <span class="m">1</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
 <span class="c1">#[1]  2  5  8 11</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>除了使用 apply 可以使用不同的函数之外, 如果目的仅仅是需要得到几个值的和或者均值, 还可以在把向量转换为矩阵之后使用 colSums, rowSums, colMeans, rowMeans 等函数.</p>
 <h3>sweep</h3>
 <p>有的时候, 所需要对一个数据集映射的函数需要有两个值, 比如说 "/" 除法操作符等双目操作符, 对于一列或者一行, 所用的值也不太一样. 这个时候 apply 可能就不是很方便了, 这个时候, 使用 sweep 就更方便一些. sweep 相对于 apply 要多接受一个参数, STAT, STAT 就是用来接受如双目的操作符后面的一个数字的.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">12</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">12</span>
 <span class="n">y</span> <span class="o">&lt;-</span> <span class="nf">seq</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">24</span><span class="p">,</span> <span class="n">by</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
 <span class="nf">sweep</span><span class="p">(</span><span class="nf">matrix</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nrow</span> <span class="o">=</span> <span class="m">1</span><span class="p">),</span> <span class="m">2</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;/&quot;</span><span class="p">)</span>
 <span class="c1">#      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12]</span>
 <span class="c1">#[1,]  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5   0.5   0.5   0.5</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>lapply, sapply, vapply, replicate</h3>
 <p>lapply, sapply, vapply, replicate 有很多相似的地方, 实际上, lapply 是最为基础的, sapply 是对 lapply 的一种方便使用的包装, 可以理解为 "simple apply". 而 replicate 则是对 sapply 的一个更方便使用的包装.</p>
 <p>lapply 可以理解为 "list apply", 其总会返回一个 list 结果, 这个 list 的长度和输入的 list x 的长度是一样. 其接受一个数据集, 列表 x, 并接受一个需要做映射的函数, 同时也可以接受该函数的参数.</p>
-<div class="highlight"><pre><span></span><span class="n">call_fun</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="nf">f</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">call_fun</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="nf">f</span><span class="p">(</span><span class="kc">...</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">sum</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">median</span><span class="p">,</span> <span class="n">sd</span><span class="p">)</span>
 <span class="nf">lapply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">call_fun</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nf">runif</span><span class="p">(</span><span class="m">1e3</span><span class="p">))</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>sapply 是对 lapply 的包装, 其结果不再一定是一个 list, 也会根据方便程度返回向量等, 其有参数 <code>simplify = TRUE</code> 可以设置是否采取简化输出.</p>
@@ -125,18 +125,18 @@
 <p>在 parallel 包中, mclapply 是多线程版的 lapply.</p>
 <h3>mapply</h3>
 <p>mapply 可以理解为 "multi sapply", 它接受一个函数作为参数 FUN, 另外接受若干数据集做为输入, 同时每个数据集对应的行会作为 FUN 的参数.</p>
-<div class="highlight"><pre><span></span><span class="n">mapply</span><span class="p">(</span><span class="k">sum</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">:</span><span class="mi">1</span><span class="p">)</span>
-<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">5</span> <span class="mi">5</span> <span class="mi">5</span> <span class="mi">5</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">mapply(sum, 1:4, 4:1)</span>
+<span class="err">#[1] 5 5 5 5</span>
+</code></pre></div>
 
 
 <p>在 parallel 包中, mcmapply 是多线程版的 mapply.</p>
 <h3>Map</h3>
 <p>Map 函数也可以实现一个对一个数据集进行多参数函数的映射. Map 相当于设置 <code>simplify = FALSE</code> 的 mapply 函数. 例如, weighted.mean 接受变量和其权重, 来计算加权平均值. </p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">replicate</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="nf">runif</span><span class="p">(</span><span class="m">10</span><span class="p">),</span> <span class="n">simplify</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">replicate</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="nf">runif</span><span class="p">(</span><span class="m">10</span><span class="p">),</span> <span class="n">simplify</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
 <span class="n">w</span> <span class="o">&lt;-</span> <span class="nf">replicate</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="nf">rpois</span><span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span> <span class="o">+</span> <span class="m">1</span><span class="p">,</span> <span class="n">simplify</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
 <span class="nf">Map</span><span class="p">(</span><span class="n">weighted.mean</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>在 parallel 包中, mcMap 是多线程版的 mcMap.</p>
@@ -144,7 +144,7 @@
 <p>有的时候我们需要根据某种分组来对数据集进行处理, 比如说根据性别来计算相对身高等. 这个时候就可以使用 aggregate, tapply 等函数.</p>
 <p>aggregate 函数也可以接受一个 list 或 data.frame 作为输入数据集, 也接受一个函数做参数. 相对前面提到的 sapply 有一点重要不同是, 接受一个分组的 list 作为 by 参数的值. 所有的计算将根据 by 的分组进行. 所输出的结果的维度将会和分组的维度相关.</p>
 <p>tapply 和 aggregate 类似, 不过其 INDEX 参数可以接受若干对数据集进行分组的向量, 输出结果将和分组相关. 也可以使用面向对象的 tapply, by 函数, 其参数和 tapply 类似. 对于 tapply, 就是可以把数据集按照一定规则分成几类, 那么相似的结果也可以通过 sapply 函数和 split 函数实现.</p>
-<div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">&lt;-</span> <span class="m">17</span><span class="p">;</span> <span class="n">fac</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">n</span><span class="p">),</span> <span class="n">levels</span> <span class="o">=</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">&lt;-</span> <span class="m">17</span><span class="p">;</span> <span class="n">fac</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">n</span><span class="p">),</span> <span class="n">levels</span> <span class="o">=</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">)</span>
 <span class="nf">aggregate</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">n</span><span class="p">,</span> <span class="nf">list</span><span class="p">(</span><span class="n">fac</span><span class="p">),</span> <span class="n">fivenum</span><span class="p">)</span>
 <span class="c1">#  Group.1  x.1  x.2  x.3  x.4  x.5</span>
 <span class="c1">#1       1  1.0  4.0  8.5 13.0 16.0</span>
@@ -165,7 +165,7 @@
 
 <span class="c1">#$`5`</span>
 <span class="c1">#NULL</span>
-</pre></div>
+</code></pre></div>
 
 
 <hr>
@@ -186,22 +186,22 @@
 这就可以使用 Hadley Wickham 的另一个包 tidyr 来处理,
 不过这里我们先使用 utils 中的 stack 函数,
 tidyr 的使用会在相应的笔记中说明.</p>
-<div class="highlight"><pre><span></span><span class="n">long.iris</span> <span class="o">&lt;-</span> <span class="nf">stack</span><span class="p">(</span><span class="n">iris</span><span class="p">,</span> <span class="n">select</span><span class="o">=-</span><span class="n">Species</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">long.iris</span> <span class="o">&lt;-</span> <span class="nf">stack</span><span class="p">(</span><span class="n">iris</span><span class="p">,</span> <span class="n">select</span><span class="o">=-</span><span class="n">Species</span><span class="p">)</span>
 <span class="n">long.iris</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
     <span class="n">long.iris</span><span class="p">,</span>
     <span class="n">Species</span><span class="o">=</span><span class="nf">rep</span><span class="p">(</span>
-        <span class="n">iris[[</span><span class="s">&#39;Speices&#39;</span><span class="n">]]</span><span class="p">,</span> <span class="m">4</span>
+        <span class="n">iris</span><span class="p">[[</span><span class="s">&#39;Speices&#39;</span><span class="p">]],</span> <span class="m">4</span>
     <span class="p">)</span>
 <span class="p">)</span>
 <span class="nf">colnames</span><span class="p">(</span><span class="n">long.iris</span><span class="p">)</span>
 <span class="c1"># [1] &quot;values&quot;  &quot;ind&quot;     &quot;Species&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们需要去看一下对于不同物种的不同的属性的最大和最小值.
 我们自然是可以使用 summary 这样的函数 <code>summary(iris)</code>.
 也可以使用 tapply 函数来根据 index 去计算.</p>
-<div class="highlight"><pre><span></span><span class="nf">tapply</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">tapply</span><span class="p">(</span>
     <span class="n">long.iris</span><span class="o">$</span><span class="n">values</span><span class="p">,</span>
     <span class="n">INDEX</span><span class="o">=</span><span class="nf">paste</span><span class="p">(</span>
         <span class="n">long.iris</span><span class="o">$</span><span class="n">Species</span><span class="p">,</span>
@@ -210,15 +210,15 @@ tidyr 的使用会在相应的笔记中说明.</p>
     <span class="p">),</span>
     <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="p">))}</span>
 <span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>这样可以计算出来结果, 不过结果是 list 的数据结构,
 不方便进一步的计算, 我们希望结果能够成为一个 data.frame.
 如果使用 plyr 包中的 ddply 则可以很好解决问题.</p>
-<div class="highlight"><pre><span></span><span class="nf">ddply</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">ddply</span><span class="p">(</span>
     <span class="n">long.iris</span><span class="p">,</span>
-    <span class="n">.(Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
+    <span class="nf">.</span><span class="p">(</span><span class="n">Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
     <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">),</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">))}</span>
 <span class="p">)</span>
 
@@ -235,7 +235,7 @@ tidyr 的使用会在相应的笔记中说明.</p>
 <span class="c1"># 10  virginica  Petal.Width 2.5 1.4</span>
 <span class="c1"># 11  virginica Sepal.Length 7.9 4.9</span>
 <span class="c1"># 12  virginica  Sepal.Width 3.8 2.2</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>plyr 包中的 apply 函数</h2>
@@ -287,8 +287,8 @@ adply 代表输入的是数组, 输出的是数据表;
 a_ply 输入的是数组, 而不输出.</p>
 <h3>a*ply</h3>
 <p>对于 a*ply 函数, 即 aaply, adply, alply 和 a_ply 函数, 有:</p>
-<div class="highlight"><pre><span></span><span class="n">a</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.margins</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.margins</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
 <ul>
@@ -297,7 +297,7 @@ a_ply 输入的是数组, 而不输出.</p>
   例如对于三维数组, 要对前两维进行计算则 <code>.margins=c(1, 2)</code></li>
 <li>.fun 接受对分组进行操作的函数.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">&lt;-</span> <span class="nf">array</span><span class="p">(</span><span class="nf">rnorm</span><span class="p">(</span><span class="m">27</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">&lt;-</span> <span class="nf">array</span><span class="p">(</span><span class="nf">rnorm</span><span class="p">(</span><span class="m">27</span><span class="p">),</span> <span class="nf">c</span><span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">))</span>
 
 <span class="nf">adply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> <span class="n">mean</span><span class="p">)</span>
 
@@ -311,12 +311,12 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1"># 7  1  3 -0.86448199</span>
 <span class="c1"># 8  2  3 -0.93706920</span>
 <span class="c1"># 9  3  3 -0.08792167</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>对于对分组进行操作的 .fun 则需要注意根据所输入的数组和选用的 margin 进行匹配.
 如果输入的是三维数组, 选择其中一个维度进行分组, 那么 .fun 则应该是对二维数组, 即矩阵的操作.</p>
-<div class="highlight"><pre><span></span><span class="nf">aaply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="n">class</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">aaply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="n">class</span><span class="p">)</span>
 
 <span class="c1">#        1        2        3</span>
 <span class="c1"># &quot;matrix&quot; &quot;matrix&quot; &quot;matrix&quot;</span>
@@ -328,13 +328,13 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1">#   1 &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;</span>
 <span class="c1">#   2 &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;</span>
 <span class="c1">#   3 &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>d*ply</h3>
 <p>对于 d*ply 函数, 即 daply, ddply, dlply 和 d_ply 函数, 有:</p>
-<div class="highlight"><pre><span></span><span class="n">d</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.variables</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">d</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.variables</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
 <ul>
@@ -345,7 +345,7 @@ a_ply 输入的是数组, 而不输出.</p>
 <li>.fun 接受对分组进行操作的函数.</li>
 </ul>
 <p>偷个懒, 还是上面用过的例子咯.</p>
-<div class="highlight"><pre><span></span><span class="nf">daply</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="nf">daply</span><span class="p">(</span>
     <span class="n">long.iris</span><span class="p">,</span>
     <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species&#39;</span><span class="p">,</span> <span class="s">&#39;ind&#39;</span><span class="p">),</span>
     <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">),</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">))}</span>
@@ -367,18 +367,18 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1">#   versicolor          3.0         1.0          4.9         2.0</span>
 <span class="c1">#   virginica           4.5         1.4          4.9         2.2</span>
 <span class="c1">#</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>对于 <code>d*ply</code> 函数,
 其 <code>.fun</code> 所接受的函数应该是对于和输入数据表同样的列数而不同行数的数据表进行操作的函数.</p>
-<div class="highlight"><pre><span></span><span class="nf">dim</span><span class="p">(</span><span class="n">long.iris</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">dim</span><span class="p">(</span><span class="n">long.iris</span><span class="p">)</span>
 
 <span class="c1"># 600 3</span>
 
 <span class="nf">ddply</span><span class="p">(</span>
     <span class="n">long.iris</span><span class="p">,</span>
-    <span class="n">.(Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
+    <span class="nf">.</span><span class="p">(</span><span class="n">Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
     <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">class</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">dim</span><span class="p">(</span><span class="n">x</span><span class="p">))}</span>
 <span class="p">)</span>
 
@@ -399,13 +399,13 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="m">50</span> <span class="o">*</span> <span class="m">12</span>
 
 <span class="c1"># [1] 600</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>l*ply</h3>
 <p>对于 l*ply 函数, 即 laply, ldply, llply 和 l_ply 函数, 有:</p>
-<div class="highlight"><pre><span></span><span class="n">l</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">l</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
 <ul>
@@ -413,7 +413,7 @@ a_ply 输入的是数组, 而不输出.</p>
 <li>.fun 接受对分组进行操作的函数.</li>
 </ul>
 <p>举个简单的例子:</p>
-<div class="highlight"><pre><span></span><span class="nf">llply</span><span class="p">(</span><span class="n">long.iris</span><span class="p">,</span> <span class="n">unique</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">llply</span><span class="p">(</span><span class="n">long.iris</span><span class="p">,</span> <span class="n">unique</span><span class="p">)</span>
 
 <span class="c1"># $values</span>
 <span class="c1">#  [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.4 4.8 4.3 5.8 5.7 5.2 5.5 4.5 5.3 7.0 6.4 6.9 6.5</span>
@@ -428,14 +428,14 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1"># $Species</span>
 <span class="c1"># [1] setosa     versicolor virginica</span>
 <span class="c1"># Levels: setosa versicolor virginica</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>m*ply</h3>
 <p>在 plyr 包中还有一系列对应于 mapply 的函数,
 包括 <code>maply</code>, <code>mdply</code>, <code>mlply</code>, <code>m_ply</code> 等.</p>
-<div class="highlight"><pre><span></span><span class="n">m</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">m</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
 <ul>
@@ -447,7 +447,7 @@ a_ply 输入的是数组, 而不输出.</p>
 每一行的一个列对应于函数的一个参数.
 所以可以对应一个函数有不同的输入参数从而产生不同的结果.</p>
 <p>例如生成若干随机数:</p>
-<div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">b</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
     <span class="n">n</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">),</span>
     <span class="n">mean</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">20</span><span class="p">,</span> <span class="m">300</span><span class="p">),</span>
     <span class="n">sd</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">20</span><span class="p">,</span> <span class="m">300</span><span class="p">)</span>
@@ -459,14 +459,14 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1"># 1 5    1   1   1.13   1.23   0.39   3.34   0.19</span>
 <span class="c1"># 2 5   20  20  17.37 -23.71  33.75  27.07   0.37</span>
 <span class="c1"># 3 5  300 300 507.72 634.58 -70.71 643.29 555.39</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>r*ply</h3>
 <p>对应于 replicate 函数, plyr 中的函数是 <code>r*ply</code>.
 其也包括 <code>raply</code>, <code>rdply</code>, <code>rlaply</code>, <code>r_ply</code> 等.</p>
-<div class="highlight"><pre><span></span><span class="n">r</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.n</span><span class="p">,</span> <span class="n">.expr</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">r</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.n</span><span class="p">,</span> <span class="n">.expr</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
 <ul>
@@ -474,7 +474,7 @@ a_ply 输入的是数组, 而不输出.</p>
 <li>.expr 是需要重复的表达式</li>
 </ul>
 <p>例如生成随机数:</p>
-<div class="highlight"><pre><span></span><span class="nf">raply</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="nf">rnorm</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="nf">raply</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="nf">rnorm</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
 
 <span class="c1">#          1     2     3     4     5</span>
 <span class="c1"># [1,]  0.74  0.05 -2.08 -0.57  0.12</span>
@@ -482,7 +482,7 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1"># [3,] -1.10  0.32  0.07 -0.97 -0.05</span>
 <span class="c1"># [4,]  0.82 -0.07 -0.12  1.53 -0.32</span>
 <span class="c1"># [5,]  0.83 -0.20 -0.61 -0.42 -0.56</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>总结</h2>
@@ -498,26 +498,26 @@ a_ply 输入的是数组, 而不输出.</p>
 <ul>
 <li>splat: 把函数转换为可以接受一个列表进行输入, 配合 <code>m*ply</code> 有奇效</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nf">splat</span><span class="p">(</span><span class="n">rnorm</span><span class="p">)(</span><span class="nf">list</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">5</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="m">2</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="nf">splat</span><span class="p">(</span><span class="n">rnorm</span><span class="p">)(</span><span class="nf">list</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">5</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="m">2</span><span class="p">))</span>
 
 <span class="c1"># [1] 2.505678 2.944919 1.485397 1.536358 2.216418</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>each: 同一个值传入不同的函数, 输出向量等, 可以配合 <code>ddply</code> 使用.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nf">each</span><span class="p">(</span><span class="n">max</span><span class="p">,</span> <span class="n">min</span><span class="p">)(</span><span class="nf">seq</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="nf">each</span><span class="p">(</span><span class="n">max</span><span class="p">,</span> <span class="n">min</span><span class="p">)(</span><span class="nf">seq</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
 
 <span class="c1"># max min</span>
 <span class="c1">#   5   1</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>colwise: 把一个标量函数转为向量化的函数</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nf">class</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">class</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
 
 <span class="c1"># [1] &quot;data.frame&quot;</span>
 
@@ -525,14 +525,14 @@ a_ply 输入的是数组, 而不输出.</p>
 
 <span class="c1">#   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
 <span class="c1"># 1      numeric     numeric      numeric     numeric  factor</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>failwith: 如果一个函数报错了, 整个计算就错了, 算的岂不可惜?
   可以用 failwith 对于报错的函数返回特定的值, 而不中断计算.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nf">sum</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="nf">sum</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">))</span>
 
 <span class="c1"># Error in sum(c(1, 2, &quot;3&quot;)) : invalid &#39;type&#39; (character) of argument</span>
 
@@ -543,7 +543,7 @@ a_ply 输入的是数组, 而不输出.</p>
 
 <span class="nf">failwith</span><span class="p">(</span><span class="s">&#39;又错啦&#39;</span><span class="p">,</span> <span class="n">sum</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="bp">T</span><span class="p">)(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">))</span>
 <span class="c1"># [1] &quot;又错啦&quot;</span>
-</pre></div>
+</code></pre></div>
 </section>
   </article>
 

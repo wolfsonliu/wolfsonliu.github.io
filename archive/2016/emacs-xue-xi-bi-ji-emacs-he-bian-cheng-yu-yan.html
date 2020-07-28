@@ -88,21 +88,21 @@
 <h2>写代码</h2>
 <h3>Mode</h3>
 <p>如果相应的语言没有被 Emacs 默认支持, 则在部署相应的 mode 之后, 可能还需要在 init.el 文件中添加一行命令根据文件名自动加载相应的 mode.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">autoload</span> <span class="err">\</span><span class="s1">&#39;function &quot;filename&quot; &quot;description&quot; t) </span>
-<span class="s1">(autoload \&#39;</span><span class="n">python</span><span class="o">-</span><span class="k">mode</span> <span class="ss">&quot;python-mode&quot;</span> <span class="ss">&quot;python&quot;</span> <span class="n">t</span><span class="p">)</span> <span class="p">;;</span> <span class="err">加载</span> <span class="k">mode</span> <span class="n">lisp</span> <span class="err">文件</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">(autoload \&#39;function &quot;filename&quot; &quot;description&quot; t) </span>
+<span class="err">(autoload \&#39;python-mode &quot;python-mode&quot; &quot;python&quot; t) ;; 加载 mode lisp 文件</span>
+</code></pre></div>
 
 
 <p>在自动加载 lisp 文件后还应该自动根据代码后缀名自动开启相应的 mode. auto-mode-alist 存储文件后缀名和相应 mode 的对应关系.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">setq</span> <span class="n">auto</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span> <span class="p">(</span><span class="n">cons</span> <span class="err">\&#39;</span><span class="p">(</span><span class="ss">&quot;\\.py$&quot;</span> <span class="p">.</span> <span class="n">python</span><span class="o">-</span><span class="k">mode</span><span class="p">)</span> <span class="n">auto</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span><span class="p">))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">(setq auto-mode-alist (cons \&#39;(&quot;\\.py$&quot; . python-mode) auto-mode-alist))</span>
+</code></pre></div>
 
 
 <p>对于交互式语言, 还可以添加下列支持.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">setq</span> <span class="n">interpreter</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span>
-      <span class="p">(</span><span class="n">cons</span> <span class="err">\&#39;</span><span class="p">(</span><span class="ss">&quot;python&quot;</span> <span class="p">.</span> <span class="n">python</span><span class="o">-</span><span class="k">mode</span><span class="p">)</span>
-            <span class="n">interpreter</span><span class="o">-</span><span class="k">mode</span><span class="o">-</span><span class="n">alist</span><span class="p">))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">(setq interpreter-mode-alist</span>
+<span class="err">      (cons \&#39;(&quot;python&quot; . python-mode)</span>
+<span class="err">            interpreter-mode-alist))</span>
+</code></pre></div>
 
 
 <h3>注释</h3>
@@ -147,20 +147,6 @@
 
                 <span class="mail"><a href="mailto:?subject=Emacs 学习笔记：Emacs 和编程语言&amp;body=Viens découvrir un article à propos de [Emacs 学习笔记：Emacs 和编程语言] sur le site de Wolfson Liu. ../../archive/2016/emacs-xue-xi-bi-ji-emacs-he-bian-cheng-yu-yan.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/emacs-xue-xi-bi-ji-emacs-he-bian-cheng-yu-yan.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

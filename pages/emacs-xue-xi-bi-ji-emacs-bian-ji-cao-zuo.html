@@ -235,12 +235,12 @@
 </ul>
 <h4>缓冲列表 Buffer List</h4>
 <p>缓冲列表有一些特别的操作, 缓冲列表使用 <strong>C-x C-b</strong> 打开. 在缓冲列表里面, 有一些是立即执行的, 另外一些则要确认后才执行.</p>
-<div class="highlight"><pre><span></span><span class="n">CRM</span> <span class="n">Buffer</span>                 <span class="k">Size</span> <span class="k">Mode</span>             <span class="n">File</span>
+<div class="highlight"><pre><span></span><code><span class="n">CRM</span> <span class="s">Buffer</span>                 <span class="s">Size</span> <span class="s">Mode</span>             <span class="s">File</span>
   <span class="o">*</span> <span class="n">emacs_control</span><span class="p">.</span><span class="n">md</span>       <span class="mi">6428</span> <span class="n">Markdown</span>         <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">emacs_control</span><span class="p">.</span><span class="n">md</span>
   <span class="o">*</span> <span class="n">emacs_mode</span><span class="p">.</span><span class="n">md</span>           <span class="mi">851</span> <span class="n">Markdown</span>         <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">emacs_mode</span><span class="p">.</span><span class="n">md</span>
- <span class="o">%</span>  <span class="o">*</span><span class="n">About</span> <span class="n">GNU</span> <span class="n">Emacs</span><span class="o">*</span>       <span class="mi">795</span> <span class="n">Fundamental</span>      
- <span class="o">%</span>  <span class="o">*</span><span class="n">GNU</span> <span class="n">Emacs</span><span class="o">*</span>             <span class="mi">718</span> <span class="n">Fundamental</span>      
-</pre></div>
+ <span class="c">%  *About GNU Emacs*       795 Fundamental      </span>
+ <span class="c">%  *GNU Emacs*             718 Fundamental      </span>
+</code></pre></div>
 
 
 <p>在缓冲列表里面, "CRM" 代表操作, 读写情况, 修改情况; "Buffer" 是不同的缓冲的名字, 通过 rename-buffer 可以改变; "Size" 是缓冲的大小; "File" 代笔的是缓冲对应的存在硬盘上的文件, 有的缓冲没有对应的文件就留空. 在 "CRM" 中, "C" 下面可以有诸多标记: "." 当前活动的缓冲, 就是光标所在的缓冲; "D" 代表删除缓冲; "S" 代表保存缓冲. "R" 一栏下面: 空格代表可以写, "%" 代表只读. "M" 一栏下面: "*" 代表距离上次保存有修改, 空格表示没有修改.</p>

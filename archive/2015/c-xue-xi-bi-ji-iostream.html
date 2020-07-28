@@ -116,35 +116,35 @@
 <li>eofbit：输入输出结束，<code>strm::eofbit</code>。</li>
 </ol>
 <p>来自<a href="http://www.cplusplus.com/reference/ios/ios/good/">cplusplus</a>的例子如下。</p>
-<div class="highlight"><pre><span></span><span class="o">//</span> <span class="nv">error</span> <span class="nv">state</span> <span class="nv">flags</span>
-#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">iostream</span><span class="o">&gt;</span>     <span class="o">//</span> <span class="nv">std</span>::<span class="nv">cout</span>, <span class="nv">std</span>::<span class="nv">ios</span>
-#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">sstream</span><span class="o">&gt;</span>      <span class="o">//</span> <span class="nv">std</span>::<span class="nv">stringstream</span>
+<div class="highlight"><pre><span></span><code><span class="c1">// error state flags</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;     // std::cout, std::ios</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;      // std::stringstream</span><span class="cp"></span>
 
-<span class="nv">void</span> <span class="nv">print_state</span> <span class="ss">(</span><span class="nv">const</span> <span class="nv">std</span>::<span class="nv">ios</span><span class="o">&amp;</span> <span class="nv">stream</span><span class="ss">)</span> {
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s"> good()=</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">stream</span>.<span class="nv">good</span><span class="ss">()</span><span class="c1">;    // 判断是否是 goodbit，是的话返回 true。</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s"> eof()=</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">stream</span>.<span class="nv">eof</span><span class="ss">()</span><span class="c1">;    // 判断是否是 eofbit，是的话返回 true。 </span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s"> fail()=</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">stream</span>.<span class="nv">fail</span><span class="ss">()</span><span class="c1">;    // 判断是否是 failbit，是的话返回 true。 </span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s"> bad()=</span><span class="s2">&quot;</span> <span class="o">&lt;&lt;</span> <span class="nv">stream</span>.<span class="nv">bad</span><span class="ss">()</span><span class="c1">;    // 判断是否是 streambit，是的话返回 true。 </span>
-}
+<span class="kr">void</span> <span class="nf">print_state</span> <span class="p">(</span><span class="kr">const</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">&amp;</span> <span class="n">stream</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; good()=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">stream</span><span class="p">.</span><span class="n">good</span><span class="p">();</span>    <span class="c1">// 判断是否是 goodbit，是的话返回 true。</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; eof()=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">stream</span><span class="p">.</span><span class="n">eof</span><span class="p">();</span>    <span class="c1">// 判断是否是 eofbit，是的话返回 true。 </span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; fail()=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">stream</span><span class="p">.</span><span class="n">fail</span><span class="p">();</span>    <span class="c1">// 判断是否是 failbit，是的话返回 true。 </span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; bad()=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">stream</span><span class="p">.</span><span class="n">bad</span><span class="p">();</span>    <span class="c1">// 判断是否是 streambit，是的话返回 true。 </span>
+<span class="p">}</span>
 
-<span class="nv">int</span> <span class="nv">main</span> <span class="ss">()</span> {
-    <span class="nv">std</span>::<span class="nv">stringstream</span> <span class="nv">stream</span><span class="c1">;</span>
+<span class="kr">int</span> <span class="nf">main</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">stream</span><span class="p">;</span>
 
-    <span class="nv">stream</span>.<span class="nv">clear</span> <span class="ss">(</span><span class="nv">stream</span>.<span class="nv">goodbit</span><span class="ss">)</span><span class="c1">;    // 把该状态认为是有效的，不让程序终止。</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">goodbit:</span><span class="s2">&quot;</span><span class="c1">; print_state(stream); std::cout &lt;&lt; &#39;\n&#39;;</span>
+    <span class="n">stream</span><span class="p">.</span><span class="nf">clear</span> <span class="p">(</span><span class="n">stream</span><span class="p">.</span><span class="n">goodbit</span><span class="p">);</span>    <span class="c1">// 把该状态认为是有效的，不让程序终止。</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;goodbit:&quot;</span><span class="p">;</span> <span class="n">print_state</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 
-    <span class="nv">stream</span>.<span class="nv">clear</span> <span class="ss">(</span><span class="nv">stream</span>.<span class="nv">eofbit</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s"> eofbit:</span><span class="s2">&quot;</span><span class="c1">; print_state(stream); std::cout &lt;&lt; &#39;\n&#39;;</span>
+    <span class="n">stream</span><span class="p">.</span><span class="nf">clear</span> <span class="p">(</span><span class="n">stream</span><span class="p">.</span><span class="n">eofbit</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; eofbit:&quot;</span><span class="p">;</span> <span class="n">print_state</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 
-    <span class="nv">stream</span>.<span class="nv">clear</span> <span class="ss">(</span><span class="nv">stream</span>.<span class="nv">failbit</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s">failbit:</span><span class="s2">&quot;</span><span class="c1">; print_state(stream); std::cout &lt;&lt; &#39;\n&#39;;</span>
+    <span class="n">stream</span><span class="p">.</span><span class="nf">clear</span> <span class="p">(</span><span class="n">stream</span><span class="p">.</span><span class="n">failbit</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;failbit:&quot;</span><span class="p">;</span> <span class="n">print_state</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 
-    <span class="nv">stream</span>.<span class="nv">clear</span> <span class="ss">(</span><span class="nv">stream</span>.<span class="nv">badbit</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="nv">std</span>::<span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;</span><span class="s"> badbit:</span><span class="s2">&quot;</span><span class="c1">; print_state(stream); std::cout &lt;&lt; &#39;\n&#39;;</span>
+    <span class="n">stream</span><span class="p">.</span><span class="nf">clear</span> <span class="p">(</span><span class="n">stream</span><span class="p">.</span><span class="n">badbit</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; badbit:&quot;</span><span class="p">;</span> <span class="n">print_state</span><span class="p">(</span><span class="n">stream</span><span class="p">);</span> <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span><span class="p">;</span>
 
-    <span class="k">return</span> <span class="mi">0</span><span class="c1">;</span>
-}
-</pre></div>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <p>相应的有一些函数可以帮助判断和操作，其中 stream 可以为 cin cout 等：</p>
@@ -163,7 +163,7 @@
 <hr>
 <h3>文件输入输出</h3>
 <p>可以通过以下代码打开输入输出文件：</p>
-<div class="highlight"><pre><span></span><span class="o">//</span> <span class="err">定义的时候打开文件</span><span class="p">.</span>
+<div class="highlight"><pre><span></span><code><span class="o">//</span> <span class="err">定义的时候打开文件</span><span class="p">.</span>
 <span class="n">ifstream</span> <span class="n">infile</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
 <span class="n">ofstream</span> <span class="n">onfile</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
 
@@ -172,15 +172,15 @@
 <span class="n">ofstream</span> <span class="n">ofile</span><span class="p">;</span>
 <span class="n">ifile</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
 <span class="n">ofile</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>其中 filename 应该是 char *，如果把 filename 存入 string 类型的话应该记得使用 filename.c_str() 函数转换类型。</p>
 <p>在文件使用完后需要关闭文件，如果需要重新使用变量名还需要清空状态。</p>
-<div class="highlight"><pre><span></span><span class="n">ifile</span><span class="p">.</span><span class="k">close</span><span class="p">();</span>
-<span class="n">ifile</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>    <span class="o">//</span> <span class="err">必须要有，因为上一个文件读到了</span> <span class="n">eof</span><span class="p">.</span>
-<span class="n">ifile</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="n">anotherfile</span><span class="p">);</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">ifile.close();</span>
+<span class="err">ifile.clear();    // 必须要有，因为上一个文件读到了 eof.</span>
+<span class="err">ifile.open(anotherfile);</span>
+</code></pre></div>
 
 
 <p>文件打开有模式的区别，ifstream 和 ofstream 定义的变量都有默认的模式，也可以自己设置。</p>
@@ -193,8 +193,8 @@
 <li>binary：以二进制进行 IO 操作。</li>
 </ul>
 <p>对模式的设置如下：</p>
-<div class="highlight"><pre><span></span><span class="nt">ofstream</span> <span class="nt">outfile</span><span class="o">(</span><span class="s2">&quot;file&quot;</span><span class="o">,</span> <span class="nt">ofstream</span><span class="p">::</span><span class="nd">out</span> <span class="o">|</span> <span class="nt">ofstream</span><span class="p">::</span><span class="nd">trunc</span><span class="o">);</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">ofstream outfile(&quot;file&quot;, ofstream::out | ofstream::trunc);</span>
+</code></pre></div>
 
 
 <p>不同的组合如下：</p>
@@ -208,12 +208,12 @@
 </ul>
 <h4>示例</h4>
 <p>如果想要检测是否存在文件, 可以使用 std::ifstream::good().</p>
-<div class="highlight"><pre><span></span><span class="nv">bool</span> <span class="nv">isFileExist</span><span class="ss">(</span><span class="nv">const</span> <span class="nv">char</span><span class="o">*</span> <span class="nv">file_name</span><span class="ss">)</span>
-{
-    <span class="nv">ifstream</span> <span class="nv">in_file</span><span class="ss">(</span><span class="nv">file_name</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="k">return</span> <span class="nv">in_file</span>.<span class="nv">good</span><span class="ss">()</span><span class="c1">;</span>
-}
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">bool isFileExist(const char* file_name)</span>
+<span class="err">{</span>
+<span class="err">    ifstream in_file(file_name);</span>
+<span class="err">    return in_file.good();</span>
+<span class="err">}</span>
+</code></pre></div>
 
 
 <hr>
@@ -225,43 +225,43 @@
 <li>stringstream：对 string 进行读写，从 iostream 派生，<code>#include &lt;sstream&gt;</code>。</li>
 </ul>
 <p>strm.str() 返回 strm 中的值；strm.str(s) 用来使用 string 类型的 s 复制给 strm，返回 void。</p>
-<div class="highlight"><pre><span></span><span class="nv">string</span> <span class="nv">line</span>, <span class="nv">word</span><span class="c1">;</span>
-<span class="k">while</span> <span class="ss">(</span><span class="nv">getline</span><span class="ss">(</span><span class="nv">cin</span>, <span class="nv">line</span><span class="ss">))</span> {    <span class="o">//</span> <span class="nv">read</span> <span class="nv">a</span> <span class="nv">line</span> <span class="nv">from</span> <span class="nv">cin</span>.
-    <span class="nv">istringstream</span> <span class="nv">stream</span><span class="ss">(</span><span class="nv">line</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="k">while</span> <span class="ss">(</span><span class="nv">stream</span> <span class="o">&gt;&gt;</span> <span class="nv">word</span><span class="ss">)</span> {
-        ；<span class="o">//</span> <span class="nv">some</span> <span class="nv">work</span> <span class="nv">on</span> <span class="nv">word</span>.
-    }
-}
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">string line, word;</span>
+<span class="err">while (getline(cin, line)) {    // read a line from cin.</span>
+<span class="err">    istringstream stream(line);</span>
+<span class="err">    while (stream &gt;&gt; word) {</span>
+<span class="err">        ；// some work on word.</span>
+<span class="err">    }</span>
+<span class="err">}</span>
+</code></pre></div>
 
 
 <p>stringstream 也可以用来进行格式转换；</p>
-<div class="highlight"><pre><span></span><span class="nt">int</span> <span class="nt">val1</span> <span class="o">=</span> <span class="nt">512</span><span class="o">,</span> <span class="nt">val2</span> <span class="o">=</span> <span class="nt">024</span><span class="o">;</span>
-<span class="nt">ostringstream</span> <span class="nt">format_message</span><span class="o">;</span>
-<span class="nt">format_message</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;val1: &quot;</span> <span class="o">&lt;&lt;</span> <span class="nt">val1</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;\n&quot;</span>
-               <span class="o">&lt;&lt;</span> <span class="s2">&quot;val2: &quot;</span> <span class="o">&lt;&lt;</span> <span class="nt">val2</span> <span class="o">&lt;&lt;</span> <span class="s2">&quot;\n&quot;</span><span class="o">;</span>
-<span class="nt">istringstream</span> <span class="nt">input_istring</span><span class="o">(</span><span class="nt">format_message</span><span class="p">.</span><span class="nc">str</span><span class="o">())</span><span class="err">；</span>
-<span class="nt">string</span> <span class="nt">dump</span><span class="o">;</span>
-<span class="nt">input_istring</span> <span class="o">&gt;&gt;</span> <span class="nt">dump</span> <span class="o">&gt;&gt;</span> <span class="nt">val1</span> <span class="o">&gt;&gt;</span> <span class="nt">dump</span> <span class="o">&gt;&gt;</span> <span class="nt">val2</span><span class="o">;</span>    <span class="o">//</span> <span class="s2">&quot;val1:&quot;</span> <span class="nt">和</span> <span class="s2">&quot;val2:&quot;</span> <span class="nt">被输入</span> <span class="nt">dump</span><span class="err">，</span><span class="nt">空格和换行符被忽略</span><span class="o">.</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">int val1 = 512, val2 = 024;</span>
+<span class="err">ostringstream format_message;</span>
+<span class="err">format_message &lt;&lt; &quot;val1: &quot; &lt;&lt; val1 &lt;&lt; &quot;\n&quot;</span>
+<span class="err">               &lt;&lt; &quot;val2: &quot; &lt;&lt; val2 &lt;&lt; &quot;\n&quot;;</span>
+<span class="err">istringstream input_istring(format_message.str())；</span>
+<span class="err">string dump;</span>
+<span class="err">input_istring &gt;&gt; dump &gt;&gt; val1 &gt;&gt; dump &gt;&gt; val2;    // &quot;val1:&quot; 和 &quot;val2:&quot; 被输入 dump，空格和换行符被忽略.</span>
+</code></pre></div>
 
 
 <hr>
 <h3>格式</h3>
 <p>在 c 中, 使用 printf 进行输出, 使用 c 的格式说明 % 来输出特定的精度. Python 中也可以使用 c 风格的格式. 在 c++ 中, 如果使用 iostream 的话, 格式说明和 c 不一样. 在 头文件 <ios> 和 <iomanip> 中有相关的声明和定义. <iomanip> 中的函数是对 <ios> 中的 flag 的补充.</p>
 <p>在改变格式状态之前, 应该知道怎么恢复默认格式状态. 一种方法是在使用完一个操作符之后就设置取消该操作符的相应操作符. 另一种方法是使用 flag.</p>
-<div class="highlight"><pre><span></span><span class="nt">ostream</span><span class="p">::</span><span class="nd">fmtflags</span> <span class="nt">current_fmt</span> <span class="o">=</span> <span class="nt">os</span><span class="p">.</span><span class="nc">flags</span><span class="o">();</span>
-<span class="o">//</span> <span class="nt">some</span> <span class="nt">thing</span> <span class="nt">changed</span><span class="o">.</span>
-<span class="nt">os</span><span class="p">.</span><span class="nc">flags</span><span class="o">(</span><span class="nt">current_fmt</span><span class="o">);</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="c">ostream::fmtflags current_fmt = os.flags();</span>
+<span class="err">// some thing changed.</span>
+<span class="err">os.flags(current_fmt);</span>
+</code></pre></div>
 
 
 <h4>iostream 操作符</h4>
 <p>在 iostream 中定义了一些操作符, 可以用来改变格式状态, 有些是默认的设置, 另一些可以选择改变. 斜体的为默认设置.</p>
 <p>设置方法均为:</p>
-<div class="highlight"><pre><span></span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">boolalpha</span> <span class="o">&lt;&lt;</span> <span class="n">something</span><span class="p">;</span>
-<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">noskipws</span><span class="p">;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">cout &lt;&lt; boolalpha &lt;&lt; something;</span>
+<span class="err">cin &gt;&gt; noskipws;</span>
+</code></pre></div>
 
 
 <ul>
@@ -340,20 +340,6 @@
 
                 <span class="mail"><a href="mailto:?subject=C++ 学习笔记：iostream&amp;body=Viens découvrir un article à propos de [C++ 学习笔记：iostream] sur le site de Wolfson Liu. ../../archive/2015/c-xue-xi-bi-ji-iostream.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2015/c-xue-xi-bi-ji-iostream.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

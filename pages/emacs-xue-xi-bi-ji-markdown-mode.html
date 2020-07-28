@@ -72,9 +72,9 @@
 <li>M-x customize-variable: markdown-command "/usr/bin/pandoc"</li>
 </ul>
 <p>还需要设置 Emacs 能够自动根据文件后缀名来自动打开 markdown-mode. 需要在 <em>init.el</em> 中添加后缀名.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="k">add</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="n">list</span> <span class="s1">&#39;auto-mode-alist &#39;</span><span class="p">(</span><span class="ss">&quot;\\.md\\&#39;&quot;</span> <span class="p">.</span> <span class="n">markdown</span><span class="o">-</span><span class="k">mode</span><span class="p">))</span>
-<span class="p">(</span><span class="k">add</span><span class="o">-</span><span class="k">to</span><span class="o">-</span><span class="n">list</span> <span class="s1">&#39;auto-mode-alist &#39;</span><span class="p">(</span><span class="ss">&quot;\\.markdown\\&#39;&quot;</span> <span class="p">.</span> <span class="n">markdown</span><span class="o">-</span><span class="k">mode</span><span class="p">))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">(add-to-list &#39;auto-mode-alist &#39;(&quot;\\.md\\&#39;&quot; . markdown-mode))</span>
+<span class="err">(add-to-list &#39;auto-mode-alist &#39;(&quot;\\.markdown\\&#39;&quot; . markdown-mode))</span>
+</code></pre></div>
 
 
 <h2>编辑文档命令</h2>

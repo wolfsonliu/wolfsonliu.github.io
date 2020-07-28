@@ -86,7 +86,7 @@ mode信息，UID，GID，文件大小，文件的SHA-1码，flag，文件的file
 息。下面以 version 2 的 index 文件为例子。</p>
 <h1>一个例子</h1>
 <p>例如如果我们的项目文件夹下面有两个文件被stage：.gitignore 和 file1。</p>
-<div class="highlight"><pre><span></span>.
+<div class="highlight"><pre><span></span><code>.
 ├── .git
 │ ├── COMMIT_EDITMSG
 │ ├── HEAD
@@ -135,11 +135,11 @@ mode信息，UID，GID，文件大小，文件的SHA-1码，flag，文件的file
 ├── .gitignore
 ├── file1
 └── file1~
-</pre></div>
+</code></pre></div>
 
 
 <p>使用 hexdump 命令去读取 .git/index 文件可以得到：</p>
-<div class="highlight"><pre><span></span><span class="m">00000000</span> <span class="m">44</span> <span class="m">49</span> <span class="m">52</span> <span class="m">43</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> 5b bd 6c c4 <span class="p">|</span>DIRC........<span class="o">[</span>.l.<span class="p">|</span>
+<div class="highlight"><pre><span></span><code><span class="m">00000000</span> <span class="m">44</span> <span class="m">49</span> <span class="m">52</span> <span class="m">43</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> 5b bd 6c c4 <span class="p">|</span>DIRC........<span class="o">[</span>.l.<span class="p">|</span>
 <span class="m">00000010</span> <span class="m">30</span> b2 d1 dc 5b bd 6c c4 <span class="m">30</span> b2 d1 dc <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0d <span class="p">|</span><span class="m">0</span>...<span class="o">[</span>.l.0.......<span class="p">|</span>
 <span class="m">00000020</span> <span class="m">00</span> <span class="m">01</span> a5 f4 <span class="m">00</span> <span class="m">00</span> <span class="m">81</span> a4 <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> e8 <span class="p">|</span>................<span class="p">|</span>
 <span class="m">00000030</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">03</span> b2 5c <span class="m">15</span> b8 1f ae <span class="m">06</span> e1 c5 <span class="m">59</span> <span class="m">46</span> ac <span class="p">|</span>.....<span class="se">\.</span>......YF.<span class="p">|</span>
@@ -154,11 +154,11 @@ mode信息，UID，GID，文件大小，文件的SHA-1码，flag，文件的file
 000000c0 <span class="m">36</span> <span class="m">25</span> 4d <span class="m">20</span> a5 c8 <span class="m">93</span> <span class="m">98</span> ea b9 <span class="m">46</span> <span class="m">35</span> <span class="m">31</span> bf <span class="m">45</span> 9f <span class="p">|</span><span class="m">6</span>%M ......F51.E.<span class="p">|</span>
 000000d0 <span class="m">95</span> ad 7b c6 8f <span class="m">42</span> <span class="m">76</span> bb ff <span class="p">|</span>..<span class="o">{</span>..Bv..<span class="p">|</span>
 000000d9
-</pre></div>
+</code></pre></div>
 
 
 <p>实际含义如下：</p>
-<div class="highlight"><pre><span></span><span class="m">00000000</span> <span class="m">44</span> <span class="m">49</span> <span class="m">52</span> <span class="m">43</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="p">|</span> 5b bd 6c c4 <span class="p">|</span>
+<div class="highlight"><pre><span></span><code><span class="m">00000000</span> <span class="m">44</span> <span class="m">49</span> <span class="m">52</span> <span class="m">43</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">02</span> <span class="p">|</span> 5b bd 6c c4 <span class="p">|</span>
 D I R C <span class="p">|</span> idx version <span class="p">|</span> file count <span class="p">|</span> ctime second
 <span class="m">00000010</span> <span class="m">30</span> b2 d1 dc <span class="p">|</span> 5b bd 6c c4 <span class="p">|</span> <span class="m">30</span> b2 d1 dc <span class="p">|</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> 0d <span class="p">|</span>
 nano sec <span class="p">|</span> mtime second nano sec <span class="p">|</span> device <span class="p">|</span>
@@ -186,11 +186,11 @@ separation <span class="p">|</span> T R E E <span class="p">|</span>
 <span class="p">|</span> index file SHA-1 checksum
 000000d0 <span class="m">95</span> ad 7b c6 <span class="p">|</span> 8f <span class="m">42</span> <span class="m">76</span> bb <span class="p">|</span> ff
 000000d9
-</pre></div>
+</code></pre></div>
 
 
 <p>利用 stat 命令可以获取文件的信息， file1 和 .gitignore 的信息如下：</p>
-<div class="highlight"><pre><span></span>File: .gitignore
+<div class="highlight"><pre><span></span><code>File: .gitignore
 Size: <span class="m">3</span> Blocks: <span class="m">0</span> IO Block: <span class="m">4096</span> regular file
 Device: dh/13d Inode: <span class="m">3096224743925236</span> Links: <span class="m">1</span>
 Access: <span class="o">(</span><span class="m">0777</span>/-rwxrwxrwx<span class="o">)</span> Uid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span> Gid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span>
@@ -198,10 +198,10 @@ Access: <span class="m">2018</span>-10-10 <span class="m">11</span>:06:44.797237
 Modify: <span class="m">2018</span>-10-10 <span class="m">11</span>:06:44.817025500 +0800
 Change: <span class="m">2018</span>-10-10 <span class="m">11</span>:06:44.817025500 +0800
 Birth: -
-</pre></div>
+</code></pre></div>
 
 
-<div class="highlight"><pre><span></span>File: file1
+<div class="highlight"><pre><span></span><code>File: file1
 Size: <span class="m">11</span> Blocks: <span class="m">0</span> IO Block: <span class="m">4096</span> regular file
 Device: dh/13d Inode: <span class="m">1970324837082595</span> Links: <span class="m">1</span>
 Access: <span class="o">(</span><span class="m">0777</span>/-rwxrwxrwx<span class="o">)</span> Uid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span> Gid: <span class="o">(</span> <span class="m">1000</span>/ wolfson<span class="o">)</span>
@@ -209,7 +209,7 @@ Access: <span class="m">2018</span>-10-10 <span class="m">11</span>:05:06.956652
 Modify: <span class="m">2018</span>-10-10 <span class="m">11</span>:05:06.986568300 +0800
 Change: <span class="m">2018</span>-10-10 <span class="m">11</span>:05:06.986568300 +0800
 Birth: -
-</pre></div>
+</code></pre></div>
 
 
 <h2>Index 文件信息解释</h2>
@@ -342,20 +342,6 @@ SHA-1 checksum。并把生成的 checksum 值存于index文件最末尾。所以
 
                 <span class="mail"><a href="mailto:?subject=理解 Git index 文件&amp;body=Viens découvrir un article à propos de [理解 Git index 文件] sur le site de Wolfson Liu. ../../archive/2018/li-jie-git-index-wen-jian.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/li-jie-git-index-wen-jian.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

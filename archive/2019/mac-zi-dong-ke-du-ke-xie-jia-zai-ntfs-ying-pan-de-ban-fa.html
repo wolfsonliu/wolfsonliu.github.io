@@ -78,39 +78,39 @@
         <div class="entry-content blog-post">
             <p>主要利用 ntfs-3g 来完成。</p>
 <p>首先安装 homebrew：</p>
-<div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">ruby</span> <span class="o">-</span><span class="n">e</span> <span class="ss">&quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
+</code></pre></div>
 
 
 <p>再安装 osxfuse 和 ntfs-3g：</p>
-<div class="highlight"><pre><span></span><span class="n">brew</span> <span class="n">cask</span> <span class="n">install</span> <span class="n">osxfuse</span>
-<span class="n">brew</span> <span class="n">install</span> <span class="n">ntfs</span><span class="o">-</span><span class="mi">3</span><span class="k">g</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">brew cask install osxfuse</span>
+<span class="err">brew install ntfs-3g</span>
+</code></pre></div>
 
 
 <p>接下来准备替换系统的 mount-ntfs 为 ntfs-3g 的mount-ntfs。</p>
 <p>先重启电脑，按住 command-R-S 进入到单用户模式。</p>
 <p>关闭保护：</p>
-<div class="highlight"><pre><span></span><span class="n">csrutil</span> <span class="n">disable</span>
-<span class="n">reboot</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">csrutil disable</span>
+<span class="err">reboot</span>
+</code></pre></div>
 
 
 <p>重启回到系统中，替换 mount-ntfs。</p>
 <p>备份系统原来的 mount-ntfs：</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">mv</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mount_ntfs</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">original</span><span class="p">.</span><span class="n">mount_ntfs</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">sudo mv /sbin/mount_ntfs /sbin/original.mount_ntfs</span>
+</code></pre></div>
 
 
 <p>替换为 ntfs-3g 的 mount-ntfs：</p>
-<div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">ln</span> <span class="o">-</span><span class="n">s</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">mount_ntfs</span> <span class="o">/</span><span class="n">sbin</span><span class="o">/</span><span class="n">mount_ntfs</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">sudo ln -s /usr/local/bin/mount_ntfs /sbin/mount_ntfs</span>
+</code></pre></div>
 
 
 <p>接下来开启保护，重启电脑按 command-R-S 进入单用户模式。</p>
 <p>开启保护：</p>
-<div class="highlight"><pre><span></span><span class="n">csrutil</span> <span class="n">enable</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">csrutil enable</span>
+</code></pre></div>
 
 
 <p>最后重启电脑回到系统，就可以自动可读写挂载 NTFS 硬盘了。</p>
@@ -136,20 +136,6 @@
 
                 <span class="mail"><a href="mailto:?subject=Mac 自动可读可写加载 NTFS 硬盘的办法&amp;body=Viens découvrir un article à propos de [Mac 自动可读可写加载 NTFS 硬盘的办法] sur le site de Wolfson Liu. ../../archive/2019/mac-zi-dong-ke-du-ke-xie-jia-zai-ntfs-ying-pan-de-ban-fa.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2019/mac-zi-dong-ke-du-ke-xie-jia-zai-ntfs-ying-pan-de-ban-fa.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

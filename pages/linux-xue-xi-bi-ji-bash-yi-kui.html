@@ -68,14 +68,14 @@
 <p>bash毕竟是得操作才行，这里准备一些文件做操作，具体文件内容见最后。</p>
 <h2>寻求帮助</h2>
 <p>对于 bash 本身（builtin）的命令，使用 help 跟命令名来查询其帮助，例如：</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">help</span> <span class="nb">cd</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">help</span> <span class="nb">cd</span>
+</code></pre></div>
 
 
 <p>对于其他非 bash 本身的命令使用 man 命令（不懂就找男人，BTW，emacs的
 eshell下面帮助命令是woman）</p>
-<div class="highlight"><pre><span></span>$ man ls
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ man ls
+</code></pre></div>
 
 
 <h2>路径操作</h2>
@@ -92,7 +92,7 @@ eshell下面帮助命令是woman）</p>
   当前目录切换到目标目录</p>
 </li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 通过绝对路径前往 /home/wolfson/Documents</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 通过绝对路径前往 /home/wolfson/Documents</span>
 $ <span class="nb">cd</span> /home/wolfson/Documents
 <span class="c1"># 前往上级目录 /home/wolfson</span>
 $ <span class="nb">cd</span> ..
@@ -103,61 +103,61 @@ $ <span class="nb">cd</span> ../Downloads
 <span class="c1"># 前往用户家目录 /home/wolfson</span>
 $ <span class="nb">cd</span> ~
 $ <span class="nb">cd</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>pwd：print working directory，显示当前的路径，其默认输出的值与 <code>$PWD</code>
 变量中的值是一样的。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">pwd</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">pwd</span>
 <span class="c1"># 输出 $PWD 环境变量中的值（接受链接），也是默认输出</span>
 $ <span class="nb">pwd</span> -L
 <span class="c1"># 输出物理路径，可以避免路径中出现链接</span>
 $ <span class="nb">pwd</span> -P
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>mkdir：make directory，创建一个新目录</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 到家目录去</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 到家目录去</span>
 $ <span class="nb">cd</span> ~
 <span class="c1"># 创建一个叫 sequence 的新目录</span>
 $ mkdir sequence
 <span class="c1"># 递归创建目录</span>
 $ mkdir -p study/seq
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>rmdir：remove directory，删除一个空目录，可以说rmdir是mkdir的反面</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 删除一个叫 sequence 的空目录</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 删除一个叫 sequence 的空目录</span>
 $ rmdir sequence
 <span class="c1"># 递归删除目录</span>
 $ rmdir -p study/seq
-</pre></div>
+</code></pre></div>
 
 
 <h3>$PATH 变量</h3>
 <p>系统根据PATH变量中的路径去寻找命令，PATH中的目录根据冒号来分割。系统首
 先在第一个路径中去寻找命令，如果找到则使用该命令，如果没有找到则去下一
 个目录寻找该命令。如果所有的目录都没有找到命令，则报错。</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="nv">$PATH</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="nv">$PATH</span>
 /home/wolfson/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
-</pre></div>
+</code></pre></div>
 
 
 <p>想要把非PATH路径中的命令也加入到系统搜索目录中，只需要修改 PATH 变量。</p>
-<div class="highlight"><pre><span></span>$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/new/path/to/add:<span class="nv">$PATH</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">export</span> <span class="nv">PATH</span><span class="o">=</span>/new/path/to/add:<span class="nv">$PATH</span>
+</code></pre></div>
 
 
 <p>查看某个非bash内置命令实际的路径可以使用 which。</p>
-<div class="highlight"><pre><span></span>$ which ls
+<div class="highlight"><pre><span></span><code>$ which ls
 /bin/ls
-</pre></div>
+</code></pre></div>
 
 
 <h2>文件及文件夹权限</h2>
@@ -167,7 +167,7 @@ $ rmdir -p study/seq
   用户组的名字可以和用户一样。如root用户组。</li>
 </ul>
 <p>使用 ls 命令可以列出当前文件夹中的文件内容及文件权限：</p>
-<div class="highlight"><pre><span></span>$ ls -al
+<div class="highlight"><pre><span></span><code>$ ls -al
 total <span class="m">460</span>
 drwxr-xr-x <span class="m">55</span> wolfson wolfson  <span class="m">4096</span> Dec <span class="m">13</span> <span class="m">23</span>:12 .
 drwxr-xr-x  <span class="m">3</span> root    root     <span class="m">4096</span> Jul <span class="m">31</span>  <span class="m">2017</span> ..
@@ -177,7 +177,7 @@ drwxrwxr-x  <span class="m">8</span> wolfson wolfson  <span class="m">4096</span
 -rw-------  <span class="m">1</span> wolfson wolfson <span class="m">53135</span> Dec <span class="m">13</span> <span class="m">23</span>:12 .bash_history
 -rw-r--r--  <span class="m">1</span> wolfson wolfson   <span class="m">220</span> Jul <span class="m">31</span>  <span class="m">2017</span> .bash_logout
 -rw-r--r--  <span class="m">1</span> wolfson wolfson  <span class="m">3985</span> Aug  <span class="m">2</span>  <span class="m">2017</span> .bashrc
-</pre></div>
+</code></pre></div>
 
 
 <p>最开头的十个字符分别表示文件类别和不同用户对该文件的权限。
@@ -270,14 +270,14 @@ drwxrwxr-x  <span class="m">8</span> wolfson wolfson  <span class="m">4096</span
 <li>chgrp：change group，改变文件或者文件夹的用户组</li>
 <li>chmod：change mode，改变文件或者文件夹的权限</li>
 </ul>
-<div class="highlight"><pre><span></span>$ chrgrp root sgRNA.txt
+<div class="highlight"><pre><span></span><code>$ chrgrp root sgRNA.txt
 $ chrgrp wolfson sgRNA.txt
 $ chrown dog sgRNA.txt
 $ chrown wolfson sgRNA.txt
 $ chmod u+x sgRNA.txt
 $ chmod g+w sgRNA.txt
 $ chmod <span class="m">644</span> sgRNA.txt
-</pre></div>
+</code></pre></div>
 
 
 <h2>文件操作</h2>
@@ -285,7 +285,7 @@ $ chmod <span class="m">644</span> sgRNA.txt
 <ul>
 <li>ls：list，查看文件和目录，隐藏文件是以 <code>.</code> 开头命令的文件，使用 <code>-a</code> 参数查看</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 只是简单看一下家目录下有啥</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 只是简单看一下家目录下有啥</span>
 $ ls ~
 <span class="c1"># 看一下家目录下所有的文件，包括隐藏文件</span>
 $ ls -a ~
@@ -293,13 +293,13 @@ $ ls -a ~
 $ ls -al ~
 <span class="c1"># 列出文件夹及子文件夹中内容</span>
 $ ls -R ~
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>cp：copy，复制文件或者文件夹</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 先创建一个文件夹 ./library/data</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 先创建一个文件夹 ./library/data</span>
 $ mkdir -p library/data
 <span class="c1"># 把 sgRNA.txt 复制到新创建的 ./library/data 文件夹中</span>
 $ cp sgRNA.txt ./library/data/
@@ -309,24 +309,24 @@ $ cp sgRNA.txt ./library/data/sgRNA.txt
 $ cp -r ./library ./library2
 <span class="c1"># 复制一个文件</span>
 $ cp sgRNA.txt sgRNA2.txt
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>rm：remove，删除文件或者文件夹。删除命令很危险，一旦删除恢复起来就很
   难了，最好使用 -i 或者 -I 参数来设置提醒。</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 删除一个文件</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 删除一个文件</span>
 $ rm -i sgRNA2.txt
 <span class="c1"># 删除包含文件的文件夹</span>
 $ rm -ri library2
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>mv：move，移动或者重命名文件或者文件夹</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 复制一个文件</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 复制一个文件</span>
 $ cp sgRNA.txt sgRNA3.txt
 <span class="c1"># 重命名一个文件</span>
 $ mv sgRNA3.txt sgRNA4.txt
@@ -334,7 +334,7 @@ $ mv sgRNA3.txt sgRNA4.txt
 $ mv sgRNA4.txt ./library/
 <span class="c1"># 也可以</span>
 $ mv sgRNA4.txt ./library/sgRNA4.txt
-</pre></div>
+</code></pre></div>
 
 
 <h2>查看文件内容</h2>
@@ -352,34 +352,34 @@ $ mv sgRNA4.txt ./library/sgRNA4.txt
 <li>grep：抓取符合模式的行</li>
 <li>egrep：支持扩展的正则表达式即 <code>grep -E</code></li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 抓取有连着三个T的sgRNA</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 抓取有连着三个T的sgRNA</span>
 $ cat sgRNA.txt <span class="p">|</span> egrep <span class="s2">&quot;T{3}&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>cut：按照分隔符分列，并输出选择的列</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 以逗号做分隔符，选择第二列</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 以逗号做分隔符，选择第二列</span>
 $ cat sgRNA.txt <span class="p">|</span> cut -d<span class="s2">&quot;,&quot;</span> -f2
 $ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>tr：替换字符串</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 互补配对序列</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 互补配对序列</span>
 $ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt <span class="p">|</span> tr <span class="s2">&quot;ATCG&quot;</span> <span class="s2">&quot;TAGC&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>rev：字符串顺序反转</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="c1"># 互补配对序列</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 互补配对序列</span>
 $ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt <span class="p">|</span> tr <span class="s2">&quot;ATCG&quot;</span> <span class="s2">&quot;TAGC&quot;</span> <span class="p">|</span> rev
-</pre></div>
+</code></pre></div>
 
 
 <ul>
@@ -398,38 +398,38 @@ $ cut -d<span class="s2">&quot;,&quot;</span> -f2 sgRNA.txt <span class="p">|</s
 <li>标准错误输出：/dev/stderr，序号为 2，默认输出到屏幕</li>
 </ol>
 <p>例如 cat 命令就把其标准输入的字符串输出到标准输出：</p>
-<div class="highlight"><pre><span></span>$ cat
+<div class="highlight"><pre><span></span><code>$ cat
 I have seen things you people woundn<span class="s1">&#39;t believe</span>
 <span class="s1">I have seen things you people woundn&#39;</span>t believe
-</pre></div>
+</code></pre></div>
 
 
 <p>很多时候我们需要重定向标准输出或者标准输入，比如从一个文件向向一个程序
 输入而不是通过键盘敲入；或者把一个程序的输出结果输出到文件而不是屏幕。</p>
 <p>如果要把一个文件传入一个命令的标准输入，即重定向标准输入，需要使用 &lt;
 符号。</p>
-<div class="highlight"><pre><span></span>$ rev &lt; sgRNA.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ rev &lt; sgRNA.txt
+</code></pre></div>
 
 
 <p>rev 命令是把每行的字符串反向并输出到标准输出，'&lt;' 把文件 /etc/passwd
 的内容导向rev命令的标准输入。</p>
 <p>如果我们想要把上条命令反向后的内容输出到一个文件，即重定向标准输出，则
 需要使用 '&gt;'。</p>
-<div class="highlight"><pre><span></span>$ rev &lt; sgRNA.txt &gt; ./revpasswd
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ rev &lt; sgRNA.txt &gt; ./revpasswd
+</code></pre></div>
 
 
 <p>如果我们是把一个程序的输出结果重定向到另一个程序的输入，则需要使用管道
 （pipeline），在bash中是 <code>|</code>。</p>
 <p>例如把 cat 的结果输出到 rev 命令。</p>
-<div class="highlight"><pre><span></span>$ cat sgRNA.txt <span class="p">|</span> rev
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ cat sgRNA.txt <span class="p">|</span> rev
+</code></pre></div>
 
 
 <p>管道是可以连接多个命令的。</p>
-<div class="highlight"><pre><span></span>$ cat sgRNA.txt <span class="p">|</span> rev <span class="p">|</span> head -1
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ cat sgRNA.txt <span class="p">|</span> rev <span class="p">|</span> head -1
+</code></pre></div>
 
 
 <ul>
@@ -444,21 +444,21 @@ I have seen things you people woundn<span class="s1">&#39;t believe</span>
 行后，才会运行第二个命令。</p>
 <p>例如，sleep 命令是让bash“睡眠”也就是暂停运行下面的命令一段时间，date
 命令则可以输出日期和时间。</p>
-<div class="highlight"><pre><span></span>$ date <span class="o">&amp;&amp;</span> sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ date <span class="o">&amp;&amp;</span> sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date
+</code></pre></div>
 
 
 <p>除了 <code>&amp;&amp;</code> 起到了 AND 的作用，还可以使用 <code>||</code> OR 的作用。当使用 <code>||</code>连
 接两个命令的时候，当前面的命令正常运行的时候，后面的命令是不会运行的。
 而当前面的命令运行失败的时候，后面的命令才会运行。</p>
-<div class="highlight"><pre><span></span><span class="c1"># 假如我们已经有了 sgRNA.txt 这个文件</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># 假如我们已经有了 sgRNA.txt 这个文件</span>
 $ <span class="o">[</span> -e sgRNA.txt <span class="o">]</span> <span class="o">&amp;&amp;</span> date
 Tue Dec <span class="m">25</span> <span class="m">20</span>:33:05 CST <span class="m">2018</span>
 $ <span class="o">[</span> ! -e sgRNA.txt <span class="o">]</span> <span class="o">&amp;&amp;</span> date
 $ <span class="o">[</span> -e sgRNA.txt <span class="o">]</span> <span class="o">||</span> date
 $ <span class="o">[</span> ! -e sgRNA.txt <span class="o">]</span> <span class="o">||</span> date
 Tue Dec <span class="m">25</span> <span class="m">20</span>:33:43 CST <span class="m">2018</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>在后台运行任务</h3>
@@ -467,9 +467,9 @@ Tue Dec <span class="m">25</span> <span class="m">20</span>:33:43 CST <span clas
 程序输出信息，而是把任务放到后台。把运行的命令放在后台，只需要在运行命
 令的时候在命令后面加上 <code>&amp;</code> 。</p>
 <p>我们可以把 sleep 命令放后台运行。</p>
-<div class="highlight"><pre><span></span>$ date
+<div class="highlight"><pre><span></span><code>$ date
 $ sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date <span class="p">&amp;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们只是使用 <code>&amp;</code> 把命令放后台，当我们登出 shell 的时候，shell 有可
@@ -477,8 +477,8 @@ $ sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date <span cl
 的时候继续运行，则需要进行一定设置。我们可以直接设置 bash 让其不发出终
 止信号，或者我们写脚本，可以去处理信号不让程序停止，但是对于一般的一条
 命令的任务，这样做还是比较复杂。这样的情况下，我们可以使用 nohup 命令。</p>
-<div class="highlight"><pre><span></span>$ nohup sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date &gt; nohup.out <span class="p">&amp;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ nohup sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date &gt; nohup.out <span class="p">&amp;</span>
+</code></pre></div>
 
 
 <p>这样就算我们退出 bash，命令依然会运行，并且把输出到标准输出的结果输入
@@ -486,42 +486,42 @@ $ sleep <span class="m">5</span> <span class="o">&amp;&amp;</span> date <span cl
 <h3>前台后台调度任务</h3>
 <p>要查看当前在后台的任务，我们可以使用 jobs命令。jobs 输出结果前面方括号
 中的标号就是后台命令编号。</p>
-<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span> <span class="p">&amp;</span>
+<div class="highlight"><pre><span></span><code>$ sleep <span class="m">20</span> <span class="p">&amp;</span>
 $ sleep <span class="m">20</span><span class="p">&amp;</span>
 $ <span class="nb">jobs</span>
 <span class="o">[</span><span class="m">1</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
 <span class="o">[</span><span class="m">2</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们要把 1 号任务提交到前台，则需要使用 fg 命令。</p>
-<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span> <span class="p">&amp;</span>
+<div class="highlight"><pre><span></span><code>$ sleep <span class="m">20</span> <span class="p">&amp;</span>
 $ sleep <span class="m">20</span> <span class="p">&amp;</span>
 $ <span class="nb">jobs</span>
 <span class="o">[</span><span class="m">1</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
 <span class="o">[</span><span class="m">2</span><span class="o">]</span>   Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
 $ <span class="nb">fg</span> <span class="m">1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们想要暂停命令，则使用 CTRL-Z。</p>
-<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span>
+<div class="highlight"><pre><span></span><code>$ sleep <span class="m">20</span>
 <span class="c1"># CTRL-Z</span>
 $ <span class="nb">jobs</span>
 <span class="o">[</span><span class="m">1</span><span class="o">]</span>+  Stopped                 sleep <span class="m">20</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们需要把暂停的命令放到前台去运行，则使用 fg 命令，如果要把暂停的
 命令放在后台运行则使用 bg 命令。</p>
-<div class="highlight"><pre><span></span>$ sleep <span class="m">20</span>
+<div class="highlight"><pre><span></span><code>$ sleep <span class="m">20</span>
 <span class="c1"># CTRL-Z</span>
 $ <span class="nb">jobs</span>
 <span class="o">[</span><span class="m">1</span><span class="o">]</span>+  Stopped                 sleep <span class="m">20</span>
 $ <span class="nb">bg</span>
 $ <span class="nb">jobs</span>
 <span class="o">[</span><span class="m">1</span><span class="o">]</span>+  Running                 sleep <span class="m">20</span> <span class="p">&amp;</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>在子 shell 中运行命令</h3>
@@ -531,17 +531,17 @@ $ <span class="nb">jobs</span>
 <ul>
 <li>使用 "`" 符号：</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nv">thetime</span><span class="o">=</span><span class="sb">`</span>date<span class="sb">`</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nv">thetime</span><span class="o">=</span><span class="sb">`</span>date<span class="sb">`</span>
 $ <span class="nb">echo</span> <span class="nv">$thetime</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
 <li>使用小括号：</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nv">thetime</span><span class="o">=</span><span class="k">$(</span>date<span class="k">)</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nv">thetime</span><span class="o">=</span><span class="k">$(</span>date<span class="k">)</span>
 $ <span class="nb">echo</span> <span class="nv">$thetime</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>管理任务</h3>
@@ -576,23 +576,23 @@ $ <span class="nb">echo</span> <span class="nv">$thetime</span>
 </ul>
 <h2>样本文件</h2>
 <p>把下面文件内容存成相应文件就可以用了。建议在 shell 下使用 cat 或者 emacs/vim 去存。</p>
-<div class="highlight"><pre><span></span>$ cat <span class="s">&lt;&lt; EOF &gt; 文件名.txt</span>
+<div class="highlight"><pre><span></span><code>$ cat <span class="s">&lt;&lt; EOF &gt; 文件名.txt</span>
 <span class="s"># 要输入的内容</span>
 <span class="s">EOF</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>sgRNA.txt</p>
-<div class="highlight"><pre><span></span><span class="n">k1007_a_990</span><span class="p">,</span><span class="n">TATAGGCTAGAGGATTAGAG</span>
-<span class="n">k1007_s_616</span><span class="p">,</span><span class="n">TTTGCAATTCACCATCCTTC</span>
-<span class="n">k1007_s_784</span><span class="p">,</span><span class="n">AGAGACTTCTTGAAAGGGCG</span>
-<span class="n">k1007_a_62</span><span class="p">,</span><span class="n">GCGCAAGTCCAGAGTTTCCA</span>
-<span class="n">k1007_a_615</span><span class="p">,</span><span class="n">TACAACCAACACCCGAAGGA</span>
-<span class="n">k1007_s_529</span><span class="p">,</span><span class="n">TCACATCACAAGAAGTTCGA</span>
-<span class="n">k1007_s_293</span><span class="p">,</span><span class="n">TCAGAGGAGCTGCAATGAGA</span>
-<span class="n">k1007_s_1014</span><span class="p">,</span><span class="n">TCTAGCCTATAAGCCCTGTG</span>
-<span class="n">k1007_s_801</span><span class="p">,</span><span class="n">GCGAGGAAGCTTCTCTGTGA</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">k1007_a_990,TATAGGCTAGAGGATTAGAG</span>
+<span class="err">k1007_s_616,TTTGCAATTCACCATCCTTC</span>
+<span class="err">k1007_s_784,AGAGACTTCTTGAAAGGGCG</span>
+<span class="err">k1007_a_62,GCGCAAGTCCAGAGTTTCCA</span>
+<span class="err">k1007_a_615,TACAACCAACACCCGAAGGA</span>
+<span class="err">k1007_s_529,TCACATCACAAGAAGTTCGA</span>
+<span class="err">k1007_s_293,TCAGAGGAGCTGCAATGAGA</span>
+<span class="err">k1007_s_1014,TCTAGCCTATAAGCCCTGTG</span>
+<span class="err">k1007_s_801,GCGAGGAAGCTTCTCTGTGA</span>
+</code></pre></div>
 </section>
   </article>
 

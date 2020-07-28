@@ -66,8 +66,8 @@
         
         <h3>标准差 standardization</h3>
 <p>使用值除以群体的标准差作为 normalization 方法.</p>
-<div class="highlight"><pre><span></span><span class="err">$</span><span class="n">x_</span><span class="err">{</span><span class="n">ij</span><span class="err">}</span> <span class="o">=</span> <span class="err">\</span><span class="n">frac</span><span class="err">{</span><span class="n">x_</span><span class="err">{</span><span class="n">ij</span><span class="err">}}{\</span><span class="n">sqrt</span><span class="err">{\</span><span class="n">frac</span><span class="err">{</span><span class="mi">1</span><span class="err">}{</span><span class="n">n</span><span class="err">}\</span><span class="n">sum_</span><span class="err">{</span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="err">}</span><span class="o">^</span><span class="err">{</span><span class="n">n</span><span class="err">}</span><span class="p">(</span><span class="n">x_</span><span class="err">{</span><span class="n">ij</span><span class="err">}</span> <span class="o">-</span> <span class="err">\</span><span class="o">=</span><span class="n">x_</span><span class="err">{</span><span class="n">j</span><span class="err">}</span><span class="p">)</span><span class="o">^</span><span class="err">{</span><span class="mi">2</span><span class="err">}}}$</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">$x_{ij} = \frac{x_{ij}}{\sqrt{\frac{1}{n}\sum_{i=1}^{n}(x_{ij} - \=x_{j})^{2}}}$</span>
+</code></pre></div>
 
 
 <h3>总体 normalization</h3>

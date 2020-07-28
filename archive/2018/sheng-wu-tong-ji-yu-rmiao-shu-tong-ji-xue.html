@@ -78,19 +78,19 @@
         <div class="entry-content blog-post">
             <h2>计量数据的位置</h2>
 <p>以一组舒张压数据为例子。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">67</span><span class="p">,</span><span class="m">72</span><span class="p">,</span><span class="m">76</span><span class="p">,</span><span class="m">70</span><span class="p">,</span><span class="m">73</span><span class="p">,</span><span class="m">81</span><span class="p">,</span><span class="m">89</span><span class="p">,</span><span class="m">74</span><span class="p">,</span><span class="m">61</span><span class="p">,</span><span class="m">86</span><span class="p">,</span><span class="m">61</span><span class="p">,</span><span class="m">76</span><span class="p">,</span><span class="m">74</span><span class="p">,</span><span class="m">76</span><span class="p">,</span><span class="m">79</span><span class="p">,</span><span class="m">69</span><span class="p">,</span><span class="m">68</span><span class="p">,</span><span class="m">88</span><span class="p">,</span><span class="m">75</span><span class="p">,</span><span class="m">63</span><span class="p">,</span><span class="m">80</span><span class="p">,</span><span class="m">72</span><span class="p">,</span><span class="m">78</span><span class="p">,</span><span class="m">67</span><span class="p">,</span><span class="m">56</span><span class="p">,</span><span class="m">83</span><span class="p">,</span><span class="m">65</span><span class="p">,</span><span class="m">73</span><span class="p">,</span><span class="m">65</span><span class="p">,</span><span class="m">57</span><span class="p">,</span><span class="m">55</span><span class="p">,</span><span class="m">81</span><span class="p">,</span><span class="m">70</span><span class="p">,</span><span class="m">72</span><span class="p">,</span><span class="m">67</span><span class="p">,</span><span class="m">77</span><span class="p">,</span><span class="m">74</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">data</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">67</span><span class="p">,</span><span class="m">72</span><span class="p">,</span><span class="m">76</span><span class="p">,</span><span class="m">70</span><span class="p">,</span><span class="m">73</span><span class="p">,</span><span class="m">81</span><span class="p">,</span><span class="m">89</span><span class="p">,</span><span class="m">74</span><span class="p">,</span><span class="m">61</span><span class="p">,</span><span class="m">86</span><span class="p">,</span><span class="m">61</span><span class="p">,</span><span class="m">76</span><span class="p">,</span><span class="m">74</span><span class="p">,</span><span class="m">76</span><span class="p">,</span><span class="m">79</span><span class="p">,</span><span class="m">69</span><span class="p">,</span><span class="m">68</span><span class="p">,</span><span class="m">88</span><span class="p">,</span><span class="m">75</span><span class="p">,</span><span class="m">63</span><span class="p">,</span><span class="m">80</span><span class="p">,</span><span class="m">72</span><span class="p">,</span><span class="m">78</span><span class="p">,</span><span class="m">67</span><span class="p">,</span><span class="m">56</span><span class="p">,</span><span class="m">83</span><span class="p">,</span><span class="m">65</span><span class="p">,</span><span class="m">73</span><span class="p">,</span><span class="m">65</span><span class="p">,</span><span class="m">57</span><span class="p">,</span><span class="m">55</span><span class="p">,</span><span class="m">81</span><span class="p">,</span><span class="m">70</span><span class="p">,</span><span class="m">72</span><span class="p">,</span><span class="m">67</span><span class="p">,</span><span class="m">77</span><span class="p">,</span><span class="m">74</span><span class="p">)</span>
+</code></pre></div>
 
 
 <h3>均值 Arithmatic Mean</h3>
 <p>均值严格实际上指的是 average，常常说的均值用来代替的是 arithmatic mean，
 即算术平均数。算数平均数是用所有数据的和除以数据的个数。
 R 中有相应的函数mean，如果不嫌麻烦或者有特殊的目的，也可以自己去算。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="c1"># [1] 72.16216</span>
 <span class="o">&gt;</span> <span class="nf">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">/</span> <span class="nf">length</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="c1"># [1] 72.16216</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>虽然使用R函数mean或者自己根据定义来算看起来结果没什么差别，
@@ -99,7 +99,7 @@ R 中有相应的函数mean，如果不嫌麻烦或者有特殊的目的，也�
 不过mean函数包装了很多判断的部分，所以会降低一定效率。
 然而，效率不是R主要考虑的问题，
 R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">system.time</span><span class="p">(</span><span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10000</span><span class="p">)</span> <span class="nf">mean</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">system.time</span><span class="p">(</span><span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10000</span><span class="p">)</span> <span class="nf">mean</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 <span class="c1">#    user  system elapsed</span>
 <span class="c1">#   0.024   0.000   0.023</span>
 <span class="o">&gt;</span> <span class="nf">system.time</span><span class="p">(</span><span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10000</span><span class="p">)</span> <span class="nf">.Internal</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
@@ -108,20 +108,20 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 <span class="o">&gt;</span> <span class="nf">system.time</span><span class="p">(</span><span class="nf">for</span><span class="p">(</span><span class="n">i</span> <span class="n">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10000</span><span class="p">)</span> <span class="nf">sum</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="nf">length</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 <span class="c1">#    user  system elapsed</span>
 <span class="c1">#   0.004   0.000   0.004</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>均值的好处是可以使用所有的数字，并且最简单明了，
 然而均值的一个缺点是非常受到极值的影响。
 假设舒张压数据有一个数据记错了，记录为原来的10倍，
 均值就会受到非常大的影响。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">faultdata</span> <span class="o">&lt;-</span> <span class="n">data</span>
-<span class="o">&gt;</span> <span class="n">faultdata[7]</span> <span class="o">&lt;-</span> <span class="n">data[7]</span> <span class="o">*</span> <span class="m">10</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">faultdata</span> <span class="o">&lt;-</span> <span class="n">data</span>
+<span class="o">&gt;</span> <span class="n">faultdata</span><span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="n">data</span><span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="o">*</span> <span class="m">10</span>
 <span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">faultdata</span><span class="p">)</span>
 <span class="c1"># [1] 93.81081</span>
 <span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="c1"># [1] 72.16216</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>中位数 Median</h3>
@@ -133,17 +133,17 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 然而，因为所有的数据中位数计算实际上只使用了一个或者两个数字，
 所以中位数对数据分布的反映并不全面，数据利用率低。</p>
 <p>因为计算中位数需要排序，所以使用计算机去计算中位数会方便很多。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">median</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">median</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="c1"># [1] 73</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>我们也可以自己计算中位数。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">length</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%%</span> <span class="m">2</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">length</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%%</span> <span class="m">2</span>
 <span class="c1"># [1] 1</span>
-<span class="o">&gt;</span> <span class="nf">sort</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="nf">[</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="n">]</span>
+<span class="o">&gt;</span> <span class="nf">sort</span><span class="p">(</span><span class="n">data</span><span class="p">)[(</span><span class="nf">length</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">+</span> <span class="m">1</span><span class="p">)</span><span class="o">/</span><span class="m">2</span><span class="p">]</span>
 <span class="c1"># [1] 73</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>众数 Mode</h3>
@@ -152,47 +152,47 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 但是这并不能保证众数最接近于期望，对于双峰分布或多峰分布，
 众数甚至可能并不唯一。</p>
 <p>拿上面的数据为例，使用 R 语言的 table 函数可以计算每个数字的频次。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">table</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">table</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="c1"># data</span>
 <span class="c1"># 55 56 57 61 63 65 67 68 69 70 72 73 74 75 76 77 78 79 80 81 83 86 88 89</span>
 <span class="c1">#  1  1  1  2  1  2  3  1  1  2  3  2  3  1  3  1  1  1  1  2  1  1  1  1</span>
 <span class="o">&gt;</span> <span class="nf">table</span><span class="p">(</span><span class="nf">table</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 <span class="c1">#  1  2  3</span>
 <span class="c1"># 15  5  4</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>可以看到对于例子中有四个值的频次最多，都是3次，所以有三个众数，
 分别为：67，72，74，76。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">sort</span><span class="p">(</span><span class="nf">table</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">sort</span><span class="p">(</span><span class="nf">table</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
 <span class="c1"># data</span>
 <span class="c1"># 55 56 57 63 68 69 75 77 78 79 80 83 86 88 89 61 65 70 73 81 67 72 74 76</span>
 <span class="c1">#  1  1  1  1  1  1  1  1  1  1  1  1  1  1  1  2  2  2  2  2  3  3  3  3</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>计量数据的范围</h2>
 <p>如果仅仅使用均值等用于描述数据位置的数据，
 我们并不能很好地了解数据的分布情况。
 因为对于两组均值一样的数据，我们可以有完全不一样的分布类型。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="n">dat1</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">dat1</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
 <span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1"># [1] 3.7</span>
 <span class="o">&gt;</span> <span class="n">dat2</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">11</span><span class="p">,</span> <span class="m">12</span><span class="p">)</span>
 <span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span>
 <span class="c1"># [1] 3.7</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>所以我们也需要去描述数据分布的范围。</p>
 <h3>范围 Range</h3>
 <p>为了表示数据的范围，最简单的方法就是找出数据的最大值最小值，
 我们就有信心，所有的数据都会落在最大值和最小值之间。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">c</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">dat1</span><span class="p">),</span> <span class="nf">max</span><span class="p">(</span><span class="n">dat1</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">c</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">dat1</span><span class="p">),</span> <span class="nf">max</span><span class="p">(</span><span class="n">dat1</span><span class="p">))</span>
 <span class="c1"># [1] 2 5</span>
 <span class="o">&gt;</span> <span class="nf">c</span><span class="p">(</span><span class="nf">min</span><span class="p">(</span><span class="n">dat1</span><span class="p">),</span> <span class="nf">max</span><span class="p">(</span><span class="n">dat1</span><span class="p">))</span>
 <span class="c1"># [1] 0 12</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>然而，最大值最小值非常受到极值的影响，两组数据虽然可能绝大多数相近，
@@ -204,13 +204,13 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 例如使用四分之一分位数和四分之三分位数，
 我们可以知道有二分之一的数据在四分之一分位数和四分之三分位数之间。
 之所以不使用最大值最小值来反映数据的分布，也是为了避免极值的影响。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1">#   0%  25%  50%  75% 100%</span>
 <span class="c1">#    2    3    4    4    5</span>
 <span class="o">&gt;</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span>
 <span class="c1">#    0%   25%   50%   75%  100%</span>
 <span class="c1">#  0.00  1.25  2.00  3.00 12.00</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>方差和标准差 Variance and Standard Deviation</h3>
@@ -219,43 +219,43 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 有多种方法可以表示，但是（样本）方差和标准差是特性最好的方式。
 方差是标准差的平方。样本方差除以的是n-1而不是n。</p>
 <p>R 函数中 sd 函数计算标准差，var可以计算样本方差。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1"># [1] 0.9486833</span>
 <span class="o">&gt;</span> <span class="nf">var</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1"># [1] 0.9</span>
-<span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span> <span class="n">^</span> <span class="m">2</span>
+<span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span> <span class="o">^</span> <span class="m">2</span>
 <span class="c1"># [1] 0.9</span>
 <span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span>
 <span class="c1"># [1] 4.217688</span>
 <span class="o">&gt;</span> <span class="nf">var</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span>
 <span class="c1"># [1] 17.78889</span>
-<span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span> <span class="n">^</span> <span class="m">2</span>
+<span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span> <span class="o">^</span> <span class="m">2</span>
 <span class="c1"># [1] 17.78889</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果需要计算样本相对于均值差的平方和，可以使用var函数辅助计算，
 但应该记住样本方差计算中自由度为 n-1。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1"># [1] 3.7</span>
-<span class="o">&gt;</span> <span class="nf">sum</span><span class="p">((</span><span class="n">dat1</span> <span class="o">-</span> <span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">))</span><span class="n">^2</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="nf">sum</span><span class="p">((</span><span class="n">dat1</span> <span class="o">-</span> <span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">))</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
 <span class="c1"># [1] 8.1</span>
 <span class="o">&gt;</span> <span class="nf">var</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1"># [1] 0.9</span>
 <span class="o">&gt;</span> <span class="nf">var</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
 <span class="c1"># [1] 8.1</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>变异系数 Coefficient of Variance</h3>
 <p>对于一个均值为 10 的分布和一个均值为 1000 的分布来说，100的标准差的含义是非常不同的。
 所以需要矫正掉均值的影响。
 变异系数，即 coefficient of variance，CV，的定义就是标准差除以均值：sd/mean。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span><span class="o">/</span><span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span><span class="o">/</span><span class="nf">mean</span><span class="p">(</span><span class="n">dat1</span><span class="p">)</span>
 <span class="c1"># [1] 0.2564009</span>
 <span class="o">&gt;</span> <span class="nf">sd</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span><span class="o">/</span><span class="nf">mean</span><span class="p">(</span><span class="n">dat2</span><span class="p">)</span>
 <span class="c1"># [1] 1.139916</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>数据分组</h2>
@@ -267,7 +267,7 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 4. 计算每组中数据的个数
 5. 总结每组数据频次</p>
 <p>R 中可以使用 cut 函数去分组，使用 table 函数计算频次。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">cut</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">cut</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span>
 <span class="c1"># [1] (61.8,68.6] (68.6,75.4] (75.4,82.2] (68.6,75.4] (68.6,75.4] (75.4,82.2]</span>
 <span class="c1"># [7] (82.2,89]   (68.6,75.4] (55,61.8]   (82.2,89]   (55,61.8]   (75.4,82.2]</span>
 <span class="c1"># [13] (68.6,75.4] (75.4,82.2] (75.4,82.2] (68.6,75.4] (61.8,68.6] (82.2,89]</span>
@@ -280,21 +280,21 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 <span class="o">&gt;</span> <span class="nf">table</span><span class="p">(</span><span class="nf">cut</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="m">5</span><span class="p">))</span>
 <span class="c1">#   (55,61.8] (61.8,68.6] (68.6,75.4] (75.4,82.2]   (82.2,89]</span>
 <span class="c1">#           5           7          12           9           4</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>图形描述</h2>
 <p>使用条形图（bar plot），茎叶图（stem-leaf plot），
 盒型图（box plot）等可以描述数据。</p>
 <h3>条形图 bar plot</h3>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">barplot</span><span class="p">(</span><span class="nf">table</span><span class="p">(</span><span class="nf">cut</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="m">5</span><span class="p">)))</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">barplot</span><span class="p">(</span><span class="nf">table</span><span class="p">(</span><span class="nf">cut</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="m">5</span><span class="p">)))</span>
 <span class="o">&gt;</span> <span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">)</span>
 <span class="o">&gt;</span> <span class="nf">ggplot</span><span class="p">(</span><span class="nf">data.frame</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">data</span><span class="p">),</span> <span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="nf">geom_bar</span><span class="p">()</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>茎叶图 stem-leaf plot</h3>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">stem</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">stem</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 <span class="c1">#   The decimal point is 1 digit(s) to the right of the |</span>
 
 <span class="c1">#   5 | 567</span>
@@ -304,7 +304,7 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 <span class="c1">#   7 | 5666789</span>
 <span class="c1">#   8 | 0113</span>
 <span class="c1">#   8 | 689</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>对于茎叶图来说，数线左边的是高位，上面例子是十位，
@@ -322,8 +322,8 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 * 在四分之一分位数减1.5倍盒长之外的点为离群值outlier
 * 在四分之三分位数加3倍盒长之外的点为极端离群值
 * 在四分之一分位数减3倍盒长之外的点为极端离群值</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">boxplot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -347,20 +347,6 @@ R用一定的效率去换取了更方便的交互使用体验是值得的。</p>
 
                 <span class="mail"><a href="mailto:?subject=生物统计与 R：描述统计学&amp;body=Viens découvrir un article à propos de [生物统计与 R：描述统计学] sur le site de Wolfson Liu. ../../archive/2018/sheng-wu-tong-ji-yu-rmiao-shu-tong-ji-xue.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/sheng-wu-tong-ji-yu-rmiao-shu-tong-ji-xue.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

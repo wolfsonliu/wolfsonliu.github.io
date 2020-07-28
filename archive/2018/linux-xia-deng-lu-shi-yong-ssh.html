@@ -84,11 +84,11 @@
 件夹或文件权限不对则不能正常使用 KEY 进行登陆。</p>
 <p>SSH 登陆相关的文件在 $HOME 下的 .ssh 文件夹中。.ssh 文件夹的权限应该设
 置为 700。</p>
-<div class="highlight"><pre><span></span><span class="nb">cd</span> <span class="nv">$HOME</span>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> <span class="nv">$HOME</span>
 chmod <span class="m">700</span> .ssh
 ls -al <span class="p">|</span> grep .ssh
 <span class="c1"># drwx------   2 User User  4096 Aug  1 20:43 .ssh</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>登录时直接进入上一次登出时候的目录</h3>
@@ -96,31 +96,31 @@ ls -al <span class="p">|</span> grep .ssh
 才能回去，太麻烦了。所以，就需要每次登陆的时候回到上次登出的地方。</p>
 <p>首先，要设置 <code>.bash_logout</code> 文件去记录最后的目录位置，具体就是把登出时
 所处的目录地址保存下来：</p>
-<div class="highlight"><pre><span></span><span class="n">echo</span> <span class="err">$</span><span class="n">PWD</span> <span class="o">&gt;&gt;</span> <span class="o">~/</span><span class="p">.</span><span class="n">cd_stack</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">echo $PWD &gt;&gt; ~/.cd_stack</span>
+</code></pre></div>
 
 
 <p>然后在 <code>.bashrc</code> 中设置每次登录时自动前往上次存储的地址：</p>
-<div class="highlight"><pre><span></span><span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">tail</span> <span class="o">-</span><span class="mi">1</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">tail</span> <span class="o">-</span><span class="mi">1</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">)</span>
 
 <span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="mi">1</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span> <span class="o">&gt;</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">.</span><span class="n">tmp</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">.</span><span class="n">tmp</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>存储常用登陆信息</h3>
 <p>在 <code>~/.ssh/config</code> 文件中可以存储经常登陆的服务器信息：</p>
-<div class="highlight"><pre><span></span>Host fwq
+<div class="highlight"><pre><span></span><code>Host fwq
     HostName <span class="m">8</span>.8.8.8
     Port <span class="m">22</span>
     User yonghu
     IdentityFile ~/.ssh/id_rsa
-</pre></div>
+</code></pre></div>
 
 
 <p>这样之后使用ssh登陆该地址或者使用scp传输数据的时候就可以打服务器名称了：</p>
-<div class="highlight"><pre><span></span>ssh fwq
+<div class="highlight"><pre><span></span><code>ssh fwq
 scp myfile fwq:~/
-</pre></div>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -143,20 +143,6 @@ scp myfile fwq:~/
 
                 <span class="mail"><a href="mailto:?subject=linux 下登陆使用 SSH&amp;body=Viens découvrir un article à propos de [linux 下登陆使用 SSH] sur le site de Wolfson Liu. ../../archive/2018/linux-xia-deng-lu-shi-yong-ssh.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/linux-xia-deng-lu-shi-yong-ssh.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

@@ -79,13 +79,13 @@
             <p>R 语言中的环境 (environment) 相当于其他语言中的命名空间 (naming space), 包含一系列对象的名称. 环境十分像一个列表 (list), 但是, 一旦改变一个环境, 该环境的复制 (通过 new.env 等函数创建) 也会跟着改变. 环境是有层次的, 在一个环境中没有找到对象, R 会到父环境中寻找.</p>
 <h2>环境</h2>
 <p>因为环境很类似一个列表, 所以可以使用类似于对列表操作的方式去修改一个环境. 查询一个环境中的对象, 可以使用 ls 函数. 创建一个新的环境使用 new.env 函数. 查询父环境使用 parent.env 函数. 返回全局环境可以使用 globalenv 函数. </p>
-<div class="highlight"><pre><span></span><span class="n">myenv</span> <span class="o">&lt;-</span> <span class="nf">new.env</span><span class="p">(</span><span class="n">parent</span> <span class="o">=</span> <span class="nf">emptyenv</span><span class="p">())</span>
+<div class="highlight"><pre><span></span><code><span class="n">myenv</span> <span class="o">&lt;-</span> <span class="nf">new.env</span><span class="p">(</span><span class="n">parent</span> <span class="o">=</span> <span class="nf">emptyenv</span><span class="p">())</span>
 <span class="n">myenv</span><span class="o">$</span><span class="n">a</span> <span class="o">&lt;-</span> <span class="s">&quot;1&quot;</span>
 <span class="nf">ls</span><span class="p">(</span><span class="n">myenv</span><span class="p">)</span>
 <span class="c1">#[1] &quot;a&quot;</span>
 <span class="n">myenv</span><span class="o">$</span><span class="n">a</span>
 <span class="c1">#[1] &quot;1&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>ls 函数有一个参数, all.names, 设置为 FALSE, 则 ls 不会显示以小数点 "." 其实的环境对象, 设置为 TRUE 则会全部显示. 这个有有点像 linux 系统下面列出文件的命令 ls 对隐藏文件的操作.</p>
@@ -98,11 +98,11 @@
 </ul>
 <h3>函数的环境和命名空间</h3>
 <p>环境或者命名空间的作用在于防止名称冲突. 函数有其调用时所存在的环境, 另外函数运行时, 也会建立一个环境, 外界看不到函数内部的对象, 如果不特别指定, 函数内部的对象也不会影响外部的对象. 这些隔绝起来的环境保证了运行的正确.</p>
-<div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<div class="highlight"><pre><span></span><code><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
 <span class="nf">environment</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">emptyenv</span><span class="p">()</span>
 <span class="nf">f</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
 <span class="c1"># Error in f(1) (from #1) : could not find function &quot;+&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>上面这个例子中, 由于 f 函数的环境被设置为空环境, 所以显示出 "+" 函数没有定义.</p>
@@ -113,68 +113,68 @@
 * 函数被调用的时候的环境, 可以在函数内部使用 parent.frame 返回其被调用的环境.</p>
 <h2>赋值</h2>
 <p>给对象的赋值是和环境很相关的一个概念. R 中有不同的赋值的方式. 最常用的方式就是使用 <code>&lt;-</code> 或者 <code>=</code> 来给变量赋值. 每次赋值的时候都会在语句所在的环境中新生成一个对象并赋值, 如果已经有同名的对象, 则对象的值会被替换. 也可以使用 assign 函数, 还可以指定特定的环境.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
 <span class="n">myfun</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="p">;</span> <span class="n">x</span><span class="p">}</span>
 <span class="nf">myfun</span><span class="p">()</span>
 <span class="c1"># [1] 1</span>
 <span class="n">x</span>
 <span class="c1"># [1] 0</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们不希望在子环境中重新建立一个新的对象, 而希望赋值只是改变原来父环境中已经存在的对象的值, 则可以使用 <code>&lt;&lt;-</code> 或者 assign 函数. 使用 <code>&lt;&lt;-</code> 不会在当前环境重新创建一个对象, 而是寻找父环境中是否存在该名称的对象, 如果有, 则进行赋值, 如果没有, 则继续寻找父环境. 如果所有的环境都没有找到名称一致的对象, 则在 global 环境中创建一个对象并赋值. 由于, 这样的赋值方式可能会牵扯到多个环境, 所以在使用的时候应该十分小心.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">0</span>
 <span class="n">myfun</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="n">x</span> <span class="o">&lt;&lt;-</span> <span class="m">1</span><span class="p">;</span> <span class="n">x</span><span class="p">}</span>
 <span class="nf">myfun</span><span class="p">()</span>
 <span class="c1"># [1] 1</span>
 <span class="n">x</span>
 <span class="c1"># [1] 1</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们希望赋值只在某个对象真正被使用的时候才使用, 那么可以使用 delayedAssign 函数, 或者使用 pryr 包中的 <code>%&lt;d-%</code> 函数.</p>
-<div class="highlight"><pre><span></span><span class="n">msg</span> <span class="o">&lt;-</span> <span class="s">&quot;old&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">msg</span> <span class="o">&lt;-</span> <span class="s">&quot;old&quot;</span>
 <span class="nf">delayedAssign</span><span class="p">(</span><span class="s">&quot;x&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="p">)</span>
 <span class="nf">substitute</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="c1"># shows only &#39;x&#39;, as it is in the global env.</span>
 <span class="n">msg</span> <span class="o">&lt;-</span> <span class="s">&quot;new!&quot;</span>
 <span class="n">x</span> <span class="c1"># new!</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>另外有的时候, 我们可能需要一个对象每次使用的时候能够出现不同的值, 比如生成不同的随机数, 这个时候就可以使用 makeActiveBinding 函数, 把一个随机数生成函数赋给某个对象. 这样每次使用该变量的时候, 都会重新生成一个随机数. 同样, 在 pryr 包中有函数 <code>%&lt;a-%</code>.</p>
-<div class="highlight"><pre><span></span><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="nf">rnorm</span><span class="p">(</span><span class="m">1</span><span class="p">)}</span>
+<div class="highlight"><pre><span></span><code><span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="nf">rnorm</span><span class="p">(</span><span class="m">1</span><span class="p">)}</span>
 <span class="nf">makeActiveBinding</span><span class="p">(</span><span class="s">&quot;fred&quot;</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">.GlobalEnv</span><span class="p">)</span>
 <span class="n">fred</span>
 <span class="c1"># [1] -0.2072999</span>
 <span class="n">fred</span>
 <span class="c1"># [1] -0.3692274</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>R 中不像 C 语言有常量这个概念, 但是, 如果需要的话, 也可以使用 lockBinding 函数来限制一个对象的值的改变. 如果想要取消, 可以使用 unlockBinding 函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">x</span> <span class="o">=</span> <span class="mi">1</span>
-<span class="nv">lockBinding</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">x</span><span class="s2">&quot;</span>, <span class="nv">env</span> <span class="o">=</span> .<span class="nv">GlobalEnv</span><span class="ss">)</span>
-<span class="nv">x</span> <span class="o">=</span> <span class="mi">2</span>
-# <span class="nv">Error</span>: <span class="nv">cannot</span> <span class="nv">change</span> <span class="nv">value</span> <span class="nv">of</span> <span class="nv">locked</span> <span class="nv">binding</span> <span class="k">for</span> <span class="s1">&#39;</span><span class="s">x</span><span class="s1">&#39;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">x = 1</span>
+<span class="err">lockBinding(&quot;x&quot;, env = .GlobalEnv)</span>
+<span class="err">x = 2</span>
+<span class="err"># Error: cannot change value of locked binding for &#39;x&#39;</span>
+</code></pre></div>
 
 
 <h2>查询</h2>
 <h3>对象</h3>
 <p>使用 ls 函数可以直接查询环境中的对象. ls 可以接受环境名, 环境名空缺的情况下, 默认返回当前环境的对象. all.names 参数可以显示隐藏的对象, 即以小数点开头的环境名.</p>
 <p>exists 函数可以用来查看某个对象是否在特定存在, 其参数 inherits 如果设置为 TRUE, 则查询也会到指定环境的父环境中查找.</p>
-<div class="highlight"><pre><span></span><span class="k">exists</span><span class="p">(</span><span class="ss">&quot;a&quot;</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="n">myenv</span><span class="p">,</span> <span class="k">inherits</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">exists(&quot;a&quot;, envir = myenv, inherits = FALSE)</span>
+</code></pre></div>
 
 
 <p>可以通过 ls 和 objects 来查询环境中的对象, 包括变量和函数等. 另外, 对于知道对象名而不知其环境的, 还可以使用 pryr 包中的 where 函数, where 函数实际上是个递归函数, 从子环境查询到父环境.</p>
-<div class="highlight"><pre><span></span><span class="n">objects</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="ss">&quot;tmp&quot;</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="p">.</span><span class="n">GlobalEnv</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">objects(pattern = &quot;tmp&quot;, envir = .GlobalEnv)</span>
+</code></pre></div>
 
 
 <p>如果想要查看变量的大小, 可以使用 object.size 函数, 同时可以使用 format 函数来配合设置输出的格式.</p>
-<div class="highlight"><pre><span></span><span class="n">format</span><span class="p">(</span><span class="k">object</span><span class="p">.</span><span class="k">size</span><span class="p">(</span><span class="n">myobject</span><span class="p">),</span> <span class="n">units</span> <span class="o">=</span> <span class="ss">&quot;Mb&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">format(object.size(myobject), units = &quot;Mb&quot;)</span>
+</code></pre></div>
 
 
 <ul>
@@ -188,18 +188,18 @@
 </ul>
 <p>使用 as.environment 函数可以去查询 search path 上的路径的环境内容.</p>
 <p>加载在环境中的包, 还可以使用 ls 函数去查询包中所包括的函数和变量.</p>
-<div class="highlight"><pre><span></span><span class="n">ls</span><span class="p">(</span><span class="ss">&quot;package:base&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">ls(&quot;package:base&quot;)</span>
+</code></pre></div>
 
 
 <h3>版本与平台</h3>
 <p>查询所安装的 R 的版本号或者平台信息有以下几种方法.</p>
-<div class="highlight"><pre><span></span><span class="n">R</span><span class="p">.</span><span class="k">Version</span><span class="p">()</span>
-<span class="n">R</span><span class="p">.</span><span class="k">version</span>
-<span class="n">R</span><span class="p">.</span><span class="k">version</span><span class="p">.</span><span class="n">string</span>
-<span class="k">version</span>
-<span class="n">Sys</span><span class="p">.</span><span class="n">info</span><span class="p">()</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">R.Version()</span>
+<span class="err">R.version</span>
+<span class="err">R.version.string</span>
+<span class="err">version</span>
+<span class="err">Sys.info()</span>
+</code></pre></div>
 
 
 <p>如果想查询单独的包的版本, 则可以使用 <code>sessionInfo()</code> 函数.</p>
@@ -210,14 +210,14 @@
 </ul>
 <h2>加载和卸载</h2>
 <p>使用 library 函数加载 R 包, 使用 detach 来卸载 R 包.</p>
-<div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="n">gplot2</span><span class="p">)</span>
-<span class="n">detach</span><span class="p">(</span><span class="ss">&quot;package:gplot2&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">library(gplot2)</span>
+<span class="err">detach(&quot;package:gplot2&quot;)</span>
+</code></pre></div>
 
 
 <p>如果需要加载多个包, 又不太清楚这些包和其他包的依赖关系, 那么可以使用 require 函数来加载, 这样就能够避免重复加载. 如果环境中已经加载过某包, 则 require 函数返回真, 如果没有该包, 则 require 会加载该包, 并在成功后返回真.</p>
-<div class="highlight"><pre><span></span><span class="n">require</span><span class="p">(</span><span class="ss">&quot;ggplot2&quot;</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">require(&quot;ggplot2&quot;, quietly = TRUE)</span>
+</code></pre></div>
 
 
 <h2>清理</h2>
@@ -248,20 +248,6 @@
 
                 <span class="mail"><a href="mailto:?subject=R 学习笔记：R 环境相关的操作&amp;body=Viens découvrir un article à propos de [R 学习笔记：R 环境相关的操作] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-r-huan-jing-xiang-guan-de-cao-zuo.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-r-huan-jing-xiang-guan-de-cao-zuo.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

@@ -130,7 +130,7 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 在建立一个关系数据库的时候, 我们往往会要求其满足第三范式.
 第三范式正要求我们的每一个表格是按照行作为观测, 列作为属性和值来存储的.
 数据的属性确定了唯一的值, 这些属性就相当于是数据库中的键值.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">score</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">score</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span>
     <span class="n">person</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;王小二&#39;</span><span class="p">,</span> <span class="s">&#39;李中三&#39;</span><span class="p">,</span> <span class="s">&#39;张大四&#39;</span><span class="p">,</span> <span class="s">&#39;张大四&#39;</span><span class="p">),</span>
     <span class="n">object</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;英语&#39;</span><span class="p">,</span> <span class="s">&#39;英语&#39;</span><span class="p">,</span> <span class="s">&#39;数学&#39;</span><span class="p">,</span> <span class="s">&#39;英语&#39;</span><span class="p">),</span>
     <span class="n">score</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">94</span><span class="p">,</span> <span class="m">96</span><span class="p">,</span> <span class="m">90</span><span class="p">,</span> <span class="m">93</span><span class="p">)</span>
@@ -141,7 +141,7 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 2 李中三   英语    96</span>
 <span class="c1"># 3 张大四   数学    90</span>
 <span class="c1"># 4 张大四   英语    93</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>规整数据 gather</h3>
@@ -154,19 +154,19 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 * 一个观测被存在不同的表
 我们整理数据, 往往就是把上面的不整洁数据整理成符合之前提到的第三范式数据库所接受的数据结构.</p>
 <p>例如, 如果我们收到的是下面这样的数据.</p>
-<div class="highlight"><pre><span></span><span class="n">score.b</span>
+<div class="highlight"><pre><span></span><code><span class="n">score.b</span>
 <span class="c1">#   person 数学 英语</span>
 <span class="c1"># 1 张大四   90   93</span>
 <span class="c1"># 2 李中三   NA   96</span>
 <span class="c1"># 3 王小二   NA   94</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>上面的表中列名也是一个变量.
 我们就需要把列对应的变量转换为上面我们提到的规整的数据结构.
 即把宽形的表转化为长型的表, 把每一个原表头作为长型表的一列的值,
 这里我们可以使用 'gather' 函数.</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">tidyr</span><span class="p">)</span>
 
 <span class="p">(</span><span class="n">score.l</span> <span class="o">&lt;-</span> <span class="nf">gather</span><span class="p">(</span>
     <span class="n">score.b</span><span class="p">,</span>
@@ -193,13 +193,13 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 4 张大四   英语    93</span>
 <span class="c1"># 5 李中三   英语    96</span>
 <span class="c1"># 6 王小二   英语    94</span>
-</pre></div>
+</code></pre></div>
 
 
 <p><code>gather</code> 函数是用来把列名作为变量的数据转换为规整的格式.</p>
-<div class="highlight"><pre><span></span><span class="nf">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;key&quot;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">na.rm</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="nf">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;key&quot;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">na.rm</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>
        <span class="n">convert</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">factor_key</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
@@ -216,19 +216,19 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 而避免了函数的层层嵌套, 主要是方便数入和理解,
 对运行效率并没有太大影响.</p>
 <p>假如说我们的数据比上面的数据还多一列班级信息:</p>
-<div class="highlight"><pre><span></span><span class="n">score2.b</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2.b</span>
 
 <span class="c1">#   person class 数学 英语</span>
 <span class="c1"># 1 王小二     1   NA   94</span>
 <span class="c1"># 2 李中三     1   NA   96</span>
 <span class="c1"># 3 张大四     1   90   93</span>
 <span class="c1"># 4 王小二     2   92   NA</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>显然, person 和 class 两列的值才能确定一个人,
 这个时候我们的 gather 函数会有少量差别, 增加了一个 class.</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="n">score2.l</span> <span class="o">&lt;-</span> <span class="n">score2.b</span> <span class="o">%&gt;%</span> <span class="nf">gather</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">score2.l</span> <span class="o">&lt;-</span> <span class="n">score2.b</span> <span class="o">%&gt;%</span> <span class="nf">gather</span><span class="p">(</span>
     <span class="n">key</span><span class="o">=</span><span class="n">object</span><span class="p">,</span>
     <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">,</span>
     <span class="o">-</span><span class="nf">c</span><span class="p">(</span><span class="n">person</span><span class="p">,</span> <span class="n">class</span><span class="p">)</span>
@@ -243,7 +243,7 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 6 李中三     1   英语    96</span>
 <span class="c1"># 7 张大四     1   英语    93</span>
 <span class="c1"># 8 王小二     2   英语    NA</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>整理过的数据中, person class 和 object 三列作为变量, score 作为值,
@@ -253,7 +253,7 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 有的时候我们需要某一个变量的值扩展为列, 方便分析.
 这样的情况下就需要展开 (spread) 数据.
 拿上面的 score2.l 为例, 我们把班级展开.</p>
-<div class="highlight"><pre><span></span><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">spread</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">class</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">spread</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">class</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
 
 <span class="c1">#   person object  1  2</span>
 <span class="c1"># 1 张大四   数学 90 NA</span>
@@ -262,18 +262,18 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 4 李中三   英语 96 NA</span>
 <span class="c1"># 5 王小二   数学 NA 92</span>
 <span class="c1"># 6 王小二   英语 94 NA</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>或者我们也可以把数据按照科目展开.</p>
-<div class="highlight"><pre><span></span><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">spread</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">object</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">spread</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">object</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
 
 <span class="c1">#   person class 数学 英语</span>
 <span class="c1"># 1 张大四     1   90   93</span>
 <span class="c1"># 2 李中三     1   NA   96</span>
 <span class="c1"># 3 王小二     1   NA   94</span>
 <span class="c1"># 4 王小二     2   92   NA</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>分列</h3>
@@ -284,14 +284,14 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 这两个函数都是把单一的列分成若干列, 不过有细微的差别.
 separate 是根据 sep 变量所指定的分隔符来分列,
 而 extract 则根据 regex 变量所指定的正则表达式去提取列信息.</p>
-<div class="highlight"><pre><span></span><span class="nf">separate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">into</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;[^[:alnum:]]+&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="nf">separate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">into</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;[^[:alnum:]]+&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
          <span class="n">convert</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">extra</span> <span class="o">=</span> <span class="s">&quot;warn&quot;</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="s">&quot;warn&quot;</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
-<div class="highlight"><pre><span></span><span class="nf">extract</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">into</span><span class="p">,</span> <span class="n">regex</span> <span class="o">=</span> <span class="s">&quot;([[:alnum:]]+)&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="nf">extract</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">into</span><span class="p">,</span> <span class="n">regex</span> <span class="o">=</span> <span class="s">&quot;([[:alnum:]]+)&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
         <span class="n">convert</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
@@ -308,7 +308,7 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 这里我们所有的姓都是一个字, 所以对应正则表达式为 '.',
 而名可能是一个或多个, 所以对应正则表达式为 '.+'.
 相应的 regex 的值应为 '(.)(.+)'.</p>
-<div class="highlight"><pre><span></span><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">extract</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">person</span><span class="p">,</span> <span class="n">into</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;姓&#39;</span><span class="p">,</span> <span class="s">&#39;名&#39;</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="s">&#39;(.)(.+)&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">extract</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">person</span><span class="p">,</span> <span class="n">into</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;姓&#39;</span><span class="p">,</span> <span class="s">&#39;名&#39;</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="s">&#39;(.)(.+)&#39;</span><span class="p">)</span>
 
 <span class="c1">#   姓   名 class object score</span>
 <span class="c1"># 1 王 小二     1   数学    NA</span>
@@ -319,11 +319,11 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 <span class="c1"># 6 李 中三     1   英语    96</span>
 <span class="c1"># 7 张 大四     1   英语    93</span>
 <span class="c1"># 8 王 小二     2   英语    NA</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>我们也可以利用 separate 函数去分外国人的名, 比如 tidyr 中的 smiths 数据.</p>
-<div class="highlight"><pre><span></span><span class="n">smiths</span>
+<div class="highlight"><pre><span></span><code><span class="n">smiths</span>
 
 <span class="c1"># # A tibble: 2 x 5</span>
 <span class="c1">#      subject  time   age weight height</span>
@@ -353,15 +353,15 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 <span class="c1"># 6 Mary Smith  Mary Smith weight    NA</span>
 <span class="c1"># 7 John Smith  John Smith height  1.87</span>
 <span class="c1"># 8 Mary Smith  Mary Smith height  1.54</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>上面的例子也体现出了管道函数的方便的地方.</p>
 <h3>合列 unite</h3>
 <p>我们可以把列分开, 就也能把列合起来.
 除了利用 lapply 和 paste 等函数, 还可以使用 unite 函数.</p>
-<div class="highlight"><pre><span></span><span class="nf">unite</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;_&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">unite</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;_&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</code></pre></div>
 
 
 <ul>
@@ -373,7 +373,7 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 <li>... 合并的列要用 c 函数连接起来</li>
 <li>remove bool 值, 如果为 TRUE, 则去除被拆分的列, 如果为 FALSE 则保留原列</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">extract</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">extract</span><span class="p">(</span>
     <span class="n">col</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
     <span class="n">into</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;姓&#39;</span><span class="p">,</span> <span class="s">&#39;名&#39;</span><span class="p">),</span>
     <span class="n">regex</span><span class="o">=</span><span class="s">&#39;(.)(.+)&#39;</span>
@@ -388,7 +388,7 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 <span class="c1"># 6 李.中三     1   英语    96</span>
 <span class="c1"># 7 张.大四     1   英语    93</span>
 <span class="c1"># 8 王.小二     2   英语    NA</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>集合操作</h2>
@@ -419,20 +419,6 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 
                 <span class="mail"><a href="mailto:?subject=R 学习笔记：数据的重塑&amp;body=Viens découvrir un article à propos de [R 学习笔记：数据的重塑] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-shu-ju-de-zhong-su.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-shu-ju-de-zhong-su.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

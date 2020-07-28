@@ -82,42 +82,42 @@
 <ul>
 <li><code>count(start [, step])</code>: 按照 step (默认是 1) 从 start 开始叠加.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">count</span><span class="ss">(</span><span class="mi">1</span>, <span class="mi">2</span><span class="ss">)</span>:
-    <span class="nv">print</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>
-    <span class="k">if</span> <span class="nv">x</span> <span class="o">&gt;</span> <span class="mi">10</span>:
-        <span class="k">break</span>
-# <span class="mi">1</span>
-# <span class="mi">3</span>
-# <span class="mi">5</span>
-# <span class="mi">7</span>
-# <span class="mi">9</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">for x in count(1, 2):</span>
+<span class="err">    print(x)</span>
+<span class="err">    if x &gt; 10:</span>
+<span class="err">        break</span>
+<span class="err"># 1</span>
+<span class="err"># 3</span>
+<span class="err"># 5</span>
+<span class="err"># 7</span>
+<span class="err"># 9</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>cycle(a_list_like)</code>: 在一个像 list 的变量中循环取元素.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="nv">y</span> <span class="nv">in</span> <span class="nv">itertools</span>.<span class="nv">cycle</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">ABCD</span><span class="s1">&#39;</span><span class="ss">)</span>:
-    <span class="nv">print</span><span class="ss">(</span><span class="nv">y</span><span class="ss">)</span>
-    <span class="nv">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="nv">i</span> <span class="o">&gt;</span> <span class="mi">5</span>:
-        <span class="k">break</span>
-# <span class="nv">A</span>
-# <span class="nv">B</span>
-# <span class="nv">C</span>
-# <span class="nv">D</span>
-# <span class="nv">A</span>
-# <span class="nv">B</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">i = 0</span>
+<span class="err">for y in itertools.cycle(&#39;ABCD&#39;):</span>
+<span class="err">    print(y)</span>
+<span class="err">    i += 1</span>
+<span class="err">    if i &gt; 5:</span>
+<span class="err">        break</span>
+<span class="err"># A</span>
+<span class="err"># B</span>
+<span class="err"># C</span>
+<span class="err"># D</span>
+<span class="err"># A</span>
+<span class="err"># B</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>repeat(elem [, n])</code>: 重复返回 elem, 如果 n 有值, 则重复 n 次.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">list</span><span class="p">(</span><span class="n">itertools</span><span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;Sparrow&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-<span class="o">#</span> <span class="p">[</span><span class="s1">&#39;Sparrow&#39;</span><span class="p">,</span> <span class="s1">&#39;Sparrow&#39;</span><span class="p">,</span> <span class="s1">&#39;Sparrow&#39;</span><span class="p">,</span> <span class="s1">&#39;Sparrow&#39;</span><span class="p">]</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">list(itertools.repeat(&#39;Sparrow&#39;, 4))</span>
+<span class="err"># [&#39;Sparrow&#39;, &#39;Sparrow&#39;, &#39;Sparrow&#39;, &#39;Sparrow&#39;]</span>
+</code></pre></div>
 
 
 <h3>有限迭代器函数</h3>
@@ -125,20 +125,20 @@
 <ul>
 <li><code>accumulate(p [,func])</code>: 类似于 functools 里面的 reduce 函数, 将一个函数在 list 上做累积计算.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">list</span><span class="p">(</span><span class="n">accumulate</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">))</span>
-<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">list(accumulate([1, 2, 3, 4], lambda x, y: x + y))</span>
+<span class="err"># [1, 3, 6, 10]</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>chain(p, q [,...])</code>: 把两个变量的元素连起来生成迭代器.</li>
 <li><code>chain.from_iterable(iterable)</code>: 类似于 <code>chain()</code> 函数, 不过其接受的参数为一个, 是简化的 <code>chain</code> 形式.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">list</span><span class="p">(</span><span class="k">chain</span><span class="p">(</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span> <span class="s1">&#39;DEF&#39;</span><span class="p">))</span>
-<span class="o">#</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">]</span>
-<span class="n">list</span><span class="p">(</span><span class="k">chain</span><span class="p">.</span><span class="n">from_iterable</span><span class="p">([</span><span class="s1">&#39;ABC&#39;</span><span class="p">,</span> <span class="s1">&#39;DEF&#39;</span><span class="p">]))</span>
-<span class="o">#</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">]</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">list(chain(&#39;ABC&#39;, &#39;DEF&#39;))</span>
+<span class="err"># [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;]</span>
+<span class="err">list(chain.from_iterable([&#39;ABC&#39;, &#39;DEF&#39;]))</span>
+<span class="err"># [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;]</span>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -161,20 +161,6 @@
 
                 <span class="mail"><a href="mailto:?subject=Python 学习笔记: itertools module&amp;body=Viens découvrir un article à propos de [Python 学习笔记: itertools module] sur le site de Wolfson Liu. ../../archive/2016/python-xue-xi-bi-ji-itertools-module.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/python-xue-xi-bi-ji-itertools-module.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

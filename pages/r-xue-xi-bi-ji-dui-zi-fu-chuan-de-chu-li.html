@@ -86,8 +86,8 @@
 <p>R 是支持 POSIX 规范的正则表达式的, 有许多需要比对的函数接受正则表达式, 如 strsplit, grep 等. 需要注意的是, "\" 在正则表达式中是为了把一个保留字符转义为普通字符, 如 "." 把匹配任意字符的 "." 转义为句点, 那么在 R 中, 如果把相应的正则表达式保存在字符串中, 则应该使用两个 "\", 如我要转义正则表达式中匹配任意字符的 "." 为句点, <code>reg.exp &lt;- "\\.txt"</code> (有的时候可以使用方括号 <code>"[.]txt"</code>). 如果使用 readline 函数从终端读取, 则只用使用一个 "\", R 解释器可以解读.</p>
 <h3>保留字符</h3>
 <p>在 R 中正则表达式有一些保留字符, 这些保留字符在正则表达式中有特殊含义, 如果字符串中有该字符, 需要进行转意. R 使用 POSIX 兼容的正则表达式, 和 linux 终端下的很接近.</p>
-<div class="highlight"><pre><span></span><span class="p">.</span> <span class="o">^</span> <span class="err">$</span> <span class="o">+</span> <span class="o">?</span> <span class="o">*</span> <span class="p">(</span> <span class="p">)</span> <span class="p">[</span> <span class="p">]</span> <span class="err">{</span> <span class="err">}</span> <span class="o">|</span> <span class="err">\</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">. ^ $ + ? * ( ) [ ] { } | \</span>
+</code></pre></div>
 
 
 <h3>基本用法</h3>
@@ -137,12 +137,12 @@
 <h3>取字符串的部分字符</h3>
 <p>主要使用 strsplit 函数.</p>
 <p>丽莎问了一个问题, 想要提取一系列的物种学名中的属名, 这些学名有的有亚种加词, 有的没有.</p>
-<div class="highlight"><pre><span></span><span class="nv">species</span> <span class="o">&lt;-</span> <span class="nv">c</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Corvus_corone</span><span class="s2">&quot;</span>,
-             <span class="s2">&quot;</span><span class="s">Cyanopica_cyanus</span><span class="s2">&quot;</span>,
-             <span class="s2">&quot;</span><span class="s">Pica_pica_serica</span><span class="s2">&quot;</span>,
-             <span class="s2">&quot;</span><span class="s">Corvus_macrorhynchos</span><span class="s2">&quot;</span><span class="ss">)</span>
-<span class="nv">genus</span> <span class="o">&lt;-</span> <span class="nv">unname</span><span class="ss">(</span><span class="nv">sapply</span><span class="ss">(</span><span class="nv">species</span>, <span class="nv">function</span><span class="ss">(</span><span class="nv">m</span><span class="ss">)</span>{<span class="nv">unlist</span><span class="ss">(</span><span class="k">strsplit</span><span class="ss">(</span><span class="nv">m</span>,<span class="nv">split</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">_</span><span class="s2">&quot;</span><span class="ss">))</span>[<span class="mi">1</span>]}<span class="ss">))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">species</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;Corvus_corone&quot;</span><span class="p">,</span>
+             <span class="s">&quot;Cyanopica_cyanus&quot;</span><span class="p">,</span>
+             <span class="s">&quot;Pica_pica_serica&quot;</span><span class="p">,</span>
+             <span class="s">&quot;Corvus_macrorhynchos&quot;</span><span class="p">)</span>
+<span class="n">genus</span> <span class="o">&lt;-</span> <span class="nf">unname</span><span class="p">(</span><span class="nf">sapply</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="nf">function</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="nf">unlist</span><span class="p">(</span><span class="nf">strsplit</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">split</span><span class="o">=</span><span class="s">&quot;_&quot;</span><span class="p">))[</span><span class="m">1</span><span class="p">]}))</span>
+</code></pre></div>
 
 
 <p>上面的代码可以解决这个问题. </p>
@@ -153,47 +153,47 @@
 </ul>
 <h3>取字符串中的单个字母</h3>
 <p>如果需要对字符串中的单个字母进行操作或判断, 则应该先把整个字符串转换为单个字母的向量, 这个任务能通过 substr 来完成.</p>
-<div class="highlight"><pre><span></span><span class="n">state</span> <span class="o">&lt;-</span> ’<span class="n">Mississippi</span>’
+<div class="highlight"><pre><span></span><code><span class="n">state</span> <span class="o">&lt;-</span> ’<span class="n">Mississippi</span>’
 <span class="n">len</span>   <span class="o">&lt;-</span> <span class="nf">nchar</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
 <span class="n">ltrs</span>  <span class="o">&lt;-</span> <span class="nf">substr</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="m">1</span><span class="o">:</span><span class="n">len</span><span class="p">,</span><span class="m">1</span><span class="o">:</span><span class="n">len</span><span class="p">)</span>
 <span class="n">ltrs</span>
-<span class="n">[1]</span> <span class="s">&quot;M&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;i&quot;</span>
-</pre></div>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;M&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;i&quot;</span>
+</code></pre></div>
 
 
 <h3>除去字符串最后一个字符</h3>
 <p>石强问怎么把一些字符串最后的句号给去掉, 查了网站, 没看到类似 python rstrip 之类的函数, 那就用多个函数组合吧. 需要注意的是英文句号本身是正则表达式里面的符号, 需要用方括号括起来.</p>
-<div class="highlight"><pre><span></span><span class="n">some</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;my.&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;is&quot;</span><span class="p">,</span> <span class="s">&quot;Wolfson.&quot;</span><span class="p">)</span>
-<span class="nf">substr</span><span class="p">(</span><span class="n">x</span>     <span class="o">=</span> <span class="n">some</span><span class="nf">[grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)</span><span class="n">]</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="n">some</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;my.&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;is&quot;</span><span class="p">,</span> <span class="s">&quot;Wolfson.&quot;</span><span class="p">)</span>
+<span class="nf">substr</span><span class="p">(</span><span class="n">x</span>     <span class="o">=</span> <span class="n">some</span><span class="p">[</span><span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)],</span>
        <span class="n">start</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">),</span>
-       <span class="n">stop</span>  <span class="o">=</span> <span class="nf">nchar</span><span class="p">(</span><span class="n">some</span><span class="nf">[grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)</span><span class="n">]</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
-</pre></div>
+       <span class="n">stop</span>  <span class="o">=</span> <span class="nf">nchar</span><span class="p">(</span><span class="n">some</span><span class="p">[</span><span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)])</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+</code></pre></div>
 
 
 <h3>字符和对象的转换, 运行字符串中的命令</h3>
 <p>有的时候需要把接下来需要运行的命令保存在字符串中, 然后再运行. 这种情况下, 需要 parse, eval, call, get 等函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span> <span class="o">&lt;-</span> <span class="nv">c</span><span class="ss">(</span><span class="mi">0</span>, <span class="mi">6</span>, <span class="mi">24</span>, <span class="mi">48</span><span class="ss">)</span>
-<span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span> <span class="o">&lt;-</span> <span class="nv">vector</span><span class="ss">()</span>
-<span class="k">for</span> <span class="ss">(</span><span class="nv">i</span> <span class="nv">in</span> <span class="nv">c</span><span class="ss">(</span><span class="mi">1</span>:<span class="mi">4</span><span class="ss">))</span> {
-  <span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span>[<span class="nv">i</span>] <span class="o">&lt;-</span> <span class="nv">paste</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">rna.time.</span><span class="s2">&quot;</span>,
-                             <span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span>[<span class="nv">i</span>],
-                             <span class="nv">sep</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="ss">)</span>
-  ## <span class="nv">setting</span> <span class="nv">names</span>.
-  <span class="nv">tmp</span>.<span class="nv">load</span>.<span class="nv">rna</span>.<span class="nv">data</span> <span class="o">&lt;-</span> <span class="nv">paste</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span>[<span class="nv">i</span>],
-                             <span class="s2">&quot;</span><span class="s"> &lt;- </span><span class="s2">&quot;</span>,
-                             <span class="s2">&quot;</span><span class="s">ballgown(dataDir = rna.data.parent.dir, </span><span class="s2">&quot;</span>,
-                             <span class="s1">&#39;</span><span class="s">samplePattern = &quot;*-</span><span class="s1">&#39;</span>,
-                             <span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span>[<span class="nv">i</span>],
-                             <span class="s1">&#39;</span><span class="s">-*&quot;, meas = &quot;all&quot;)</span><span class="s1">&#39;</span>,
-                             <span class="nv">sep</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="ss">)</span>
-  ## <span class="nv">excute</span> <span class="nv">strings</span>
-  <span class="nv">eval</span><span class="ss">(</span><span class="nv">parse</span><span class="ss">(</span><span class="nv">text</span> <span class="o">=</span> <span class="nv">tmp</span>.<span class="nv">load</span>.<span class="nv">rna</span>.<span class="nv">data</span><span class="ss">))</span>  # <span class="nv">excute</span>
-  <span class="nv">write</span><span class="ss">(</span><span class="nv">x</span>    <span class="o">=</span> <span class="nv">get</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">names</span>[<span class="nv">i</span>]<span class="ss">)</span>,
-        <span class="nv">file</span> <span class="o">=</span> <span class="nv">paste</span><span class="ss">(</span><span class="nv">rna</span>.<span class="nv">time</span>.<span class="nv">conditions</span>[<span class="nv">i</span>], <span class="s2">&quot;</span><span class="s">_data.txt</span><span class="s2">&quot;</span>, <span class="nv">sep</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="ss">))</span>
-  ## <span class="nv">write</span> <span class="nv">data</span> <span class="nv">to</span> <span class="nv">file</span>.
-  ## <span class="nv">write</span> <span class="nv">the</span> <span class="nv">differencial</span> <span class="nv">expressed</span> <span class="nv">gene</span> <span class="nv">list</span> <span class="nv">to</span> <span class="nv">file</span>.
-}
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="n">conditions</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w"> </span><span class="mi">48</span><span class="p">)</span><span class="w"></span>
+<span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="k">names</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">vector</span><span class="p">()</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">c</span><span class="p">(</span><span class="mi">1</span><span class="err">:</span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="k">names</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="ss">&quot;rna.time.&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="n">conditions</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="err">##</span><span class="w"> </span><span class="n">setting</span><span class="w"> </span><span class="k">names</span><span class="p">.</span><span class="w"></span>
+<span class="w">  </span><span class="n">tmp</span><span class="p">.</span><span class="k">load</span><span class="p">.</span><span class="n">rna</span><span class="p">.</span><span class="k">data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="k">names</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="ss">&quot; &lt;- &quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="ss">&quot;ballgown(dataDir = rna.data.parent.dir, &quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="s1">&#39;samplePattern = &quot;*-&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="n">conditions</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="s1">&#39;-*&quot;, meas = &quot;all&quot;)&#39;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                             </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">  </span><span class="err">##</span><span class="w"> </span><span class="n">excute</span><span class="w"> </span><span class="n">strings</span><span class="w"></span>
+<span class="w">  </span><span class="n">eval</span><span class="p">(</span><span class="nf">parse</span><span class="p">(</span><span class="nc">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tmp</span><span class="p">.</span><span class="k">load</span><span class="p">.</span><span class="n">rna</span><span class="p">.</span><span class="k">data</span><span class="p">))</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">excute</span><span class="w"></span>
+<span class="w">  </span><span class="k">write</span><span class="p">(</span><span class="n">x</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="k">get</span><span class="p">(</span><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="k">names</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">),</span><span class="w"></span>
+<span class="w">        </span><span class="k">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">paste</span><span class="p">(</span><span class="n">rna</span><span class="p">.</span><span class="nc">time</span><span class="p">.</span><span class="n">conditions</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;_data.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">))</span><span class="w"></span>
+<span class="w">  </span><span class="err">##</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="w"></span>
+<span class="w">  </span><span class="err">##</span><span class="w"> </span><span class="k">write</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">differencial</span><span class="w"> </span><span class="n">expressed</span><span class="w"> </span><span class="n">gene</span><span class="w"> </span><span class="n">list</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">file</span><span class="p">.</span><span class="w"></span>
+<span class="err">}</span><span class="w"></span>
+</code></pre></div>
 
 
 <ul>
@@ -205,8 +205,8 @@
 <li>substitute: 返回 parse tree, 可以和 deparse 配合, 获得函数参数实际的变量名.</li>
 </ul>
 <p>我们也许需要一个函数的参数或函数名都按照需求有所变化, 也就是说, 希望能通过函数名调用参数, 而又可以单独去赋予该函数参数, 这个时候就需要 do.call 函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">sortframe</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">df</span>,...<span class="ss">)</span><span class="nv">df</span>[<span class="k">do</span>.<span class="nv">call</span><span class="ss">(</span><span class="nv">order</span>,<span class="nv">list</span><span class="ss">(</span>...<span class="ss">))</span>,]  # 对 <span class="nv">data</span>.<span class="nv">frame</span> 的每一列进行排序.
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">sortframe = function(df,...)df[do.call(order,list(...)),]  # 对 data.frame 的每一列进行排序.</span>
+</code></pre></div>
 
 
 <ul>

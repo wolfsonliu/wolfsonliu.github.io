@@ -82,23 +82,23 @@
 <p>S3 是 R 的第一个非常简单的面向对象的体系, 也是使用最广泛的体系. 一般初学 R, 使用的就主要是 S3. 在 basic 包和 stats 包中所采用的也都是 S3. 可以说 S3 是 R 面向对象编程或者平时的数据处理的基础吧.</p>
 <p>判断一个对象是不是 S3 对象, 可以使用函数 is.object 和 isS4, S3 对象是对象, 所以 is.object 会返回 TRUE, 而 isS4 则返回 FALSE. 也可以使用 pryr 包中的 otype 函数去检验, otype 会返回四种结果: base; S3; S4; RC. 如果一个对象没有 class 这个属性, 则返回 "base"; 如果对象有 class 属性, 而不是 S4, 则返回 "S3"; 如果一个对象是 S4, 而不是 RC, 则返回 "S4"; 同样, 如果一个对象是 Reference classes, 则返回 "S4".</p>
 <p>因为 S3 的类实际上是对象的一个属性, 所以可以通过一般的改变属性的办法来建立对象. 可以使用 structure 或者 attr 函数来设置 class 属性. 对于已经建立的对象, 还可以使用 class 替换函数来修改属性, 可以使用 class 函数来设置 class 的属性, 也可以使用 unclass 来去除 class 的属性. 还可以使用 inherits 函数来看继承关系.</p>
-<div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">&lt;-</span> <span class="nf">structure</span><span class="p">(</span><span class="nf">list</span><span class="p">(),</span> <span class="n">class</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">foo</span> <span class="o">&lt;-</span> <span class="nf">structure</span><span class="p">(</span><span class="nf">list</span><span class="p">(),</span> <span class="n">class</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
 <span class="nf">class</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 <span class="c1">#[1] &quot;foo&quot;</span>
 <span class="nf">inherits</span><span class="p">(</span><span class="n">foo</span><span class="p">,</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
 <span class="c1">#[1] TRUE</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>建立新方法</h3>
 <p>对于新建立的类, 可以使用 UseMethod 函数来建立适合该类的方法. UseMethod 接受函数名做为参数. 然后接着建立对于不同的类的方法, 应该使用函数名加上一个小数点再加上类名作为类的方法函数.</p>
-<div class="highlight"><pre><span></span><span class="n">thefoo</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nf">UseMethod</span><span class="p">(</span><span class="s">&quot;thefoo&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">thefoo</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nf">UseMethod</span><span class="p">(</span><span class="s">&quot;thefoo&quot;</span><span class="p">)</span>
 <span class="n">thefoo.default</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="s">&quot;Default&quot;</span>
 <span class="n">thefoo.foo</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="s">&quot;Class foo&quot;</span>
 <span class="n">foo</span> <span class="o">&lt;-</span> <span class="nf">structure</span><span class="p">(</span><span class="nf">list</span><span class="p">(),</span> <span class="n">class</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span><span class="p">)</span>
 <span class="nf">thefoo</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 <span class="c1">#[1] &quot;Class foo&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <hr>
@@ -106,44 +106,44 @@
 <p>S4 和 S3 很像, 同样方法不属于类, 而属于函数. 但是 S4 相比于 S3 有更为严格的定义. 还需要注意的是, S3 使用 "$" 来取元素, 而 S4 则使用 "@" 来取元素.</p>
 <p>S4 的方法都在 methods 包中, 由于该包不是在所有情况下都加载, 所以最好使用 S4 前调用该包. 由于 basic 包和 stats 包是建立在 S3 上的, 所以需要调用 stats4 包来使用相关的函数.</p>
 <p>S4 的建立不像 S3 那么简单只要设置属性就了. S4 的建立需要有相对严格的定义, 通过 setClass 函数来设置一个类的名称, 存储槽 (slots), 还有继承关系 (contains), 还有更多可以设置的东西, 可以查看文档了解. 而建立一个 S4 对象, 需要使用 new 函数, 需要指明类名, 每个存储槽的值. </p>
-<div class="highlight"><pre><span></span><span class="nf">setClass</span><span class="p">(</span><span class="s">&quot;Person&quot;</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="nf">setClass</span><span class="p">(</span><span class="s">&quot;Person&quot;</span><span class="p">,</span>
          <span class="n">slots</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;character&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="s">&quot;numeric&quot;</span><span class="p">))</span>
 <span class="n">alice</span> <span class="o">&lt;-</span> <span class="nf">new</span><span class="p">(</span><span class="s">&quot;Person&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;Alice&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="m">40</span><span class="p">)</span>
 <span class="nf">setClass</span><span class="p">(</span><span class="s">&quot;Employee&quot;</span><span class="p">,</span>
          <span class="n">slots</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">boss</span> <span class="o">=</span> <span class="s">&quot;Person&quot;</span><span class="p">),</span>
          <span class="n">contains</span> <span class="o">=</span> <span class="s">&quot;Person&quot;</span><span class="p">)</span>
 <span class="n">john</span> <span class="o">&lt;-</span> <span class="nf">new</span><span class="p">(</span><span class="s">&quot;Employee&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">boss</span> <span class="o">=</span> <span class="n">alice</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>选择对象的一个元素的时候, 需要使用 slot 函数或者 @, 相当于 S3 中的 "[[" 函数.</p>
-<div class="highlight"><pre><span></span><span class="n">slot</span><span class="p">(</span><span class="n">john</span><span class="p">,</span> <span class="ss">&quot;boss&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">slot</span><span class="p">(</span><span class="n">john</span><span class="p">,</span> <span class="ss">&quot;boss&quot;</span><span class="p">)</span>
 <span class="o">#</span><span class="n">An</span> <span class="k">object</span> <span class="k">of</span> <span class="k">class</span> <span class="ss">&quot;Person&quot;</span>
 <span class="o">#</span><span class="n">Slot</span> <span class="ss">&quot;name&quot;</span><span class="p">:</span>
 <span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;Alice&quot;</span>
 
 <span class="o">#</span><span class="n">Slot</span> <span class="ss">&quot;age&quot;</span><span class="p">:</span>
 <span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">40</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>建立新方法</h3>
 <p>S4 为类建立新方法会相对于 S3 麻烦一点. 建立新方法时需要使用 setGeneric 和 setMethod 函数.</p>
-<div class="highlight"><pre><span></span><span class="n">setGeneric</span><span class="p">(</span><span class="ss">&quot;union&quot;</span><span class="p">)</span>
-<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;union&quot;</span>
-<span class="n">setMethod</span><span class="p">(</span><span class="ss">&quot;union&quot;</span><span class="p">,</span>
-          <span class="k">c</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="ss">&quot;data.frame&quot;</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="ss">&quot;data.frame&quot;</span><span class="p">),</span>
-          <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="err">{</span>
-          <span class="k">unique</span><span class="p">(</span><span class="n">rbind</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
-          <span class="err">}</span>
-<span class="p">)</span>
-<span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;union&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setGeneric(&quot;union&quot;)</span>
+<span class="err">#[1] &quot;union&quot;</span>
+<span class="err">setMethod(&quot;union&quot;,</span>
+<span class="err">          c(x = &quot;data.frame&quot;, y = &quot;data.frame&quot;),</span>
+<span class="err">          function(x, y) {</span>
+<span class="err">          unique(rbind(x, y))</span>
+<span class="err">          }</span>
+<span class="err">)</span>
+<span class="err">#[1] &quot;union&quot;</span>
+</code></pre></div>
 
 
 <h2>RC</h2>
 <p>RC 本身继承自 S4, RC 的建立方法和 S4 很像, 使用 setRefClasses 函数. RC 和 S4 的重要区别在于方法属于类本身, 所以创建新的对象使用的是类的 new 函数.</p>
-<div class="highlight"><pre><span></span><span class="n">Account</span> <span class="o">&lt;-</span> <span class="nf">setRefClass</span><span class="p">(</span><span class="s">&quot;Account&quot;</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code><span class="n">Account</span> <span class="o">&lt;-</span> <span class="nf">setRefClass</span><span class="p">(</span><span class="s">&quot;Account&quot;</span><span class="p">,</span>
                        <span class="n">fields</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">balance</span> <span class="o">=</span> <span class="s">&quot;numeric&quot;</span><span class="p">),</span>
                        <span class="n">methods</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span>
                        <span class="n">withdraw</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span>
@@ -158,12 +158,12 @@
 <span class="n">a</span><span class="o">$</span><span class="n">balance</span> <span class="o">&lt;-</span> <span class="m">200</span>
 <span class="n">a</span><span class="o">$</span><span class="n">balance</span>
 <span class="c1">#&gt; [1] 200</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>RC 的复制不是简单的使用赋值符号, 而应该使用 copy 方法.</p>
-<div class="highlight"><pre><span></span><span class="n">b</span> <span class="o">&lt;-</span> <span class="n">a</span><span class="o">$</span><span class="nf">copy</span><span class="p">()</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">b</span> <span class="o">&lt;-</span> <span class="n">a</span><span class="o">$</span><span class="nf">copy</span><span class="p">()</span>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -186,20 +186,6 @@
 
                 <span class="mail"><a href="mailto:?subject=R 学习笔记：R 面向对象编程&amp;body=Viens découvrir un article à propos de [R 学习笔记：R 面向对象编程] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-r-mian-xiang-dui-xiang-bian-cheng.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-r-mian-xiang-dui-xiang-bian-cheng.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

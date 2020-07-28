@@ -124,23 +124,23 @@
 <ul>
 <li>设置工作目录为上级目录</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">setwd</span><span class="ss">(</span><span class="k">dirname</span><span class="ss">(</span><span class="nv">getwd</span><span class="ss">()))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setwd(dirname(getwd()))</span>
+</code></pre></div>
 
 
 <ul>
 <li>批量移动或者命名文件, 如果需要删除或者复制, 只要简单修改函数即可.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">moveFiles</span> <span class="o">&lt;-</span><span class="nf">function</span><span class="p">(</span><span class="n">from.vector</span><span class="p">,</span> <span class="n">to.vector</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">moveFiles</span> <span class="o">&lt;-</span><span class="nf">function</span><span class="p">(</span><span class="n">from.vector</span><span class="p">,</span> <span class="n">to.vector</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="nf">apply</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">from.vector</span><span class="p">,</span> <span class="n">to.vector</span><span class="p">),</span>
           <span class="m">1</span><span class="p">,</span>
           <span class="n">FUN</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span>
-              <span class="nf">file.rename</span><span class="p">(</span><span class="n">x[1]</span><span class="p">,</span> 
-                          <span class="n">x[2]</span><span class="p">))</span>
+              <span class="nf">file.rename</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="m">1</span><span class="p">],</span> 
+                          <span class="n">x</span><span class="p">[</span><span class="m">2</span><span class="p">]))</span>
           <span class="p">})</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -163,20 +163,6 @@
 
                 <span class="mail"><a href="mailto:?subject=R 学习笔记：文件和目录操作&amp;body=Viens découvrir un article à propos de [R 学习笔记：文件和目录操作] sur le site de Wolfson Liu. ../../archive/2015/r-xue-xi-bi-ji-wen-jian-he-mu-lu-cao-zuo.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2015/r-xue-xi-bi-ji-wen-jian-he-mu-lu-cao-zuo.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

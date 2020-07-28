@@ -95,19 +95,19 @@
 <p>由此得证.</p>
 </blockquote>
 <p>可以通过 C++ 来实现：</p>
-<div class="highlight"><pre><span></span>#<span class="k">include</span> <span class="o">&lt;</span><span class="nv">iostream</span><span class="o">&gt;</span>
-<span class="nv">int</span> <span class="nv">gcd</span><span class="ss">(</span><span class="nv">int</span> <span class="nv">a</span>,<span class="nv">int</span> <span class="nv">b</span><span class="ss">)</span>
-{
-    <span class="k">return</span> <span class="nv">a</span><span class="o">%</span><span class="nv">b</span> ? <span class="nv">gcd</span><span class="ss">(</span><span class="nv">b</span>,<span class="nv">a</span><span class="o">%</span><span class="nv">b</span><span class="ss">)</span> : <span class="nv">b</span><span class="c1">;</span>
-}
-<span class="nv">int</span> <span class="nv">main</span><span class="ss">()</span>
-{
-    <span class="nv">int</span> <span class="nv">x</span>, <span class="nv">y</span><span class="c1">;</span>
-    <span class="nv">cin</span> <span class="o">&gt;&gt;</span> <span class="nv">x</span>, <span class="nv">y</span>
-    <span class="nv">cout</span> <span class="o">&lt;&lt;</span> <span class="nv">gcd</span><span class="ss">(</span><span class="nv">x</span>, <span class="nv">y</span><span class="ss">)</span><span class="c1">;</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="c1">;</span>
-}
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="kr">int</span> <span class="nf">gcd</span><span class="p">(</span><span class="kr">int</span> <span class="n">a</span><span class="p">,</span><span class="kr">int</span> <span class="n">b</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">a</span><span class="o">%</span><span class="n">b</span> <span class="o">?</span> <span class="n">gcd</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="n">a</span><span class="o">%</span><span class="n">b</span><span class="p">)</span> <span class="o">:</span> <span class="n">b</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="kr">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kr">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+    <span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">gcd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <h4>最小公倍数 Lowest Common Multiple</h4>

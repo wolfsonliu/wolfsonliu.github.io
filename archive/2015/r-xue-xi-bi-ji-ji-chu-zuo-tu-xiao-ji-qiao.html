@@ -78,12 +78,12 @@
         <div class="entry-content blog-post">
             <h2>R 基础绘图</h2>
 <p>R 自带有强大的基础绘图包：<code>graphics</code>。默认情况下应该会自动加载。</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">search</span><span class="p">()</span>
- <span class="n">[1]</span> <span class="s">&quot;.GlobalEnv&quot;</span>        <span class="s">&quot;ESSR&quot;</span>              <span class="s">&quot;package:stats&quot;</span>    
- <span class="n">[4]</span> <span class="s">&quot;package:graphics&quot;</span>  <span class="s">&quot;package:grDevices&quot;</span> <span class="s">&quot;package:utils&quot;</span>    
- <span class="n">[7]</span> <span class="s">&quot;package:datasets&quot;</span>  <span class="s">&quot;package:methods&quot;</span>   <span class="s">&quot;Autoloads&quot;</span>        
-<span class="n">[10]</span> <span class="s">&quot;package:base&quot;</span>     
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">search</span><span class="p">()</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;.GlobalEnv&quot;</span>        <span class="s">&quot;ESSR&quot;</span>              <span class="s">&quot;package:stats&quot;</span>    
+ <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;package:graphics&quot;</span>  <span class="s">&quot;package:grDevices&quot;</span> <span class="s">&quot;package:utils&quot;</span>    
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;package:datasets&quot;</span>  <span class="s">&quot;package:methods&quot;</span>   <span class="s">&quot;Autoloads&quot;</span>        
+<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;package:base&quot;</span>     
+</code></pre></div>
 
 
 <p>基础绘图包中有若干高级绘图函数，可以直接根据对应的数据画出完整的图。这
@@ -284,7 +284,7 @@
 <p>如果希望把一个自变量对应的两个变量的值都显示在一长图上, 则需要使用双纵
 坐标轴, 下面是个例子. 其中使用到了几点: 调整图形边界; 画一张图; 设置新
 图层; 画第二张图的点; 画第二个纵坐标轴; 细节处理.</p>
-<div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span>
 <span class="n">y1</span> <span class="o">&lt;-</span> <span class="nf">rnorm</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="n">mean</span> <span class="o">=</span> <span class="m">5</span><span class="p">)</span>
 <span class="n">y2</span> <span class="o">&lt;-</span> <span class="nf">rnorm</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="n">mean</span> <span class="o">=</span> <span class="m">10</span><span class="p">)</span>
 <span class="nf">par</span><span class="p">(</span><span class="n">mar</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">5</span><span class="p">,</span><span class="m">4</span><span class="p">,</span><span class="m">5</span><span class="p">)</span> <span class="o">+</span> <span class="m">0.1</span><span class="p">)</span> <span class="c1">#Margin of pic</span>
@@ -294,7 +294,7 @@
 <span class="nf">axis</span><span class="p">(</span><span class="n">side</span> <span class="o">=</span> <span class="m">4</span><span class="p">)</span> <span class="c1">#New Y axis</span>
 <span class="nf">mtext</span><span class="p">(</span><span class="s">&quot;y2&quot;</span><span class="p">,</span> <span class="n">side</span> <span class="o">=</span> <span class="m">4</span><span class="p">,</span> <span class="n">line</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span> <span class="c1">#New Y axis label</span>
 <span class="nf">legend</span><span class="p">(</span><span class="s">&quot;topleft&quot;</span><span class="p">,</span> <span class="n">col</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="s">&quot;blue&quot;</span><span class="p">),</span> <span class="n">legend</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;y1&quot;</span><span class="p">,</span><span class="s">&quot;y2&quot;</span><span class="p">))</span>
-</pre></div>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -317,20 +317,6 @@
 
                 <span class="mail"><a href="mailto:?subject=R 学习笔记：基础做图小技巧&amp;body=Viens découvrir un article à propos de [R 学习笔记：基础做图小技巧] sur le site de Wolfson Liu. ../../archive/2015/r-xue-xi-bi-ji-ji-chu-zuo-tu-xiao-ji-qiao.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2015/r-xue-xi-bi-ji-ji-chu-zuo-tu-xiao-ji-qiao.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

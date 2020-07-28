@@ -73,27 +73,27 @@
 <ul>
 <li><code>np.array</code>: 可以把 list, tuple, array, 或者其他的序列模式的数据转创建为 ndarray, 默认创建一个新的 ndarray.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="k">data</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="nb">array</span><span class="p">(</span><span class="n">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">int</span><span class="p">)</span>
-<span class="k">data</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">data = np.array(range(5), dtype = int)</span>
+<span class="err">data</span>
+<span class="err"># array([0, 1, 2, 3, 4])</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>np.asarray</code>: 把其他类型的数据转换成为 ndarray, 如果是 ndarray 输入则默认不进行 copy, 而如果是其他类型数据则创建新的 ndarray.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">data2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">asarray</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
-<span class="n">data2</span> <span class="k">is</span> <span class="k">data</span>
-<span class="o">#</span> <span class="k">True</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">data2 = np.asarray(data)</span>
+<span class="err">data2 is data</span>
+<span class="err"># True</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>np.arange</code>: 类似于 range 函数, 创建一个序列.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span> <span class="mi">1</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">np.arange(1, 16, 2)</span>
+<span class="err"># array([ 1,  3,  5,  7,  9, 11, 13, 15])</span>
+</code></pre></div>
 
 
 <ul>
@@ -101,36 +101,36 @@
 <li><code>np.zeros</code>, <code>np.zeros_like</code>: 创建元素全为 0 的数组, 类似 <code>np.ones</code>.</li>
 <li><code>np.empty</code>, <code>np.empty_like</code>: 创建空数组, 类似 <code>np.ones</code>. 其中每个元素都没有进行初始化, 并不能保证都是 0.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">np</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span> <span class="mi">1</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.],</span>
-<span class="o">#</span>        <span class="p">[</span> <span class="mi">1</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.]])</span>
-<span class="n">np</span><span class="p">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.],</span>
-<span class="o">#</span>        <span class="p">[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.]])</span>
-<span class="n">np</span><span class="p">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.],</span>
-<span class="o">#</span>        <span class="p">[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.]])</span>
-<span class="n">np</span><span class="p">.</span><span class="n">ones_like</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-<span class="n">np</span><span class="p">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-<span class="n">np</span><span class="p">.</span><span class="n">empty_like</span><span class="p">(</span><span class="k">data</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">np.ones((2, 3))</span>
+<span class="err"># array([[ 1.,  1.,  1.],</span>
+<span class="err">#        [ 1.,  1.,  1.]])</span>
+<span class="err">np.zeros((2, 3))</span>
+<span class="err"># array([[ 0.,  0.,  0.],</span>
+<span class="err">#        [ 0.,  0.,  0.]])</span>
+<span class="err">np.empty((2,3))</span>
+<span class="err"># array([[ 0.,  0.,  0.],</span>
+<span class="err">#        [ 0.,  0.,  0.]])</span>
+<span class="err">np.ones_like(data)</span>
+<span class="err"># array([1, 1, 1, 1, 1])</span>
+<span class="err">np.zeros_like(data)</span>
+<span class="err"># array([0, 0, 0, 0, 0])</span>
+<span class="err">np.empty_like(data)</span>
+<span class="err"># array([0, 0, 0, 0, 0])</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>np.eye</code>: 创建一个对角线为 1 其他为 0 的矩阵.</li>
 <li><code>np.identity</code>: 创建一个主对角线为 1 其他为 0 的方阵.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">np</span><span class="p">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span> <span class="mi">1</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.],</span>
-<span class="o">#</span>        <span class="p">[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.]])</span>
-<span class="n">np</span><span class="p">.</span><span class="k">identity</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span> <span class="mi">1</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.],</span>
-<span class="o">#</span>        <span class="p">[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.],</span>
-<span class="o">#</span>        <span class="p">[</span> <span class="mi">0</span><span class="p">.,</span>  <span class="mi">0</span><span class="p">.,</span>  <span class="mi">1</span><span class="p">.]])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">np.eye(2, 2)</span>
+<span class="err"># array([[ 1.,  0.],</span>
+<span class="err">#        [ 0.,  1.]])</span>
+<span class="err">np.identity(3)</span>
+<span class="err"># array([[ 1.,  0.,  0.],</span>
+<span class="err">#        [ 0.,  1.,  0.],</span>
+<span class="err">#        [ 0.,  0.,  1.]])</span>
+</code></pre></div>
 
 
 <h4>ndarray 方法</h4>
@@ -143,21 +143,21 @@
 <li><code>np.ndim</code>: ndarray 的属性, ndarray 的维度数.</li>
 <li><code>np.shape</code>: ndarray 的属性, 为包含 ndarray 每个维度的大小的 tuple.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">nd</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randint</span><span class="ss">(</span><span class="mi">10</span>, <span class="nv">size</span> <span class="o">=</span> <span class="ss">(</span><span class="mi">3</span>, <span class="mi">4</span><span class="ss">))</span>
-# <span class="nv">array</span><span class="ss">(</span>[[<span class="mi">6</span>, <span class="mi">2</span>, <span class="mi">4</span>, <span class="mi">5</span>],
-#        [<span class="mi">5</span>, <span class="mi">3</span>, <span class="mi">6</span>, <span class="mi">9</span>],
-#        [<span class="mi">5</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">5</span>]]<span class="ss">)</span>
-<span class="nv">nd</span>.<span class="nv">size</span>
-# <span class="mi">12</span>
-<span class="nv">nd</span>.<span class="nv">dtype</span>
-# <span class="nv">dtype</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">int64</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">nd</span>.<span class="nv">itemsize</span>
-# <span class="mi">8</span>
-<span class="nv">nd</span>.<span class="nv">ndim</span>
-# <span class="mi">2</span>
-<span class="nv">nd</span>.<span class="nv">shape</span>
-# <span class="ss">(</span><span class="mi">3</span>, <span class="mi">4</span><span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd = np.random.randint(10, size = (3, 4))</span>
+<span class="err"># array([[6, 2, 4, 5],</span>
+<span class="err">#        [5, 3, 6, 9],</span>
+<span class="err">#        [5, 1, 3, 5]])</span>
+<span class="err">nd.size</span>
+<span class="err"># 12</span>
+<span class="err">nd.dtype</span>
+<span class="err"># dtype(&#39;int64&#39;)</span>
+<span class="err">nd.itemsize</span>
+<span class="err"># 8</span>
+<span class="err">nd.ndim</span>
+<span class="err"># 2</span>
+<span class="err">nd.shape</span>
+<span class="err"># (3, 4)</span>
+</code></pre></div>
 
 
 <p>NumPy 提供了常用的对 ndarray 进行变换的方法.</p>
@@ -167,53 +167,53 @@
 <li><code>np.ravel</code>: 把 ndarray 拉成线性, 即一个维度的长度为其元素数量, 其他维度为 1.</li>
 <li><code>np.squeeze</code>: 返回一个把长度为 1 的维度去掉的 ndarray.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">nd</span><span class="p">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
-<span class="n">nd</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
-<span class="n">nd</span><span class="p">.</span><span class="n">ravel</span><span class="p">()</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-<span class="n">nd</span><span class="p">.</span><span class="n">ravel</span><span class="p">().</span><span class="n">reshape</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">4</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">6</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">9</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">1</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">]])</span>
-<span class="n">nd</span><span class="p">.</span><span class="n">ravel</span><span class="p">().</span><span class="n">reshape</span><span class="p">((</span><span class="mi">12</span><span class="p">,</span> <span class="mi">1</span><span class="p">)).</span><span class="n">sequeeze</span><span class="p">()</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-<span class="n">nd</span><span class="p">.</span><span class="n">resize</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">nd</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd.reshape((2, 6))</span>
+<span class="err"># array([[6, 2, 4, 5, 5, 3],</span>
+<span class="err">#        [6, 9, 5, 1, 3, 5]])</span>
+<span class="err">nd</span>
+<span class="err"># array([[6, 2, 4, 5],</span>
+<span class="err">#        [5, 3, 6, 9],</span>
+<span class="err">#        [5, 1, 3, 5]])</span>
+<span class="err">nd.ravel()</span>
+<span class="err"># array([6, 2, 4, 5, 5, 3, 6, 9, 5, 1, 3, 5])</span>
+<span class="err">nd.ravel().reshape((12, 1))</span>
+<span class="err"># array([[6],</span>
+<span class="err">#        [2],</span>
+<span class="err">#        [4],</span>
+<span class="err">#        [5],</span>
+<span class="err">#        [5],</span>
+<span class="err">#        [3],</span>
+<span class="err">#        [6],</span>
+<span class="err">#        [9],</span>
+<span class="err">#        [5],</span>
+<span class="err">#        [1],</span>
+<span class="err">#        [3],</span>
+<span class="err">#        [5]])</span>
+<span class="err">nd.ravel().reshape((12, 1)).sequeeze()</span>
+<span class="err"># array([6, 2, 4, 5, 5, 3, 6, 9, 5, 1, 3, 5])</span>
+<span class="err">nd.resize((2, 6))</span>
+<span class="err">nd</span>
+<span class="err"># array([[6, 2, 4, 5, 5, 3],</span>
+<span class="err">#        [6, 9, 5, 1, 3, 5]])</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>np.nonzero</code>: 返回元素中非零的索引, 如果是多维的, 则每个维度都会有一个包含该维度的序号的 ndarray.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">nd</span><span class="p">.</span><span class="n">nonzero</span><span class="p">()</span>
-<span class="o">#</span> <span class="p">(</span><span class="nb">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
-<span class="o">#</span>  <span class="nb">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]))</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd.nonzero()</span>
+<span class="err"># (array([0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1]),</span>
+<span class="err">#  array([0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5]))</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>np.repeat</code>: 复制 ndarray 的每个元素的值, 返回一个延长的 ndarray, 需要传入复制的次数作为参数. 当 ndarray 不是一维的时候, 返回的 ndarray 也会是一维的.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">nd</span><span class="p">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span>
-<span class="o">#</span>        <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd.repeat(2)</span>
+<span class="err"># array([6, 6, 2, 2, 4, 4, 5, 5, 5, 5, 3, 3,</span>
+<span class="err">#        6, 6, 9, 9, 5, 5, 1, 1, 3, 3, 5, 5])</span>
+</code></pre></div>
 
 
 <ul>
@@ -221,10 +221,10 @@
 <li><code>np.itemset</code>: 按照元素的序号设定元素的值.</li>
 <li><code>np.put</code>: 按照元素的索引设定元素的值.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">nd</span><span class="p">.</span><span class="n">compress</span><span class="p">([</span><span class="k">True</span><span class="p">,</span> <span class="k">True</span><span class="p">,</span> <span class="k">False</span><span class="p">,</span> <span class="k">False</span><span class="p">,</span> <span class="k">True</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">]])</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd.compress([True, True, False, False, True], axis = 1)</span>
+<span class="err"># array([[6, 2, 5],</span>
+<span class="err">#        [6, 9, 3]])</span>
+</code></pre></div>
 
 
 <p>ndarray 也有排序的方法可以使用.</p>
@@ -236,34 +236,34 @@
 </ul>
 <h4>逻辑计算</h4>
 <p>如果想要对布尔数组进行一个对一个地和与或操作, Python 的 and 和 or 操作符是不能用的, 而应该使用 numpy 提供的函数: <code>np.logical_and</code>, <code>np.logical_or</code> 和 <code>np.logical_xor</code> 接受两个等长的布尔数组, 分别进行元素一一对应的和, 或, 异或的逻辑运算; <code>np.logical_not</code> 则是对布尔数组进行取非运算.</p>
-<div class="highlight"><pre><span></span><span class="nv">bool1</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="nv">True</span>, <span class="nv">False</span>], <span class="mi">5</span><span class="ss">)</span>
-<span class="nv">bool1</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="nv">True</span>,  <span class="nv">True</span>, <span class="nv">False</span>,  <span class="nv">True</span>,  <span class="nv">True</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-<span class="nv">bool2</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="nv">True</span>, <span class="nv">False</span>], <span class="mi">5</span><span class="ss">)</span>
-<span class="nv">bool2</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="nv">True</span>, <span class="nv">False</span>, <span class="nv">False</span>,  <span class="nv">True</span>,  <span class="nv">True</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">logical_and</span><span class="ss">(</span><span class="nv">bool1</span>, <span class="nv">bool2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="nv">True</span>, <span class="nv">False</span>, <span class="nv">False</span>,  <span class="nv">True</span>,  <span class="nv">True</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">logical_or</span><span class="ss">(</span><span class="nv">bool1</span>, <span class="nv">bool2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="nv">True</span>,  <span class="nv">True</span>, <span class="nv">False</span>,  <span class="nv">True</span>,  <span class="nv">True</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">logical_xor</span><span class="ss">(</span><span class="nv">bool1</span>, <span class="nv">bool2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="nv">False</span>,  <span class="nv">True</span>, <span class="nv">False</span>, <span class="nv">False</span>, <span class="nv">False</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">logical_not</span><span class="ss">(</span><span class="nv">bool1</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="nv">False</span>, <span class="nv">False</span>,  <span class="nv">True</span>, <span class="nv">False</span>, <span class="nv">False</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">bool1 = np.random.choice([True, False], 5)</span>
+<span class="err">bool1</span>
+<span class="err"># array([ True,  True, False,  True,  True], dtype=bool)</span>
+<span class="err">bool2 = np.random.choice([True, False], 5)</span>
+<span class="err">bool2</span>
+<span class="err"># array([ True, False, False,  True,  True], dtype=bool)</span>
+<span class="err">np.logical_and(bool1, bool2)</span>
+<span class="err"># array([ True, False, False,  True,  True], dtype=bool)</span>
+<span class="err">np.logical_or(bool1, bool2)</span>
+<span class="err"># array([ True,  True, False,  True,  True], dtype=bool)</span>
+<span class="err">np.logical_xor(bool1, bool2)</span>
+<span class="err"># array([False,  True, False, False, False], dtype=bool)</span>
+<span class="err">np.logical_not(bool1)</span>
+<span class="err"># array([False, False,  True, False, False], dtype=bool)</span>
+</code></pre></div>
 
 
 <ul>
 <li><code>np.all</code>: 如果所有的值都是真或者非零则返回 True, 否则返回 False.</li>
 <li><code>np.any</code>: ndarray 中有任何真值或者非零值则返回 True.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">mybool</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="nv">True</span>, <span class="nv">False</span>], <span class="mi">10</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="nv">False</span>,  <span class="nv">True</span>,  <span class="nv">True</span>, <span class="nv">False</span>,  <span class="nv">True</span>, <span class="nv">False</span>,  <span class="nv">True</span>, <span class="nv">False</span>,  <span class="nv">True</span>, <span class="nv">False</span>], <span class="nv">dtype</span><span class="o">=</span><span class="nv">bool</span><span class="ss">)</span>
-<span class="nv">mybool</span>.<span class="nv">all</span><span class="ss">()</span>
-# <span class="nv">False</span>
-<span class="nv">mybool</span>.<span class="nv">any</span><span class="ss">()</span>
-# <span class="nv">True</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">mybool = np.random.choice([True, False], 10)</span>
+<span class="err"># array([False,  True,  True, False,  True, False,  True, False,  True, False], dtype=bool)</span>
+<span class="err">mybool.all()</span>
+<span class="err"># False</span>
+<span class="err">mybool.any()</span>
+<span class="err"># True</span>
+</code></pre></div>
 
 
 <h4>数值计算</h4>
@@ -287,13 +287,13 @@
 <li><code>np.modf</code>: 返回一个 tuple, 包含两个数组, 一个是小数部分, 一个是整数部分.</li>
 <li><code>np.cos</code>, <code>np.cosh</code>, <code>np.sin</code>, <code>np.sinh</code>, <code>np.tan</code>, <code>np.tanh</code>, <code>np.arccos</code>, <code>np.arccosh</code>, <code>np.arcsin</code>, <code>np.arcsinh</code>, <code>np.arctan</code>, <code>np.arctanh</code>: 三角函数和反三角函数.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">nd</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randn</span><span class="ss">(</span><span class="mi">10</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="o">-</span><span class="mi">1</span>.<span class="mi">38153059</span>, <span class="o">-</span><span class="mi">0</span>.<span class="mi">66621482</span>, <span class="o">-</span><span class="mi">0</span>.<span class="mi">58001284</span>, <span class="o">-</span><span class="mi">0</span>.<span class="mi">81628342</span>,  <span class="mi">0</span>.<span class="mi">0656215</span> ,
-#        <span class="o">-</span><span class="mi">0</span>.<span class="mi">01538155</span>, <span class="o">-</span><span class="mi">0</span>.<span class="mi">77812592</span>,  <span class="mi">0</span>.<span class="mi">94664076</span>,  <span class="mi">0</span>.<span class="mi">85143997</span>, <span class="o">-</span><span class="mi">0</span>.<span class="mi">68542156</span>]<span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">absolute</span><span class="ss">(</span><span class="nv">nd</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="mi">1</span>.<span class="mi">38153059</span>,  <span class="mi">0</span>.<span class="mi">66621482</span>,  <span class="mi">0</span>.<span class="mi">58001284</span>,  <span class="mi">0</span>.<span class="mi">81628342</span>,  <span class="mi">0</span>.<span class="mi">0656215</span> ,
-#         <span class="mi">0</span>.<span class="mi">01538155</span>,  <span class="mi">0</span>.<span class="mi">77812592</span>,  <span class="mi">0</span>.<span class="mi">94664076</span>,  <span class="mi">0</span>.<span class="mi">85143997</span>,  <span class="mi">0</span>.<span class="mi">68542156</span>]<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd = np.random.randn(10)</span>
+<span class="err"># array([-1.38153059, -0.66621482, -0.58001284, -0.81628342,  0.0656215 ,</span>
+<span class="err">#        -0.01538155, -0.77812592,  0.94664076,  0.85143997, -0.68542156])</span>
+<span class="err">np.absolute(nd)</span>
+<span class="err"># array([ 1.38153059,  0.66621482,  0.58001284,  0.81628342,  0.0656215 ,</span>
+<span class="err">#         0.01538155,  0.77812592,  0.94664076,  0.85143997,  0.68542156])</span>
+</code></pre></div>
 
 
 <p>还有一些双目运算函数.</p>
@@ -308,15 +308,15 @@
 <li><code>np.minimum</code>, <code>np.fmin</code>: 一一比较两个数组中元素大小, 返回相应位置最小的. <code>np.fmin</code> 会忽略 np.NAN, 而 <code>np.minimum</code> 则返回 np.NAN.</li>
 <li><code>np.copysign</code>: 把第二个数组中的元素的符号复制给第一个数组中的相应元素.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">nd1</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randint</span><span class="ss">(</span><span class="mi">0</span>, <span class="mi">20</span>, <span class="mi">10</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="mi">8</span>, <span class="mi">15</span>, <span class="mi">15</span>,  <span class="mi">0</span>, <span class="mi">10</span>, <span class="mi">13</span>, <span class="mi">19</span>,  <span class="mi">5</span>, <span class="mi">19</span>, <span class="mi">10</span>]<span class="ss">)</span>
-<span class="nv">nd2</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randint</span><span class="ss">(</span><span class="mi">0</span>, <span class="mi">20</span>, <span class="mi">10</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="mi">8</span>, <span class="mi">18</span>,  <span class="mi">1</span>, <span class="mi">15</span>, <span class="mi">16</span>,  <span class="mi">2</span>,  <span class="mi">5</span>, <span class="mi">12</span>, <span class="mi">15</span>,  <span class="mi">9</span>]<span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">add</span><span class="ss">(</span><span class="nv">nd1</span>, <span class="nv">nd2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="mi">16</span>, <span class="mi">33</span>, <span class="mi">16</span>, <span class="mi">15</span>, <span class="mi">26</span>, <span class="mi">15</span>, <span class="mi">24</span>, <span class="mi">17</span>, <span class="mi">34</span>, <span class="mi">19</span>]<span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">maximum</span><span class="ss">(</span><span class="nv">nd1</span>, <span class="nv">nd2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="mi">8</span>, <span class="mi">18</span>, <span class="mi">15</span>, <span class="mi">15</span>, <span class="mi">16</span>, <span class="mi">13</span>, <span class="mi">19</span>, <span class="mi">12</span>, <span class="mi">19</span>, <span class="mi">10</span>]<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd1 = np.random.randint(0, 20, 10)</span>
+<span class="err"># array([ 8, 15, 15,  0, 10, 13, 19,  5, 19, 10])</span>
+<span class="err">nd2 = np.random.randint(0, 20, 10)</span>
+<span class="err"># array([ 8, 18,  1, 15, 16,  2,  5, 12, 15,  9])</span>
+<span class="err">np.add(nd1, nd2)</span>
+<span class="err"># array([16, 33, 16, 15, 26, 15, 24, 17, 34, 19])</span>
+<span class="err">np.maximum(nd1, nd2)</span>
+<span class="err"># array([ 8, 18, 15, 15, 16, 13, 19, 12, 19, 10])</span>
+</code></pre></div>
 
 
 <h4>集合运算</h4>
@@ -329,28 +329,28 @@
 <li><code>np.setdiff1d</code>: 返回一个数组, 其中包含在第一个输入数组而不在第二个输入数组的元素.</li>
 <li><code>np.setxor1d</code> 返回不同时在两个输入数组的元素的数组.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">nd1</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>], <span class="mi">10</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">nd2</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">choice</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">F</span><span class="s1">&#39;</span>], <span class="mi">10</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">F</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">F</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">unique</span><span class="ss">(</span><span class="nv">nd1</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">intersect1d</span><span class="ss">(</span><span class="nv">nd1</span>, <span class="nv">nd2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">D</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">setdiff1d</span><span class="ss">(</span><span class="nv">nd1</span>, <span class="nv">nd2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">setdiff1d</span><span class="ss">(</span><span class="nv">nd2</span>, <span class="nv">nd1</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">F</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">np</span>.<span class="nv">setxor1d</span><span class="ss">(</span><span class="nv">nd1</span>, <span class="nv">nd2</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="s1">&#39;</span><span class="s">A</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">B</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">C</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">E</span><span class="s1">&#39;</span>, <span class="s1">&#39;</span><span class="s">F</span><span class="s1">&#39;</span>], 
-#       <span class="nv">dtype</span><span class="o">=</span><span class="s1">&#39;</span><span class="s">&lt;U1</span><span class="s1">&#39;</span><span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd1 = np.random.choice([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;], 10)</span>
+<span class="err"># array([&#39;A&#39;, &#39;D&#39;, &#39;B&#39;, &#39;C&#39;, &#39;B&#39;, &#39;B&#39;, &#39;D&#39;, &#39;A&#39;, &#39;C&#39;, &#39;B&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+<span class="err">nd2 = np.random.choice([&#39;D&#39;, &#39;E&#39;, &#39;F&#39;], 10)</span>
+<span class="err"># array([&#39;F&#39;, &#39;E&#39;, &#39;E&#39;, &#39;D&#39;, &#39;D&#39;, &#39;D&#39;, &#39;D&#39;, &#39;E&#39;, &#39;E&#39;, &#39;F&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+<span class="err">np.unique(nd1)</span>
+<span class="err"># array([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+<span class="err">np.intersect1d(nd1, nd2)</span>
+<span class="err"># array([&#39;D&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+<span class="err">np.setdiff1d(nd1, nd2)</span>
+<span class="err"># array([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+<span class="err">np.setdiff1d(nd2, nd1)</span>
+<span class="err"># array([&#39;E&#39;, &#39;F&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+<span class="err">np.setxor1d(nd1, nd2)</span>
+<span class="err"># array([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;E&#39;, &#39;F&#39;], </span>
+<span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
+</code></pre></div>
 
 
 <h4>统计量</h4>
@@ -365,24 +365,24 @@
 <li><code>np.cumsum</code>: 累加.</li>
 <li><code>np.cumprod</code>: 累乘.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">nd</span> <span class="o">=</span> <span class="nv">np</span>.<span class="k">random</span>.<span class="nv">randn</span><span class="ss">(</span><span class="mi">100</span><span class="ss">)</span>  # 随机产生 <span class="mi">100</span> 个随机数.
-<span class="nv">nd</span>.<span class="nv">sum</span><span class="ss">()</span>
-# <span class="o">-</span><span class="mi">13</span>.<span class="mi">300540142526414</span>
-<span class="nv">np</span>.<span class="nv">mean</span><span class="ss">(</span><span class="nv">nd</span><span class="ss">)</span>
-# <span class="o">-</span><span class="mi">0</span>.<span class="mi">13300540142526412</span>
-<span class="nv">nd</span>.<span class="nv">std</span><span class="ss">()</span>
-# <span class="mi">1</span>.<span class="mi">0860199448302112</span>
-<span class="nv">nd</span>.<span class="nv">var</span><span class="ss">()</span>
-# <span class="mi">1</span>.<span class="mi">1794393205690152</span>
-<span class="nv">nd</span>.<span class="nv">min</span><span class="ss">()</span>, <span class="nv">np</span>.<span class="nv">max</span><span class="ss">(</span><span class="nv">nd</span><span class="ss">)</span>
-# <span class="ss">(</span><span class="o">-</span><span class="mi">3</span>.<span class="mi">2346987329963834</span>, <span class="mi">2</span>.<span class="mi">3950110710189687</span><span class="ss">)</span>
-<span class="nv">nd</span>.<span class="nv">argmin</span><span class="ss">()</span>, <span class="nv">np</span>.<span class="nv">argmax</span><span class="ss">(</span><span class="nv">nd</span><span class="ss">)</span>
-# <span class="ss">(</span><span class="mi">24</span>, <span class="mi">31</span><span class="ss">)</span>
-<span class="nv">nd</span>.<span class="nv">cumsum</span><span class="ss">()</span>
-# <span class="nv">array</span><span class="ss">(</span>[ <span class="o">-</span><span class="mi">0</span>.<span class="mi">55436107</span>,  <span class="o">-</span><span class="mi">0</span>.<span class="mi">86184171</span>,  <span class="o">-</span><span class="mi">2</span>.<span class="mi">47687452</span>,  <span class="o">-</span><span class="mi">5</span>.<span class="mi">0649675</span> ,
-#            ...            ...            ...          ...
-#        <span class="o">-</span><span class="mi">13</span>.<span class="mi">96853959</span>, <span class="o">-</span><span class="mi">13</span>.<span class="mi">59106636</span>, <span class="o">-</span><span class="mi">14</span>.<span class="mi">16799745</span>, <span class="o">-</span><span class="mi">13</span>.<span class="mi">30054014</span>]<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd = np.random.randn(100)  # 随机产生 100 个随机数.</span>
+<span class="err">nd.sum()</span>
+<span class="err"># -13.300540142526414</span>
+<span class="err">np.mean(nd)</span>
+<span class="err"># -0.13300540142526412</span>
+<span class="err">nd.std()</span>
+<span class="err"># 1.0860199448302112</span>
+<span class="err">nd.var()</span>
+<span class="err"># 1.1794393205690152</span>
+<span class="err">nd.min(), np.max(nd)</span>
+<span class="err"># (-3.2346987329963834, 2.3950110710189687)</span>
+<span class="err">nd.argmin(), np.argmax(nd)</span>
+<span class="err"># (24, 31)</span>
+<span class="err">nd.cumsum()</span>
+<span class="err"># array([ -0.55436107,  -0.86184171,  -2.47687452,  -5.0649675 ,</span>
+<span class="err">#            ...            ...            ...          ...</span>
+<span class="err">#        -13.96853959, -13.59106636, -14.16799745, -13.30054014])</span>
+</code></pre></div>
 
 
 <h4>线性代数</h4>
@@ -400,20 +400,20 @@
 <li><code>np.linalg.matrix_rank</code>: 求一个矩阵的秩.</li>
 <li><code>np.linalg.svd</code>: 奇异值分解.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">nd1</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
-<span class="n">nd2</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">).</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]])</span>
-<span class="n">nd1</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">nd2</span><span class="p">)</span>
-<span class="o">#</span> <span class="nb">array</span><span class="p">([[</span> <span class="mi">50</span><span class="p">,</span>  <span class="mi">60</span><span class="p">],</span>
-<span class="o">#</span>        <span class="p">[</span><span class="mi">114</span><span class="p">,</span> <span class="mi">140</span><span class="p">]])</span>
-<span class="n">nd1</span><span class="p">.</span><span class="n">dot</span><span class="p">(</span><span class="n">nd2</span><span class="p">).</span><span class="n">trace</span><span class="p">()</span>
-<span class="o">#</span> <span class="mi">190</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">nd1 = np.arange(9, 1).reshape(2,4)</span>
+<span class="err"># array([[1, 2, 3, 4],</span>
+<span class="err">#        [5, 6, 7, 8]])</span>
+<span class="err">nd2 = np.arange(1, 9).reshape(4,2)</span>
+<span class="err"># array([[1, 2],</span>
+<span class="err">#        [3, 4],</span>
+<span class="err">#        [5, 6],</span>
+<span class="err">#        [7, 8]])</span>
+<span class="err">nd1.dot(nd2)</span>
+<span class="err"># array([[ 50,  60],</span>
+<span class="err">#        [114, 140]])</span>
+<span class="err">nd1.dot(nd2).trace()</span>
+<span class="err"># 190</span>
+</code></pre></div>
 
 
 <h4>随机数和随机排列</h4>
@@ -432,12 +432,12 @@
 <li><code>np.random.gamma</code>: 从 gamma 分布中抽取一定数量的样本.</li>
 <li><code>np.random.uniform</code>: 从均匀分布中抽取一定数量的样本.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="nv">np</span>.<span class="k">random</span>.<span class="nv">permutation</span><span class="ss">(</span><span class="mi">5</span><span class="ss">)</span>
-# <span class="nv">array</span><span class="ss">(</span>[<span class="mi">2</span>, <span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">3</span>, <span class="mi">4</span>]<span class="ss">)</span>
-<span class="nv">np</span>.<span class="k">random</span>.<span class="nv">permutation</span><span class="ss">(</span><span class="nv">np</span>.<span class="nv">arange</span><span class="ss">(</span><span class="mi">6</span><span class="ss">)</span>.<span class="nv">reshape</span><span class="ss">((</span><span class="mi">2</span>,<span class="mi">3</span><span class="ss">)))</span>
-# <span class="nv">array</span><span class="ss">(</span>[[<span class="mi">3</span>, <span class="mi">4</span>, <span class="mi">5</span>],
-#        [<span class="mi">0</span>, <span class="mi">1</span>, <span class="mi">2</span>]]<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">np.random.permutation(5)</span>
+<span class="err"># array([2, 0, 1, 3, 4])</span>
+<span class="err">np.random.permutation(np.arange(6).reshape((2,3)))</span>
+<span class="err"># array([[3, 4, 5],</span>
+<span class="err">#        [0, 1, 2]])</span>
+</code></pre></div>
 
 
 <h4>缺失值</h4>

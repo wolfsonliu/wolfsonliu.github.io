@@ -91,7 +91,7 @@ refs/heads/master</code>。具体的 head 对应的 commit 的文件 SHA-1 需�
 <h3>config</h3>
 <p>当前 Git 的配置文件。<code>git config --local</code> 的配置信息将存在该文件中，如
 user 信息，remote 的信息，branch 的信息等。如例子中：</p>
-<div class="highlight"><pre><span></span>cat .git/config
+<div class="highlight"><pre><span></span><code>cat .git/config
 
 <span class="o">[</span>core<span class="o">]</span>
       <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span>
@@ -107,7 +107,7 @@ user 信息，remote 的信息，branch 的信息等。如例子中：</p>
 <span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
       <span class="nv">remote</span> <span class="o">=</span> origin
       <span class="nv">merge</span> <span class="o">=</span> refs/heads/master
-</pre></div>
+</code></pre></div>
 
 
 <h3>description</h3>
@@ -131,12 +131,12 @@ user 信息，remote 的信息，branch 的信息等。如例子中：</p>
 <p>存储对象的子文件夹下面存储有所有 SHA-1 前两个字符与子文件夹名相同的所
 有 commit 文件，tree 文件和具体的 blob 文件，以原 SHA-1 除去前两个字
 符剩下的字符命名。例如例子中，</p>
-<div class="highlight"><pre><span></span>  <span class="err">│</span>   <span class="err">├──</span> <span class="n">objects</span>
-  <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">02</span>
-  <span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a5f419fa69f1df550172be067237223b246d36</span>
-  <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">0</span><span class="n">f</span>
-  <span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">  │   ├── objects</span>
+<span class="err">  │   │   ├── 02</span>
+<span class="err">  │   │   │   └── a5f419fa69f1df550172be067237223b246d36</span>
+<span class="err">  │   │   ├── 0f</span>
+<span class="err">  │   │   │   └── b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
+</code></pre></div>
 
 
 <p><code>02a5f419fa69f1df550172be067237223b246d36</code> 文件存储路径为 <code>objects/02/a5f419fa69f1df550172be067237223b246d36</code></p>
@@ -154,83 +154,83 @@ user 信息，remote 的信息，branch 的信息等。如例子中：</p>
   * <code>refs/tags</code>：文件夹，存储所有的 tags 的信息。</p>
 <h2>一个例子</h2>
 <p>假如我们的项目有.gitignore 和 file1 这样两个文件和保存 markdown 笔记的 md 文件夹， .git 文件夹下面有如下的内容</p>
-<div class="highlight"><pre><span></span><span class="p">.</span>
-<span class="err">├──</span> <span class="p">.</span><span class="n">git</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">COMMIT_EDITMSG</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">HEAD</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">branches</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">config</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">description</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">hooks</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">applypatch</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="k">commit</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">fsmonitor</span><span class="o">-</span><span class="n">watchman</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">post</span><span class="o">-</span><span class="k">update</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">applypatch</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="k">commit</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">push</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">rebase</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">pre</span><span class="o">-</span><span class="n">receive</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="k">prepare</span><span class="o">-</span><span class="k">commit</span><span class="o">-</span><span class="n">msg</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="k">update</span><span class="p">.</span><span class="n">sample</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="k">index</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">info</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">exclude</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">logs</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">HEAD</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">refs</span>
-<span class="err">│</span>   <span class="err">│</span>       <span class="err">├──</span> <span class="n">heads</span>
-<span class="err">│</span>   <span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">master</span>
-<span class="err">│</span>   <span class="err">│</span>       <span class="err">└──</span> <span class="n">remotes</span>
-<span class="err">│</span>   <span class="err">│</span>           <span class="err">└──</span> <span class="n">origin</span>
-<span class="err">│</span>   <span class="err">│</span>               <span class="err">└──</span> <span class="n">master</span>
-<span class="err">│</span>   <span class="err">├──</span> <span class="n">objects</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">02</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a5f419fa69f1df550172be067237223b246d36</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">0</span><span class="n">f</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">16</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">a63a284776906e0949a93567a0a35145e27067</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">2</span><span class="n">a</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">65</span><span class="n">a9ad4587f6c689dc66b77917ff96f5afe653</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">2</span><span class="n">b</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">548176</span><span class="n">ae75a1f62d6635409cc70c1ff6c2f25b</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">30</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">3</span><span class="n">ff981c488b812b6215f7db7920dedb3b59d9a</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">50</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">d4402de7d0bbcfae79a23cd910c2eb7e61db30</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">68</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">23658394</span><span class="n">fecca1415c17bccebf8dba3ed0cc54</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">7</span><span class="n">e</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">03</span><span class="n">b5bfc52c8e4cf3cb422ef802fa36254d20a5</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">9</span><span class="n">e</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">31</span><span class="n">cfc76e9ef587b6af3fd4b09e3d09afb6dd26</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">b2</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">5</span><span class="n">c15b81fae06e1c55946ac6270bfdb293870e8</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">bd</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">c705169c09f886182d5dfe731f241c3a4e0586</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">d1</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="mi">44</span><span class="n">d896cc3a57a21f1fdd443b2b76620584fd76</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="mi">4</span><span class="n">ca1be4beb6730ad33df72ceec1201692477c9</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">├──</span> <span class="n">info</span>
-<span class="err">│</span>   <span class="err">│</span>   <span class="err">└──</span> <span class="n">pack</span>
-<span class="err">│</span>   <span class="err">└──</span> <span class="n">refs</span>
-<span class="err">│</span>       <span class="err">├──</span> <span class="n">heads</span>
-<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">master</span>
-<span class="err">│</span>       <span class="err">├──</span> <span class="n">remotes</span>
-<span class="err">│</span>       <span class="err">│</span>   <span class="err">└──</span> <span class="n">origin</span>
-<span class="err">│</span>       <span class="err">│</span>       <span class="err">└──</span> <span class="n">master</span>
-<span class="err">│</span>       <span class="err">└──</span> <span class="n">tags</span>
-<span class="err">├──</span> <span class="p">.</span><span class="n">gitignore</span>
-<span class="err">├──</span> <span class="n">file1</span>
-<span class="err">├──</span> <span class="n">file1</span><span class="o">~</span>
-<span class="err">└──</span> <span class="n">md</span>
-    <span class="err">├──</span> <span class="n">git_config</span><span class="p">.</span><span class="n">md</span>
-    <span class="err">├──</span> <span class="n">git_file_structure</span><span class="p">.</span><span class="n">md</span>
-    <span class="err">├──</span> <span class="n">git_logic</span><span class="p">.</span><span class="n">md</span>
-    <span class="err">├──</span> <span class="n">understand_git_index</span><span class="p">.</span><span class="n">md</span>
-    <span class="err">└──</span> <span class="n">version_control_brief</span><span class="p">.</span><span class="n">md</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">.</span>
+<span class="err">├── .git</span>
+<span class="err">│   ├── COMMIT_EDITMSG</span>
+<span class="err">│   ├── HEAD</span>
+<span class="err">│   ├── branches</span>
+<span class="err">│   ├── config</span>
+<span class="err">│   ├── description</span>
+<span class="err">│   ├── hooks</span>
+<span class="err">│   │   ├── applypatch-msg.sample</span>
+<span class="err">│   │   ├── commit-msg.sample</span>
+<span class="err">│   │   ├── fsmonitor-watchman.sample</span>
+<span class="err">│   │   ├── post-update.sample</span>
+<span class="err">│   │   ├── pre-applypatch.sample</span>
+<span class="err">│   │   ├── pre-commit.sample</span>
+<span class="err">│   │   ├── pre-push.sample</span>
+<span class="err">│   │   ├── pre-rebase.sample</span>
+<span class="err">│   │   ├── pre-receive.sample</span>
+<span class="err">│   │   ├── prepare-commit-msg.sample</span>
+<span class="err">│   │   └── update.sample</span>
+<span class="err">│   ├── index</span>
+<span class="err">│   ├── info</span>
+<span class="err">│   │   └── exclude</span>
+<span class="err">│   ├── logs</span>
+<span class="err">│   │   ├── HEAD</span>
+<span class="err">│   │   └── refs</span>
+<span class="err">│   │       ├── heads</span>
+<span class="err">│   │       │   └── master</span>
+<span class="err">│   │       └── remotes</span>
+<span class="err">│   │           └── origin</span>
+<span class="err">│   │               └── master</span>
+<span class="err">│   ├── objects</span>
+<span class="err">│   │   ├── 02</span>
+<span class="err">│   │   │   └── a5f419fa69f1df550172be067237223b246d36</span>
+<span class="err">│   │   ├── 0f</span>
+<span class="err">│   │   │   └── b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
+<span class="err">│   │   ├── 16</span>
+<span class="err">│   │   │   └── a63a284776906e0949a93567a0a35145e27067</span>
+<span class="err">│   │   ├── 2a</span>
+<span class="err">│   │   │   └── 65a9ad4587f6c689dc66b77917ff96f5afe653</span>
+<span class="err">│   │   ├── 2b</span>
+<span class="err">│   │   │   └── 548176ae75a1f62d6635409cc70c1ff6c2f25b</span>
+<span class="err">│   │   ├── 30</span>
+<span class="err">│   │   │   └── 3ff981c488b812b6215f7db7920dedb3b59d9a</span>
+<span class="err">│   │   ├── 50</span>
+<span class="err">│   │   │   └── d4402de7d0bbcfae79a23cd910c2eb7e61db30</span>
+<span class="err">│   │   ├── 68</span>
+<span class="err">│   │   │   └── 23658394fecca1415c17bccebf8dba3ed0cc54</span>
+<span class="err">│   │   ├── 7e</span>
+<span class="err">│   │   │   └── 03b5bfc52c8e4cf3cb422ef802fa36254d20a5</span>
+<span class="err">│   │   ├── 9e</span>
+<span class="err">│   │   │   └── 31cfc76e9ef587b6af3fd4b09e3d09afb6dd26</span>
+<span class="err">│   │   ├── b2</span>
+<span class="err">│   │   │   └── 5c15b81fae06e1c55946ac6270bfdb293870e8</span>
+<span class="err">│   │   ├── bd</span>
+<span class="err">│   │   │   └── c705169c09f886182d5dfe731f241c3a4e0586</span>
+<span class="err">│   │   ├── d1</span>
+<span class="err">│   │   │   ├── 44d896cc3a57a21f1fdd443b2b76620584fd76</span>
+<span class="err">│   │   │   └── 4ca1be4beb6730ad33df72ceec1201692477c9</span>
+<span class="err">│   │   ├── info</span>
+<span class="err">│   │   └── pack</span>
+<span class="err">│   └── refs</span>
+<span class="err">│       ├── heads</span>
+<span class="err">│       │   └── master</span>
+<span class="err">│       ├── remotes</span>
+<span class="err">│       │   └── origin</span>
+<span class="err">│       │       └── master</span>
+<span class="err">│       └── tags</span>
+<span class="err">├── .gitignore</span>
+<span class="err">├── file1</span>
+<span class="err">├── file1~</span>
+<span class="err">└── md</span>
+<span class="err">    ├── git_config.md</span>
+<span class="err">    ├── git_file_structure.md</span>
+<span class="err">    ├── git_logic.md</span>
+<span class="err">    ├── understand_git_index.md</span>
+<span class="err">    └── version_control_brief.md</span>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -253,20 +253,6 @@ user 信息，remote 的信息，branch 的信息等。如例子中：</p>
 
                 <span class="mail"><a href="mailto:?subject=Git 存储文件结构&amp;body=Viens découvrir un article à propos de [Git 存储文件结构] sur le site de Wolfson Liu. ../../archive/2018/git-cun-chu-wen-jian-jie-gou.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/git-cun-chu-wen-jian-jie-gou.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

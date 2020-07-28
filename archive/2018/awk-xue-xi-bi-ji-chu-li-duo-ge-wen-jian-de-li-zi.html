@@ -80,21 +80,21 @@
 这个时候就需要去判断当前是哪个文件，并采取相应的操作。</p>
 <p>如果我们有两个文件，分别为：</p>
 <p>File1</p>
-<div class="highlight"><pre><span></span><span class="n">one</span> <span class="mi">1</span>
-<span class="n">two</span> <span class="mi">2</span>
-<span class="n">three</span> <span class="mi">3</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">one 1</span>
+<span class="err">two 2</span>
+<span class="err">three 3</span>
+</code></pre></div>
 
 
 <p>File2</p>
-<div class="highlight"><pre><span></span><span class="n">one</span> <span class="mi">3</span>
-<span class="n">two</span> <span class="mi">4</span>
-<span class="n">four</span> <span class="mi">5</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">one 3</span>
+<span class="err">two 4</span>
+<span class="err">four 5</span>
+</code></pre></div>
 
 
 <p>如果我只想输出File1中的第一列在File2中出现的行，可以在 <code>my.awk</code> 中写下以下代码：</p>
-<div class="highlight"><pre><span></span><span class="nb">BEGIN</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nb">BEGIN</span> <span class="p">{</span>
     <span class="nb">FS</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nb">FNR</span><span class="o">==</span><span class="nb">NR</span> <span class="p">{</span>
@@ -105,14 +105,14 @@
         <span class="kr">print</span> <span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">];</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>在命令行运行该段代码：</p>
-<div class="highlight"><pre><span></span>$ awk -f my.awk File1 File2
+<div class="highlight"><pre><span></span><code>$ awk -f my.awk File1 File2
 one <span class="m">1</span>
 two <span class="m">2</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>在上面的例子中，我使用了 <code>FNR == NR</code> 来判断是否还是第一个文件。
@@ -123,7 +123,7 @@ two <span class="m">2</span>
 想要区分每个不同文件来说，则相对困难。
 在多于两个文件的情况下可以使用文件名 <code>FILENAME</code> 变量来直接判断。
 修改 <code>my.awk</code> 代码如下：</p>
-<div class="highlight"><pre><span></span><span class="nb">BEGIN</span> <span class="p">{</span>
+<div class="highlight"><pre><span></span><code><span class="nb">BEGIN</span> <span class="p">{</span>
     <span class="nb">FS</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="nb">FILENAME</span><span class="o">==</span><span class="nb">ARGV</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
@@ -134,7 +134,7 @@ two <span class="m">2</span>
         <span class="kr">print</span> <span class="nx">a</span><span class="p">[</span><span class="o">$</span><span class="mi">1</span><span class="p">];</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
+</code></pre></div>
 
 
 <p><code>FILENAME</code> 变量中存有当前处理的文件名，而<code>ARGV</code>数组中则存有按照顺序输入的文件名。
@@ -162,20 +162,6 @@ two <span class="m">2</span>
 
                 <span class="mail"><a href="mailto:?subject=AWK 学习笔记: 处理多个文件的例子&amp;body=Viens découvrir un article à propos de [AWK 学习笔记: 处理多个文件的例子] sur le site de Wolfson Liu. ../../archive/2018/awk-xue-xi-bi-ji-chu-li-duo-ge-wen-jian-de-li-zi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/awk-xue-xi-bi-ji-chu-li-duo-ge-wen-jian-de-li-zi.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

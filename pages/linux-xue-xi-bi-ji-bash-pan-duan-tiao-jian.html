@@ -124,12 +124,12 @@
 </ul>
 <p>需要注意的是, 这些操作符号只能在双小括号中使用, 出了小括号就要使用 test 的形式.</p>
 <p>下面的几种形式是等价的, 均表示判断 NUM1 小于 NUM2 并且 大于 NUM3</p>
-<div class="highlight"><pre><span></span><span class="k">[ $NUM1 -lt $NUM2 -a $NUM1 -gt $NUM3 ]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[ $NUM1 -lt $NUM2 -a $NUM1 -gt $NUM3 ]</span>
 <span class="k">[ $NUM1 -lt $NUM2 ] &amp;&amp; [ $NUM1 -gt $NUM3 ]</span>
 <span class="k">[ $((($NUM1 &lt; $NUM2) &amp;&amp; ($NUM1 &gt; $NUM3))) = 1 ]</span>
 <span class="na">((($NUM1 &lt; $NUM2) &amp;&amp; ($NUM1 &gt; $NUM3)))</span>
 <span class="na">(($NUM2 &lt; $NUM2)) &amp;&amp; (($NUM1 &lt; $NUM3))</span>
-</pre></div>
+</code></pre></div>
 
 
 <h1>判断文件</h1>

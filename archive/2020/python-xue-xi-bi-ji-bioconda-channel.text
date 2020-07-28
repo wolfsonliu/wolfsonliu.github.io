@@ -1,0 +1,57 @@
+Title: Python 学习笔记: bioconda channel
+Date: 2020-07-27 16:24
+Modified: 2020-07-27 16:51
+Category: 壹零零壹
+Tags: python, bioinformatics
+Authors: Wolfson Liu
+Summary: 在 anaconda 中添加 bioconda channel
+
+[Bioconda](https://bioconda.github.io/)是
+[Conda](https://conda.io/en/latest/index.html) 这个软件管理包的一个
+channel，其主要面对需要生物信息分析软件的用户。 bioconda channel中包含
+各种语言写的软件包，不仅限于 python。
+
+添加 bioconda channel后，安装生物信息软件就只需要使用 `conda
+install`就可以方便地安装软件，而不用担心这些软件的依赖了。conda 的具体
+使用在[虚拟环
+境
+](https://wolfsonliu.github.io/archive/2016/python-xue-xi-bi-ji-virtual-environment.html)
+中记录。
+
+## 添加 bioconda channel
+
+有anaconda或者miniconda后，只需要下面的命令就可以添加 bioconda channel。
+但是，命令输入顺序需要严格按照下面的顺序，来保证相应的 channel 的优先
+级，后添加的channel有更高的优先级。如果优先级不对的话，可以在之后进行
+重新设置。
+
+```{shell}
+conda config --add channels defaults
+conda config --add channels bioconda
+conda config --add channels conda-forge
+```
+
+其中，defaults是conda默认的channel，conda-forge包括更多的defaults中没
+有的基础软件。
+
+## 使用 bioconda channel
+
+添加好bioconda channel后，安装bioconda中的软件就只需要`conda install`，
+一般就能直接安装所需要的生信软件和其相应的依赖。也可以使用`conda
+install -c bioconda`来指定channel进行安装。安装不同的生信软件的时候建
+议创建不同的环境，这样不同的软件包的依赖就不会冲突。
+
+例如我们要安装bwa，samtools，bcftools等软件：
+
+```{shell}
+conda create -c bioconda -n NGS bwa samtools bcftools
+```
+
+其中，`conda create`为创建环境的命令，`-c bioconda`指定了bioconda
+channel，`-n NGS`设置了新的环境的名字，后面跟着的是在创建环境时候就安装的软件。
+
+```{shell}
+conda activate NGS
+```
+
+激活环境后就可以使用安装好的生物信息软件了。

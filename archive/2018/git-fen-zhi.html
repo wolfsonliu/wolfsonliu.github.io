@@ -92,8 +92,8 @@ checkout 用来切换不同的分支，merge 用于合并分支。</p>
 <h2>创建分支</h2>
 <p>使用 <code>git branch &lt;branchname&gt;</code> 就可以创建一个新的分支，例如创建一个叫
 做 dev 的分支：</p>
-<div class="highlight"><pre><span></span>git branch dev
-</pre></div>
+<div class="highlight"><pre><span></span><code>git branch dev
+</code></pre></div>
 
 
 <p>创建一个分支，可以简单理解为创建了一个指针，该指针指向了一个 commit，
@@ -102,9 +102,9 @@ checkout 用来切换不同的分支，merge 用于合并分支。</p>
 没有做任何修改的时候，相当于新的分支和当前分支同时指向同一个 commit。</p>
 <h2>切换分支</h2>
 <p>如果要切换到新的分支来进行下一步开发，则需要使用 <code>git checkout</code> 命令，如：</p>
-<div class="highlight"><pre><span></span>git checkout dev
+<div class="highlight"><pre><span></span><code>git checkout dev
 <span class="c1"># Switched to branch &#39;dev&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>也可以使用 <code>git checkout -b &lt;branch&gt;</code> 来直接创建并切换分支。</p>
@@ -114,15 +114,15 @@ checkout 用来切换不同的分支，merge 用于合并分支。</p>
 master 分支中，可以使用 <code>git merge</code> 命令来合并分支。</p>
 <p>要合并代码，首先切换到被合并的分支上，如我们要把分支合并到 master，则
 要先切换到master分支：</p>
-<div class="highlight"><pre><span></span>git checkout master
+<div class="highlight"><pre><span></span><code>git checkout master
 <span class="c1"># M       md/git_command_commit.md</span>
 <span class="c1"># Switched to branch &#39;master&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>然后执行 merge 命令：</p>
-<div class="highlight"><pre><span></span>git merge dev
-</pre></div>
+<div class="highlight"><pre><span></span><code>git merge dev
+</code></pre></div>
 
 
 <p>如果只有两个分支，并且在切换到一个分支后并未对原分支进行新的 commit ，
@@ -151,20 +151,6 @@ master 分支中，可以使用 <code>git merge</code> 命令来合并分支。<
 
                 <span class="mail"><a href="mailto:?subject=Git 分支&amp;body=Viens découvrir un article à propos de [Git 分支] sur le site de Wolfson Liu. ../../archive/2018/git-fen-zhi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/git-fen-zhi.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

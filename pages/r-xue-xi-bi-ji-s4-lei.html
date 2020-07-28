@@ -81,54 +81,54 @@
 <h3>类</h3>
 <h4>创建类</h4>
 <p>对于 S4 类的定义, 其定义中只包含类的名称和其变量, 也就是 slot, 而不包括方法. 定义 S4 类要使用 setClass 函数.</p>
-<div class="highlight"><pre><span></span><span class="n">setClass</span><span class="p">(</span>
-    <span class="k">Class</span> <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
-    <span class="n">slots</span> <span class="o">=</span> <span class="k">c</span><span class="p">(</span>
-        <span class="n">strawberry</span> <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
-        <span class="n">chocolate</span>  <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
-        <span class="n">mango</span>      <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setClass(</span>
+<span class="err">    Class = &quot;IcecreamMachine&quot;,</span>
+<span class="err">    slots = c(</span>
+<span class="err">        strawberry = &quot;numeric&quot;,</span>
+<span class="err">        chocolate  = &quot;numeric&quot;,</span>
+<span class="err">        mango      = &quot;numeric&quot;</span>
+<span class="err">    )</span>
+<span class="err">)</span>
+</code></pre></div>
 
 
 <p>在创建类的时候, 应该指定每个 slots 的类型, 最好是可以限定的基本类型, 如 numeric, character, 等 atomic 类型. 而最好不要是 list 等类型, 因为我们可以向 list 中添加任何类型的数据, 这样就使得类的变量变得不可控, 也不好建立合适的方法. slots 接受一个 vector 或者 list, 把变量名和其类型名对应起来即可.</p>
 <p>在使用 setClass 函数定义类的时候, 可以使用 validity 参数来定义校验函数, 来保证类的每个值符合要求. 在定义完成后, 也可以使用 setValidity 函数来设置.</p>
 <h4>默认值</h4>
 <p>有的时候, 我们会希望类的每个或某些值在创建实例的时候有一定的默认值, 即使没有在建立的时候赋值, 其实例的变量也是有默认值的. 那么这个时候可以使用 setClass 中的 prototype 参数.</p>
-<div class="highlight"><pre><span></span><span class="n">setClass</span><span class="p">(</span>
-    <span class="k">Class</span>     <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
-    <span class="n">slots</span>     <span class="o">=</span> <span class="k">c</span><span class="p">(</span>
-        <span class="n">strawberry</span> <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
-        <span class="n">chocolate</span>  <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span><span class="p">,</span>
-        <span class="n">mango</span>      <span class="o">=</span> <span class="ss">&quot;numeric&quot;</span>
-    <span class="p">),</span>
-    <span class="n">prototype</span> <span class="o">=</span> <span class="n">list</span><span class="p">(</span>
-        <span class="n">strawberry</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">chocolate</span>  <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">mango</span>      <span class="o">=</span> <span class="mi">0</span>
-    <span class="p">)</span>
-<span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setClass(</span>
+<span class="err">    Class     = &quot;IcecreamMachine&quot;,</span>
+<span class="err">    slots     = c(</span>
+<span class="err">        strawberry = &quot;numeric&quot;,</span>
+<span class="err">        chocolate  = &quot;numeric&quot;,</span>
+<span class="err">        mango      = &quot;numeric&quot;</span>
+<span class="err">    ),</span>
+<span class="err">    prototype = list(</span>
+<span class="err">        strawberry = 0,</span>
+<span class="err">        chocolate  = 0,</span>
+<span class="err">        mango      = 0</span>
+<span class="err">    )</span>
+<span class="err">)</span>
+</code></pre></div>
 
 
 <p>设定默认值的时候, prototype 接受一个 list, 其中变量名和默认值一一对应.</p>
 <h4>继承</h4>
 <p>继承是面向对象编程的重要特征, S4 类的继承关系通过 setClass 中的 contais 参数设置. 虽然可以设置一个类继承自多个父类, 但是这样有可能会引起方法调用的问题, 所以最好只用一个类. 当一个类每有对应方法的时候, 会向其父类的方法寻找. ANY 是所有的 S4 类的最基本的父类, 所以一个类和定义的父类均没有定义相应方法时, 最后会使用 ANY 类的方法.</p>
-<div class="highlight"><pre><span></span><span class="n">setClass</span><span class="p">(</span>
-    <span class="k">Class</span> <span class="o">=</span> <span class="ss">&quot;IcecreamStore&quot;</span><span class="p">,</span>
-    <span class="n">slots</span> <span class="o">=</span> <span class="k">c</span><span class="p">(</span><span class="n">place</span> <span class="o">=</span> <span class="ss">&quot;character&quot;</span><span class="p">),</span>
-    <span class="k">contains</span> <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span>
-<span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setClass(</span>
+<span class="err">    Class = &quot;IcecreamStore&quot;,</span>
+<span class="err">    slots = c(place = &quot;character&quot;),</span>
+<span class="err">    contains = &quot;IcecreamMachine&quot;</span>
+<span class="err">)</span>
+</code></pre></div>
 
 
 <p>上例中, 因为 IcecreamMachine 有定义 show 函数, 而 IcecreamStore 没有定义 show 函数, 所有其实例会调用 IcecreamMachine 的 show 函数. 如果想要使用 ANY 的 show 函数, 则需要使用 unclass 函数.
 需要注意的是, 如果对父类定义了特定的方法, 要在子类中也使用相应方法, 就需要定义, 否则会直接调用父类的方法, 从而有可能引起错误.</p>
 <h4>删除类</h4>
 <p>可以使用 removeClass 来删除类.</p>
-<div class="highlight"><pre><span></span><span class="n">removeClass</span><span class="p">(</span><span class="k">Class</span> <span class="o">=</span> <span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">removeClass(Class = &quot;IcecreamMachine&quot;)</span>
+</code></pre></div>
 
 
 <p>删除类后, 已经存在的类的实例并不会被删除. </p>
@@ -139,7 +139,7 @@
 <li>获得类 slot, getSlots 函数.</li>
 <li>获得类, getClass 函数.</li>
 </ul>
-<div class="highlight"><pre><span></span><span class="n">slotNames</span><span class="p">(</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">slotNames</span><span class="p">(</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
 <span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;strawberry&quot;</span> <span class="ss">&quot;chocolate&quot;</span>  <span class="ss">&quot;mango&quot;</span>
 
 <span class="n">getSlots</span><span class="p">(</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
@@ -153,217 +153,217 @@
 <span class="o">#</span>
 <span class="o">#</span><span class="n">Name</span><span class="p">:</span>  <span class="n">strawberry</span>  <span class="n">chocolate</span>      <span class="n">mango</span>
 <span class="o">#</span><span class="k">Class</span><span class="p">:</span>    <span class="nb">numeric</span>    <span class="nb">numeric</span>    <span class="nb">numeric</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>方法</h3>
 <p>S4 类的方法和 S4 类的定义是独立的. S4 的方法要使用 setMethod 函数来定义.</p>
 <p>由一些函数已经有了相应的其他类型的定义, 我们可以继续定义符合我们所需要的类型的对应的函数. 需要注意的是, 在为类定义已经有的函数的重载函数的时候, 新定义的函数的参数应该和原函数的参数一致, 否则会发生警告或错误. 常见的函数, 如 show, 可以设置在命令行输入该类实例后输出的形式, 又如 print 函数, 可以设置 print 的形式. </p>
-<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>           <span class="o">=</span> <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span><span class="ss">)</span> {
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">*** Wounderful Icecream Machine! ***</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Taste:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Strawberry: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">strawberry</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Chocolate: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">chocolate</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Mango: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">mango</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
-    }
-<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setMethod(</span>
+<span class="err">    f           = &quot;show&quot;,</span>
+<span class="err">    signature   = &quot;IcecreamMachine&quot;,</span>
+<span class="err">    definition = function(object) {</span>
+<span class="err">        cat(&quot;*** Wounderful Icecream Machine! ***\n&quot;)</span>
+<span class="err">        cat(&quot;Taste:\n&quot;)</span>
+<span class="err">        cat(&quot;\tStrawberry: &quot;, object@strawberry, &quot;\n&quot;) </span>
+<span class="err">        cat(&quot;\tChocolate: &quot;, object@chocolate, &quot;\n&quot;) </span>
+<span class="err">        cat(&quot;\tMango: &quot;, object@mango, &quot;\n&quot;) </span>
+<span class="err">    }</span>
+<span class="err">)</span>
+</code></pre></div>
 
 
 <p>对于已经存在的方法原型, 可以直接使用 setMethod. 而对于自定义的方法则需要先设置方法原型, 使用 setGeneric 函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">setGeneric</span><span class="ss">(</span>
-    <span class="nv">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getIcecream</span><span class="s2">&quot;</span>,
-    <span class="nv">def</span>  <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>,...<span class="ss">)</span> {
-        <span class="nv">standardGeneric</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">getIcecream</span><span class="s2">&quot;</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-<span class="nv">setMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getIcecream</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> {
-        <span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> <span class="o">&lt;-</span> <span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> <span class="o">-</span> <span class="mi">1</span>
-        <span class="k">return</span><span class="ss">(</span><span class="mi">1</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">setGeneric</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;getIcecream&quot;</span><span class="p">,</span>
+    <span class="n">def</span>  <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span><span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">standardGeneric</span><span class="p">(</span><span class="s">&quot;getIcecream&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="nf">setMethod</span><span class="p">(</span>
+    <span class="n">f</span>          <span class="o">=</span> <span class="s">&quot;getIcecream&quot;</span><span class="p">,</span>
+    <span class="n">signature</span>  <span class="o">=</span> <span class="s">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">definition</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">slot</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="nf">slot</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span> <span class="o">-</span> <span class="m">1</span>
+        <span class="nf">return</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
 
 
 <p>由于使用 setGeneric 会把之前的定义给覆盖, 我们可以使用 lockBinding 函数来锁定定义, 避免误操作. </p>
-<div class="highlight"><pre><span></span><span class="n">lockBinding</span><span class="p">(</span><span class="ss">&quot;getIcecream&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">GlobalEnv</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">lockBinding(&quot;getIcecream&quot;, .GlobalEnv)</span>
+</code></pre></div>
 
 
 <h4>查看方法</h4>
 <p>关于方法的自省函数也很方便使用.</p>
 <p>查看一个 S4 类所拥有的方法可以使用函数 showMethods 函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">showMethods</span><span class="ss">(</span><span class="nv">classes</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
-#<span class="nv">Function</span>: <span class="nv">getIcecream</span> <span class="ss">(</span><span class="nv">package</span> .<span class="nv">GlobalEnv</span><span class="ss">)</span>
-#<span class="nv">object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">showMethods</span><span class="p">(</span><span class="n">classes</span><span class="o">=</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span>
+<span class="o">#</span><span class="k">Function</span><span class="p">:</span> <span class="n">getIcecream</span> <span class="p">(</span><span class="n">package</span> <span class="p">.</span><span class="n">GlobalEnv</span><span class="p">)</span>
+<span class="o">#</span><span class="k">object</span><span class="o">=</span><span class="ss">&quot;IcecreamMachine&quot;</span>
 
-#<span class="nv">Function</span>: <span class="nv">initialize</span> <span class="ss">(</span><span class="nv">package</span> <span class="nv">methods</span><span class="ss">)</span>
-#.<span class="nv">Object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
-#    <span class="ss">(</span><span class="nv">inherited</span> <span class="nv">from</span>: .<span class="nv">Object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">ANY</span><span class="s2">&quot;</span><span class="ss">)</span>
+<span class="o">#</span><span class="k">Function</span><span class="p">:</span> <span class="k">initialize</span> <span class="p">(</span><span class="n">package</span> <span class="n">methods</span><span class="p">)</span>
+<span class="o">#</span><span class="p">.</span><span class="k">Object</span><span class="o">=</span><span class="ss">&quot;IcecreamMachine&quot;</span>
+<span class="o">#</span>    <span class="p">(</span><span class="n">inherited</span> <span class="k">from</span><span class="p">:</span> <span class="p">.</span><span class="k">Object</span><span class="o">=</span><span class="ss">&quot;ANY&quot;</span><span class="p">)</span>
 
-#<span class="nv">Function</span>: <span class="k">show</span> <span class="ss">(</span><span class="nv">package</span> <span class="nv">methods</span><span class="ss">)</span>
-#<span class="nv">object</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
-</pre></div>
+<span class="o">#</span><span class="k">Function</span><span class="p">:</span> <span class="k">show</span> <span class="p">(</span><span class="n">package</span> <span class="n">methods</span><span class="p">)</span>
+<span class="o">#</span><span class="k">object</span><span class="o">=</span><span class="ss">&quot;IcecreamMachine&quot;</span>
+</code></pre></div>
 
 
 <p>查看类是否有特定的方法使用函数 existsMethod.</p>
-<div class="highlight"><pre><span></span><span class="nv">existsMethod</span><span class="ss">(</span><span class="nv">f</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">print</span><span class="s2">&quot;</span>, <span class="nv">signature</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
-#[<span class="mi">1</span>] <span class="nv">FALSE</span>
-<span class="nv">existsMethod</span><span class="ss">(</span><span class="nv">f</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>, <span class="nv">signature</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
-#[<span class="mi">1</span>] <span class="nv">TRUE</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">existsMethod(f = &quot;print&quot;, signature = &quot;IcecreamMachine&quot;)</span>
+<span class="err">#[1] FALSE</span>
+<span class="err">existsMethod(f = &quot;show&quot;, signature = &quot;IcecreamMachine&quot;)</span>
+<span class="err">#[1] TRUE</span>
+</code></pre></div>
 
 
 <p>也可以直接获得某个方法的代码, 使用函数 getMethod.</p>
-<div class="highlight"><pre><span></span><span class="nv">getMethod</span><span class="ss">(</span><span class="nv">f</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>, <span class="nv">signature</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span><span class="ss">)</span>
-#<span class="nv">Method</span> <span class="nv">Definition</span>:
+<div class="highlight"><pre><span></span><code><span class="n">getMethod</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="ss">&quot;show&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">signature</span><span class="o">=</span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="n">#Method</span><span class="w"> </span><span class="nl">Definition</span><span class="p">:</span><span class="w"></span>
 
-#<span class="nv">function</span> <span class="ss">(</span><span class="nv">object</span><span class="ss">)</span> 
-#{
-#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">*** Wounderful Icecream Machine! ***</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Taste:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Strawberry: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">strawberry</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Chocolate: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">chocolate</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-#    <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Mango: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">mango</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-#}
+<span class="n">#function</span><span class="w"> </span><span class="p">(</span><span class="k">object</span><span class="p">)</span><span class="w"> </span>
+<span class="err">#{</span><span class="w"></span>
+<span class="err">#</span><span class="w">    </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;*** Wounderful Icecream Machine! ***\n&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="err">#</span><span class="w">    </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;Taste:\n&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="err">#</span><span class="w">    </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tStrawberry: &quot;</span><span class="p">,</span><span class="w"> </span><span class="k">object</span><span class="nv">@strawberry</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="err">#</span><span class="w">    </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tChocolate: &quot;</span><span class="p">,</span><span class="w"> </span><span class="k">object</span><span class="nv">@chocolate</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="err">#</span><span class="w">    </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tMango: &quot;</span><span class="p">,</span><span class="w"> </span><span class="k">object</span><span class="nv">@mango</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="err">#}</span><span class="w"></span>
 
-#<span class="nv">Signatures</span>:
-#        <span class="nv">object</span>
-#<span class="nv">target</span>  <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
-#<span class="nv">defined</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>
-</pre></div>
+<span class="n">#Signatures</span><span class="err">:</span><span class="w"></span>
+<span class="err">#</span><span class="w">        </span><span class="k">object</span><span class="w"></span>
+<span class="n">#target</span><span class="w">  </span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="w"></span>
+<span class="n">#defined</span><span class="w"> </span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="w"></span>
+</code></pre></div>
 
 
 <h4>操作属性</h4>
 <p>虽然使用 "@" 符号可以直接获得 S4 对象的属性, 但是利用面向对象方式进行编程, 最好使得所有和对象的属性的操作都是通过对象的方法来完成, 这样才能保证属性的确定性, 知道属性是按照规律进行改变的.</p>
 <p>对于获取属性的值, 可以设置一定函数来获取值, 如各种 get 函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">setGeneric</span><span class="ss">(</span>
-    <span class="nv">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getRest</span><span class="s2">&quot;</span>,
-    <span class="nv">def</span>  <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>,...<span class="ss">)</span> {
-        <span class="nv">standardGeneric</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">getRest</span><span class="s2">&quot;</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-<span class="nv">setMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">getRest</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> {
-        <span class="k">return</span><span class="ss">(</span><span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">))</span>
-    }
-<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setGeneric(</span>
+<span class="err">    name = &quot;getRest&quot;,</span>
+<span class="err">    def  = function(object,...) {</span>
+<span class="err">        standardGeneric(&quot;getRest&quot;)</span>
+<span class="err">    }</span>
+<span class="err">)</span>
+<span class="err">setMethod(</span>
+<span class="err">    f          = &quot;getRest&quot;,</span>
+<span class="err">    signature  = &quot;IcecreamMachine&quot;,</span>
+<span class="err">    definition = function(object, type) {</span>
+<span class="err">        return(slot(object, type))</span>
+<span class="err">    }</span>
+<span class="err">)</span>
+</code></pre></div>
 
 
 <p>也可以使用函数直接设置类的属性的值, 如各种 set 函数. 这里需要注意的是, 可以使用 setMethod 函数, 但是函数名称里面要加上 "&lt;-", 或者使用 setReplaceMethod, 函数名称里面不加 "&lt;-".</p>
-<div class="highlight"><pre><span></span><span class="nv">setGeneric</span><span class="ss">(</span>
-    <span class="nv">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">setIce&lt;-</span><span class="s2">&quot;</span>,
-    <span class="nv">def</span>  <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span>, <span class="nv">value</span><span class="ss">)</span> {
-        <span class="nv">standardGeneric</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">setIce&lt;-</span><span class="s2">&quot;</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-<span class="nv">setReplaceMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">setIce</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span>, <span class="nv">value</span><span class="ss">)</span> {
-        <span class="nv">slot</span><span class="ss">(</span><span class="nv">object</span>, <span class="nv">type</span><span class="ss">)</span> <span class="o">&lt;-</span> <span class="nv">value</span>
-        <span class="k">return</span><span class="ss">(</span><span class="nv">object</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">setGeneric</span><span class="p">(</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;setIce&lt;-&quot;</span><span class="p">,</span>
+    <span class="n">def</span>  <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">standardGeneric</span><span class="p">(</span><span class="s">&quot;setIce&lt;-&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="nf">setReplaceMethod</span><span class="p">(</span>
+    <span class="n">f</span>          <span class="o">=</span> <span class="s">&quot;setIce&quot;</span><span class="p">,</span>
+    <span class="n">signature</span>  <span class="o">=</span> <span class="s">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">definition</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">type</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">slot</span><span class="p">(</span><span class="n">object</span><span class="p">,</span> <span class="n">type</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="n">value</span>
+        <span class="nf">return</span><span class="p">(</span><span class="n">object</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</code></pre></div>
 
 
 <p>还可以定义 "[" 函数和 "[&lt;-" 函数方便操作.</p>
-<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">[</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">x</span>,<span class="nv">i</span>,<span class="nv">j</span>,<span class="nv">drop</span><span class="ss">)</span> {
-        <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">strawberry</span><span class="s2">&quot;</span><span class="ss">)</span> {
-            <span class="k">return</span><span class="ss">(</span><span class="nv">x</span>@<span class="nv">strawberry</span><span class="ss">)</span>
-        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">chocolate</span><span class="s2">&quot;</span><span class="ss">)</span> {
-            <span class="k">return</span><span class="ss">(</span><span class="nv">x</span>@<span class="nv">chocolate</span><span class="ss">)</span>
-        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">mango</span><span class="s2">&quot;</span><span class="ss">)</span> {
-            <span class="k">return</span><span class="ss">(</span><span class="nv">x</span>@<span class="nv">mango</span><span class="ss">)</span>
-        }
-    }
-<span class="ss">)</span>
-#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">[</span><span class="s2">&quot;</span>
-<span class="nv">setReplaceMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">[</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">x</span>,<span class="nv">i</span>,<span class="nv">j</span>,<span class="nv">value</span><span class="ss">)</span> {
-        <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">strawberry</span><span class="s2">&quot;</span><span class="ss">)</span> {
-            <span class="nv">x</span>@<span class="nv">strawberry</span> <span class="o">&lt;-</span> <span class="nv">value</span>
-        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">chocolate</span><span class="s2">&quot;</span><span class="ss">)</span> {
-            <span class="nv">x</span>@<span class="nv">chocolate</span> <span class="o">&lt;-</span> <span class="nv">value</span>
-        } <span class="k">else</span> <span class="k">if</span> <span class="ss">(</span><span class="nv">i</span> <span class="o">==</span> <span class="s2">&quot;</span><span class="s">mango</span><span class="s2">&quot;</span><span class="ss">)</span> {
-            <span class="nv">x</span>@<span class="nv">mango</span> <span class="o">&lt;-</span> <span class="nv">value</span>
-        }
-        <span class="nv">validObject</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>
-        <span class="k">return</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">[&lt;-</span><span class="s2">&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">setMethod</span><span class="p">(</span>
+    <span class="n">f</span>          <span class="o">=</span> <span class="s">&quot;[&quot;</span><span class="p">,</span>
+    <span class="n">signature</span>  <span class="o">=</span> <span class="s">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">definition</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">drop</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">if </span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="s">&quot;strawberry&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">return</span><span class="p">(</span><span class="n">x</span><span class="o">@</span><span class="n">strawberry</span><span class="p">)</span>
+        <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="s">&quot;chocolate&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">return</span><span class="p">(</span><span class="n">x</span><span class="o">@</span><span class="n">chocolate</span><span class="p">)</span>
+        <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="s">&quot;mango&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">return</span><span class="p">(</span><span class="n">x</span><span class="o">@</span><span class="n">mango</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="c1">#[1] &quot;[&quot;</span>
+<span class="nf">setReplaceMethod</span><span class="p">(</span>
+    <span class="n">f</span>          <span class="o">=</span> <span class="s">&quot;[&quot;</span><span class="p">,</span>
+    <span class="n">signature</span>  <span class="o">=</span> <span class="s">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">definition</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">if </span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="s">&quot;strawberry&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">x</span><span class="o">@</span><span class="n">strawberry</span> <span class="o">&lt;-</span> <span class="n">value</span>
+        <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="s">&quot;chocolate&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">x</span><span class="o">@</span><span class="n">chocolate</span> <span class="o">&lt;-</span> <span class="n">value</span>
+        <span class="p">}</span> <span class="n">else</span> <span class="nf">if </span><span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="s">&quot;mango&quot;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">x</span><span class="o">@</span><span class="n">mango</span> <span class="o">&lt;-</span> <span class="n">value</span>
+        <span class="p">}</span>
+        <span class="nf">validObject</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="nf">return</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="c1">#[1] &quot;[&lt;-&quot;</span>
+</code></pre></div>
 
 
 <h4>方法举例</h4>
 <p>构造函数是一个类的重要的方法, 在定义类的时候都会有默认的构造函数, 也可以自己定义构造函数. 构造函数的函数名为 initialize, 在创建新的实例时使用的 new 函数就调用 initialize 函数.</p>
-<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>          <span class="o">=</span> <span class="s2">&quot;</span><span class="s">initialize</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>  <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span>.<span class="nv">Object</span>,
-                          <span class="nv">strewberry</span>,
-                          <span class="nv">chocolate</span>,
-                          <span class="nv">mango</span><span class="ss">)</span> {
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="s">Welcome to an icecream world!</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span>
-        .<span class="nv">Object</span>@<span class="nv">strewberry</span> <span class="o">&lt;-</span> <span class="nv">strewberry</span>
-        .<span class="nv">Object</span>@<span class="nv">chocolate</span>  <span class="o">&lt;-</span> <span class="nv">chocolate</span>
-        .<span class="nv">Object</span>@<span class="nv">mango</span>      <span class="o">&lt;-</span> <span class="nv">mango</span>
-        <span class="k">return</span><span class="ss">(</span>.<span class="nv">Object</span><span class="ss">)</span>
-    }
-<span class="ss">)</span>
-#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">initialize</span><span class="s2">&quot;</span>    
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="nf">setMethod</span><span class="p">(</span>
+    <span class="n">f</span>          <span class="o">=</span> <span class="s">&quot;initialize&quot;</span><span class="p">,</span>
+    <span class="n">signature</span>  <span class="o">=</span> <span class="s">&quot;IcecreamMachine&quot;</span><span class="p">,</span>
+    <span class="n">definition</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">.Object</span><span class="p">,</span>
+                          <span class="n">strewberry</span><span class="p">,</span>
+                          <span class="n">chocolate</span><span class="p">,</span>
+                          <span class="n">mango</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Welcome to an icecream world!\n&quot;</span><span class="p">)</span>
+        <span class="n">.Object</span><span class="o">@</span><span class="n">strewberry</span> <span class="o">&lt;-</span> <span class="n">strewberry</span>
+        <span class="n">.Object</span><span class="o">@</span><span class="n">chocolate</span>  <span class="o">&lt;-</span> <span class="n">chocolate</span>
+        <span class="n">.Object</span><span class="o">@</span><span class="n">mango</span>      <span class="o">&lt;-</span> <span class="n">mango</span>
+        <span class="nf">return</span><span class="p">(</span><span class="n">.Object</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+<span class="c1">#[1] &quot;initialize&quot;    </span>
+</code></pre></div>
 
 
 <p>显示函数 show 是在交互的界面下输出对象信息的函数, 可以设置类的 show 函数来控制所需要的输出格式和信息, 可以是文字, 图形等.</p>
-<div class="highlight"><pre><span></span><span class="nv">setMethod</span><span class="ss">(</span>
-    <span class="nv">f</span>           <span class="o">=</span> <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>,
-    <span class="nv">signature</span>   <span class="o">=</span> <span class="s2">&quot;</span><span class="s">IcecreamMachine</span><span class="s2">&quot;</span>,
-    <span class="nv">definition</span> <span class="o">=</span> <span class="nv">function</span><span class="ss">(</span><span class="nv">object</span><span class="ss">)</span> {
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Strawberry: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">strawberry</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Chocolate: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">chocolate</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
-        <span class="nv">cat</span><span class="ss">(</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s">Mango: </span><span class="s2">&quot;</span>, <span class="nv">object</span>@<span class="nv">mango</span>, <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="ss">)</span> 
-    }
-<span class="ss">)</span>
-#[<span class="mi">1</span>] <span class="s2">&quot;</span><span class="s">show</span><span class="s2">&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setMethod(</span>
+<span class="err">    f           = &quot;show&quot;,</span>
+<span class="err">    signature   = &quot;IcecreamMachine&quot;,</span>
+<span class="err">    definition = function(object) {</span>
+<span class="err">        cat(&quot;\tStrawberry: &quot;, object@strawberry, &quot;\n&quot;) </span>
+<span class="err">        cat(&quot;\tChocolate: &quot;, object@chocolate, &quot;\n&quot;) </span>
+<span class="err">        cat(&quot;\tMango: &quot;, object@mango, &quot;\n&quot;) </span>
+<span class="err">    }</span>
+<span class="err">)</span>
+<span class="err">#[1] &quot;show&quot;</span>
+</code></pre></div>
 
 
 <p>类似的是 print 函数, 可以 print 出来所需要的文字信息, 与 show 函数有所不同.</p>
-<div class="highlight"><pre><span></span><span class="n">setMethod</span><span class="p">(</span><span class="w"></span>
-<span class="w">    </span><span class="n">f</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;print&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">signature</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;IcecreamMachine&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="n">definition</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,...)</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="w"></span>
-<span class="w">            </span><span class="ss">&quot;Total: &quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="n">x</span><span class="nv">@strawberry</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
-<span class="w">            </span><span class="n">x</span><span class="nv">@chocolate</span><span class="w"> </span><span class="o">+</span><span class="w"> </span>
-<span class="w">            </span><span class="n">x</span><span class="nv">@mango</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="ss">&quot;\n&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="p">)</span><span class="w"></span>
-<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tStrawberry: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="nv">@strawberry</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"> </span>
-<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tChocolate: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="nv">@chocolate</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"> </span>
-<span class="w">        </span><span class="n">cat</span><span class="p">(</span><span class="ss">&quot;\tMango: &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="nv">@mango</span><span class="p">,</span><span class="w"> </span><span class="ss">&quot;\n&quot;</span><span class="p">)</span><span class="w"> </span>
-<span class="w">    </span><span class="err">}</span><span class="w"></span>
-<span class="p">)</span><span class="w"></span>
-<span class="err">#</span><span class="o">[</span><span class="n">1</span><span class="o">]</span><span class="w"> </span><span class="ss">&quot;print&quot;</span><span class="w"></span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">setMethod(</span>
+<span class="err">    f           = &quot;print&quot;,</span>
+<span class="err">    signature   = &quot;IcecreamMachine&quot;,</span>
+<span class="err">    definition = function(x,...) {</span>
+<span class="err">        cat(</span>
+<span class="err">            &quot;Total: &quot;,</span>
+<span class="err">            x@strawberry + </span>
+<span class="err">            x@chocolate + </span>
+<span class="err">            x@mango,</span>
+<span class="err">            &quot;\n&quot;</span>
+<span class="err">        )</span>
+<span class="err">        cat(&quot;\tStrawberry: &quot;, x@strawberry, &quot;\n&quot;) </span>
+<span class="err">        cat(&quot;\tChocolate: &quot;, x@chocolate, &quot;\n&quot;) </span>
+<span class="err">        cat(&quot;\tMango: &quot;, x@mango, &quot;\n&quot;) </span>
+<span class="err">    }</span>
+<span class="err">)</span>
+<span class="err">#[1] &quot;print&quot;</span>
+</code></pre></div>
 
 
 <hr>

@@ -66,31 +66,31 @@
         
         <p><code>git describe</code> 是根据 tag 信息等产生出阅读友好的指定的分支的信息。</p>
 <p>如我们可以给当前的分支设立一个 tag：</p>
-<div class="highlight"><pre><span></span>git tag v0.1.0 -m <span class="s2">&quot;first release&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code>git tag v0.1.0 -m <span class="s2">&quot;first release&quot;</span>
+</code></pre></div>
 
 
 <p>然后我们就可以使用 <code>describe</code> 来显示信息：</p>
-<div class="highlight"><pre><span></span>git describe master
+<div class="highlight"><pre><span></span><code>git describe master
 <span class="c1"># v0.1.0</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们需要其显示该 tag 对应的 commit 的 SHA-1 前几个数字，需要加上
 <code>--long</code> 参数：</p>
-<div class="highlight"><pre><span></span>git describe --long master
+<div class="highlight"><pre><span></span><code>git describe --long master
 <span class="c1"># v0.1.0-0-geb7a01a</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>最后的几个字母就是 SHA-1 的前几位，而中间多出的 '0' 是 master 分支
 中在该 tag 之上的 commit 的数目，因为当前 master 分支的 tag 是刚刚建立，
 还没有新的 commit，所以是 0。</p>
 <p>使用 <code>git describe --long master</code> 可以为版本文件命名，如：</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">archive</span> <span class="n">master</span> <span class="c1">--prefix=&#39;project/&#39; | gzip &gt; `git describe master --long`.tar.gz </span>
-<span class="n">ls</span> <span class="o">*</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>
-<span class="o">#</span> <span class="n">v0</span><span class="p">.</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span><span class="o">-</span><span class="mi">0</span><span class="o">-</span><span class="n">geb7a01a</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">gz</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">git archive master --prefix=&#39;project/&#39; | gzip &gt; `git describe master --long`.tar.gz </span>
+<span class="err">ls *.tar.gz</span>
+<span class="err"># v0.1.0-0-geb7a01a.tar.gz</span>
+</code></pre></div>
 </section>
   </article>
 

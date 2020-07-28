@@ -67,39 +67,39 @@
         <p>pelicanconf.py 是 Pelican 的设置文件, 可以设置的内容太多了, 学一点就记录一点吧.</p>
 <h3>基本信息设置</h3>
 <p>基本信息可以设置网站名称, 网站小标题, 时区, 语言, 作者等.</p>
-<div class="highlight"><pre><span></span><span class="n">SITENAME</span>     <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;Wolf Cave&quot;</span>
-<span class="n">SITESUBTITLE</span> <span class="o">=</span> <span class="ss">&quot;一个记录 Wolfson Liu 生活的地方&quot;</span>
-<span class="n">SITEURL</span>      <span class="o">=</span> <span class="ss">&quot;https://wolfsonliu.github.io&quot;</span>
-<span class="o">#</span><span class="n">SITEURL</span>      <span class="o">=</span> <span class="ss">&quot;http://localhost:8000&quot;</span>
-<span class="n">TIMEZONE</span>     <span class="o">=</span> <span class="ss">&quot;Asia/Shanghai&quot;</span>
-<span class="n">DEFAULT_LANG</span> <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;zh&quot;</span>
-<span class="n">AUTHOR</span>       <span class="o">=</span> <span class="n">u</span><span class="ss">&quot;Wolfson Liu&quot;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">SITENAME     = u&quot;Wolf Cave&quot;</span>
+<span class="err">SITESUBTITLE = &quot;一个记录 Wolfson Liu 生活的地方&quot;</span>
+<span class="err">SITEURL      = &quot;https://wolfsonliu.github.io&quot;</span>
+<span class="err">#SITEURL      = &quot;http://localhost:8000&quot;</span>
+<span class="err">TIMEZONE     = &quot;Asia/Shanghai&quot;</span>
+<span class="err">DEFAULT_LANG = u&quot;zh&quot;</span>
+<span class="err">AUTHOR       = u&quot;Wolfson Liu&quot;</span>
+</code></pre></div>
 
 
 <p>需要注意的是 SITEURL 的设置, 这个相当于 HTML 文件中的 base, 当在本地调试的时候需要设置成本地端口, 而在发布的时候转换成博客地址.</p>
 <h3>路径设置</h3>
 <p>路径设置是很重要的, 涉及到不同页面之间的跳转. 可以自己去u规划不同类型的页面怎样放置在不同的文件夹中. 带有 PATH 的变量指本地的 Markdown, 图片等文件存放文件夹, 而带有 URL 的变量则是网页相关内容.</p>
-<div class="highlight"><pre><span></span><span class="n">PATH</span>               <span class="o">=</span> <span class="ss">&quot;content&quot;</span>
-<span class="n">STATIC_PATHS</span>       <span class="o">=</span> <span class="p">[</span><span class="ss">&quot;pages&quot;</span><span class="p">,</span><span class="ss">&quot;images&quot;</span><span class="p">]</span>
-<span class="n">ARTICLE_PATHS</span>      <span class="o">=</span> <span class="p">[</span><span class="ss">&quot;pages&quot;</span><span class="p">]</span>
-<span class="n">ARTICLE_URL</span>        <span class="o">=</span> <span class="ss">&quot;archive/{slug}.html&quot;</span>
-<span class="n">ARTICLE_SAVE_AS</span>    <span class="o">=</span> <span class="n">ARTICLE_URL</span>
-<span class="n">AUTHOR_URL</span>         <span class="o">=</span> <span class="ss">&quot;author/wolfson-liu.html&quot;</span>
-<span class="n">AUTHOR_SAVE_AS</span>     <span class="o">=</span> <span class="n">AUTHOR_URL</span>
-<span class="n">AUTHORS_URL</span>        <span class="o">=</span> <span class="ss">&quot;&quot;</span>
-<span class="n">AUTHORS_SAVE_AS</span>    <span class="o">=</span> <span class="ss">&quot;&quot;</span>
-<span class="n">TAG_URL</span>            <span class="o">=</span> <span class="ss">&quot;tag/{slug}.html&quot;</span>
-<span class="n">TAG_SAVE_AS</span>        <span class="o">=</span> <span class="n">TAG_URL</span>
-<span class="n">TAGS_URL</span>           <span class="o">=</span> <span class="ss">&quot;tags.html&quot;</span>
-<span class="n">TAGS_SAVE_AS</span>       <span class="o">=</span> <span class="n">TAGS_URL</span>
-<span class="n">CATEGORY_URL</span>       <span class="o">=</span> <span class="ss">&quot;category/{slug}.html&quot;</span>
-<span class="n">CATEGORY_SAVE_AS</span>   <span class="o">=</span> <span class="n">CATEGORY_URL</span>
-<span class="n">CATEGORIES_URL</span>     <span class="o">=</span> <span class="ss">&quot;categories.html&quot;</span>
-<span class="n">CATEGORIES_SAVE_AS</span> <span class="o">=</span> <span class="n">CATEGORIES_URL</span>
-<span class="n">ARCHIVES_URL</span>       <span class="o">=</span> <span class="ss">&quot;archives.html&quot;</span>
-<span class="n">ARCHIVES_SAVE_AS</span>   <span class="o">=</span> <span class="n">ARCHIVES_URL</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">PATH               = &quot;content&quot;</span>
+<span class="err">STATIC_PATHS       = [&quot;pages&quot;,&quot;images&quot;]</span>
+<span class="err">ARTICLE_PATHS      = [&quot;pages&quot;]</span>
+<span class="err">ARTICLE_URL        = &quot;archive/{slug}.html&quot;</span>
+<span class="err">ARTICLE_SAVE_AS    = ARTICLE_URL</span>
+<span class="err">AUTHOR_URL         = &quot;author/wolfson-liu.html&quot;</span>
+<span class="err">AUTHOR_SAVE_AS     = AUTHOR_URL</span>
+<span class="err">AUTHORS_URL        = &quot;&quot;</span>
+<span class="err">AUTHORS_SAVE_AS    = &quot;&quot;</span>
+<span class="err">TAG_URL            = &quot;tag/{slug}.html&quot;</span>
+<span class="err">TAG_SAVE_AS        = TAG_URL</span>
+<span class="err">TAGS_URL           = &quot;tags.html&quot;</span>
+<span class="err">TAGS_SAVE_AS       = TAGS_URL</span>
+<span class="err">CATEGORY_URL       = &quot;category/{slug}.html&quot;</span>
+<span class="err">CATEGORY_SAVE_AS   = CATEGORY_URL</span>
+<span class="err">CATEGORIES_URL     = &quot;categories.html&quot;</span>
+<span class="err">CATEGORIES_SAVE_AS = CATEGORIES_URL</span>
+<span class="err">ARCHIVES_URL       = &quot;archives.html&quot;</span>
+<span class="err">ARCHIVES_SAVE_AS   = ARCHIVES_URL</span>
+</code></pre></div>
 
 
 <ul>
@@ -113,29 +113,29 @@
 </ul>
 <h3>显示设置</h3>
 <p>对于不同的主题应该有相应合适的显示设置, 这样才能使得相应主题显示正常. 我曾经一直不知道为什么在菜单栏中有所有地文章的标题, 最后发现是相应的变量设置的问题, 这个小小的设置可折腾坏我了.</p>
-<div class="highlight"><pre><span></span><span class="n">DISPLAY_PAGES_ON_MENU</span>          <span class="o">=</span> <span class="k">False</span>
-<span class="n">DISPLAY_HEADER</span>                 <span class="o">=</span> <span class="k">True</span>
-<span class="n">DISPLAY_FOOTER</span>                 <span class="o">=</span> <span class="k">True</span>
-<span class="n">DISPLAY_HOME</span>                   <span class="o">=</span> <span class="k">True</span>
-<span class="n">DISPLAY_MENU</span>                   <span class="o">=</span> <span class="k">True</span>
-<span class="n">DISPLAY_CATEGORIES_ON_MENU</span>     <span class="o">=</span> <span class="k">True</span>
-<span class="n">DISPLAY_CATEGORIES_ON_SUBMENU</span>  <span class="o">=</span> <span class="k">False</span>
-<span class="n">DISPLAY_CATEGORIES_ON_POSTINFO</span> <span class="o">=</span> <span class="k">False</span>
-<span class="n">DISPLAY_AUTHOR_ON_POSTINFO</span>     <span class="o">=</span> <span class="k">False</span>
-<span class="n">DISPLAY_SEARCH_FORM</span>            <span class="o">=</span> <span class="k">False</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">DISPLAY_PAGES_ON_MENU          = False</span>
+<span class="err">DISPLAY_HEADER                 = True</span>
+<span class="err">DISPLAY_FOOTER                 = True</span>
+<span class="err">DISPLAY_HOME                   = True</span>
+<span class="err">DISPLAY_MENU                   = True</span>
+<span class="err">DISPLAY_CATEGORIES_ON_MENU     = True</span>
+<span class="err">DISPLAY_CATEGORIES_ON_SUBMENU  = False</span>
+<span class="err">DISPLAY_CATEGORIES_ON_POSTINFO = False</span>
+<span class="err">DISPLAY_AUTHOR_ON_POSTINFO     = False</span>
+<span class="err">DISPLAY_SEARCH_FORM            = False</span>
+</code></pre></div>
 
 
 <p>相应的用法已经在名称里面简要说明了, 根据相应的主题去调整就好.</p>
 <h3>菜单设置</h3>
 <p>有的主题会有菜单, 相应也可以设置菜单栏中的项目.</p>
-<div class="highlight"><pre><span></span><span class="o">#</span> <span class="n">pelican</span><span class="o">-</span><span class="n">blue</span> <span class="n">setting</span>
-<span class="o">#</span> <span class="err">第一个是菜单的名称</span><span class="p">,</span> <span class="err">第二个是点击菜单后跳转的页面</span>
-<span class="n">MENUITEMS</span> <span class="o">=</span> <span class="p">((</span><span class="ss">&quot;文章&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/&quot;</span><span class="o">+</span><span class="n">ARCHIVES_URL</span><span class="p">),</span>
-             <span class="p">(</span><span class="ss">&quot;类别&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/&quot;</span><span class="o">+</span><span class="n">CATEGORIES_URL</span><span class="p">),</span>
-             <span class="p">(</span><span class="ss">&quot;标签&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/&quot;</span><span class="o">+</span><span class="n">TAGS_URL</span><span class="p">),</span>
-             <span class="p">(</span><span class="ss">&quot;关于&quot;</span><span class="p">,</span> <span class="n">SITEURL</span><span class="o">+</span><span class="ss">&quot;/about.html&quot;</span><span class="p">),)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err"># pelican-blue setting</span>
+<span class="err"># 第一个是菜单的名称, 第二个是点击菜单后跳转的页面</span>
+<span class="err">MENUITEMS = ((&quot;文章&quot;, SITEURL+&quot;/&quot;+ARCHIVES_URL),</span>
+<span class="err">             (&quot;类别&quot;, SITEURL+&quot;/&quot;+CATEGORIES_URL),</span>
+<span class="err">             (&quot;标签&quot;, SITEURL+&quot;/&quot;+TAGS_URL),</span>
+<span class="err">             (&quot;关于&quot;, SITEURL+&quot;/about.html&quot;),)</span>
+</code></pre></div>
 </section>
   </article>
 

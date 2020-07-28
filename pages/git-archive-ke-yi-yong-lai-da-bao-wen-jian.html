@@ -69,24 +69,24 @@
 <p><code>git archive</code> 支持两种打包方式：tar 和 zip。<code>git archive</code> 默认使用 tar
 打包，可以使用 <code>--format</code> 来指定格式。tar 格式打包完并未压缩，所以需要
 借助如 <code>gzip</code> 等软件进行压缩，而 zip 格式是打包并压缩。</p>
-<div class="highlight"><pre><span></span>git archive --format<span class="o">=</span>tar master <span class="p">|</span> gzip &gt; v1.tar.gz
+<div class="highlight"><pre><span></span><code>git archive --format<span class="o">=</span>tar master <span class="p">|</span> gzip &gt; v1.tar.gz
 ls *.tar.gz
 <span class="c1"># v1.tar.gz</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>或者使用 zip 格式：</p>
-<div class="highlight"><pre><span></span>git archive --format<span class="o">=</span>zip master &gt; v1.zip
+<div class="highlight"><pre><span></span><code>git archive --format<span class="o">=</span>zip master &gt; v1.zip
 ls *.zip
 <span class="c1"># v1.zip</span>
-</pre></div>
+</code></pre></div>
 
 
 <h2>打包入文件夹</h2>
 <p>当前打包文件如果解压是和 git 项目文件夹中结构一样的，也可以将所有的文
 件打包到一个子文件夹中，使用 <code>--prefix=&lt;dirname&gt;</code> 参数：</p>
-<div class="highlight"><pre><span></span>git archive master --format<span class="o">=</span>tar --prefix<span class="o">=</span>v1 <span class="p">|</span> gzip &gt; v1.tar.gz
-</pre></div>
+<div class="highlight"><pre><span></span><code>git archive master --format<span class="o">=</span>tar --prefix<span class="o">=</span>v1 <span class="p">|</span> gzip &gt; v1.tar.gz
+</code></pre></div>
 
 
 <p>这样当 tar.gz 文件被解压后，所有文件将位于 v1 文件夹下面。</p>

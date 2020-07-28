@@ -218,13 +218,13 @@
 </ul>
 <h2>运行 shell 命令</h2>
 <p>os.system 和 os.popen 是常用的运行 shell 命令的函数. 对于 os.system, 其只是简单地直接运行该命令, 并且把输出返回到 python 的交互式界面. 而对于 os.popen 则会运行命令并且链接命令的输入输出流.</p>
-<div class="highlight"><pre><span></span><span class="n">os</span><span class="p">.</span><span class="k">system</span><span class="p">(</span><span class="ss">&quot;ls&quot;</span><span class="p">)</span>
-<span class="o">#</span> <span class="p">[</span><span class="s1">&#39;more.py&#39;</span><span class="p">]</span>
-<span class="n">os</span><span class="p">.</span><span class="n">popen</span><span class="p">(</span><span class="ss">&quot;ls&quot;</span><span class="p">)</span>
-<span class="o">#</span> <span class="o">&lt;</span><span class="n">os</span><span class="p">.</span><span class="n">_wrap_close</span> <span class="k">object</span> <span class="k">at</span> <span class="mi">0</span><span class="n">x7f8dcf0ec1d0</span><span class="o">&gt;</span>
-<span class="n">os</span><span class="p">.</span><span class="n">popen</span><span class="p">(</span><span class="ss">&quot;ls&quot;</span><span class="p">).</span><span class="k">read</span><span class="p">()</span>
-<span class="o">#</span> <span class="s1">&#39;more.py\n&#39;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">os.system(&quot;ls&quot;)</span>
+<span class="err"># [&#39;more.py&#39;]</span>
+<span class="err">os.popen(&quot;ls&quot;)</span>
+<span class="err"># &lt;os._wrap_close object at 0x7f8dcf0ec1d0&gt;</span>
+<span class="err">os.popen(&quot;ls&quot;).read()</span>
+<span class="err"># &#39;more.py\n&#39;</span>
+</code></pre></div>
 
 
 <p>os.system 在运行 shell 命令的时候会等待命令运行完成后才结束, 所以如果要使用 os.system 并行地运行命令, 需要借用 shell 下并行运行命令的方法, 如加上 "&amp;". 而 os.popen 也类似, 也是在和 python 运行环境相同的环境下运行 shell 命令. 例如 <code>os.system("sleep 10")</code> 运行后会等待 10 秒钟才会继续运行接下来的命令, 而 <code>tmp = os.popen("sleep 10"); tmp.read()</code> 也会等待 10 秒钟.</p>

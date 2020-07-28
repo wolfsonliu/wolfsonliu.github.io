@@ -74,18 +74,18 @@
 拿 elementary theme 为例. 找到
 MD5 码并按照下面方式保存文件 (md5.txt). 该验证文件应和下载的文件在同一
 目录, 这样才能被找到.</p>
-<div class="highlight"><pre><span></span><span class="n">d2a39e5842dd157edbed00992090730c</span> <span class="n">elementary</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">xz</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">d2a39e5842dd157edbed00992090730c elementary.tar.xz</span>
+</code></pre></div>
 
 
 <p>之后就可以使用 md5sum 软件来验证.</p>
-<div class="highlight"><pre><span></span><span class="n">md5sum</span> <span class="o">-</span><span class="k">c</span> <span class="n">md5</span><span class="p">.</span><span class="n">txt</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">md5sum -c md5.txt</span>
+</code></pre></div>
 
 
 <p>所验证的文件列表中可以有多个文件及其 MD5 码, 每个文件一行, 同时进行验证. 如果验证成功, 则会给出结果.</p>
-<div class="highlight"><pre><span></span><span class="n">elementary</span><span class="p">.</span><span class="n">tar</span><span class="p">.</span><span class="n">xz</span><span class="p">:</span> <span class="n">OK</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">elementary.tar.xz: OK</span>
+</code></pre></div>
 </section>
   </article>
 

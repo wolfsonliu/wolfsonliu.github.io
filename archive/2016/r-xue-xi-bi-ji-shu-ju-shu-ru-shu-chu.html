@@ -79,23 +79,23 @@
             <h2>一般文件</h2>
 <h3>手动输入数据</h3>
 <p>如果数据量不大, 可以手动输入数据, 除了通过变量赋值的方法来输入数据外, 还可以通过编辑器或调用的窗口来输入数据.</p>
-<div class="highlight"><pre><span></span><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">age</span> <span class="o">=</span> <span class="nf">numeric</span><span class="p">(</span><span class="m">0</span><span class="p">),</span> <span class="n">gender</span> <span class="o">=</span> <span class="nf">character</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">data.frame</span><span class="p">(</span><span class="n">age</span> <span class="o">=</span> <span class="nf">numeric</span><span class="p">(</span><span class="m">0</span><span class="p">),</span> <span class="n">gender</span> <span class="o">=</span> <span class="nf">character</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
 <span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">edit</span><span class="p">(</span><span class="n">mydata</span><span class="p">)</span>  <span class="c1"># 使用edit必须要重新赋给变量</span>
 
 <span class="nf">fix</span><span class="p">(</span><span class="n">mydata</span><span class="p">)</span>  <span class="c1"># 使用fix直接修改变量</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>scan 函数如果不加 file 的参数, 则直接从终端读取数据, 需要使用 what 来指明数据类型: <code>what=""</code> 读字符, <code>what=0</code> 读数字, <code>what=list(a=0, b="")</code> 把读的结果按相应类型保存成 list. scan 函数也可以放在其他的函数中, 如 matrix, 然后在终端输入值.</p>
-<div class="highlight"><pre><span></span><span class="nf">scan</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="nf">scan</span><span class="p">()</span>
 
 <span class="n">mymat</span> <span class="o">&lt;-</span> <span class="nf">matrix</span><span class="p">(</span><span class="nf">scan</span><span class="p">(),</span><span class="n">ncol</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>读取文本文件</h3>
-<div class="highlight"><pre><span></span><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="n">file</span>   <span class="o">=</span> <span class="n">THEFILE</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="n">file</span>   <span class="o">=</span> <span class="n">THEFILE</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</code></pre></div>
 
 
 <p>除了 read.table 直接把 scan 函数封装好的函数外, 还有 read.csv, read.csv2, read.delim, read.delim2 等对 read.table 进行了按照文件类型进行特别设置的函数可以使用.</p>
@@ -108,31 +108,31 @@
 </ul>
 <h3>读取 Excel 文件</h3>
 <p>对于 Excel 文件, 可以像连接数据库一样进行连接, 使用 RODBC 包 (限于 Windows).</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">RODBC</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">RODBC</span><span class="p">)</span>
 <span class="n">channel</span> <span class="o">&lt;-</span> <span class="nf">odbcConnectExcel</span><span class="p">(</span><span class="s">&quot;myfile.xls&quot;</span><span class="p">)</span>
 <span class="n">mydata</span>  <span class="o">&lt;-</span> <span class="nf">sqlFetch</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="s">&quot;mysheet1&quot;</span><span class="p">)</span>
 <span class="nf">odbcClose</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>Excel 2007 采用的 xlsx 文件实际上相当于 xls 的压缩文件. 对于 xlsx 文件, 可以使用 xlsx 包, 来读取和操作 xlsx 文件.</p>
-<div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">xlsx</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">xlsx</span><span class="p">)</span>
 <span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.xlsx</span><span class="p">(</span><span class="s">&quot;myfile.xlsx&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="c1"># 1 指的是要读取的表单.</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>也可以在所有的平台上使用 gdata 包的 read.xls 来读取 Excel 文件.</p>
 <h3>读取关系数据库数据</h3>
 <h4>ODBC 数据库接口</h4>
 <p>在系统安装有合适的 ODBC 驱动的情况下, 使用 RODBC 包可以连接关系数据库.</p>
-<div class="highlight"><pre><span></span><span class="n">odbcConnect</span><span class="p">(</span><span class="n">dsn</span><span class="p">,</span><span class="n">uid</span><span class="o">=</span><span class="ss">&quot;&quot;</span><span class="p">,</span><span class="n">pwd</span><span class="o">=</span><span class="ss">&quot;&quot;</span><span class="p">)</span>  <span class="o">#</span> <span class="err">建立一个到</span><span class="n">ODBC数据库的连接</span>
-<span class="n">sqlFetch</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">sqltable</span><span class="p">)</span>  <span class="o">#</span> <span class="err">读取</span><span class="n">ODBC数据库中的某个表到一个数据框中</span>
-<span class="n">sqlQuery</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">query</span><span class="p">)</span>  <span class="o">#</span> <span class="err">向</span><span class="n">ODBC数据库提交一个查询并返回结果</span>
-<span class="n">sqlSave</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">mydf</span><span class="p">,</span><span class="n">tablename</span><span class="o">=</span><span class="n">sqtable</span><span class="p">,</span><span class="n">append</span><span class="o">=</span><span class="k">FALSE</span><span class="p">)</span>  <span class="o">#</span> <span class="err">将数据框写入或更新</span><span class="p">(</span><span class="n">append</span><span class="o">=</span><span class="k">TRUE</span><span class="p">)</span><span class="err">到</span><span class="n">ODBC数据库的</span>
+<div class="highlight"><pre><span></span><code><span class="err">odbcConnect(dsn,uid=&quot;&quot;,pwd=&quot;&quot;)  # 建立一个到ODBC数据库的连接</span>
+<span class="err">sqlFetch(channel,sqltable)  # 读取ODBC数据库中的某个表到一个数据框中</span>
+<span class="err">sqlQuery(channel,query)  # 向ODBC数据库提交一个查询并返回结果</span>
+<span class="err">sqlSave(channel,mydf,tablename=sqtable,append=FALSE)  # 将数据框写入或更新(append=TRUE)到ODBC数据库的</span>
 <span class="err">某个表中</span>
-<span class="n">sqlDrop</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span><span class="n">sqtable</span><span class="p">)</span>  <span class="o">#</span> <span class="err">删除</span><span class="n">ODBC数据库中的某个表</span>
-<span class="k">close</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>  <span class="o">#</span> <span class="err">关闭连接</span>
-</pre></div>
+<span class="err">sqlDrop(channel,sqtable)  # 删除ODBC数据库中的某个表</span>
+<span class="err">close(channel)  # 关闭连接</span>
+</code></pre></div>
 
 
 <h4>DBI 数据库接口</h4>
@@ -235,20 +235,6 @@
 
                 <span class="mail"><a href="mailto:?subject=R 学习笔记：数据输入输出&amp;body=Viens découvrir un article à propos de [R 学习笔记：数据输入输出] sur le site de Wolfson Liu. ../../archive/2016/r-xue-xi-bi-ji-shu-ju-shu-ru-shu-chu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/r-xue-xi-bi-ji-shu-ju-shu-ru-shu-chu.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

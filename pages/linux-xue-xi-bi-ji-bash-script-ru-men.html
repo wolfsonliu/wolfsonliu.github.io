@@ -74,10 +74,10 @@
 </ul>
 <h2>一个简单的脚本</h2>
 <p>我们写第一个简单的脚本，脚本名字叫：<code>hello_world.sh</code></p>
-<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;Hello World!&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>在 bash script 中的注释是 <code>#</code> 后面的部分，bash 不会运行注释。在上面例
@@ -94,7 +94,7 @@ awk 脚本的话，则应该是 <code>/usr/bin/awk -f</code>。在我们把脚�
 数可以让脚本更简洁明了，方便维护。bash script 的函数很简单，就是把相应
 的命令放在函数体中。</p>
 <p>如 hello_world2.sh：</p>
-<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 
 <span class="k">function</span> hello <span class="o">{</span>
     <span class="nb">echo</span> <span class="s2">&quot;Hello!&quot;</span>
@@ -106,7 +106,7 @@ world<span class="o">()</span> <span class="o">{</span>
 
 hello
 world
-</pre></div>
+</code></pre></div>
 
 
 <h2>变量</h2>
@@ -118,14 +118,14 @@ world
 使用引号引起来。双引号和单引号在 bash 中是不一样的，双引号中的变量名会
 替换为变量对应的值，而对于单引号中的变量名则不会自动替换，单引号中的字
 符就是其原始字符。</p>
-<div class="highlight"><pre><span></span>$ <span class="nv">myname</span><span class="o">=</span>Wolfson
+<div class="highlight"><pre><span></span><code>$ <span class="nv">myname</span><span class="o">=</span>Wolfson
 $ <span class="nv">MYGRATE</span><span class="o">=</span><span class="s2">&quot;Hello World!&quot;</span>
 $ <span class="nb">echo</span> <span class="nv">$mygrate</span> I am <span class="nv">$myname</span>
 Hello World! I am Wolfson
 $ <span class="nb">echo</span> <span class="s2">&quot;</span><span class="nv">$MYGRATE</span><span class="s2"> I am </span><span class="nv">$myname</span><span class="s2">&quot;</span>
 $ <span class="nb">echo</span> <span class="s1">&#39;$MYGRATE I am $myname&#39;</span>
 <span class="nv">$MYGRATE</span> I am <span class="nv">$myname</span><span class="err">&#39;</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>位置变量</h3>
@@ -133,37 +133,37 @@ $ <span class="nb">echo</span> <span class="s1">&#39;$MYGRATE I am $myname&#39;<
 是该脚本或者该函数后面的第一个参数；<code>$2</code>是该脚本或者该函数后面的第二个
 参数，依次类推。</p>
 <p>例如 hello.sh 脚本：</p>
-<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 <span class="nb">echo</span> “Hello, <span class="nv">$1</span>! I am <span class="nv">$2</span>.”
-</pre></div>
+</code></pre></div>
 
 
 <p>可以给运行该脚本，给参数或不给：</p>
-<div class="highlight"><pre><span></span>$ ./hello.sh
+<div class="highlight"><pre><span></span><code>$ ./hello.sh
 Hello, ! I am .
 $ ./hello.sh <span class="s2">&quot;Han Meimei&quot;</span> <span class="s2">&quot;Li Lei&quot;</span>
 Hello, Han Meimei! I am Li Lei.
-</pre></div>
+</code></pre></div>
 
 
 <p>对于函数也如此，例如 hello2.sh脚本：</p>
-<div class="highlight"><pre><span></span><span class="ch">#! /bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 <span class="k">function</span> grate <span class="o">{</span>
     <span class="nb">echo</span> “Hello, <span class="nv">$1</span>! I am <span class="nv">$2</span>.”
 <span class="o">}</span>
 grate
 grate <span class="s2">&quot;Han Meimei&quot;</span> <span class="s2">&quot;Li Lei&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>运行改脚本：</p>
-<div class="highlight"><pre><span></span>$ ./hello2.sh
+<div class="highlight"><pre><span></span><code>$ ./hello2.sh
 Hello, ! I am .
 Hello, Han Meimei! I am Li Lei.
 $ ./hello2.sh <span class="s2">&quot;Zhang San&quot;</span> <span class="s2">&quot;Li Si&quot;</span>
 Hello, ! I am .
 Hello, Han Meimei! I am Li Lei.
-</pre></div>
+</code></pre></div>
 
 
 <h2>流程控制</h2>
@@ -178,48 +178,48 @@ Hello, Han Meimei! I am Li Lei.
 <h3>if/else</h3>
 <p>当需要根据一个条件来确定是否要执行或者要执行什么样的命令的情况下需要用
 到 if/else 做条件判断。</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span>
     <span class="o">(</span>statement<span class="o">)</span>
 <span class="o">[</span><span class="k">elif</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span><span class="o">]</span>
 <span class="o">[</span>    <span class="o">(</span>statement<span class="o">)]</span>
 <span class="o">[</span><span class="k">else</span><span class="o">]</span>
 <span class="o">[</span>    <span class="o">(</span>statement<span class="o">)]</span>
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>在bash script中，可以使用 <code>[]</code> test 语句做条件判断，具体参考 <code>man test</code>。</p>
 <p>例如，我们可以在文件夹不存在的时候去创建文件夹，而在文件夹存在的时候不采取操作：</p>
-<div class="highlight"><pre><span></span><span class="k">if</span> <span class="o">[</span> ! -e ~/seq <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">[</span> ! -e ~/seq <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     mkdir ~/seq
 <span class="k">fi</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>for</h3>
 <p>如果有同样的任务需要运行特定的次数，则可以使用 for 循环语句。</p>
-<div class="highlight"><pre><span></span><span class="k">for</span> <span class="o">(</span>name<span class="o">)</span> <span class="o">[</span>in list<span class="o">]</span><span class="p">;</span> <span class="k">do</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="o">(</span>name<span class="o">)</span> <span class="o">[</span>in list<span class="o">]</span><span class="p">;</span> <span class="k">do</span>
     <span class="o">(</span>statement<span class="o">)</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>比如我们想输出 1 到 10：</p>
-<div class="highlight"><pre><span></span><span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
     <span class="nb">echo</span> <span class="nv">$x</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>或者我们可以把要逐个处理的值用空格隔开：</p>
-<div class="highlight"><pre><span></span><span class="k">for</span> x in one two three four<span class="p">;</span> <span class="k">do</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> x in one two three four<span class="p">;</span> <span class="k">do</span>
     <span class="nb">echo</span> <span class="nv">$x</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>写个 for 循环可以容易地批量实现文件重命名：</p>
-<div class="highlight"><pre><span></span>mkdir tmp
+<div class="highlight"><pre><span></span><code>mkdir tmp
 
 <span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
     touch tmp/<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.txt
@@ -232,24 +232,24 @@ ls tmp
 <span class="k">done</span>
 <span class="nb">echo</span> <span class="s2">&quot;Renamed files:&quot;</span>
 ls tmp
-</pre></div>
+</code></pre></div>
 
 
 <h3>while 和 until</h3>
 <p>有时候我们希望一个命令不断执行，直到条件发生变化，这个时候我们可以用
 while 或者 until。两者区别在于， 如果初始条件为假，则while一次也不会执
 行，而until则会执行一次。只需要把条件取反，就能把while变成untile。</p>
-<div class="highlight"><pre><span></span><span class="k">while</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
+<div class="highlight"><pre><span></span><code><span class="k">while</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
     <span class="o">(</span>statement<span class="o">)</span>
 <span class="k">done</span>
 <span class="k">until</span> <span class="o">(</span>not condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
     <span class="o">(</span>statement<span class="o">)</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>例如我们写一个while 循环找到最后一层目录：</p>
-<div class="highlight"><pre><span></span><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
+<div class="highlight"><pre><span></span><code><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
 
 mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">}</span>
 
@@ -263,11 +263,11 @@ mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">
     <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dirs Grow: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果我们要拓展一下，用上面 while 循环实现类似于 <code>rmdir -p</code> 的功能：</p>
-<div class="highlight"><pre><span></span><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
+<div class="highlight"><pre><span></span><code><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
 
 mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">}</span>
 
@@ -287,11 +287,11 @@ mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">
     <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dir: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
 <span class="k">done</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>man test</h3>
-<div class="highlight"><pre><span></span>TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>                          User Commands                         TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+<div class="highlight"><pre><span></span><code>TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>                          User Commands                         TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
 
 NAME
        <span class="nb">test</span> - check file types and compare values
@@ -457,7 +457,7 @@ DESCRIPTION
 <span class="s1">       or available locally via: info &#39;</span><span class="o">(</span>coreutils<span class="o">)</span> <span class="nb">test</span> invocation<span class="err">&#39;</span>
 
 GNU coreutils <span class="m">8</span>.28               January <span class="m">2018</span>                          TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
-</pre></div>
+</code></pre></div>
 </section>
   </article>
 

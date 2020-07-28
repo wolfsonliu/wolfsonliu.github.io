@@ -94,7 +94,7 @@ POSIX规定的正则表达式有基础正则表达式和扩展正则表达式之
   者 “saturday”。在基础正则表达式中是使用 <code>\|</code> 来表示或的，<code>|</code>则表示该符
   号本身。在扩展正则表达式中则反过来，<code>|</code>是表示或的，<code>\|</code>表示该符号。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;sunday\|saturday&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;sunday\|saturday&quot;</span>
 sunday
 $ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;sunday|saturday&quot;</span>
 $ <span class="nb">echo</span> <span class="s2">&quot;sunday|&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;sunday|saturday&quot;</span>
@@ -102,7 +102,7 @@ $ <span class="nb">echo</span> monday <span class="p">|</span> grep <span class=
 $ <span class="nb">echo</span> sunday <span class="p">|</span> egrep <span class="s2">&quot;sunday\|saturday&quot;</span>
 $ <span class="nb">echo</span> sunday <span class="p">|</span> egrep <span class="s2">&quot;sunday|saturday&quot;</span>
 sunday
-</pre></div>
+</code></pre></div>
 
 
 <ul>
@@ -116,13 +116,13 @@ sunday
   号本身。在扩展正则表达式中则反过来，<code>()</code>是表示分组的，<code>\(\)</code>表示小括
   号。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;\(sun\|satur\)day&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> sunday <span class="p">|</span> grep <span class="s2">&quot;\(sun\|satur\)day&quot;</span>
 sunday
 $ <span class="nb">echo</span> <span class="s2">&quot;sunday&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;(sun|satur)day&quot;</span>
 sunday
 $ <span class="nb">echo</span> <span class="s2">&quot;sunday&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;(sun|satur)day&quot;</span>
 $ <span class="nb">echo</span> <span class="s2">&quot;monday&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;(sun|satur)day&quot;</span>
-</pre></div>
+</code></pre></div>
 
 
 <ul>
@@ -138,11 +138,11 @@ $ <span class="nb">echo</span> <span class="s2">&quot;monday&quot;</span> <span 
     于“ab?c”。</li>
 <li>类似前面，在基础正则表达式中，<code>\{\}</code> 用来作为正则表达式。在扩展正则表达式中则相反，使用 <code>{}</code>。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;AGCGTTTTGT&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;T{4,}&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s2">&quot;AGCGTTTTGT&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;T{4,}&quot;</span>
 AGCGTTTTGT
 $ <span class="nb">echo</span> <span class="s2">&quot;AGCGTTTTGT&quot;</span> <span class="p">|</span> egpre <span class="s2">&quot;GT+G&quot;</span>
 AGCGTTTTGT
-</pre></div>
+</code></pre></div>
 
 
 <ul>
@@ -168,8 +168,8 @@ AGCGTTTTGT
 <li><code>[:graph:]</code>：能看得到的字符，相当于<code>[^ \t\n\r\f\v]</code></li>
 <li><code>[:print:]</code>：可打印字符，能看得到的字符和空格 <code>[^\t\n\r\f\v]</code>。</li>
 </ul>
-<div class="highlight"><pre><span></span>$ cat sample.fq <span class="p">|</span> grep <span class="s2">&quot;ACCG([ATCG]{20})GTTT&quot;</span> &gt; reads_with_sgRNA.txt
-</pre></div>
+<div class="highlight"><pre><span></span><code>$ cat sample.fq <span class="p">|</span> grep <span class="s2">&quot;ACCG([ATCG]{20})GTTT&quot;</span> &gt; reads_with_sgRNA.txt
+</code></pre></div>
 
 
 <p>对于字符串开头和结尾，可以使用 <code>^</code> <code>$</code> 来进行定位。</p>
@@ -177,14 +177,14 @@ AGCGTTTTGT
 <li><code>^</code>：指定字符串起始位置</li>
 <li><code>$</code>：指定字符串结束位置</li>
 </ul>
-<div class="highlight"><pre><span></span>$ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;two&quot;</span>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;two&quot;</span>
 one two three
 $ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;^two&quot;</span>
 $ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;^one&quot;</span>
 one two three
 $ <span class="nb">echo</span> <span class="s2">&quot;one two three&quot;</span> <span class="p">|</span> grep <span class="s2">&quot;three</span>$<span class="s2">&quot;</span>
 one two three
-</pre></div>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -207,20 +207,6 @@ one two three
 
                 <span class="mail"><a href="mailto:?subject=正则表达式&amp;body=Viens découvrir un article à propos de [正则表达式] sur le site de Wolfson Liu. ../../archive/2018/zheng-ze-biao-da-shi.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2018/zheng-ze-biao-da-shi.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

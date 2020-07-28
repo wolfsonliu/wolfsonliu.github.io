@@ -80,57 +80,57 @@
 <h3>函数</h3>
 <h4>reduce</h4>
 <p><code>reduce</code> 函数类似于 R 中的 Reduce 函数, 是把一个双目函数累积地运用到整个序列的元素上.</p>
-<div class="highlight"><pre><span></span><span class="n">reduce</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-<span class="o">#</span> <span class="mi">15</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">reduce(lambda x, y: x + y, [1, 2, 3, 4, 5])</span>
+<span class="err"># 15</span>
+</code></pre></div>
 
 
 <h4>partial</h4>
 <p><code>partial</code> 函数 (实际上是类) 是用来给一些函数预设一定的参数, 在接下来的调用中就不需要重复传入参数了. <code>partial</code> 的 func 属性是其接受的原来的函数, keywords 属性里则是保存了原来函数的参数的名和值的 dict.</p>
-<div class="highlight"><pre><span></span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;1001&#39;</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-<span class="o">#</span> <span class="mi">9</span>
-<span class="n">two2ten</span> <span class="o">=</span> <span class="k">partial</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">base</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-<span class="n">two2ten</span><span class="p">(</span><span class="s1">&#39;1001&#39;</span><span class="p">)</span>
-<span class="o">#</span> <span class="mi">9</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">int(&#39;1001&#39;, base = 2)</span>
+<span class="err"># 9</span>
+<span class="err">two2ten = partial(int, base = 2)</span>
+<span class="err">two2ten(&#39;1001&#39;)</span>
+<span class="err"># 9</span>
+</code></pre></div>
 
 
 <p><code>partialmethod</code> 类似于 <code>partial</code> 函数, 不过是用来对类的 method 进行预先设置.</p>
-<div class="highlight"><pre><span></span><span class="nv">class</span> <span class="nv">Call</span>:
-    <span class="nv">def</span> <span class="nv">__init__</span><span class="ss">(</span><span class="nv">self</span><span class="ss">)</span>:
-        <span class="nv">pass</span>
-    <span class="nv">def</span> <span class="nv">callout</span><span class="ss">(</span><span class="nv">self</span>, <span class="nv">sound</span><span class="ss">)</span>:
-        <span class="k">return</span> <span class="nv">sound</span>
-    <span class="nv">dog</span> <span class="o">=</span> <span class="nv">partialmethod</span><span class="ss">(</span><span class="nv">callout</span>, <span class="nv">sound</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">Woof!</span><span class="s1">&#39;</span><span class="ss">)</span>
-    <span class="nv">cat</span> <span class="o">=</span> <span class="nv">partialmethod</span><span class="ss">(</span><span class="nv">callout</span>, <span class="nv">sound</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">Mew!</span><span class="s1">&#39;</span><span class="ss">)</span>
-<span class="nv">animall</span> <span class="o">=</span> <span class="nv">Call</span><span class="ss">()</span>
-<span class="nv">animall</span>.<span class="nv">dog</span><span class="ss">()</span>
-# <span class="s1">&#39;</span><span class="s">Woof!</span><span class="s1">&#39;</span>
-<span class="nv">animall</span>.<span class="nv">cat</span><span class="ss">()</span>
-# <span class="s1">&#39;</span><span class="s">Mew!</span><span class="s1">&#39;</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">class Call:</span>
+<span class="err">    def __init__(self):</span>
+<span class="err">        pass</span>
+<span class="err">    def callout(self, sound):</span>
+<span class="err">        return sound</span>
+<span class="err">    dog = partialmethod(callout, sound = &#39;Woof!&#39;)</span>
+<span class="err">    cat = partialmethod(callout, sound = &#39;Mew!&#39;)</span>
+<span class="err">animall = Call()</span>
+<span class="err">animall.dog()</span>
+<span class="err"># &#39;Woof!&#39;</span>
+<span class="err">animall.cat()</span>
+<span class="err"># &#39;Mew!&#39;</span>
+</code></pre></div>
 
 
 <h3>修饰器</h3>
 <h4>lru_cache</h4>
 <p><code>lru_cache</code> 是一个函数修饰器, 用来储存一些频繁调用相同参数的函数的结果, 当再次使用函数的时候可以直接返回结果而不用计算, 提高了速度, 是用空间换时间的策略.</p>
-<div class="highlight"><pre><span></span><span class="nv">def</span> <span class="nv">fib</span><span class="ss">(</span><span class="nv">n</span><span class="ss">)</span>:
-    <span class="k">if</span> <span class="nv">n</span> <span class="o">&lt;</span> <span class="mi">2</span>:
-        <span class="k">return</span> <span class="nv">n</span>
-    <span class="k">return</span> <span class="nv">fib</span><span class="ss">(</span><span class="nv">n</span><span class="o">-</span><span class="mi">1</span><span class="ss">)</span> <span class="o">+</span> <span class="nv">fib</span><span class="ss">(</span><span class="nv">n</span><span class="o">-</span><span class="mi">2</span><span class="ss">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fib</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
 
-@<span class="nv">lrc_cache</span><span class="ss">(</span><span class="mi">100</span><span class="ss">)</span>
-<span class="nv">def</span> <span class="nv">fib2</span><span class="ss">(</span><span class="nv">n</span><span class="ss">)</span>:
-    <span class="k">if</span> <span class="nv">n</span> <span class="o">&lt;</span> <span class="mi">2</span>:
-        <span class="k">return</span> <span class="nv">n</span>
-    <span class="k">return</span> <span class="nv">fib2</span><span class="ss">(</span><span class="nv">n</span><span class="o">-</span><span class="mi">1</span><span class="ss">)</span> <span class="o">+</span> <span class="nv">fib2</span><span class="ss">(</span><span class="nv">n</span><span class="o">-</span><span class="mi">2</span><span class="ss">)</span>
-# <span class="o">%</span><span class="nv">timeit</span> [<span class="nv">fib</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">range</span><span class="ss">(</span><span class="mi">10</span><span class="ss">)</span>]
-# <span class="mi">10000</span> <span class="nv">loops</span>, <span class="nv">best</span> <span class="nv">of</span> <span class="mi">3</span>: <span class="mi">53</span>.<span class="mi">7</span> µ<span class="nv">s</span> <span class="nv">per</span> <span class="k">loop</span>
-# <span class="o">%</span><span class="nv">timeit</span> [<span class="nv">fib2</span><span class="ss">(</span><span class="nv">x</span><span class="ss">)</span> <span class="k">for</span> <span class="nv">x</span> <span class="nv">in</span> <span class="nv">range</span><span class="ss">(</span><span class="mi">10</span><span class="ss">)</span>]
-# <span class="nv">The</span> <span class="nv">slowest</span> <span class="nv">run</span> <span class="nv">took</span> <span class="mi">5</span>.<span class="mi">22</span> <span class="nv">times</span> <span class="nv">longer</span> <span class="nv">than</span> <span class="nv">the</span> <span class="nv">fastest</span>.
-# <span class="nv">This</span> <span class="nv">could</span> <span class="nv">mean</span> <span class="nv">that</span> <span class="nv">an</span> <span class="nv">intermediate</span> <span class="nb">result</span> <span class="nv">is</span> <span class="nv">being</span> <span class="nv">cached</span>.
-# <span class="mi">100000</span> <span class="nv">loops</span>, <span class="nv">best</span> <span class="nv">of</span> <span class="mi">3</span>: <span class="mi">2</span>.<span class="mi">97</span> µ<span class="nv">s</span> <span class="nv">per</span> <span class="k">loop</span>
-</pre></div>
+<span class="nv">@lrc_cache</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">fib2</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">n</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">fib2</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">fib2</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="o">%</span><span class="n">timeit</span><span class="w"> </span><span class="o">[</span><span class="n">fib(x) for x in range(10)</span><span class="o">]</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="mi">10000</span><span class="w"> </span><span class="n">loops</span><span class="p">,</span><span class="w"> </span><span class="n">best</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="mi">3</span><span class="err">:</span><span class="w"> </span><span class="mf">53.7</span><span class="w"> </span><span class="n">µs</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">loop</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="o">%</span><span class="n">timeit</span><span class="w"> </span><span class="o">[</span><span class="n">fib2(x) for x in range(10)</span><span class="o">]</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">slowest</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">took</span><span class="w"> </span><span class="mf">5.22</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="n">longer</span><span class="w"> </span><span class="k">than</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">fastest</span><span class="p">.</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">could</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">intermediate</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">cached</span><span class="p">.</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="mi">100000</span><span class="w"> </span><span class="n">loops</span><span class="p">,</span><span class="w"> </span><span class="n">best</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="mi">3</span><span class="err">:</span><span class="w"> </span><span class="mf">2.97</span><span class="w"> </span><span class="n">µs</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">loop</span><span class="w"></span>
+</code></pre></div>
 
 
 <p>可以看到当频繁地使用相同的参数调用函数的时候, lrc_cache 修饰的函数有很高的运行效率.</p>
@@ -138,46 +138,46 @@
 <p><code>total_ordering</code> 是一个类修饰器, 当一个类只定义了 <code>__eq__()</code> 和 <code>__lt()__</code>, <code>__le__()</code>, <code>__gt__()</code>, <code>__ge__()</code> 中的一种时, total_ordering 可以帮助补全其他的方法.</p>
 <h4>wraps</h4>
 <p><code>wraps</code> 是用来帮助在使用自己编写的函数修饰器的时候能够保留原函数的信息. 官方文档提供了例子.</p>
-<div class="highlight"><pre><span></span><span class="nv">def</span> <span class="nv">my_decorator</span><span class="ss">(</span><span class="nv">f</span><span class="ss">)</span>:
-    @<span class="nv">wraps</span><span class="ss">(</span><span class="nv">f</span><span class="ss">)</span>
-    <span class="nv">def</span> <span class="nv">wrapper</span><span class="ss">(</span><span class="o">*</span><span class="nv">args</span>, <span class="o">**</span><span class="nv">kwds</span><span class="ss">)</span>:
-        <span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Calling decorated function</span><span class="s1">&#39;</span><span class="ss">)</span>
-        <span class="k">return</span> <span class="nv">f</span><span class="ss">(</span><span class="o">*</span><span class="nv">args</span>, <span class="o">**</span><span class="nv">kwds</span><span class="ss">)</span>
-    <span class="k">return</span> <span class="nv">wrapper</span>
+<div class="highlight"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">my_decorator</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="nv">@wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Calling decorated function&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">wrapper</span><span class="w"></span>
 
-<span class="nv">def</span> <span class="nv">my_decorator2</span><span class="ss">(</span><span class="nv">f</span><span class="ss">)</span>:
-    <span class="nv">def</span> <span class="nv">wrapper2</span><span class="ss">(</span><span class="o">*</span><span class="nv">args</span>, <span class="o">**</span><span class="nv">kwds</span><span class="ss">)</span>:
-        <span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Calling decorated function2</span><span class="s1">&#39;</span><span class="ss">)</span>
-        <span class="k">return</span> <span class="nv">f</span><span class="ss">(</span><span class="o">*</span><span class="nv">args</span>, <span class="o">**</span><span class="nv">kwds</span><span class="ss">)</span>
-    <span class="k">return</span> <span class="nv">wrapper</span>
+<span class="n">def</span><span class="w"> </span><span class="n">my_decorator2</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">def</span><span class="w"> </span><span class="n">wrapper2</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Calling decorated function2&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="o">**</span><span class="n">kwds</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">wrapper</span><span class="w"></span>
 
-@<span class="nv">my_decorator</span>
-<span class="nv">def</span> <span class="nv">example</span><span class="ss">()</span>:
-    <span class="s2">&quot;&quot;&quot;</span><span class="s">Docstring</span><span class="s2">&quot;&quot;&quot;</span>
-    <span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Called example function</span><span class="s1">&#39;</span><span class="ss">)</span>
+<span class="nv">@my_decorator</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">example</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;Docstring&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Called example function&#39;</span><span class="p">)</span><span class="w"></span>
 
-<span class="nv">example</span><span class="ss">()</span>
-# <span class="nv">Calling</span> <span class="nv">decorated</span> <span class="nv">function</span>
-# <span class="nv">Called</span> <span class="nv">example</span> <span class="nv">function</span>
+<span class="n">example</span><span class="p">()</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="n">Calling</span><span class="w"> </span><span class="n">decorated</span><span class="w"> </span><span class="k">function</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="k">Called</span><span class="w"> </span><span class="n">example</span><span class="w"> </span><span class="k">function</span><span class="w"></span>
 
-<span class="nv">example</span>.<span class="nv">__name__</span>
-# <span class="s1">&#39;</span><span class="s">example</span><span class="s1">&#39;</span>
-<span class="nv">example</span>.<span class="nv">__doc__</span>
-# <span class="s1">&#39;</span><span class="s">Docstring</span><span class="s1">&#39;</span>
+<span class="n">example</span><span class="p">.</span><span class="n">__name__</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="s1">&#39;example&#39;</span><span class="w"></span>
+<span class="n">example</span><span class="p">.</span><span class="n">__doc__</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="s1">&#39;Docstring&#39;</span><span class="w"></span>
 
-@<span class="nv">my_decorator2</span>
-<span class="nv">def</span> <span class="nv">example2</span><span class="ss">()</span>:
-    <span class="s2">&quot;&quot;&quot;</span><span class="s">Docstring2</span><span class="s2">&quot;&quot;&quot;</span>
-    <span class="nv">print</span><span class="ss">(</span><span class="s1">&#39;</span><span class="s">Called example2 function</span><span class="s1">&#39;</span><span class="ss">)</span>
+<span class="nv">@my_decorator2</span><span class="w"></span>
+<span class="n">def</span><span class="w"> </span><span class="n">example2</span><span class="p">()</span><span class="err">:</span><span class="w"></span>
+<span class="w">    </span><span class="ss">&quot;&quot;&quot;Docstring2&quot;&quot;&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="k">print</span><span class="p">(</span><span class="s1">&#39;Called example2 function&#39;</span><span class="p">)</span><span class="w"></span>
 
-<span class="nv">example2</span><span class="ss">()</span>
-# <span class="nv">Calling</span> <span class="nv">decorated</span> <span class="nv">function2</span>
-# <span class="nv">Called</span> <span class="nv">example2</span> <span class="nv">function</span>
-<span class="nv">example2</span>.<span class="nv">__name__</span>
-# <span class="s1">&#39;</span><span class="s">wrapper2</span><span class="s1">&#39;</span>
-<span class="nv">example2</span>.<span class="nv">__doc__</span>
-#
-</pre></div>
+<span class="n">example2</span><span class="p">()</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="n">Calling</span><span class="w"> </span><span class="n">decorated</span><span class="w"> </span><span class="n">function2</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="k">Called</span><span class="w"> </span><span class="n">example2</span><span class="w"> </span><span class="k">function</span><span class="w"></span>
+<span class="n">example2</span><span class="p">.</span><span class="n">__name__</span><span class="w"></span>
+<span class="err">#</span><span class="w"> </span><span class="s1">&#39;wrapper2&#39;</span><span class="w"></span>
+<span class="n">example2</span><span class="p">.</span><span class="n">__doc__</span><span class="w"></span>
+<span class="err">#</span><span class="w"></span>
+</code></pre></div>
 
 
 <p>可以看到在不在自己定义的修饰器中使用 wraps, 其修饰的函数的属性实际上是返回的修饰函数的属性. 而 wraps 可以让被修饰的函数的依然保留之前的属性.</p>
@@ -203,20 +203,6 @@
 
                 <span class="mail"><a href="mailto:?subject=Python 学习笔记: functools module&amp;body=Viens découvrir un article à propos de [Python 学习笔记: functools module] sur le site de Wolfson Liu. ../../archive/2016/python-xue-xi-bi-ji-functools-module.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2016/python-xue-xi-bi-ji-functools-module.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

@@ -78,16 +78,16 @@
         <div class="entry-content blog-post">
             <p>Sympy 是 python 的一个计算符号数学的包, 可以用来解方程等.
 Sympy 完全是 python 编写的, 有 BSD 的 license.</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sp</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">sympy</span> <span class="kn">as</span> <span class="nn">sp</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">sy</span><span class="o">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 <span class="c1">### [-2, 2]</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>利用 Sympy 和其他的包的不同的地方在于, Sympy 就像数学一样是准确地求解,
 而 Numpy 等数值计算的包则是近似求解. Sympy 会把没有求的变量保持不变.</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">np</span><span class="o">.</span><span class="kp">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1">### 0.69314718055994529</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="o">.</span><span class="kp">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -96,17 +96,17 @@ Sympy 完全是 python 编写的, 有 BSD 的 license.</p>
 <span class="c1">### 3.141592653589793</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="n">sp</span><span class="o">.</span><span class="n">pi</span>
 <span class="c1">### pi</span>
-</pre></div>
+</code></pre></div>
 
 
 <h3>微积分</h3>
 <p><code>sp.Integral</code> 是积分, 其具有 <code>.doit()</code> 方法可以用来求解积分.</p>
-<div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">x</span> <span class="o">=</span> <span class="n">sy</span><span class="p">.</span><span class="n">symbols</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="n">sy</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="n">sy</span><span class="p">.</span><span class="n">Integral</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span><span class="p">.</span><span class="n">doit</span><span class="p">()</span>
-<span class="o">###</span> <span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">&gt;&gt;&gt; x = sy.symbols(&#39;x&#39;)</span>
+<span class="err">&gt;&gt;&gt; a = sy.exp(x)</span>
+<span class="err">&gt;&gt;&gt; b = sy.Integral(a)</span>
+<span class="err">&gt;&gt;&gt; b.doit()</span>
+<span class="err">### exp(x)</span>
+</code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
@@ -129,20 +129,6 @@ Sympy 完全是 python 编写的, 有 BSD 的 license.</p>
 
                 <span class="mail"><a href="mailto:?subject=Python 学习笔记: sympy&amp;body=Viens découvrir un article à propos de [Python 学习笔记: sympy] sur le site de Wolfson Liu. ../../archive/2017/python-xue-xi-bi-ji-sympy.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2017/python-xue-xi-bi-ji-sympy.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

@@ -70,51 +70,51 @@
 3. <code>.git/config</code>：在项目目录的 <code>.git</code> 目录下面有项目的 <code>config</code> 文件。该文件中存储的参数是该项目独有的参数。设置项目自己的参数时候，只需要 <code>git config</code> 命令即可。
 三个级别的配置文件的优先级不一样，项目自己的配置文件的优先级要高于用户全局配置文件，而用户全局配置文件的优先级要高于系统级的配置文件。如果某个参数在项目自己的 config 文件中和用户全局配置文件 <code>~/.gitconfig</code> 文件中都有，但是值不一样，则会优先选择使用项目自己的 config 文件中的值。</p>
 <h2>设置用户</h2>
-<div class="highlight"><pre><span></span><span class="n">git</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="c1">--global user.name &quot;Er Wang&quot;</span>
-<span class="n">git</span><span class="w"> </span><span class="n">config</span><span class="w"> </span><span class="c1">--global user.email wanger@microsoft.com</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">git config --global user.name &quot;Er Wang&quot;</span>
+<span class="err">git config --global user.email wanger@microsoft.com</span>
+</code></pre></div>
 
 
 <p>这样就会在 <code>~/.gitconfig</code> 文件中看到：</p>
-<div class="highlight"><pre><span></span><span class="k">[user]</span>
+<div class="highlight"><pre><span></span><code><span class="k">[user]</span>
         <span class="na">email</span> <span class="o">=</span> <span class="s">wanger@microsoft.com</span>
 <span class="s">        name = Er Wang</span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果设置项目级别或者系统级别，也会在相应的配置文件中找到相应的值。</p>
 <h2>设置编辑器</h2>
 <p>因为 git 在使用中需要对信息进行编辑，就需要编辑器的支持。如果没有设置编辑器的话，git 会使用系统默认 编辑器，一般类 Unix 系统的默认编辑器是 vim。如果需要设置编辑器，也可以通过 git config 进行。</p>
-<div class="highlight"><pre><span></span>git config --global core.editor emacs
-</pre></div>
+<div class="highlight"><pre><span></span><code>git config --global core.editor emacs
+</code></pre></div>
 
 
 <p>这样就可以把编辑器设置为 Emacs。相应也可以在配置文件中看到设置。</p>
-<div class="highlight"><pre><span></span><span class="o">[</span>core<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><span class="o">[</span>core<span class="o">]</span>
         <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span>
         <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">false</span>
         <span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
         <span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
         <span class="nv">editor</span> <span class="o">=</span> emacs
-</pre></div>
+</code></pre></div>
 
 
 <h2>显示设置的参数</h2>
 <p>如果需要显示当前的参数设置，可以使用 <code>git config</code> 命令加上参数名。</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span>  <span class="n">core</span><span class="p">.</span><span class="n">editor</span>
-<span class="o">#</span> <span class="n">emacs</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">git config  core.editor</span>
+<span class="err"># emacs</span>
+</code></pre></div>
 
 
 <p>如果需要显示所有的参数，可以使用 <code>--list</code> 选项。</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="c1">--list</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">git config --list</span>
+</code></pre></div>
 
 
 <p>而如果只想要显示项目特有参数（local）或者用户全局参数（global），又或者系统参数（system）也可以通过加上相应选项来实现。</p>
 <p>如显示项目特有参数：</p>
-<div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">config</span> <span class="c1">--list --local</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">git config --list --local</span>
+</code></pre></div>
 
 
 <h2>参数文件</h2>

@@ -79,15 +79,15 @@
             <h3>Primary Expression</h3>
 <p>最简单的 JavaScript 表达式中只包含常量, 语义值, 一些保留词和变量引用等.
 最简单的表达式是直接嵌入到语言中的.</p>
-<div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">.</span><span class="mi">23</span><span class="p">;</span>  <span class="o">//</span> <span class="err">常数</span>
-<span class="s1">&#39;hello&#39;</span><span class="p">;</span>  <span class="o">//</span> <span class="err">常量</span>
-<span class="o">/</span><span class="n">pattern</span><span class="o">/</span><span class="p">;</span>  <span class="o">//</span> <span class="err">正则表达式</span>
-<span class="k">true</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
-<span class="k">false</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
-<span class="k">null</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
-<span class="n">this</span><span class="p">;</span>  <span class="o">//</span> <span class="err">保留词</span> <span class="k">true</span>
-<span class="n">undefined</span><span class="p">;</span> <span class="o">//</span> <span class="err">全局变量</span><span class="p">,</span> <span class="err">变量引用</span>
-</pre></div>
+<div class="highlight"><pre><span></span><code><span class="err">1.23;  // 常数</span>
+<span class="err">&#39;hello&#39;;  // 常量</span>
+<span class="err">/pattern/;  // 正则表达式</span>
+<span class="err">true;  // 保留词 true</span>
+<span class="err">false;  // 保留词 true</span>
+<span class="err">null;  // 保留词 true</span>
+<span class="err">this;  // 保留词 true</span>
+<span class="err">undefined; // 全局变量, 变量引用</span>
+</code></pre></div>
 
 
 <h3>Function Definition Expression</h3>
@@ -95,9 +95,9 @@
 <p>引用属性有两种办法, 一个是使用句点, 另一个是使用方括号.
 一个对象的属性可以使用对象名加句点加属性名来引用.
 而对于使用方括号的方法, 方括号里面可以是一个表达式, 可以是属性名的字符串, 对于 array 还可以是数字或者数字字符串.</p>
-<div class="highlight"><pre><span></span><span class="n">expression</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
+<div class="highlight"><pre><span></span><code><span class="n">expression</span><span class="p">.</span><span class="n">identifier</span><span class="w"></span>
 <span class="n">expression</span><span class="o">[</span><span class="n">expression</span><span class="o">]</span><span class="w"></span>
-</pre></div>
+</code></pre></div>
 
 
 <p>如果对象并不含有相应的属性, 则会返回 undefined.</p>
@@ -131,20 +131,6 @@ in</p>
 
                 <span class="mail"><a href="mailto:?subject=JavaScript 学习笔记：表达式和运算符&amp;body=Viens découvrir un article à propos de [JavaScript 学习笔记：表达式和运算符] sur le site de Wolfson Liu. ../../archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
             </div>
-        </div>
-        <div class="comments">
-            <h2>Comments !</h2>
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-            var disqus_identifier = "archive/2017/javascript-xue-xi-bi-ji-biao-da-shi-he-yun-suan-fu.html";
-            (function() {
-                var dsq = document.createElement('script');
-                dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = 'https://wolfsonliu.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] ||
-                 document.getElementsByTagName('body')[0]).appendChild(dsq);
-            })();
-            </script>
         </div>
     </article>
 </section>

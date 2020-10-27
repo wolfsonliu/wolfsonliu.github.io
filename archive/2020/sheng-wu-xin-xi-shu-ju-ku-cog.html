@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>生物信息数据库：COG</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="狼穴">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html">
+<meta name="twitter:title" content="狼穴 ~ 生物信息数据库：COG">
+<meta name="twitter:description" content="COG数据库">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="狼穴 ~ 生物信息数据库：COG" />
+<meta property="og:description" content="COG数据库" />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>狼穴</h1>
+      <p>自然 - 自由</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html" rel="bookmark" title="Permalink to 生物信息数据库：COG">生物信息数据库：COG</a></h2>
+        <div class="entry-content blog-post">
+            <h2>COG 数据库</h2>
+<p><a href="https://www.ncbi.nlm.nih.gov/research/cog">同源基因族数据
+库</a>（Database of Clusters
+of Orthologous Genes，COGs）是NCBI维护的一个同源蛋白质信息数据库。在做
+宏基因组分析的时候，可以使用该数据库的信息对宏基因组的序列进行注释。</p>
+<p>COG 数据库的资源可以从<a href="https://www.ncbi.nlm.nih.gov/research/cog-project/">项目页
+面</a>下载。其中包括
+最新的<a href="ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data">数据库数据</a>和研究
+团队开发的<a href="ftp://ftp.ncbi.nih.gov/pub/wolf/COGs/COGsoft">软件包</a>。</p>
+<h3>下载 COG 数据</h3>
+<p>可以直接从ftp地址下载数据：</p>
+<div class="highlight"><pre><span></span><code>wget -r -c --wait <span class="m">5</span> --random-wait ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data -P COG2020
+</code></pre></div>
+
+
+<p>数据将被保存在 COG2020 文件夹中。</p>
+<p>COG的fasta文件特别多（2020版本有5950个FASTA，一万多文件），有时候网络
+不稳定难以下载完全，可以单个文件下载：</p>
+<div class="highlight"><pre><span></span><code><span class="nv">cog_fa_url</span><span class="o">=</span><span class="s2">&quot;ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data/fasta/&quot;</span>
+wget <span class="si">${</span><span class="nv">cog_fa_url</span><span class="si">}</span> -O index.html
+
+<span class="nv">cog_fa_dir</span><span class="o">=</span>COG2020/fasta
+
+<span class="k">for</span> x in <span class="sb">`</span>egrep -o <span class="s1">&#39;&quot;&gt;(.*)&lt;/a&gt;&#39;</span> index.html <span class="p">|</span> sed -e <span class="s2">&quot;s/\&quot;&gt;//g&quot;</span> -e <span class="s2">&quot;s/&lt;\/a&gt;//g&quot;</span> <span class="p">|</span> egrep -v <span class="s2">&quot;Parent&quot;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+    wget --wait <span class="m">2</span> --random-wait -O <span class="si">${</span><span class="nv">cog_fa_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">x</span><span class="si">}</span> <span class="si">${</span><span class="nv">cog_fa_url</span><span class="si">}${</span><span class="nv">x</span><span class="si">}</span>
+    sleep <span class="m">1</span>
+<span class="k">done</span>
+</code></pre></div>
+
+
+<h3>COG 数据</h3>
+<p>下载的<a href="ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data">COG 数据</a>主要有如下文件：</p>
+<ul>
+<li>
+<p>Readme.2020-09-15.txt：对于下载的COG数据的说明</p>
+</li>
+<li>
+<p>fun-20.tab：COG 功能分类说明，有3列</p>
+<ol>
+<li>功能分类ID，一个字母</li>
+<li>16进制表示的该功能的颜色</li>
+<li>功能分类描述</li>
+</ol>
+</li>
+<li>
+<p>cog-20.def.tab：COG描述文件，介绍了每个COG族的信息，有7列</p>
+<ol>
+<li>COG ID</li>
+<li>COG 功能分类（单字母功能分类ID，可以有多个）</li>
+<li>COG 名称</li>
+<li>和该 COG 相关的基因（可选）</li>
+<li>和该 COG 相关的通路（可选）</li>
+<li>PubMed ID（可选，多个ID用分号分隔）</li>
+<li>PDB ID（可选，PDB结构数据库ID，多个ID用分号分隔）</li>
+</ol>
+</li>
+<li>
+<p>cog-20.cog.csv：描述蛋白和COG的联系，有13列，每行是一个蛋白质和一个
+  COG的关系，有多个结构域的蛋白质以多行来表示</p>
+<ol>
+<li>编码蛋白质的基因的ID</li>
+<li>NCBI Assembly ID：组装基因组的ID</li>
+<li>蛋白质ID</li>
+<li>蛋白质长度</li>
+<li>该蛋白质的COG相关序列位置，即从第几位到第几位认为是COG相关的序列</li>
+<li>COG相关序列长度</li>
+<li>COG ID</li>
+<li>保留列</li>
+<li>COG相关性：0代表同时覆盖了蛋白质和COG的大部分序列，1代表覆盖了COG
+   大部分序列和部分蛋白质序列，2代表覆盖了蛋白质大部分序列和COG部分
+   序列，3代表覆盖了部分蛋白质序列和COG序列</li>
+<li>匹配的蛋白质序列和COG序列的PSI-BLAST得分</li>
+<li>匹配的蛋白质序列和COG序列的PSI-BLAST e-value</li>
+<li>COG序列长度</li>
+<li>匹配序列在COG序列上的位置</li>
+</ol>
+</li>
+<li>
+<p>cog-20.org.csv：组装基因组的信息</p>
+<ol>
+<li>NCBI Assembly ID：组装基因组的ID</li>
+<li>物种名称</li>
+<li>NCBI分类ID</li>
+<li>在COG中使用的分类</li>
+</ol>
+</li>
+<li>
+<p>cog-20.tax.csv：在COG中使用的分类信息描述</p>
+<ol>
+<li>在COG中使用的分类</li>
+<li>上一级别分类（如果存在的话）</li>
+<li>基因组的NCBI分类ID</li>
+</ol>
+</li>
+<li>
+<p>fasta 文件夹里是按照不同的族分类存储的序列：每个族的序列存一个FASTA
+  文件，另外还有一个对应TXT文件保存了相应的元数据。</p>
+</li>
+</ul>
+<h3>使用 COG 注释序列</h3>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Mon 26 October 2020</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/bioinformatics.html">#bioinformatics, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html&text=生物信息数据库：COG&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html&t=生物信息数据库：COG"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html&title=生物信息数据库：COG" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=生物信息数据库：COG&amp;body=Viens découvrir un article à propos de [生物信息数据库：COG] sur le site de Wolfson Liu. ../../archive/2020/sheng-wu-xin-xi-shu-ju-ku-cog.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

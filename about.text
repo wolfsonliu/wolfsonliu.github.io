@@ -5,19 +5,25 @@ save_as: about.html
 
 --------------------
 
-我喜欢狼, 自然名小狼, 英文名 Wolfson. 我是一个中国在读生物狗, 试图学习程序猿技能.
+我喜欢狼，自然名小狼，英文名 Wolfson。
 
-我喜欢博物学, 主要是观鸟. 喜欢读书, 包括小说, 大众科学, 哲学, 文化等. 喜欢计算机, 正在努力学习, 主要在 Linux 环境下, R, python 为主.
+我在2020年夏天获得了生物学博士学位，主要关注生物信息学和数据科学领域。
+我会继续从事生物信息学和数据科学方面的研究和应用。
 
-这个博客叫 Wolf Cave, 在这个博客中, 我记录我的一些学习心得, 一些生活中的事情.
+我主要在 Linux 环境下工作，R，python 为主。
 
-"Nature, Beauty, Freedom", 这些正是我所热爱和所追求的.
+我喜欢博物学，尤其是观鸟。喜欢读书，包括小说，大众科学，哲学，文化等.
+喜欢计算机和统计学，依然在努力学习。
+
+这个博客叫【狼穴】，在这个博客中，我记录我的一些学习心得，一些生活中的事情。
 
 --------------------
 
-<script type="text/javascript" src="http://www.douban.com/service/badge/77536581/?selection=random&amp;picsize=small&amp;hideself=on&amp;show=collection&amp;n=8&amp;cat=drama%7Cmovie%7Cbook%7Cmusic&amp;columns=4"></script>
+<!-- <div class="body"> -->
+<!-- <script type="text/javascript" src="http://www.douban.com/service/badge/77536581/?selection=latest&amp;picsize=small&amp;show=collection&amp;n=8&amp;cat=drama%7Cmovie%7Cbook%7Cmusic&amp;columns=2"></script> -->
+<!-- </div> -->
 
-#### Wolf Cave History ####
+#### 狼穴历史 ####
 
 * 20160216: 主题更换为 pelican-blue.
 * 20151114: 使用 Pelican 建立博客, 托管在 GitHub page 上, 使用 tuxlite_zf 主题.

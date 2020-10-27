@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>Linux 错误：删除文件错误</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="狼穴">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>狼穴</h1>
+      <p>自然 - 自由</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <h2>Device or resource busy</h2>
+<p>在删除文件的时候遇到错误：<code>Device or resource busy</code>。这是因为该文件正
+在使用，需要解除占用。</p>
+<p>使用 <code>lsof</code> 命令（list open files）查看某文件的使用情况：</p>
+<div class="highlight"><pre><span></span><code>$ lsof +D ./             <span class="c1"># +D 后面跟文件夹路径，这里用当前文件夹</span>
+COMMAND   PID USER   FD   TYPE  DEVICE     SIZE/OFF   NODE NAME
+lsof    <span class="m">14635</span> liuz  cwd    DIR <span class="m">242</span>,131           <span class="m">24</span> <span class="m">166094</span> .
+lsof    <span class="m">14636</span> liuz  cwd    DIR <span class="m">242</span>,131           <span class="m">24</span> <span class="m">166094</span> .
+python  <span class="m">28271</span> liuz  cwd    DIR <span class="m">242</span>,131           <span class="m">24</span> <span class="m">166094</span> .
+python  <span class="m">28271</span> liuz    4u   REG <span class="m">242</span>,131 <span class="m">451942305792</span> <span class="m">164248</span> ./.nfs000000000002819800237bba
+bash    <span class="m">29357</span> liuz  cwd    DIR <span class="m">242</span>,131           <span class="m">24</span> <span class="m">166094</span> .
+</code></pre></div>
+
+
+<p>可以看到<code>.nfs000000000002819800237bba</code>文件不能删除是因为一个python进程
+占用。用<code>ps</code>命令找到该进程并杀掉就可以删除了。</p>
+<div class="highlight"><pre><span></span><code>$ ps -elf <span class="p">|</span> grep liuz
+<span class="m">0</span> R liuz     <span class="m">18883</span> <span class="m">29357</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> -  <span class="m">9837</span> -      <span class="m">20</span>:56 pts/11   <span class="m">00</span>:00:00 ps -elf
+<span class="m">0</span> S liuz     <span class="m">18884</span> <span class="m">29357</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> -  <span class="m">4052</span> pipe_w <span class="m">20</span>:56 pts/11   <span class="m">00</span>:00:00 grep --color<span class="o">=</span>auto liuz
+<span class="m">1</span> S liuz     <span class="m">28271</span>     <span class="m">1</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> - <span class="m">1143822</span> futex_ Oct25 ?      <span class="m">00</span>:02:56 python analysis_parallel.py
+<span class="m">4</span> S root     <span class="m">29237</span>   <span class="m">601</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> - <span class="m">24892</span> poll_s <span class="m">20</span>:27 ?        <span class="m">00</span>:00:00 sshd: liuz <span class="o">[</span>priv<span class="o">]</span>
+<span class="m">5</span> S liuz     <span class="m">29354</span> <span class="m">29237</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> - <span class="m">24892</span> poll_s <span class="m">20</span>:27 ?        <span class="m">00</span>:00:00 sshd: liuz@pts/11
+<span class="m">0</span> S liuz     <span class="m">29357</span> <span class="m">29354</span>  <span class="m">0</span>  <span class="m">80</span>   <span class="m">0</span> -  <span class="m">6230</span> <span class="nb">wait</span>   <span class="m">20</span>:27 pts/11   <span class="m">00</span>:00:00 -bash
+</code></pre></div>
+
+
+<p>杀掉进程：</p>
+<div class="highlight"><pre><span></span><code>$ <span class="nb">kill</span> -15 <span class="m">28271</span>
+</code></pre></div>
+
+
+<p>之后就可以正常删除文件了。</p>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：利用 Snow 包来做并行计算</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="狼穴">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href=".."><img id="avatar" src=""></a></center>-->
+    <h1>狼穴</h1>
+      <p>自然 - 自由</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content" class="body">
+        
+        <p>R 语言本身计算速率相对慢，且 <a href="https://cran.r-project.org/">CRAN</a> 提供
+的 R 本身对于并行计算的支持相对不如 python 那么方便。为了提高计算速度，
+可以利用
+<a href="https://cran.r-project.org/web/packages/snow/index.html">snow</a> 包来做
+并行计算。在教新的核心 R 包中已经加入了基于 snow 包的 parallel 包，可
+以直接使用 parallel 包。Snow 包也是
+<a href="https://bioconductor.org/packages/release/bioc/html/BiocParallel.html">BiocParallel</a>
+等方便进行并行计算的包的基础。Snow 采用类似集群的方法来管理并行计算。</p>
+<h2>开启和结束集群</h2>
+<p>创建计算节点：</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">cl</span> <span class="o">&lt;-</span> <span class="nf">makeCluster</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&#39;SOCK&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>默认的节点类型是 SOCK，如果机器上支持 MPI，还可以指定节点类型。</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">cl</span> <span class="o">&lt;-</span> <span class="nf">makeCluster</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="n">type</span><span class="o">=</span><span class="s">&#39;MPI&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>关闭计算节点：</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">stopCluster</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h2>在节点计算</h2>
+<p>snow 提供了方便的，在创建好的节点进行计算的函数。</p>
+<p>主要的通用计算命令有如下几个：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">clusterSplit</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">seq</span><span class="p">)</span>
+<span class="nf">clusterCall</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<span class="nf">clusterApply</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<span class="nf">clusterApplyLB</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<span class="nf">clusterEvalQ</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">expr</span><span class="p">)</span>
+<span class="nf">clusterExport</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">list</span><span class="p">,</span> <span class="n">envir</span> <span class="o">=</span> <span class="n">.GlobalEnv</span><span class="p">)</span>
+<span class="nf">clusterMap</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">MoreArgs</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">RECYCLE</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</code></pre></div>
+
+
+<h3>向节点传递环境变量</h3>
+<p>计算节点中本身是没有主近程中的变量和加载的包的，<code>clusterExport</code> 可以把
+环境变量传送到计算节点，<code>clusterEvalQ</code>可以在计算节点运行命令。</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">clusterEvalQ</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="nf">library</span><span class="p">(</span><span class="n">ggplot2</span><span class="p">))</span>
+</code></pre></div>
+
+
+<p>可以实现在计算节点中加载<code>ggplot2</code>包。</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">myfunc</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">()</span> <span class="p">{</span><span class="m">1</span> <span class="o">+</span> <span class="m">1</span><span class="p">}</span>
+<span class="o">&gt;</span> <span class="nf">clusterExport</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="s">&#39;myfunc&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>可以使得节点中也有自定义的<code>myfunc</code>函数。</p>
+<h3>并行的 split 函数</h3>
+<p>R 中的 <code>split</code> 函数可以把一个向量分成若干个，<code>clusterSplit</code> 函数可以把
+向量在不同的节点上进行平均分配，返回一个长度和节点数量一致的 list。</p>
+<h3>并行的 call 函数</h3>
+<p>可以在节点并行 call 函数。首先可以创建一个需要运行的函数：</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">myfunc</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="p">{</span><span class="nf">print</span><span class="p">(</span><span class="n">a</span><span class="p">)}</span>
+</code></pre></div>
+
+
+<p>然后利用 <code>clusterCall</code> 进行计算：</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">clusterCall</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="n">myfunc</span><span class="p">,</span> <span class="s">&#39;myfunc&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p><code>clusterCall(cl, fun, ...)</code> 的 <code>cl</code> 为创建的集群，<code>fun</code> 为需要计算的函
+数，之后是函数输入的参数。</p>
+<h3>Apply 函数</h3>
+<p><code>clusterApply</code> 和 <code>clusterApplyLB</code> 都是对一个 list 或者 vector 进行并
+行计算，也是下面提到的各种并行的 Apply 函数的基础。<code>clusterApplyLB</code> 相
+对于 <code>clusterApply</code> 的区别在于，<code>clusterApplyLB</code> 对于超过节点数的 list
+或者 vector 的计算采用了更好的分配方法，会在计算好的节点加入新的计算任
+务，LB是load balance的缩写。而 <code>clusterApply</code> 则是按照顺序循环利用节点。</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">clusterApply</span><span class="p">(</span><span class="n">cl</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">`^`</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</code></pre></div>
+
+
+<p>snow 提供了在 R 中常用的 <code>lapply</code>，<code>sapply</code>，<code>apply</code> 函数的并行计算的
+包装，分别为 <code>parLapply</code>，<code>parSapply</code>，<code>parApply</code>，基本参数和<code>lapply</code>，
+<code>sapply</code>，<code>apply</code>都一致。同时，parallel 包还提供了load balance版的
+<code>parLapplyLB</code>，<code>parSapplyLB</code>。为了方便使用，对于 <code>apply</code> 函数的
+<code>MARGIN=1</code> 和 <code>MARGIN=2</code>，snow 包还提供了 <code>parRapply</code> 来对行进行分割并
+行计算，<code>parCapply</code> 来对列进行分割并行计算。</p>
+<div class="highlight"><pre><span></span><code><span class="nf">parLapply</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+<span class="nf">parSapply</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">FUN</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">simplify</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
+          <span class="n">USE.NAMES</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+<span class="nf">parApply</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">MARGIN</span><span class="p">,</span> <span class="n">FUN</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+<span class="nf">parRapply</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">FUN</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+<span class="nf">parCapply</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">FUN</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+
+<span class="nf">parLapplyLB</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+<span class="nf">parSapplyLB</span><span class="p">(</span><span class="n">cl</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">FUN</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">simplify</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
+            <span class="n">USE.NAMES</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">chunk.size</span> <span class="o">=</span> <span class="kc">NULL</span><span class="p">)</span>
+</code></pre></div>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

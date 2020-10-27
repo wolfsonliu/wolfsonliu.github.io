@@ -11,7 +11,7 @@
   <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
 
   <!-- schema.org -->
-  <meta itemprop="name" content="Wolf Cave">
+  <meta itemprop="name" content="狼穴">
   <meta itemprop="image" content="">
   <meta itemprop="description" content="">
 
@@ -29,11 +29,11 @@
 
 <meta name="twitter:creator" content="">
 <meta name="twitter:url" content="../../archive/2016/python-xue-xi-bi-ji-virtual-environment.html">
-<meta name="twitter:title" content="Wolf Cave ~ Python 学习笔记: virtual environment">
+<meta name="twitter:title" content="狼穴 ~ Python 学习笔记: virtual environment">
 <meta name="twitter:description" content="使用 virtualenv 和 conda 来管理 virtual environment">
 
 <!-- Facebook Meta Data -->
-<meta property="og:title" content="Wolf Cave ~ Python 学习笔记: virtual environment" />
+<meta property="og:title" content="狼穴 ~ Python 学习笔记: virtual environment" />
 <meta property="og:description" content="使用 virtualenv 和 conda 来管理 virtual environment" />
 <meta property="og:image" content="" />
 </head>
@@ -42,8 +42,8 @@
   <!-- Sidebar -->
   <aside>
     <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
-    <h1>Wolf Cave</h1>
-      <p>Nature Beauty Freedom</p>
+    <h1>狼穴</h1>
+      <p>自然 - 自由</p>
     <br>
 
 
@@ -51,8 +51,8 @@
       <ul class="list-bare">
       
           <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
-          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
          
         
@@ -196,7 +196,7 @@ virtualenv要全面和强大的多。</p>
 
 
 <p>如果 conda info 后面没有跟参数, 输出的是当前安装的 anaconda 整体的信息.</p>
-<div class="highlight"><pre><span></span><code>conda info
+<div class="highlight"><pre><span></span><code>$ conda info
 
 <span class="c1">#                platform : linux-64</span>
 <span class="c1">#           conda version : 4.3.34</span>
@@ -207,10 +207,10 @@ virtualenv要全面和强大的多。</p>
 <span class="c1">#        requests version : 2.18.4</span>
 <span class="c1">#        root environment : /gpfs/share/software/anaconda3  (read only)</span>
 <span class="c1">#     default environment : /gpfs/share/software/anaconda3</span>
-<span class="c1">#        envs directories : /gpfs/share/home/1501111485/.conda/envs</span>
+<span class="c1">#        envs directories : /gpfs/share/home/wolf/.conda/envs</span>
 <span class="c1">#                           /gpfs/share/software/anaconda3/envs</span>
 <span class="c1">#           package cache : /gpfs/share/software/anaconda3/pkgs</span>
-<span class="c1">#                           /gpfs/share/home/1501111485/.conda/pkgs</span>
+<span class="c1">#                           /gpfs/share/home/wolf/.conda/pkgs</span>
 <span class="c1">#            channel URLs : https://repo.continuum.io/pkgs/main/linux-64</span>
 <span class="c1">#                           https://repo.continuum.io/pkgs/main/noarch</span>
 <span class="c1">#                           https://repo.continuum.io/pkgs/free/linux-64</span>
@@ -228,7 +228,7 @@ virtualenv要全面和强大的多。</p>
 
 
 <p>conda info 后面可以跟包的名字, 则会输出相应的包的名字:</p>
-<div class="highlight"><pre><span></span><code>conda info pandas
+<div class="highlight"><pre><span></span><code>$ conda info pandas
 
 <span class="c1"># pandas 0.23.2 py37h04863e7_0</span>
 <span class="c1"># ----------------------------</span>
@@ -263,7 +263,7 @@ virtualenv要全面和强大的多。</p>
 的环境, 许可证, 系统信息等 (如环境变量等).</p>
 <p>如果只是想知道当前所有的环境, 可以使用 <code>-e</code> 或者 <code>--env</code> 参数, 只列出
 当前已有的环境:</p>
-<div class="highlight"><pre><span></span><code>conda info -e
+<div class="highlight"><pre><span></span><code>$ conda info -e
 
 <span class="c1"># # conda environments:</span>
 <span class="c1"># #</span>
@@ -272,10 +272,10 @@ virtualenv要全面和强大的多。</p>
 
 
 <p>如果只需要获取许可证的信息, 则可以使用 <code>-l</code> 参数:</p>
-<div class="highlight"><pre><span></span><code>conda info -l
+<div class="highlight"><pre><span></span><code>$ conda info -l
 
 <span class="c1"># License directories:</span>
-<span class="c1">#     /gpfs/share/home/1501111485/.continuum</span>
+<span class="c1">#     /gpfs/share/home/wolf/.continuum</span>
 <span class="c1">#     /gpfs/share/software/anaconda3/licenses</span>
 <span class="c1"># License files (license*.txt):</span>
 <span class="c1"># Package/feature end dates:</span>
@@ -294,7 +294,7 @@ virtualenv要全面和强大的多。</p>
 
 <p><code>conda list [regex]</code> 后面的 <code>[regex]</code> 是包名称的正则表达式, 如果没有指
 定的话则默认列出所有的包.</p>
-<div class="highlight"><pre><span></span><code>conda list
+<div class="highlight"><pre><span></span><code>$ conda list
 
 <span class="c1"># # packages in environment at /gpfs/share/software/anaconda3:</span>
 <span class="c1"># #</span>
@@ -305,7 +305,7 @@ virtualenv要全面和强大的多。</p>
 <span class="c1"># zict                      0.1.2                    py36_0</span>
 <span class="c1"># zlib                      1.2.8                         3</span>
 
-conda list tensor
+$ conda list tensor
 
 <span class="c1"># # packages in environment at /gpfs/share/software/anaconda3:</span>
 <span class="c1"># #</span>
@@ -318,15 +318,14 @@ conda list tensor
 包则最好写为 '^tensor' 要搜索以 'gpu' 结尾的包则应该写为 'gpu$'. 而如
 果要搜索全名为<code>pandas</code> 的包则应该写为 <code>^pandas$</code> 或者使用参数 <code>-f</code> 或
 者 <code>--full-name</code>.</p>
-<div class="highlight"><pre><span></span><code>conda list ^pandas$
-
-conda list -f pandas
+<div class="highlight"><pre><span></span><code>$ conda list ^pandas$
+$ conda list -f pandas
 </code></pre></div>
 
 
 <p>conda list 默认输出当前的环境中的包, 使用 <code>-n ENVIRONMENT</code> 或者
 <code>--name ENVIRONMENT</code> 则可列出指定的 ENVIRONMENT 环境中的包.</p>
-<div class="highlight"><pre><span></span><code>conda list -n root ^lib
+<div class="highlight"><pre><span></span><code>$ conda list -n root ^lib
 
 <span class="c1"># # packages in environment at /gpfs/share/software/anaconda3:</span>
 <span class="c1"># #</span>
@@ -377,20 +376,24 @@ conda list -f pandas
 
 
 <p>如果要创建新的环境ENV, 则可以使用:</p>
-<div class="highlight"><pre><span></span><code>conda create -n ENV
+<div class="highlight"><pre><span></span><code>$ conda create -n ENV
+$ conda create --name ENV
+$ conda create -p ENV/PATH
+$ conda create --prefix ENV/PATH
+</code></pre></div>
 
-conda create --name ENV
 
-conda create -p ENV/PATH
-
-conda create --prefix ENV/PATH
+<p>Conda 没有对虚拟环境重命名的命令，所以需要通过重建一个新环境，然后删除
+旧环境来达到重命名的目的。</p>
+<div class="highlight"><pre><span></span><code>$ conda create --name NEWNAME --clone OLDNAME
+$ conda remove --name OLDNAME --all
 </code></pre></div>
         </div>
         <div class="post_list">
             <span>By </span>
             <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
             <span> in </span>
-            <span class="post_category"><a href="../../category/yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_category"><a href="../../yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
             <span class="post_date">Tue 24 May 2016</span>
             <div><span>Tags : </span>
                 <span><a href="../../tag/python.html">#python, </a></span>

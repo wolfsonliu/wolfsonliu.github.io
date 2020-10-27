@@ -1,0 +1,99 @@
+Title: 生物信息数据库：COG
+Date: 2020-10-26 18:40
+Modified: 2020-10-26 19:09
+Category: 壹零零壹
+Tags: bioinformatics
+Authors: Wolfson Liu
+Summary: COG数据库
+
+## COG 数据库 ##
+
+[同源基因族数据
+库](https://www.ncbi.nlm.nih.gov/research/cog)（Database of Clusters
+of Orthologous Genes，COGs）是NCBI维护的一个同源蛋白质信息数据库。在做
+宏基因组分析的时候，可以使用该数据库的信息对宏基因组的序列进行注释。
+
+COG 数据库的资源可以从[项目页
+面](https://www.ncbi.nlm.nih.gov/research/cog-project/)下载。其中包括
+最新的[数据库数据](ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data)和研究
+团队开发的[软件包](ftp://ftp.ncbi.nih.gov/pub/wolf/COGs/COGsoft)。
+
+
+### 下载 COG 数据 ###
+
+可以直接从ftp地址下载数据：
+
+```{shell}
+wget -r -c --wait 5 --random-wait ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data -P COG2020
+```
+
+数据将被保存在 COG2020 文件夹中。
+
+COG的fasta文件特别多（2020版本有5950个FASTA，一万多文件），有时候网络
+不稳定难以下载完全，可以单个文件下载：
+
+```{shell}
+cog_fa_url="ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data/fasta/"
+wget ${cog_fa_url} -O index.html
+
+cog_fa_dir=COG2020/fasta
+
+for x in `egrep -o '">(.*)</a>' index.html | sed -e "s/\">//g" -e "s/<\/a>//g" | egrep -v "Parent"`; do
+    wget --wait 2 --random-wait -O ${cog_fa_dir}/${x} ${cog_fa_url}${x}
+    sleep 1
+done
+```
+
+### COG 数据 ###
+
+下载的[COG 数据](ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data)主要有如下文件：
+
+* Readme.2020-09-15.txt：对于下载的COG数据的说明
+
+* fun-20.tab：COG 功能分类说明，有3列
+    1. 功能分类ID，一个字母
+    2. 16进制表示的该功能的颜色
+    3. 功能分类描述
+
+* cog-20.def.tab：COG描述文件，介绍了每个COG族的信息，有7列
+    1. COG ID
+    2. COG 功能分类（单字母功能分类ID，可以有多个）
+    3. COG 名称
+    4. 和该 COG 相关的基因（可选）
+    5. 和该 COG 相关的通路（可选）
+    6. PubMed ID（可选，多个ID用分号分隔）
+    7. PDB ID（可选，PDB结构数据库ID，多个ID用分号分隔）
+
+* cog-20.cog.csv：描述蛋白和COG的联系，有13列，每行是一个蛋白质和一个
+  COG的关系，有多个结构域的蛋白质以多行来表示
+    1. 编码蛋白质的基因的ID
+    2. NCBI Assembly ID：组装基因组的ID
+    3. 蛋白质ID
+    4. 蛋白质长度
+    5. 该蛋白质的COG相关序列位置，即从第几位到第几位认为是COG相关的序列
+    6. COG相关序列长度
+    7. COG ID
+    8. 保留列
+    9. COG相关性：0代表同时覆盖了蛋白质和COG的大部分序列，1代表覆盖了COG
+       大部分序列和部分蛋白质序列，2代表覆盖了蛋白质大部分序列和COG部分
+       序列，3代表覆盖了部分蛋白质序列和COG序列
+    10. 匹配的蛋白质序列和COG序列的PSI-BLAST得分
+    11. 匹配的蛋白质序列和COG序列的PSI-BLAST e-value
+    12. COG序列长度
+    13. 匹配序列在COG序列上的位置
+
+* cog-20.org.csv：组装基因组的信息
+    1. NCBI Assembly ID：组装基因组的ID
+    2. 物种名称
+    3. NCBI分类ID
+    4. 在COG中使用的分类
+
+* cog-20.tax.csv：在COG中使用的分类信息描述
+    1. 在COG中使用的分类
+    2. 上一级别分类（如果存在的话）
+    3. 基因组的NCBI分类ID
+
+* fasta 文件夹里是按照不同的族分类存储的序列：每个族的序列存一个FASTA
+  文件，另外还有一个对应TXT文件保存了相应的元数据。
+
+### 使用 COG 注释序列 ###

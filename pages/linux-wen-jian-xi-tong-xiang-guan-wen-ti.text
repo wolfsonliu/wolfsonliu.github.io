@@ -1,0 +1,41 @@
+Title: Linux 文件系统相关问题
+Date: 2020-10-27 11:58
+Modified: 2020-10-27 11:58
+Category: 壹零零壹
+Tags: linux
+Authors: Wolfson Liu
+Summary: Linux 文件系统相关问题
+
+# 在删除文件的时候遇到错误：`Device or resource busy` #
+
+使用 `lsof` 命令（list open files）查看某文件的使用情况：
+
+```{shell}
+$ lsof +D ./             # +D 后面跟文件夹路径，这里用当前文件夹
+COMMAND   PID USER   FD   TYPE  DEVICE     SIZE/OFF   NODE NAME
+lsof    14635 liuz  cwd    DIR 242,131           24 166094 .
+lsof    14636 liuz  cwd    DIR 242,131           24 166094 .
+python  28271 liuz  cwd    DIR 242,131           24 166094 .
+python  28271 liuz    4u   REG 242,131 451942305792 164248 ./.nfs000000000002819800237bba
+bash    29357 liuz  cwd    DIR 242,131           24 166094 .
+
+```
+
+可以看到`.nfs000000000002819800237bba`文件不能删除是因为一个python进程
+占用。用`ps`命令找到该进程并杀掉就可以删除了。
+
+```{shell}
+$ ps -elf | grep liuz
+0 R liuz     18883 29357  0  80   0 -  9837 -      20:56 pts/11   00:00:00 ps -elf
+0 S liuz     18884 29357  0  80   0 -  4052 pipe_w 20:56 pts/11   00:00:00 grep --color=auto liuz
+1 S liuz     28271     1  0  80   0 - 1143822 futex_ Oct25 ?      00:02:56 python analysis_parallel.py
+4 S root     29237   601  0  80   0 - 24892 poll_s 20:27 ?        00:00:00 sshd: liuz [priv]
+5 S liuz     29354 29237  0  80   0 - 24892 poll_s 20:27 ?        00:00:00 sshd: liuz@pts/11
+0 S liuz     29357 29354  0  80   0 -  6230 wait   20:27 pts/11   00:00:00 -bash
+```
+
+杀掉进程：
+
+```{shell}
+$ kill -15 28271
+```

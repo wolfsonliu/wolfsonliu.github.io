@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -84,7 +86,6 @@
 <span class="err"># 15</span>
 </code></pre></div>
 
-
 <h4>partial</h4>
 <p><code>partial</code> 函数 (实际上是类) 是用来给一些函数预设一定的参数, 在接下来的调用中就不需要重复传入参数了. <code>partial</code> 的 func 属性是其接受的原来的函数, keywords 属性里则是保存了原来函数的参数的名和值的 dict.</p>
 <div class="highlight"><pre><span></span><code><span class="err">int(&#39;1001&#39;, base = 2)</span>
@@ -93,7 +94,6 @@
 <span class="err">two2ten(&#39;1001&#39;)</span>
 <span class="err"># 9</span>
 </code></pre></div>
-
 
 <p><code>partialmethod</code> 类似于 <code>partial</code> 函数, 不过是用来对类的 method 进行预先设置.</p>
 <div class="highlight"><pre><span></span><code><span class="err">class Call:</span>
@@ -109,7 +109,6 @@
 <span class="err">animall.cat()</span>
 <span class="err"># &#39;Mew!&#39;</span>
 </code></pre></div>
-
 
 <h3>修饰器</h3>
 <h4>lru_cache</h4>
@@ -131,7 +130,6 @@
 <span class="err">#</span><span class="w"> </span><span class="n">This</span><span class="w"> </span><span class="n">could</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="n">that</span><span class="w"> </span><span class="n">an</span><span class="w"> </span><span class="n">intermediate</span><span class="w"> </span><span class="k">result</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">being</span><span class="w"> </span><span class="n">cached</span><span class="p">.</span><span class="w"></span>
 <span class="err">#</span><span class="w"> </span><span class="mi">100000</span><span class="w"> </span><span class="n">loops</span><span class="p">,</span><span class="w"> </span><span class="n">best</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="mi">3</span><span class="err">:</span><span class="w"> </span><span class="mf">2.97</span><span class="w"> </span><span class="n">µs</span><span class="w"> </span><span class="n">per</span><span class="w"> </span><span class="n">loop</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>可以看到当频繁地使用相同的参数调用函数的时候, lrc_cache 修饰的函数有很高的运行效率.</p>
 <h4>total_ordering</h4>
@@ -178,7 +176,6 @@
 <span class="n">example2</span><span class="p">.</span><span class="n">__doc__</span><span class="w"></span>
 <span class="err">#</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>可以看到在不在自己定义的修饰器中使用 wraps, 其修饰的函数的属性实际上是返回的修饰函数的属性. 而 wraps 可以让被修饰的函数的依然保留之前的属性.</p>
         </div>

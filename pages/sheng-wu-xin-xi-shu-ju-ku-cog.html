@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -75,24 +77,22 @@ of Orthologous Genes，COGs）是NCBI维护的一个同源蛋白质信息数据�
 团队开发的<a href="ftp://ftp.ncbi.nih.gov/pub/wolf/COGs/COGsoft">软件包</a>。</p>
 <h3>下载 COG 数据</h3>
 <p>可以直接从ftp地址下载数据：</p>
-<div class="highlight"><pre><span></span><code>wget -r -c --wait <span class="m">5</span> --random-wait ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data -P COG2020
+<div class="highlight"><pre><span></span><code><span class="err">wget -r -c --wait 5 --random-wait ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data -P COG2020</span>
 </code></pre></div>
-
 
 <p>数据将被保存在 COG2020 文件夹中。</p>
 <p>COG的fasta文件特别多（2020版本有5950个FASTA，一万多文件），有时候网络
 不稳定难以下载完全，可以单个文件下载：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">cog_fa_url</span><span class="o">=</span><span class="s2">&quot;ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data/fasta/&quot;</span>
-wget <span class="si">${</span><span class="nv">cog_fa_url</span><span class="si">}</span> -O index.html
+<div class="highlight"><pre><span></span><code>cog_fa_url=&quot;ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data/fasta/&quot;
+wget <span class="cp">${</span><span class="n">cog_fa_url</span><span class="cp">}</span> -O index.html
 
-<span class="nv">cog_fa_dir</span><span class="o">=</span>COG2020/fasta
+cog_fa_dir=COG2020/fasta
 
-<span class="k">for</span> x in <span class="sb">`</span>egrep -o <span class="s1">&#39;&quot;&gt;(.*)&lt;/a&gt;&#39;</span> index.html <span class="p">|</span> sed -e <span class="s2">&quot;s/\&quot;&gt;//g&quot;</span> -e <span class="s2">&quot;s/&lt;\/a&gt;//g&quot;</span> <span class="p">|</span> egrep -v <span class="s2">&quot;Parent&quot;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
-    wget --wait <span class="m">2</span> --random-wait -O <span class="si">${</span><span class="nv">cog_fa_dir</span><span class="si">}</span>/<span class="si">${</span><span class="nv">x</span><span class="si">}</span> <span class="si">${</span><span class="nv">cog_fa_url</span><span class="si">}${</span><span class="nv">x</span><span class="si">}</span>
-    sleep <span class="m">1</span>
-<span class="k">done</span>
+for x in `egrep -o &#39;&quot;&gt;(.*)<span class="nt">&lt;/a&gt;</span>&#39; index.html | sed -e &quot;s/\&quot;&gt;//g&quot; -e &quot;s/<span class="err">&lt;</span>\/a&gt;//g&quot; | egrep -v &quot;Parent&quot;`; do
+    wget --wait 2 --random-wait -O <span class="cp">${</span><span class="n">cog_fa_dir</span><span class="cp">}</span>/<span class="cp">${</span><span class="n">x</span><span class="cp">}</span> <span class="cp">${</span><span class="n">cog_fa_url</span><span class="cp">}${</span><span class="n">x</span><span class="cp">}</span>
+    sleep 1
+done
 </code></pre></div>
-
 
 <h3>COG 数据</h3>
 <p>下载的<a href="ftp://ftp.ncbi.nih.gov/pub/COG/COG2020/data">COG 数据</a>主要有如下文件：</p>

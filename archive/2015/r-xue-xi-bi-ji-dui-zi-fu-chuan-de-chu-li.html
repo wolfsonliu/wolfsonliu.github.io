@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -101,7 +103,6 @@
 <div class="highlight"><pre><span></span><code><span class="err">. ^ $ + ? * ( ) [ ] { } | \</span>
 </code></pre></div>
 
-
 <h3>基本用法</h3>
 <h4>字符与字符集</h4>
 <p>在正则表达式中, 一个字符或者一个字符集本身只代表一个值. 一个字符代表的就是自身, 而字符集代表的是符合集合的任意一个字符, 更多的字符匹配需要通过指定数量来获得. 下面所列的几个地为是一样的, 如 "a" 的地位和 "[:alpha:]" 的地为一样, 在 "a" 外面需要一个方括号的地方, 如 <code>[a]</code>, 在 "[:alpha:]" 也需要, 如 <code>[[alpha:]]</code></p>
@@ -120,14 +121,14 @@
 <li>[:punct:]: 标点, <code _="|">][!"#$%&amp;'()*+,./:;&lt;=&gt;?@\\^_\</code>~-`.</li>
 <li>[:space:]: 空白符号, 空格制表符等.</li>
 <li>[:upper:]: 大写字母, A-Z.</li>
-<li>[:xdigit:]: 十六进制数字.</li>
+<li></li>
 </ul>
 <h4>逻辑与分组</h4>
 <ul>
 <li>|: 逻辑或, 代表两者中取一个</li>
 <li>(): 分组, 与 | 一起用, 代表在所包含的模式中符合一个, <code>(a|b)</code>.</li>
 <li>[]: 匹配一个, 匹配其中包含的一个字符或字符集, <code>[a[:digit:]]</code>.</li>
-<li>[^]: 不匹配其中任何一个.</li>
+<li></li>
 </ul>
 <h4>数量</h4>
 <p>数量符号指明其前面的字符重复的数量.</p>
@@ -156,7 +157,6 @@
 <span class="n">genus</span> <span class="o">&lt;-</span> <span class="nf">unname</span><span class="p">(</span><span class="nf">sapply</span><span class="p">(</span><span class="n">species</span><span class="p">,</span> <span class="nf">function</span><span class="p">(</span><span class="n">m</span><span class="p">){</span><span class="nf">unlist</span><span class="p">(</span><span class="nf">strsplit</span><span class="p">(</span><span class="n">m</span><span class="p">,</span><span class="n">split</span><span class="o">=</span><span class="s">&quot;_&quot;</span><span class="p">))[</span><span class="m">1</span><span class="p">]}))</span>
 </code></pre></div>
 
-
 <p>上面的代码可以解决这个问题. </p>
 <ul>
 <li>unlist: 把 strsplit 输出的 list 变成向量.</li>
@@ -172,7 +172,6 @@
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;M&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;s&quot;</span> <span class="s">&quot;i&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;p&quot;</span> <span class="s">&quot;i&quot;</span>
 </code></pre></div>
 
-
 <h3>除去字符串最后一个字符</h3>
 <p>石强问怎么把一些字符串最后的句号给去掉, 查了网站, 没看到类似 python rstrip 之类的函数, 那就用多个函数组合吧. 需要注意的是英文句号本身是正则表达式里面的符号, 需要用方括号括起来.</p>
 <div class="highlight"><pre><span></span><code><span class="n">some</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;my.&quot;</span><span class="p">,</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="s">&quot;is&quot;</span><span class="p">,</span> <span class="s">&quot;Wolfson.&quot;</span><span class="p">)</span>
@@ -180,7 +179,6 @@
        <span class="n">start</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">),</span>
        <span class="n">stop</span>  <span class="o">=</span> <span class="nf">nchar</span><span class="p">(</span><span class="n">some</span><span class="p">[</span><span class="nf">grep</span><span class="p">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;[.]$&quot;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">some</span><span class="p">)])</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
 </code></pre></div>
-
 
 <h3>字符和对象的转换, 运行字符串中的命令</h3>
 <p>有的时候需要把接下来需要运行的命令保存在字符串中, 然后再运行. 这种情况下, 需要 parse, eval, call, get 等函数.</p>
@@ -207,7 +205,6 @@
 <span class="err">}</span><span class="w"></span>
 </code></pre></div>
 
-
 <ul>
 <li>parse: 把字符串转化为 R 表达式, file 指定输入的文件, 或者使用 text 指定包含所需字符串的对象.</li>
 <li>deparse: 把表达式转换为字符串.</li>
@@ -220,10 +217,17 @@
 <div class="highlight"><pre><span></span><code><span class="err">sortframe = function(df,...)df[do.call(order,list(...)),]  # 对 data.frame 的每一列进行排序.</span>
 </code></pre></div>
 
-
 <ul>
 <li>do.call, do.call 接受一个函数名和该函数的参数的 list, 并且调用该函数.</li>
 </ul>
+<div class="footnote">
+<hr>
+<ol>
+<li id="fn:">
+<p>不匹配其中任何一个.&#160;<a class="footnote-backref" href="#fnref:" title="Jump back to footnote 1 in the text">&#8617;</a></p>
+</li>
+</ol>
+</div>
         </div>
         <div class="post_list">
             <span>By </span>

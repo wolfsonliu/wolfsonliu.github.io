@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -177,15 +179,14 @@
 其 Kendall tau 距离为 0.4.</p>
 <p>Python 中有计算函数:</p>
 <div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
-<span class="n">stats</span><span class="o">.</span><span class="n">kendalltau</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">initial_lexsort</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">kendalltau</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">initial_lexsort</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 </code></pre></div>
-
 
 <h3>Hamming Distance</h3>
 <p>计算两个相同长度的序列的距离. 其计算方法是把所有不同的位置的个数比上整个序列的长度,
 完全相同的时候距离为 0, 完全不同的时候距离为 1.</p>
 <p>例如:</p>
-<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">scipy.spatial.distance</span> <span class="k">as</span> <span class="nn">dist</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">as</span> <span class="nn">dist</span>
 <span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="c1"># 0.0</span>
 <span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
@@ -195,7 +196,6 @@
 <span class="n">dist</span><span class="o">.</span><span class="n">hamming</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="c1"># 1.0</span>
 </code></pre></div>
-
 
 <h2>相似性</h2>
 <h3>cosine similarity</h3>

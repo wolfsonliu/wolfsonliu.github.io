@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -81,12 +83,10 @@
 <div class="highlight"><pre><span></span><code><span class="err">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span>
 </code></pre></div>
 
-
 <p>再安装 osxfuse 和 ntfs-3g：</p>
 <div class="highlight"><pre><span></span><code><span class="err">brew cask install osxfuse</span>
 <span class="err">brew install ntfs-3g</span>
 </code></pre></div>
-
 
 <p>接下来准备替换系统的 mount-ntfs 为 ntfs-3g 的mount-ntfs。</p>
 <p>先重启电脑，按住 command-R-S 进入到单用户模式。</p>
@@ -95,23 +95,19 @@
 <span class="err">reboot</span>
 </code></pre></div>
 
-
 <p>重启回到系统中，替换 mount-ntfs。</p>
 <p>备份系统原来的 mount-ntfs：</p>
 <div class="highlight"><pre><span></span><code><span class="err">sudo mv /sbin/mount_ntfs /sbin/original.mount_ntfs</span>
 </code></pre></div>
 
-
 <p>替换为 ntfs-3g 的 mount-ntfs：</p>
 <div class="highlight"><pre><span></span><code><span class="err">sudo ln -s /usr/local/bin/mount_ntfs /sbin/mount_ntfs</span>
 </code></pre></div>
-
 
 <p>接下来开启保护，重启电脑按 command-R-S 进入单用户模式。</p>
 <p>开启保护：</p>
 <div class="highlight"><pre><span></span><code><span class="err">csrutil enable</span>
 </code></pre></div>
-
 
 <p>最后重启电脑回到系统，就可以自动可读写挂载 NTFS 硬盘了。</p>
         </div>

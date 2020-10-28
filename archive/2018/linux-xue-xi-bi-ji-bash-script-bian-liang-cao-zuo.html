@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -81,157 +83,148 @@
 <h3>创立变量</h3>
 <p>bash中的变量有一般的字符变量也有数组变量。
 对于一般字符变量的设置如下：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var1</span><span class="o">=</span><span class="s1">&#39;this is variable 1&#39;</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var1</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="n">var1</span><span class="o">=</span><span class="s1">&#39;this is variable 1&#39;</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="n">var1</span><span class="p">}</span>
 <span class="c1"># this is variable 1</span>
 
-<span class="nv">var2</span><span class="o">=</span>/home/yxy
-<span class="nb">echo</span> <span class="nv">$var2</span>
+<span class="n">var2</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">yxy</span>
+<span class="n">echo</span> <span class="o">$</span><span class="n">var2</span>
 <span class="c1"># /home/yxy</span>
 </code></pre></div>
-
 
 <p>对于字符可以选择使用单引号或者双引号括起来，也可以直接使用字符。需要注
 意的是，如果在变量的值中有空格等符号的话，则需要使用引号括起来。</p>
 <p>在引用变量的时候，可以直接在$符号接变量名，也可以在$符号后面接大括号，
 在大括号里面放上变量名。两种方式的采用主要以不产生歧义为主，但凡容易产
 生歧义的地方都需要大括号。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var1</span><span class="o">=</span><span class="s1">&#39;this is variable 1&#39;</span>
-<span class="nv">var2</span><span class="o">=</span>/home/yxy
-<span class="nv">var3</span><span class="o">=</span><span class="nv">$var2</span>/tmp
-<span class="nb">echo</span> <span class="nv">$var3</span>
+<div class="highlight"><pre><span></span><code><span class="n">var1</span><span class="o">=</span><span class="s1">&#39;this is variable 1&#39;</span>
+<span class="n">var2</span><span class="o">=/</span><span class="n">home</span><span class="o">/</span><span class="n">yxy</span>
+<span class="n">var3</span><span class="o">=$</span><span class="n">var2</span><span class="o">/</span><span class="n">tmp</span>
+<span class="n">echo</span> <span class="o">$</span><span class="n">var3</span>
 <span class="c1"># /home/yxy/tmp</span>
 
-<span class="nv">var4</span><span class="o">=</span><span class="si">${</span><span class="nv">var2</span><span class="si">}</span>/tmp2
-<span class="nb">echo</span> <span class="nv">$var4</span>
+<span class="n">var4</span><span class="o">=$</span><span class="p">{</span><span class="n">var2</span><span class="p">}</span><span class="o">/</span><span class="n">tmp2</span>
+<span class="n">echo</span> <span class="o">$</span><span class="n">var4</span>
 <span class="c1"># /home/yxy/tmp</span>
 
-<span class="nv">var5</span><span class="o">=</span><span class="si">${</span><span class="nv">var3</span><span class="si">}</span><span class="m">3</span>
-<span class="nb">echo</span> <span class="nv">$var5</span>
+<span class="n">var5</span><span class="o">=$</span><span class="p">{</span><span class="n">var3</span><span class="p">}</span><span class="mi">3</span>
+<span class="n">echo</span> <span class="o">$</span><span class="n">var5</span>
 <span class="c1"># /home/yxy/tmp3</span>
 </code></pre></div>
 
-
 <p>如果要创立数组变量则需要使用小括号括起来所有元素，每个元素之间用空格进
 行区分。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">array</span><span class="o">=(</span>one two three<span class="o">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">array=(one two three)</span>
 </code></pre></div>
-
 
 <p>引用数组元素名本身只会获得第一个元素的值，如果需要引用数组元素的特定的
 元素，则应该在数组元素名后跟方括号，其中指定元素位置，需要注意数组元素
 的编码是从0开始的。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">array</span><span class="o">=(</span>one two three<span class="o">)</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">array</span><span class="si">}</span>
-<span class="c1"># one</span>
+<div class="highlight"><pre><span></span><code>array=(one two three)
+echo <span class="cp">${</span><span class="n">array</span><span class="cp">}</span>
+# one
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">array</span><span class="p">[0]</span><span class="si">}</span>
-<span class="c1"># one</span>
+echo <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>
+# one
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">array</span><span class="p">[1]</span><span class="si">}</span>
-<span class="c1"># two</span>
+echo <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="cp">}</span>
+# two
 </code></pre></div>
-
 
 <p>在引用数组元素中的元素时，数组名和方括号都应该放在
 大括号中避免歧义。对比如下代码：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">array</span><span class="o">=(</span>one two three<span class="o">)</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">array</span><span class="p">[0]</span><span class="si">}</span>
-<span class="c1"># one</span>
+<div class="highlight"><pre><span></span><code>array=(one two three)
+echo <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="cp">}</span>
+# one
 
-<span class="nb">echo</span> <span class="nv">$array</span><span class="o">[</span><span class="m">0</span><span class="o">]</span>
-<span class="c1"># one[0]</span>
+echo <span class="nv">$array</span>[0]
+# one[0]
 </code></pre></div>
-
 
 <p>如果需要获取整个数组的值，则可以在方括号中加上<code>*</code>或者<code>@</code>。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">array</span><span class="o">=(</span>one two three<span class="o">)</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">array</span><span class="p">[*]</span><span class="si">}</span>
-<span class="c1"># one two three</span>
+<div class="highlight"><pre><span></span><code>array=(one two three)
+echo <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="cp">}</span>
+# one two three
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">array</span><span class="p">[@]</span><span class="si">}</span>
-<span class="c1"># one two three</span>
+echo <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">@</span><span class="p">]</span><span class="cp">}</span>
+# one two three
 </code></pre></div>
-
 
 <p>这里 <code>${array[*]}</code>返回的是一个变量，而<code>${array[@]}</code>返回的是一个数组变量，两者异同如下：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">array</span><span class="o">=(</span>one two three<span class="o">)</span>
-<span class="k">for</span> x in <span class="si">${</span><span class="nv">array</span><span class="p">[*]</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
-<span class="c1"># one</span>
-<span class="c1"># two</span>
-<span class="c1"># three</span>
+<div class="highlight"><pre><span></span><code>array=(one two three)
+for x in <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="cp">}</span>; do
+    echo <span class="nv">$x</span>
+done
+# one
+# two
+# three
 
-<span class="k">for</span> x in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">array</span><span class="p">[*]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
-<span class="c1"># one two three</span>
+for x in &quot;<span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="cp">}</span>&quot;; do
+    echo <span class="nv">$x</span>
+done
+# one two three
 
-<span class="k">for</span> x in <span class="s1">&#39;${array[*]}&#39;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
-<span class="c1"># ${array[*]}</span>
+for x in &#39;<span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="cp">}</span>&#39;; do
+    echo <span class="nv">$x</span>
+done
+# <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="cp">}</span>
 
-<span class="k">for</span> x in <span class="si">${</span><span class="nv">array</span><span class="p">[@]</span><span class="si">}</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
-<span class="c1"># one</span>
-<span class="c1"># two</span>
-<span class="c1"># three</span>
+for x in <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">@</span><span class="p">]</span><span class="cp">}</span>; do
+    echo <span class="nv">$x</span>
+done
+# one
+# two
+# three
 
-<span class="k">for</span> x in <span class="s2">&quot;</span><span class="si">${</span><span class="nv">array</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
-<span class="c1"># one</span>
-<span class="c1"># two</span>
-<span class="c1"># three</span>
+for x in &quot;<span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">@</span><span class="p">]</span><span class="cp">}</span>&quot;; do
+    echo <span class="nv">$x</span>
+done
+# one
+# two
+# three
 
-<span class="k">for</span> x in <span class="s1">&#39;${array[@]}&#39;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
-<span class="c1"># ${array[@]}</span>
+for x in &#39;<span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">@</span><span class="p">]</span><span class="cp">}</span>&#39;; do
+    echo <span class="nv">$x</span>
+done
+# <span class="cp">${</span><span class="n">array</span><span class="p">[</span><span class="o">@</span><span class="p">]</span><span class="cp">}</span>
 </code></pre></div>
-
 
 <p>如果不是特别声明，bash中的变量均是全局变量，如果想要设置局部变量，则应
 该使用local进行声明。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">x</span><span class="o">=</span><span class="m">1</span>
-<span class="nb">echo</span> global x:<span class="si">${</span><span class="nv">x</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">echo</span> <span class="n">global</span> <span class="n">x</span><span class="p">:</span><span class="o">$</span><span class="p">{</span><span class="n">x</span><span class="p">}</span>
 <span class="c1"># global x:1</span>
 
-<span class="nv">y</span><span class="o">=</span><span class="m">1</span>
-<span class="nb">echo</span> global y:<span class="si">${</span><span class="nv">y</span><span class="si">}</span>
+<span class="n">y</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">echo</span> <span class="n">global</span> <span class="n">y</span><span class="p">:</span><span class="o">$</span><span class="p">{</span><span class="n">y</span><span class="p">}</span>
 <span class="c1"># global y:1</span>
 
-<span class="k">function</span> myfunc <span class="o">{</span>
-    <span class="nv">x</span><span class="o">=</span><span class="m">2</span>
-    <span class="nb">echo</span> myfunc global x:<span class="si">${</span><span class="nv">x</span><span class="si">}</span>
-    <span class="nb">local</span> <span class="nv">y</span><span class="o">=</span><span class="m">2</span>
-    <span class="nb">echo</span> myfunc <span class="nb">local</span> y:<span class="si">${</span><span class="nv">y</span><span class="si">}</span>
-<span class="o">}</span>
-myfunc
+<span class="n">function</span> <span class="n">myfunc</span> <span class="p">{</span>
+    <span class="n">x</span><span class="o">=</span><span class="mi">2</span>
+    <span class="n">echo</span> <span class="n">myfunc</span> <span class="n">global</span> <span class="n">x</span><span class="p">:</span><span class="o">$</span><span class="p">{</span><span class="n">x</span><span class="p">}</span>
+    <span class="n">local</span> <span class="n">y</span><span class="o">=</span><span class="mi">2</span>
+    <span class="n">echo</span> <span class="n">myfunc</span> <span class="n">local</span> <span class="n">y</span><span class="p">:</span><span class="o">$</span><span class="p">{</span><span class="n">y</span><span class="p">}</span>
+<span class="p">}</span>
+<span class="n">myfunc</span>
 <span class="c1"># myfunc global x: 2</span>
 <span class="c1"># myfunc local y: 2</span>
 
-<span class="nb">echo</span> global x:<span class="si">${</span><span class="nv">x</span><span class="si">}</span>
+<span class="n">echo</span> <span class="n">global</span> <span class="n">x</span><span class="p">:</span><span class="o">$</span><span class="p">{</span><span class="n">x</span><span class="p">}</span>
 <span class="c1"># global x:2</span>
 
-<span class="nb">echo</span> global y:<span class="si">${</span><span class="nv">y</span><span class="si">}</span>
+<span class="n">echo</span> <span class="n">global</span> <span class="n">y</span><span class="p">:</span><span class="o">$</span><span class="p">{</span><span class="n">y</span><span class="p">}</span>
 <span class="c1"># global y: 1</span>
 </code></pre></div>
 
-
 <p>如果想要删除创建的变量，则可以使用unset命令。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">x</span><span class="o">=</span><span class="m">1</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">x</span><span class="si">}</span>
-<span class="c1"># 1</span>
+<div class="highlight"><pre><span></span><code>x=1
+echo <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
+# 1
 
-<span class="nb">unset</span> x
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">x</span><span class="si">}</span>
-<span class="c1">#</span>
+unset x
+echo <span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
+#
 </code></pre></div>
-
 
 <h4>脚本特殊变量</h4>
 <p>在写bash脚本中，可以传入一些参数，判断运行情况等，这些信息都存在特殊变量中。</p>
@@ -248,36 +241,34 @@ myfunc
 <h3>变量存在检查</h3>
 <p>在脚本中有时候需要确定一个变量是否存在，而对于其是否存在可以采取不同的行为。
 如果一个变量不存在，引用的话默认是null，如果用echo，则反应的是没有输出。</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="si">}</span>
-<span class="c1">#</span>
+<div class="highlight"><pre><span></span><code>echo <span class="cp">${</span><span class="n">notexist</span><span class="cp">}</span>
+#
 </code></pre></div>
-
 
 <h4>若变量不存在引用默认值</h4>
 <p>如果只需要在引用的时候得到一个值（设定的默认值或者null），而不需要改变变量是否存在的事实，可以使用如下代码：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">exist</span><span class="o">=</span><span class="m">1</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">exist</span><span class="k">:-</span><span class="s1">&#39;exist&#39;</span><span class="si">}</span>
-<span class="c1"># 1</span>
+<div class="highlight"><pre><span></span><code><span class="s s-Atom">exist</span><span class="o">=</span><span class="mi">1</span>
+<span class="s s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nn">exist</span><span class="p">:</span><span class="s s-Atom">-&#39;exist&#39;</span><span class="p">}</span>
+<span class="s s-Atom">#</span> <span class="mi">1</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">exist</span><span class="p">-</span><span class="s1">&#39;exist&#39;</span><span class="si">}</span>
-<span class="c1"># 1</span>
+<span class="s s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="s s-Atom">exist-&#39;exist&#39;</span><span class="p">}</span>
+<span class="s s-Atom">#</span> <span class="mi">1</span>
 
-<span class="nb">unset</span> notexist
-<span class="nv">notexist</span><span class="o">=</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="p">-</span><span class="s1">&#39;not set value yet&#39;</span><span class="si">}</span>
-<span class="c1">#</span>
+<span class="s s-Atom">unset</span> <span class="s s-Atom">notexist</span>
+<span class="s s-Atom">notexist</span><span class="o">=</span>
+<span class="s s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="s s-Atom">notexist-&#39;not set value yet&#39;</span><span class="p">}</span>
+<span class="s s-Atom">#</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="k">:-</span><span class="s1">&#39;not set value yet&#39;</span><span class="si">}</span>
-<span class="c1"># not set value yet</span>
+<span class="s s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nn">notexist</span><span class="p">:</span><span class="s s-Atom">-&#39;not set value yet&#39;</span><span class="p">}</span>
+<span class="s s-Atom">#</span> <span class="o">not</span> <span class="s s-Atom">set</span> <span class="s s-Atom">value</span> <span class="s s-Atom">yet</span>
 
-<span class="nb">unset</span> notexist2
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="p">-</span><span class="s1">&#39;not exist yet&#39;</span><span class="si">}</span>
-<span class="c1"># not exist yet</span>
+<span class="s s-Atom">unset</span> <span class="s s-Atom">notexist2</span>
+<span class="s s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="s s-Atom">notexist2-&#39;not exist yet&#39;</span><span class="p">}</span>
+<span class="s s-Atom">#</span> <span class="o">not</span> <span class="s s-Atom">exist</span> <span class="s s-Atom">yet</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="k">:-</span><span class="s1">&#39;not exist yet&#39;</span><span class="si">}</span>
-<span class="c1"># not exist yet</span>
+<span class="s s-Atom">echo</span> <span class="err">$</span><span class="p">{</span><span class="nf">notexist2</span><span class="o">:-</span><span class="s s-Atom">&#39;not exist yet&#39;</span><span class="p">}</span>
+<span class="s s-Atom">#</span> <span class="o">not</span> <span class="s s-Atom">exist</span> <span class="s s-Atom">yet</span>
 </code></pre></div>
-
 
 <p>从上面例子可知道，如果变量存在，则返回相应的变量的值，如果不存在，则根
 据情况返回空值或者默认值。<code>-</code>和<code>:-</code>的差别在于如果变量已经声明而没有赋
@@ -287,26 +278,25 @@ myfunc
 <h4>若变量存在则返回默认值</h4>
 <p>上面的例子是在变量不存在的时候引用默认值，也可以设置变量存在引用默认值，
 而如果变量不存在则引用空值。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">exist</span><span class="o">=</span><span class="m">1</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">exist</span><span class="p">:+</span><span class="s1">&#39;exist&#39;</span><span class="si">}</span>
-<span class="c1"># exist</span>
+<div class="highlight"><pre><span></span><code>exist=1
+echo <span class="cp">${</span><span class="n">exist</span><span class="p">:</span><span class="o">+</span><span class="s1">&#39;exist&#39;</span><span class="cp">}</span>
+# exist
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">exist</span><span class="p">+</span><span class="s1">&#39;exist&#39;</span><span class="si">}</span>
-<span class="c1"># exist</span>
+echo <span class="cp">${</span><span class="n">exist</span><span class="o">+</span><span class="s1">&#39;exist&#39;</span><span class="cp">}</span>
+# exist
 
-<span class="nb">unset</span> notexist
-<span class="nv">notexist</span><span class="o">=</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="p">+</span><span class="s1">&#39;not set value yet&#39;</span><span class="si">}</span>
-<span class="c1"># not set value yet</span>
+unset notexist
+notexist=
+echo <span class="cp">${</span><span class="n">notexist</span><span class="o">+</span><span class="s1">&#39;not set value yet&#39;</span><span class="cp">}</span>
+# not set value yet
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="p">:+</span><span class="s1">&#39;not set value yet&#39;</span><span class="si">}</span>
-<span class="c1">#</span>
+echo <span class="cp">${</span><span class="n">notexist</span><span class="p">:</span><span class="o">+</span><span class="s1">&#39;not set value yet&#39;</span><span class="cp">}</span>
+#
 
-<span class="nb">unset</span> notexist2
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="p">:+</span><span class="s1">&#39;not exist yet&#39;</span><span class="si">}</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="p">+</span><span class="s1">&#39;not exist yet&#39;</span><span class="si">}</span>
+unset notexist2
+echo <span class="cp">${</span><span class="n">notexist2</span><span class="p">:</span><span class="o">+</span><span class="s1">&#39;not exist yet&#39;</span><span class="cp">}</span>
+echo <span class="cp">${</span><span class="n">notexist2</span><span class="o">+</span><span class="s1">&#39;not exist yet&#39;</span><span class="cp">}</span>
 </code></pre></div>
-
 
 <p>同样，<code>+</code>和<code>:+</code>的差别在于如果变量已经声明而没有赋值（<code>notexist=</code>），则
 <code>${notexist+'not'}</code>返回的是变量存在的默认值，而<code>${notexist:+'not'}</code>则
@@ -316,91 +306,87 @@ myfunc
 明而未赋值的话则变量值为空，变量未声明值也为空。</p>
 <h4>设置变量默认值</h4>
 <p>如果变量不存在需要对变量进行赋值的话，则可以使用如下代码：</p>
-<div class="highlight"><pre><span></span><code><span class="nb">unset</span> notexist
-<span class="nv">notexist</span><span class="o">=</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="p">=</span><span class="s1">&#39;now set value&#39;</span><span class="si">}</span>
-<span class="c1">#</span>
+<div class="highlight"><pre><span></span><code>unset notexist
+notexist=
+echo <span class="cp">${</span><span class="n">notexist</span><span class="o">=</span><span class="s1">&#39;now set value&#39;</span><span class="cp">}</span>
+#
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="si">}</span>
-<span class="c1">#</span>
+echo <span class="cp">${</span><span class="n">notexist</span><span class="cp">}</span>
+#
 
-<span class="nb">unset</span> notexist2
-<span class="nv">notexist2</span><span class="o">=</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="p">:=</span><span class="s1">&#39;now set value&#39;</span><span class="si">}</span>
-<span class="c1"># now set value</span>
+unset notexist2
+notexist2=
+echo <span class="cp">${</span><span class="n">notexist2</span><span class="o">:=</span><span class="s1">&#39;now set value&#39;</span><span class="cp">}</span>
+# now set value
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="si">}</span>
-<span class="c1"># now set value</span>
+echo <span class="cp">${</span><span class="n">notexist2</span><span class="cp">}</span>
+# now set value
 
-<span class="nb">unset</span> notexist3
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist3</span><span class="p">=</span><span class="s1">&#39;now exist&#39;</span><span class="si">}</span>
-<span class="c1"># now exist</span>
+unset notexist3
+echo <span class="cp">${</span><span class="n">notexist3</span><span class="o">=</span><span class="s1">&#39;now exist&#39;</span><span class="cp">}</span>
+# now exist
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist3</span><span class="si">}</span>
-<span class="c1"># now exist</span>
+echo <span class="cp">${</span><span class="n">notexist3</span><span class="cp">}</span>
+# now exist
 
-<span class="nb">unset</span> notexist4
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist4</span><span class="p">:=</span><span class="s1">&#39;now exist&#39;</span><span class="si">}</span>
-<span class="c1"># now exist</span>
+unset notexist4
+echo <span class="cp">${</span><span class="n">notexist4</span><span class="o">:=</span><span class="s1">&#39;now exist&#39;</span><span class="cp">}</span>
+# now exist
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist4</span><span class="si">}</span>
-<span class="c1"># now exist</span>
+echo <span class="cp">${</span><span class="n">notexist4</span><span class="cp">}</span>
+# now exist
 </code></pre></div>
-
 
 <p>在这里的<code>:</code>的差别和上面一样，<code>=</code>检查的是变量是否存在，而<code>:=</code>检查的是变量的值是否为空。</p>
 <h4>若变量不存在则报错</h4>
 <p>有时候需要给出变量不存在的提醒，而如果变量存在则返回变量的值。如下代码可以实现：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">exist</span><span class="o">=</span><span class="m">1</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">exist</span><span class="p">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="si">}</span>
-<span class="c1"># 1</span>
+<div class="highlight"><pre><span></span><code>exist=1
+echo <span class="cp">${</span><span class="n">exist</span><span class="err">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="cp">}</span>
+# 1
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">exist</span><span class="p">:?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="si">}</span>
-<span class="c1"># 1</span>
+echo <span class="cp">${</span><span class="n">exist</span><span class="p">:</span><span class="err">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="cp">}</span>
+# 1
 
-<span class="nb">unset</span> notexist
-<span class="nv">notexist</span><span class="o">=</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="p">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="si">}</span>
-<span class="c1">#</span>
+unset notexist
+notexist=
+echo <span class="cp">${</span><span class="n">notexist</span><span class="err">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="cp">}</span>
+#
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist</span><span class="p">:?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="si">}</span>
-<span class="c1"># bash: notexist: Error, not exist</span>
+echo <span class="cp">${</span><span class="n">notexist</span><span class="p">:</span><span class="err">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="cp">}</span>
+# bash: notexist: Error, not exist
 
-<span class="nb">unset</span> notexist2
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="p">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="si">}</span>
-<span class="c1"># bash: notexist2: Error, not exist</span>
+unset notexist2
+echo <span class="cp">${</span><span class="n">notexist2</span><span class="err">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="cp">}</span>
+# bash: notexist2: Error, not exist
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">notexist2</span><span class="p">:?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="si">}</span>
-<span class="c1"># bash: notexist2: Error, not exist</span>
+echo <span class="cp">${</span><span class="n">notexist2</span><span class="p">:</span><span class="err">?</span><span class="s1">&#39;Error, not exist&#39;</span><span class="cp">}</span>
+# bash: notexist2: Error, not exist
 </code></pre></div>
-
 
 <p>对于声明而未赋值的变量来说<code>?</code>返回的是空值，而<code>:?</code>则报错，对于未声明的
 变量来说<code>?</code>和<code>:?</code>都会报错。</p>
 <h3>变量的长度</h3>
 <p>对于变量的值，我们可以获取变量的字符的数量，对于数组变量，我们也可以获
 取数组变量元素的个数。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">x</span><span class="o">=</span>one
-<span class="nb">echo</span> <span class="si">${#</span><span class="nv">x</span><span class="si">}</span>
-<span class="c1"># 3</span>
+<div class="highlight"><pre><span></span><code>x=one
+echo <span class="cp">${</span><span class="c1">#x</span><span class="cp">}</span>
+# 3
 
-<span class="nv">y</span><span class="o">=(</span>one two<span class="o">)</span>
-<span class="nb">echo</span> <span class="si">${#</span><span class="nv">y</span><span class="si">}</span>
-<span class="c1"># 3</span>
+y=(one two)
+echo <span class="cp">${</span><span class="c1">#y</span><span class="cp">}</span>
+# 3
 </code></pre></div>
-
 
 <p>如果y是一个数组，上面的代码返回的会是数组第一个元素的长度，而非数组的长
 度。需要注意的是数组是从0开始计数的。</p>
 <p>而如果要获取数组元素的数量则应该使用如下的代码：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">y</span><span class="o">=(</span>one two<span class="o">)</span>
-<span class="nb">echo</span> <span class="si">${#</span><span class="nv">y</span><span class="p">[*]</span><span class="si">}</span>
-<span class="c1"># 2</span>
+<div class="highlight"><pre><span></span><code>y=(one two)
+echo <span class="cp">${</span><span class="c1">#y[*]</span><span class="cp">}</span>
+# 2
 
-<span class="nb">echo</span> <span class="si">${#</span><span class="nv">y</span><span class="p">[@]</span><span class="si">}</span>
-<span class="c1"># 2</span>
+echo <span class="cp">${</span><span class="c1">#y[@]</span><span class="cp">}</span>
+# 2
 </code></pre></div>
-
 
 <h3>编辑变量的输出值</h3>
 <p>对于变量的输出值我们可以直接进行改变，这是是说引用变量时候的输出值，因为变量本身存储的值并不会发生改变。</p>
@@ -408,14 +394,13 @@ myfunc
 <p><code>${var#Pattern}</code> 或者 <code>${var##Pattern}</code>可以删去符合Pattern的字符串，区
 别在于，<code>${var#Pattern}</code>删去的是从变量值起始的最短匹配，而
 <code>${var##Pattern}</code>删去的是从变量值起始的最长匹配。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var</span><span class="o">=</span>/one/two/three
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">#*/</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="o">=/</span><span class="n">one</span><span class="o">/</span><span class="n">two</span><span class="o">/</span><span class="n">three</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="c1">#*/}</span>
 <span class="c1"># one/two/three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">##*/</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="c1">##*/}</span>
 <span class="c1"># three</span>
 </code></pre></div>
-
 
 <p>Pattern可以是正则表达式字符串，也可以是存有需要匹配的字符串的变量。</p>
 <h4>依照匹配模式从后删除字符串</h4>
@@ -423,14 +408,13 @@ myfunc
 别在于，<code>${var%Pattern}</code>删去的是从变量值末尾的最短匹配，而
 <code>${var%%Pattern}</code>删去的是从变量值末尾开始的最长匹配。这与<code>#</code>从前删除正
 好相反。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var</span><span class="o">=</span>/one/two/three
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">%/*</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="o">=/</span><span class="n">one</span><span class="o">/</span><span class="n">two</span><span class="o">/</span><span class="n">three</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">%/*</span><span class="p">}</span>
 <span class="c1"># /one/two</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">%%/*</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">%%/*</span><span class="p">}</span>
 <span class="c1">#</span>
 </code></pre></div>
-
 
 <p>从 <code>#</code> 和 <code>%</code> 的例子可以看出来，一个符号对应的只删除最短匹配，而两个符
 号对应的删除最长匹配。</p>
@@ -439,17 +423,16 @@ myfunc
 的，<code>${var:start:length}</code>或者<code>${var:start}</code>即可以输出相应位置的字符串。
 第一个冒号后面是字符串起始位置，第二个冒号后面是输出的字符串长度，如果
 省略长度，则默认输出剩下所有字符串。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var</span><span class="o">=</span><span class="m">012345678</span>
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">0</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="o">=</span><span class="mi">012345678</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
 <span class="c1"># 012345678</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">5</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="p">:</span><span class="mi">5</span><span class="p">}</span>
 <span class="c1"># 5678</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">:</span><span class="nv">5</span><span class="p">:</span><span class="nv">2</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="p">:</span><span class="mi">5</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span>
 <span class="c1"># 56</span>
 </code></pre></div>
-
 
 <h4>替换</h4>
 <p>引用变量的返回值可以直接根据Pattern进行替换，
@@ -458,20 +441,19 @@ myfunc
 空的话，起到的效果相当于删除相应的字符串。
 <code>${var/Pattern/Replacement}</code>是替换从变量字符串起始找到的第一个匹配，而
 <code>${var//Pattern/Replacement}</code>则是替换找到的所有匹配。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var</span><span class="o">=</span>one-two-thre-one-two-three
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">/one/1</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="o">=</span><span class="n">one</span><span class="o">-</span><span class="n">two</span><span class="o">-</span><span class="n">thre</span><span class="o">-</span><span class="n">one</span><span class="o">-</span><span class="n">two</span><span class="o">-</span><span class="n">three</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">/</span><span class="n">one</span><span class="o">/</span><span class="mi">1</span><span class="p">}</span>
 <span class="c1"># 1-two-thre-one-two-three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">//one/1</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">//</span><span class="n">one</span><span class="o">/</span><span class="mi">1</span><span class="p">}</span>
 <span class="c1"># 1-two-thre-1-two-three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">/o*o/1</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">/</span><span class="n">o</span><span class="o">*</span><span class="n">o</span><span class="o">/</span><span class="mi">1</span><span class="p">}</span>
 <span class="c1"># 1-three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">//o*o/1</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">//</span><span class="n">o</span><span class="o">*</span><span class="n">o</span><span class="o">/</span><span class="mi">1</span><span class="p">}</span>
 <span class="c1"># 1-three</span>
 </code></pre></div>
-
 
 <p>从上面代码的输出结果可以知道，对于没有通配符的字符串的匹配，<code>/</code>和
 <code>//</code>的结果很明确不同，而如果使用了通配符，则结果会变得相同，符合程序的
@@ -479,58 +461,56 @@ myfunc
 <p>如果只想要替换字符串中匹配的开头或者结尾，而不替换中间的部分，则可以使
 用<code>${var/#Pattern/Replacement}</code>和<code>${var/%Pattern/Replacement}</code>。<code>/#</code>用
 于匹配开头，<code>/%</code>用于匹配结尾。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var</span><span class="o">=</span>one-two-thre-one-two-three
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">/#one/1</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span><span class="o">=</span><span class="n">one</span><span class="o">-</span><span class="n">two</span><span class="o">-</span><span class="n">thre</span><span class="o">-</span><span class="n">one</span><span class="o">-</span><span class="n">two</span><span class="o">-</span><span class="n">three</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">/</span><span class="c1">#one/1}</span>
 <span class="c1"># 1-two-thre-one-two-three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">/%one/1</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">/%</span><span class="n">one</span><span class="o">/</span><span class="mi">1</span><span class="p">}</span>
 <span class="c1"># one-two-thre-one-two-three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">/#three/3</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">/</span><span class="c1">#three/3}</span>
 <span class="c1"># one-two-thre-one-two-three</span>
 
-<span class="nb">echo</span> <span class="si">${</span><span class="nv">var</span><span class="p">/%three/3</span><span class="si">}</span>
+<span class="n">echo</span> <span class="o">$</span><span class="p">{</span><span class="k">var</span><span class="o">/%</span><span class="n">three</span><span class="o">/</span><span class="mi">3</span><span class="p">}</span>
 <span class="c1"># one-two-thre-one-two-3</span>
 </code></pre></div>
-
 
 <p>从这个例子可以看出来，用于替换的字符<code>/#</code>和<code>/%</code>与用于删除的字符<code>#</code>和<code>%</code>的功能有一致性，<code>#</code>均指代从字符串开头开始，而<code>%</code>指代从字符串末尾开始。</p>
 <h3>输出符合一定规律的变量名</h3>
 <p>如果我们只需要获取符合一定规律的所有变量的变量名，可以使用<code>${!nameprefix*}</code>和<code>${!nameprefix@}</code>。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var1</span><span class="o">=</span><span class="m">1</span>
-<span class="nv">var2</span><span class="o">=</span><span class="m">2</span>
-<span class="nv">var3</span><span class="o">=</span><span class="m">3</span>
-<span class="nv">varnames</span><span class="o">=</span><span class="si">${</span><span class="p">!var*</span><span class="si">}</span>
-<span class="nb">echo</span> variable names: <span class="si">${</span><span class="nv">varnames</span><span class="si">}</span>
+<div class="highlight"><pre><span></span><code><span class="n">var1</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">var2</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">var3</span><span class="o">=</span><span class="mi">3</span>
+<span class="n">varnames</span><span class="o">=$</span><span class="p">{</span><span class="o">!</span><span class="k">var</span><span class="o">*</span><span class="p">}</span>
+<span class="n">echo</span> <span class="n">variable</span> <span class="n">names</span><span class="p">:</span> <span class="o">$</span><span class="p">{</span><span class="n">varnames</span><span class="p">}</span>
 <span class="c1"># variable names: var1 var2 var3</span>
 
-<span class="nb">echo</span> length: <span class="si">${#</span><span class="nv">varnames</span><span class="si">}</span>
+<span class="n">echo</span> <span class="n">length</span><span class="p">:</span> <span class="o">$</span><span class="p">{</span><span class="c1">#varnames}</span>
 <span class="c1"># length: 14</span>
 </code></pre></div>
 
-
 <p>需要注意的<code>${!nameprefix*}</code>是返回的均是一个字符串，而<code>${!nameprefix@}</code>返回的是一个数组。如下面的例子：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">var1</span><span class="o">=</span><span class="m">1</span>
-<span class="nv">var2</span><span class="o">=</span><span class="m">2</span>
-<span class="nv">var3</span><span class="o">=</span><span class="m">3</span>
-<span class="k">for</span> x in <span class="s1">&#39;${!var*}&#39;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
+<div class="highlight"><pre><span></span><code><span class="n">var1</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">var2</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">var3</span><span class="o">=</span><span class="mi">3</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s1">&#39;${!var*}&#39;</span><span class="p">;</span> <span class="n">do</span>
+    <span class="n">echo</span> <span class="o">$</span><span class="n">x</span>
+<span class="n">done</span>
 <span class="c1"># ${!var*}</span>
 
-<span class="k">for</span> x in <span class="s2">&quot;</span><span class="si">${</span><span class="p">!var*</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s2">&quot;${!var*}&quot;</span><span class="p">;</span> <span class="n">do</span>
+    <span class="n">echo</span> <span class="o">$</span><span class="n">x</span>
+<span class="n">done</span>
 <span class="c1"># var1 var2 var3</span>
 
-<span class="k">for</span> x in <span class="s1">&#39;${!var@}&#39;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s1">&#39;${!var@}&#39;</span><span class="p">;</span> <span class="n">do</span>
+    <span class="n">echo</span> <span class="o">$</span><span class="n">x</span>
+<span class="n">done</span>
 <span class="c1"># ${!var@}</span>
 
-<span class="k">for</span> x in <span class="s2">&quot;</span><span class="si">${</span><span class="p">!var@</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="s2">&quot;${!var@}&quot;</span><span class="p">;</span> <span class="n">do</span>
+    <span class="n">echo</span> <span class="o">$</span><span class="n">x</span>
+<span class="n">done</span>
 <span class="c1"># var1</span>
 <span class="c1"># var2</span>
 <span class="c1"># var3</span>

@@ -10,7 +10,7 @@ R 语言本身计算速率相对慢，且 [CRAN](https://cran.r-project.org/) �
 的 R 本身对于并行计算的支持相对不如 python 那么方便。为了提高计算速度，
 可以利用
 [snow](https://cran.r-project.org/web/packages/snow/index.html) 包来做
-并行计算。在教新的核心 R 包中已经加入了基于 snow 包的 parallel 包，可
+并行计算。在较新的核心 R 包中已经加入了基于 snow 包的 parallel 包，可
 以直接使用 parallel 包。Snow 包也是
 [BiocParallel](https://bioconductor.org/packages/release/bioc/html/BiocParallel.html)
 等方便进行并行计算的包的基础。Snow 采用类似集群的方法来管理并行计算。
@@ -43,11 +43,17 @@ snow 提供了方便的，在创建好的节点进行计算的函数。
 
 ```{r}
 clusterSplit(cl, seq)
+
 clusterCall(cl, fun, ...)
+
 clusterApply(cl, x, fun, ...)
+
 clusterApplyLB(cl, x, fun, ...)
+
 clusterEvalQ(cl, expr)
+
 clusterExport(cl, list, envir = .GlobalEnv)
+
 clusterMap(cl, fun, ..., MoreArgs = NULL, RECYCLE = TRUE)
 ```
 
@@ -109,13 +115,18 @@ snow 提供了在 R 中常用的 `lapply`，`sapply`，`apply` 函数的并行�
 
 ```{r}
 parLapply(cl = NULL, X, fun, ..., chunk.size = NULL)
+
 parSapply(cl = NULL, X, FUN, ..., simplify = TRUE,
           USE.NAMES = TRUE, chunk.size = NULL)
+
 parApply(cl = NULL, X, MARGIN, FUN, ..., chunk.size = NULL)
+
 parRapply(cl = NULL, x, FUN, ..., chunk.size = NULL)
+
 parCapply(cl = NULL, x, FUN, ..., chunk.size = NULL)
 
 parLapplyLB(cl = NULL, X, fun, ..., chunk.size = NULL)
+
 parSapplyLB(cl = NULL, X, FUN, ..., simplify = TRUE,
             USE.NAMES = TRUE, chunk.size = NULL)
 ```

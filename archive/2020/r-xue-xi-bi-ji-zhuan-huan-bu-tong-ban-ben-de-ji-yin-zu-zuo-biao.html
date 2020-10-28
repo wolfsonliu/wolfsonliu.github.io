@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh" itemscope itemtype="http://schema.org/Person">
+<head>
+  <meta charset="utf-8">
+  <!-- Site Meta Data -->
+  <title>R 学习笔记：转换不同版本的基因组坐标</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Wolfson Liu">
+
+  <link rel="shortcut icon" href="https://wolfsonliu.github.io/images/favicon.jpg">
+
+  <!-- schema.org -->
+  <meta itemprop="name" content="狼穴">
+  <meta itemprop="image" content="">
+  <meta itemprop="description" content="">
+
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700' rel='stylesheet' type='text/css'>
+  <!-- Style Meta Data -->
+  <link rel="stylesheet" href="../../theme/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="../../theme/css/pygments.css" type="text/css" />
+
+  <!-- Feed Meta Data -->
+
+  <!-- Twitter Feed -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="">
+  <meta name="twitter:image" content="">
+
+<meta name="twitter:creator" content="">
+<meta name="twitter:url" content="../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html">
+<meta name="twitter:title" content="狼穴 ~ R 学习笔记：转换不同版本的基因组坐标">
+<meta name="twitter:description" content="R liftOver.">
+
+<!-- Facebook Meta Data -->
+<meta property="og:title" content="狼穴 ~ R 学习笔记：转换不同版本的基因组坐标" />
+<meta property="og:description" content="R liftOver." />
+<meta property="og:image" content="" />
+</head>
+
+<body>
+  <!-- Sidebar -->
+  <aside>
+    <!--<center><a href="../.."><img id="avatar" src=""></a></center>-->
+    <h1>狼穴</h1>
+      <p>自然 - 自由</p>
+    <br>
+
+
+    <nav class="nav">
+      <ul class="list-bare">
+      
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/index.html">文章</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
+         
+        
+      </ul>
+    </nav>
+
+    <p class="social">
+        <a href="https://github.com/wolfsonliu" target="_blank" ><img src="../../theme/images/icons/github.png"></a>
+        <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
+        <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
+        <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
+    </p>
+
+
+
+  </aside>
+
+  <!-- Content -->
+  <article>
+<section id="content">
+    <article>
+        <h2 class="post_title post_detail"><a href="../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html" rel="bookmark" title="Permalink to R 学习笔记：转换不同版本的基因组坐标">R 学习笔记：转换不同版本的基因组坐标</a></h2>
+        <div class="entry-content blog-post">
+            <p>在利用公共数据做基因组数据分析的时候经常会遇到不同的数据使用的人类基因
+组版本不同。想要对比就需要对基因组坐标进行转换，通常可以直接利用<a href="https://genome.ucsc.edu/cgi-bin/hgLiftOver">UCSC
+LiftOver</a>工具进行转换。当
+需要写程序来自动化的情况下，使用R的
+<a href="http://master.bioconductor.org/packages/release/bioc/html/BiocGenerics.html">liftOver</a>包就很方便。</p>
+<h3>安装 liftOver</h3>
+<p>R的liftOver包通过<a href="https://bioconductor.org">Bioconductor</a>进行分发。</p>
+<p>对于R 3.6及以上版本的安装方法如下：</p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">requireNamespace</span><span class="p">(</span><span class="ss">&quot;BiocManager&quot;</span><span class="p">,</span> <span class="n">quietly</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">))</span>
+    <span class="n">install</span><span class="p">.</span><span class="n">packages</span><span class="p">(</span><span class="ss">&quot;BiocManager&quot;</span><span class="p">)</span>
+
+<span class="n">BiocManager</span><span class="p">::</span><span class="n">install</span><span class="p">(</span><span class="ss">&quot;liftOver&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>对于较老版本的R（&lt;3.5），bioconductor和liftOver的安装方法不同：</p>
+<div class="highlight"><pre><span></span><code><span class="err">source(&quot;https://bioconductor.org/biocLite.R&quot;)</span>
+<span class="c">BiocInstaller::biocLite(c(&quot;liftOver&quot;))</span>
+</code></pre></div>
+
+<h3>下载chain file</h3>
+<p>基因组坐标的转换需要有两个不同的基因组坐标之间的关系文件，所谓的chain
+file。这个文件可以从
+<a href="http://hgdownload.soe.ucsc.edu/downloads.html">UCSC</a>的网站上下载对应
+的文件。例如，如果我们想要把hg38的坐标转换为hg19的坐标，则可以下载<a href="http://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.over.chain.gz">hg38ToHg19.over.chainñ</a>文件。</p>
+<h3>转换坐标系</h3>
+<p>假设我们有一个hg38的GRanges数据：</p>
+<div class="highlight"><pre><span></span><code><span class="n">hg38.gr</span> <span class="o">&lt;-</span> <span class="nf">GRanges</span><span class="p">(</span><span class="n">seqnames</span><span class="o">=</span><span class="s">&#39;chr1&#39;</span><span class="p">,</span> <span class="n">ranges</span><span class="o">=</span><span class="nf">IRanges</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="m">1000000</span><span class="p">,</span> <span class="m">2000000</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="m">5</span><span class="p">))</span>
+<span class="n">hg38.gr</span>
+<span class="c1"># GRanges object with 2 ranges and 0 metadata columns:</span>
+<span class="c1">#       seqnames          ranges strand</span>
+<span class="c1">#          &lt;Rle&gt;       &lt;IRanges&gt;  &lt;Rle&gt;</span>
+<span class="c1">#   [1]     chr1 1000000-1000004      *</span>
+<span class="c1">#   [2]     chr1 2000000-2000004      *</span>
+<span class="c1">#   -------</span>
+<span class="c1">#   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+</code></pre></div>
+
+<p>首先读取chain file：</p>
+<div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">liftOver</span><span class="p">)</span>
+<span class="n">ch</span> <span class="o">&lt;-</span> <span class="nf">import.chain</span><span class="p">(</span><span class="s">&#39;hg38ToHg19.over.chain&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>对hg38进行转换：</p>
+<div class="highlight"><pre><span></span><code><span class="n">hg19.gr</span> <span class="o">&lt;-</span> <span class="nf">liftOver</span><span class="p">(</span><span class="n">hg38.gr</span><span class="p">,</span> <span class="n">ch</span><span class="p">)</span>
+<span class="n">hg19.gr</span>
+<span class="c1"># GRangesList object of length 2:</span>
+<span class="c1"># [[1]]</span>
+<span class="c1"># GRanges object with 1 range and 0 metadata columns:</span>
+<span class="c1">#       seqnames        ranges strand</span>
+<span class="c1">#          &lt;Rle&gt;     &lt;IRanges&gt;  &lt;Rle&gt;</span>
+<span class="c1">#   [1]     chr1 935380-935384      *</span>
+<span class="c1">#   -------</span>
+<span class="c1">#   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+<span class="c1">#</span>
+<span class="c1"># [[2]]</span>
+<span class="c1"># GRanges object with 1 range and 0 metadata columns:</span>
+<span class="c1">#       seqnames          ranges strand</span>
+<span class="c1">#          &lt;Rle&gt;       &lt;IRanges&gt;  &lt;Rle&gt;</span>
+<span class="c1">#   [1]     chr1 1931439-1931443      *</span>
+<span class="c1">#   -------</span>
+<span class="c1">#   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
+</code></pre></div>
+        </div>
+        <div class="post_list">
+            <span>By </span>
+            <a href="../../author/wolfson-liu.html">@Wolfson Liu</a>
+            <span> in </span>
+            <span class="post_category"><a href="../../yi-ling-ling-yi.html" rel="bookmark" title="Permalink to 壹零零壹">[ 壹零零壹 ]</a></span>
+            <span class="post_date">Wed 28 October 2020</span>
+            <div><span>Tags : </span>
+                <span><a href="../../tag/r.html">#r, </a></span>
+                <span><a href="../../tag/bioinformatics.html">#bioinformatics, </a></span>
+            </div>
+
+            <div class="entry-social">
+                <span class="twitter"><a target="_blank" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=400,width=700');return false;" title="Twitter" href="https://twitter.com/share?url=../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html&text=R 学习笔记：转换不同版本的基因组坐标&via="><img src="../../theme/images/icons/twitter-s.png"></a></span>
+
+                <span class="gplus"><a target="_blank" title="Google +" href="https://plus.google.com/share?url=../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html&hl=fr" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/google-s.png"></a></span>
+
+                <span class="facebook"><a target="_blank" title="Facebook" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;" href="https://www.facebook.com/sharer.php?u=../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html&t=R 学习笔记：转换不同版本的基因组坐标"><img src="../../theme/images/icons/facebook-s.png"></a></span>
+
+                <a  target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html&title=R 学习笔记：转换不同版本的基因组坐标" rel="nofollow" onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;"><img src="../../theme/images/icons/linkedin-s.png"></a>
+
+                <span class="mail"><a href="mailto:?subject=R 学习笔记：转换不同版本的基因组坐标&amp;body=Viens découvrir un article à propos de [R 学习笔记：转换不同版本的基因组坐标] sur le site de Wolfson Liu. ../../archive/2020/r-xue-xi-bi-ji-zhuan-huan-bu-tong-ban-ben-de-ji-yin-zu-zuo-biao.html" title="Share by Email" target="_blank"><img src="../../theme/images/icons/mail-s.png"></a></span>
+            </div>
+        </div>
+    </article>
+</section>
+  </article>
+
+  <!-- Footer -->
+  <footer>
+    <p>
+      Blog powered by <a href="http://getpelican.com/">Pelican</a>, 
+      which takes great advantage of <a href="http://python.org">Python</a>.
+      Theme <a href="https://github.com/parbhat/pelican-blue">Pelican-Blue</a> by <a href="https://parbhatpuri.com/">@parbhat</a>.
+    </p>
+  </footer>
+
+
+</body>
+</html>

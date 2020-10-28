@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -82,12 +84,10 @@
 <div class="highlight"><pre><span></span><code><span class="err">git commit</span>
 </code></pre></div>
 
-
 <p>该命令会调用默认的编辑器，来编辑 commit 的注释信息。一般默认编辑器是 VIM，默认编辑器可以通过 <code>git config --local core.editor=emacs</code> 来设置为 emacs 或其他编辑器。</p>
 <p>一般情况下，注释比较简短，使用编辑器编辑会比较繁琐，所以可以直接在 commit 的时候加上注释，使用 <code>-m</code> 参数即可。</p>
 <div class="highlight"><pre><span></span><code><span class="err">git commit -m &quot;commit message&quot;</span>
 </code></pre></div>
-
 
 <p>如果在 commit 的时候需要使用特定的模板，则可以使用 <code>git commit -t &lt;file&gt;</code>，这样可以在打开编辑器的时候自动在其中加入模板的信息。</p>
 <p>如果在一次 commit 之后，发现有文件需要添加或者需要修改 commit 的注释，可以使用 <code>git commit --amend</code> 来修改上次 commit 的信息。</p>
@@ -104,11 +104,10 @@
 <p>为了节约空间，以上所有的文件都是以压缩存储的。</p>
 <h3>commit 文件</h3>
 <p>commit 文件中存储有该 commit 的信息。使用 <code>git log --pretty=oneline</code>，我们可以知道所有的 commit 的情况：</p>
-<div class="highlight"><pre><span></span><code>d144d896cc3a57a21f1fdd443b2b76620584fd76 <span class="o">(</span>HEAD -&gt; master<span class="o">)</span> add markdown notes
-bdc705169c09f886182d5dfe731f241c3a4e0586 <span class="o">(</span>origin/master<span class="o">)</span> add ignore
-6823658394fecca1415c17bccebf8dba3ed0cc54 first file
+<div class="highlight"><pre><span></span><code><span class="err">d144d896cc3a57a21f1fdd443b2b76620584fd76 (HEAD -&gt; master) add markdown notes</span>
+<span class="err">bdc705169c09f886182d5dfe731f241c3a4e0586 (origin/master) add ignore</span>
+<span class="err">6823658394fecca1415c17bccebf8dba3ed0cc54 first file</span>
 </code></pre></div>
-
 
 <p>我们可以知道当前一共有三个 commits。当前的 HEAD 的 commit 为 <code>d144d896cc3a57a21f1fdd443b2b76620584fd76</code>。
 远程的 <code>origin/master</code> HEAD 为 <code>bdc705169c09f886182d5dfe731f241c3a4e0586</code>。
@@ -123,7 +122,6 @@ bdc705169c09f886182d5dfe731f241c3a4e0586 <span class="o">(</span>origin/master<s
 <span class="err">│   │   │   ├── 44d896cc3a57a21f1fdd443b2b76620584fd76</span>
 </code></pre></div>
 
-
 <p>使用 <code>git cat-file -p d144d896cc3a57a21f1fdd443b2b76620584fd76</code> 可以去看该 commit 文件中的具体信息：</p>
 <div class="highlight"><pre><span></span><code><span class="n">tree</span> <span class="mi">2</span><span class="n">b548176ae75a1f62d6635409cc70c1ff6c2f25b</span>
 <span class="n">parent</span> <span class="n">bdc705169c09f886182d5dfe731f241c3a4e0586</span>
@@ -132,7 +130,6 @@ bdc705169c09f886182d5dfe731f241c3a4e0586 <span class="o">(</span>origin/master<s
 
 <span class="k">add</span> <span class="n">markdown</span> <span class="n">notes</span>
 </code></pre></div>
-
 
 <p>一个 commit 文件中包括：
 * tree 文件的 SHA-1 值，例如：<code>2b548176ae75a1f62d6635409cc70c1ff6c2f25b</code>
@@ -148,7 +145,6 @@ bdc705169c09f886182d5dfe731f241c3a4e0586 <span class="o">(</span>origin/master<s
 <span class="err">040000 tree 02a5f419fa69f1df550172be067237223b246d36    md</span>
 </code></pre></div>
 
-
 <p>可以看出当前 tree 文件中记录了三个对象：<code>.gitignore</code>，<code>file</code>，和 <code>md</code>。其中，<code>.gitignore</code>和<code>file</code>都是普通的文件，所以标注为 blob。而 <code>md</code> 为文件夹，则标注为 tree。</p>
 <p>我们使用 <code>git cat-file -p 02a5f419fa69f1df550172be067237223b246d36</code> 继续看 <code>md</code> 的内容：</p>
 <div class="highlight"><pre><span></span><code><span class="err">100644 blob d14ca1be4beb6730ad33df72ceec1201692477c9    git_config.md</span>
@@ -157,7 +153,6 @@ bdc705169c09f886182d5dfe731f241c3a4e0586 <span class="o">(</span>origin/master<s
 <span class="err">100644 blob 9e31cfc76e9ef587b6af3fd4b09e3d09afb6dd26    understand_git_index.md</span>
 <span class="err">100644 blob 50d4402de7d0bbcfae79a23cd910c2eb7e61db30    version_control_brief.md</span>
 </code></pre></div>
-
 
 <p>可以得到该文件夹下面所包含的所有文件对应的信息。因为该文件夹下面全是文件，而没有文件夹，所有所有的对象都是 blob。而如果还有子文件夹，则子文件夹也会存储为 tree 文件。</p>
 <h3>blob 文件</h3>

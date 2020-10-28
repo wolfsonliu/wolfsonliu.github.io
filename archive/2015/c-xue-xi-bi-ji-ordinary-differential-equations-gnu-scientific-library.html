@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -264,14 +266,12 @@
 <span class="o">////////////////////</span><span class="w"></span>
 </code></pre></div>
 
-
 <h4>头文件</h4>
 <p>新版本的相关的函数都在 <code>gsl_odeiv2.h</code> 中，所有的函数都以 <code>gsl_odeiv2</code> 开头。至少需要使用下面的三个头文件，在使用 g++ 编译的时候加上 <code>-lgsl -lgslcblas</code>。</p>
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;gsl/gsl_errno.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;gsl/gsl_matrix.h&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;gsl/gsl_odeiv2.h&gt;</span><span class="cp"></span>
 </code></pre></div>
-
 
 <h4>定义 ODE 系统</h4>
 <p>常微分方程：<code>dy_i(t)/dt = f_i(t, y_1(t), ..., y_n(t))</code></p>

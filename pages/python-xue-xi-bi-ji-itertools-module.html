@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -81,32 +83,29 @@
 <span class="err"># 9</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>cycle(a_list_like)</code>: 在一个像 list 的变量中循环取元素.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="err">i = 0</span>
-<span class="err">for y in itertools.cycle(&#39;ABCD&#39;):</span>
-<span class="err">    print(y)</span>
-<span class="err">    i += 1</span>
-<span class="err">    if i &gt; 5:</span>
-<span class="err">        break</span>
-<span class="err"># A</span>
-<span class="err"># B</span>
-<span class="err"># C</span>
-<span class="err"># D</span>
-<span class="err"># A</span>
-<span class="err"># B</span>
+<div class="highlight"><pre><span></span><code><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">cycle</span><span class="p">(</span><span class="s1">&#39;ABCD&#39;</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">break</span>
+<span class="c1"># A</span>
+<span class="c1"># B</span>
+<span class="c1"># C</span>
+<span class="c1"># D</span>
+<span class="c1"># A</span>
+<span class="c1"># B</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>repeat(elem [, n])</code>: 重复返回 elem, 如果 n 有值, 则重复 n 次.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="err">list(itertools.repeat(&#39;Sparrow&#39;, 4))</span>
-<span class="err"># [&#39;Sparrow&#39;, &#39;Sparrow&#39;, &#39;Sparrow&#39;, &#39;Sparrow&#39;]</span>
+<div class="highlight"><pre><span></span><code><span class="n">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;Sparrow&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="c1"># [&#39;Sparrow&#39;, &#39;Sparrow&#39;, &#39;Sparrow&#39;, &#39;Sparrow&#39;]</span>
 </code></pre></div>
-
 
 <h3>有限迭代器函数</h3>
 <p>有限迭代器函数和无限迭代器函数的差别在于, 其输出的迭代的数量是有一定的限度的.</p>
@@ -116,7 +115,6 @@
 <div class="highlight"><pre><span></span><code><span class="err">list(accumulate([1, 2, 3, 4], lambda x, y: x + y))</span>
 <span class="err"># [1, 3, 6, 10]</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>chain(p, q [,...])</code>: 把两个变量的元素连起来生成迭代器.</li>

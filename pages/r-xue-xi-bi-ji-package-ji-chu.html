@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -83,11 +85,9 @@ R 包是 R 语言强大的扩展性和灵活性的基础, R 发行版本身就�
 <span class="err">require(&quot;whatever&quot;)</span>
 </code></pre></div>
 
-
 <p>有的包在加载的时候会显示很多信息, 可以使用 <code>suppressPackageStartupMessages</code> 函数来抑制这些信息的输出.</p>
 <div class="highlight"><pre><span></span><code><span class="err">suppressPackageStartupMessages(library(&quot;whatever&quot;))</span>
 </code></pre></div>
-
 
 <p>还需要提及的是如何从 R 的搜索路径移去已经加载的 R 包.
 可以使用 <code>search</code> 函数, 其会列出现在已经加载的包, 名字为 "package:" 加上包的名称.
@@ -113,9 +113,8 @@ devtools 包会调用 roxygen2 包, roxygen2 可以把根据特殊语法写在 R
 <h3>加载包</h3>
 <p>如果已经开发好一个包, 想要做一下测试使用, 可以使用函数 <code>load_all</code> 函数, 加载 R 包中的函数.
 例如, 正在开发的 R 包的地址为 <code>path/to/package</code>:</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">load_all</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">load_all</span><span class="p">(</span><span class="s1">&#39;path/to/package&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>加载包后, 相应的帮助文档也会被加载.</p>
 <p>如果不是利用 R 函数生成的 R 包的框架的话, 在加载包之前, 应该先查看包的相关文件是否存在.
@@ -137,26 +136,22 @@ devtools 包会调用 roxygen2 包, roxygen2 可以把根据特殊语法写在 R
 <span class="n">RoxygenNote</span><span class="o">:</span> <span class="mf">5.0</span><span class="o">.</span><span class="mi">1</span>
 </code></pre></div>
 
-
 <h3>生成文档</h3>
 <p>如果想要自动生成 R 帮助文档, 可以使用 <code>document</code> 函数, 该函数调用 roxygen2 包生成 R 帮助文档.</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">document</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">&gt; document(&#39;path/to/package&#39;)</span>
 </code></pre></div>
-
 
 <p>生成的文档会保存在 R 包目录下面的 man 文件夹中.</p>
 <p>文档是通过 roxygen2 来生成的, 其支持特定的语法.</p>
 <h3>测试包</h3>
 <p>如果在 test 文件夹中有相应的测试文件的话, 可以使用 <code>test</code> 函数来运行测试文件.</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">test</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">&gt; test(&#39;path/to/package&#39;)</span>
 </code></pre></div>
-
 
 <p><code>test</code> 函数会调用 R 包目录下的 test 文件夹中的测试函数.</p>
 <p>如果没有写专用的测试函数, 也可以使用 <code>devtools</code> 包中提供的通用测试函数 <code>check</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">check</span><span class="p">(</span><span class="s">&#39;path/to/package&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">&gt; check(&#39;path/to/package&#39;)</span>
 </code></pre></div>
-
 
 <p><code>check</code> 函数会做所有的通用测试, 如果只想要测试帮助文档中的示例, 可以用 <code>run_examples</code> 函数.</p>
 <h3>安装包</h3>

@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -94,7 +96,6 @@ Variant的方法。</p>
 <div class="highlight"><pre><span></span><code>$ conda create -n gatk gatk4 picard bwa samtools bcftools
 </code></pre></div>
 
-
 <p>这样，我们就创建了一个gatk的环境，其中安装了我们需要的GATK和Picard等软件。</p>
 <h2>Call variant 流程</h2>
 <p>使用GATK4来进行Variant calling主要参考了<a href="https://github.com/gatk-workflows/gatk4-germline-snps-indels">官方 Germline Variant Calling
@@ -109,15 +110,14 @@ Variant的方法。</p>
 illumina整理好的hg38/GRCh38
 <a href="https://support.illumina.com/sequencing/sequencing_software/igenome.html">iGenome</a>
 人类参考基因组。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">REF_BWA</span><span class="o">=</span>./reference/genome.fa
-<span class="nv">THREAD</span><span class="o">=</span><span class="m">4</span>
-<span class="nv">FQ1</span><span class="o">=</span>./data/sample.1.fq
-<span class="nv">FQ2</span><span class="o">=</span>./data/sample.2.fq
+<div class="highlight"><pre><span></span><code><span class="n">REF_BWA</span><span class="o">=./</span><span class="n">reference</span><span class="o">/</span><span class="n">genome</span><span class="o">.</span><span class="n">fa</span>
+<span class="n">THREAD</span><span class="o">=</span><span class="mi">4</span>
+<span class="n">FQ1</span><span class="o">=./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="mf">1.</span><span class="n">fq</span>
+<span class="n">FQ2</span><span class="o">=./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="mf">2.</span><span class="n">fq</span>
 
-bwa mem -t <span class="si">${</span><span class="nv">THREAD</span><span class="si">}</span> <span class="si">${</span><span class="nv">REF_BWA</span><span class="si">}</span> <span class="si">${</span><span class="nv">FQ1</span><span class="si">}</span> <span class="si">${</span><span class="nv">FQ2</span><span class="si">}</span> <span class="p">|</span> <span class="se">\</span>
-    samtools view -@ <span class="k">$((</span>THREAD-1<span class="k">))</span> -b - &gt; ./data/sample.raw.bam
+<span class="n">bwa</span> <span class="n">mem</span> <span class="o">-</span><span class="n">t</span> <span class="o">$</span><span class="p">{</span><span class="n">THREAD</span><span class="p">}</span> <span class="o">$</span><span class="p">{</span><span class="n">REF_BWA</span><span class="p">}</span> <span class="o">$</span><span class="p">{</span><span class="n">FQ1</span><span class="p">}</span> <span class="o">$</span><span class="p">{</span><span class="n">FQ2</span><span class="p">}</span> <span class="o">|</span> \
+    <span class="n">samtools</span> <span class="n">view</span> <span class="o">-</span><span class="err">@</span> <span class="o">$</span><span class="p">((</span><span class="n">THREAD</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="o">&gt;</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="n">raw</span><span class="o">.</span><span class="n">bam</span>
 </code></pre></div>
-
 
 <ul>
 <li>bwa mem 可以接受双端测序（paired-end），默认会把比对结果输出到标准输
@@ -135,18 +135,17 @@ bwa mem -t <span class="si">${</span><span class="nv">THREAD</span><span class="
 次测序出来的结果，在后面的一些矫正是在一次测序内部进行的，所以需要设置
 一下。如果BAM文件中的序列只有单一来源的话，就只要设置这些Read Group完
 全一样就可以。下面是通过 Picard 来修改和添加 Read Group。</p>
-<div class="highlight"><pre><span></span><code>picard AddOrReplaceReadGroups <span class="se">\</span>
-    -I ./data/sample.raw.bam <span class="se">\</span>
-    -O ./data/sample.AddOrReplaceReadGroups.bam <span class="se">\</span>
-    --RGID sample1 <span class="se">\</span>
-    --RGLB lib1 <span class="se">\</span>
-    --RGPL illumina <span class="se">\</span>
-    --RGPU unit1 <span class="se">\</span>
-    --RGSM sample1 <span class="se">\</span>
-    --VALIDATION_STRINGENCY LENIENT <span class="se">\</span>
-    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+<div class="highlight"><pre><span></span><code><span class="err">picard AddOrReplaceReadGroups \</span>
+<span class="err">    -I ./data/sample.raw.bam \</span>
+<span class="err">    -O ./data/sample.AddOrReplaceReadGroups.bam \</span>
+<span class="err">    --RGID sample1 \</span>
+<span class="err">    --RGLB lib1 \</span>
+<span class="err">    --RGPL illumina \</span>
+<span class="err">    --RGPU unit1 \</span>
+<span class="err">    --RGSM sample1 \</span>
+<span class="err">    --VALIDATION_STRINGENCY LENIENT \</span>
+<span class="err">    -Xms1g -Xmx10g -XX:ParallelGCThreads=4</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>--VALIDATION_STRINGENCY LENIENT</code>这里是为了避免Picard因为检查Header
@@ -163,41 +162,38 @@ bwa mem -t <span class="si">${</span><span class="nv">THREAD</span><span class="
 会从BAM中被剔除，而只会在
 <a href="https://broadinstitute.github.io/picard/explain-flags.html">FLAG</a>处被
 标注为重复序列。</p>
-<div class="highlight"><pre><span></span><code>picard MarkDuplicates <span class="se">\</span>
-    -I ./data/sample.AddOrReplaceReadGroups.bam <span class="se">\</span>
-    -O ./data/sample.MarkDuplicates.bam <span class="se">\</span>
-    -M ./data/sample.MarkDuplicates.matrics <span class="se">\</span>
-    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+<div class="highlight"><pre><span></span><code><span class="err">picard MarkDuplicates \</span>
+<span class="err">    -I ./data/sample.AddOrReplaceReadGroups.bam \</span>
+<span class="err">    -O ./data/sample.MarkDuplicates.bam \</span>
+<span class="err">    -M ./data/sample.MarkDuplicates.matrics \</span>
+<span class="err">    -Xms1g -Xmx10g -XX:ParallelGCThreads=4</span>
 </code></pre></div>
-
 
 <h3>对BAM文件进行排序</h3>
 <p>在标注完重复序列后，需要对BAM文件按照染色体坐标进行排序。</p>
-<div class="highlight"><pre><span></span><code>picard SortSam <span class="se">\</span>
-    -I ./data/sample.MarkDuplicates.bam <span class="se">\</span>
-    -O ./data/sample.SortSam.bam <span class="se">\</span>
-    -SO <span class="s2">&quot;coordinate&quot;</span> <span class="se">\</span>
-    --CREATE_INDEX <span class="nb">false</span> <span class="se">\</span>
-    --CREATE_MD5_FILE <span class="nb">false</span> <span class="se">\</span>
-    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+<div class="highlight"><pre><span></span><code><span class="err">picard SortSam \</span>
+<span class="err">    -I ./data/sample.MarkDuplicates.bam \</span>
+<span class="err">    -O ./data/sample.SortSam.bam \</span>
+<span class="err">    -SO &quot;coordinate&quot; \</span>
+<span class="err">    --CREATE_INDEX false \</span>
+<span class="err">    --CREATE_MD5_FILE false \</span>
+<span class="err">    -Xms1g -Xmx10g -XX:ParallelGCThreads=4</span>
 </code></pre></div>
-
 
 <h3>设置其他SAM标签</h3>
 <p>为了方便后面计算，可以设置SAM文件的几个标签：NM、MD和UQ。NM是编辑距离，
 即序列可以经过多少编辑变为参考序列。MD是表示错配的字符串。UQ是以Phred
 形式表示的匹配到参考序列位置的概率。</p>
-<div class="highlight"><pre><span></span><code><span class="nv">REF_FA</span><span class="o">=</span>./Reference/genome.fa
+<div class="highlight"><pre><span></span><code>REF_FA=./Reference/genome.fa
 
-picard SetNmMdAndUqTags <span class="se">\</span>
-    -I ./data/sample.SortSam.bam <span class="se">\</span>
-    -O ./data/sample.tagged.bam <span class="se">\</span>
-    --CREATE_INDEX <span class="nb">true</span> <span class="se">\</span>
-    --CREATE_MD5_FILE <span class="nb">true</span> <span class="se">\</span>
-    --REFERENCE_SEQUENCE <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
-    -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
+picard SetNmMdAndUqTags \
+    -I ./data/sample.SortSam.bam \
+    -O ./data/sample.tagged.bam \
+    --CREATE_INDEX true \
+    --CREATE_MD5_FILE true \
+    --REFERENCE_SEQUENCE <span class="cp">${</span><span class="n">REF_FA</span><span class="cp">}</span> \
+    -Xms1g -Xmx10g -XX:ParallelGCThreads=4
 </code></pre></div>
-
 
 <h3>矫正碱基质量得分（Base Quality Score）</h3>
 <p>碱基质量是对每个碱基在测序时候估计测序错误概率得出的分值。而测序仪在评
@@ -207,33 +203,32 @@ Variant过程中会被用做评估碱基的可信程度，所以需要在预处�
 <code>ApplyBQSR</code> 命令来进行矫正。其中 <code>Baserecalibrator</code> 通过已知的一些位点
 在测序数据中的质量的情况来建立机器学习模型，然后 <code>ApplyBQSR</code> 把模型应
 用到所有位点进行矫正。</p>
-<div class="highlight"><pre><span></span><code><span class="nb">export</span> <span class="nv">REF_FA</span><span class="o">=</span>./Reference/genome.fa
-<span class="nb">export</span> <span class="nv">REF_dbSNP</span><span class="o">=</span>./Reference/Homo_sapiens_assembly38.dbsnp138.vcf.gz
-<span class="nb">export</span> <span class="nv">REF_Millsindel</span><span class="o">=</span>./Reference/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
-<span class="nb">export</span> <span class="nv">REF_knownindel</span><span class="o">=</span>./Reference/Homo_sapiens_assembly38.known_indels.vcf.gz
+<div class="highlight"><pre><span></span><code><span class="k">export</span> <span class="n">REF_FA</span><span class="o">=./</span><span class="n">Reference</span><span class="o">/</span><span class="n">genome</span><span class="o">.</span><span class="n">fa</span>
+<span class="k">export</span> <span class="n">REF_dbSNP</span><span class="o">=./</span><span class="n">Reference</span><span class="o">/</span><span class="n">Homo_sapiens_assembly38</span><span class="o">.</span><span class="n">dbsnp138</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span>
+<span class="k">export</span> <span class="n">REF_Millsindel</span><span class="o">=./</span><span class="n">Reference</span><span class="o">/</span><span class="n">Mills_and_1000G_gold_standard</span><span class="o">.</span><span class="n">indels</span><span class="o">.</span><span class="n">hg38</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span>
+<span class="k">export</span> <span class="n">REF_knownindel</span><span class="o">=./</span><span class="n">Reference</span><span class="o">/</span><span class="n">Homo_sapiens_assembly38</span><span class="o">.</span><span class="n">known_indels</span><span class="o">.</span><span class="n">vcf</span><span class="o">.</span><span class="n">gz</span>
 
-gatk BaseRecalibrator <span class="se">\</span>
-    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
-    -I ./data/sample.tagged.bam <span class="se">\</span>
-    -O ./data/sample.bqsr.table <span class="se">\</span>
-    --use-original-qualities <span class="se">\</span>
-    --known-sites <span class="si">${</span><span class="nv">REF_dbSNP</span><span class="si">}</span> <span class="se">\</span>
-    --known-sites <span class="si">${</span><span class="nv">REF_Millsindel</span><span class="si">}</span> <span class="se">\</span>
-    --known-sites <span class="si">${</span><span class="nv">REF_knownindel</span><span class="si">}</span>
+<span class="n">gatk</span> <span class="n">BaseRecalibrator</span> \
+    <span class="o">-</span><span class="n">R</span> <span class="o">$</span><span class="p">{</span><span class="n">REF_FA</span><span class="p">}</span> \
+    <span class="o">-</span><span class="n">I</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="n">tagged</span><span class="o">.</span><span class="n">bam</span> \
+    <span class="o">-</span><span class="n">O</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="n">bqsr</span><span class="o">.</span><span class="n">table</span> \
+    <span class="o">--</span><span class="n">use</span><span class="o">-</span><span class="n">original</span><span class="o">-</span><span class="n">qualities</span> \
+    <span class="o">--</span><span class="n">known</span><span class="o">-</span><span class="n">sites</span> <span class="o">$</span><span class="p">{</span><span class="n">REF_dbSNP</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">known</span><span class="o">-</span><span class="n">sites</span> <span class="o">$</span><span class="p">{</span><span class="n">REF_Millsindel</span><span class="p">}</span> \
+    <span class="o">--</span><span class="n">known</span><span class="o">-</span><span class="n">sites</span> <span class="o">$</span><span class="p">{</span><span class="n">REF_knownindel</span><span class="p">}</span>
 
-gatk ApplyBQSR <span class="se">\</span>
-    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
-    -I ./sample.tagged.bam <span class="se">\</span>
-    -O ./data/sample.bqsr.bam <span class="se">\</span>
-    -bqsr ./data/sample.bqsr.table <span class="se">\</span>
-    --static-quantized-quals <span class="m">10</span> <span class="se">\</span>
-    --static-quantized-quals <span class="m">20</span> <span class="se">\</span>
-    --static-quantized-quals <span class="m">30</span> <span class="se">\</span>
-    --add-output-sam-program-record <span class="se">\</span>
-    --create-output-bam-md5 <span class="se">\</span>
-    --use-original-qualities
+<span class="n">gatk</span> <span class="n">ApplyBQSR</span> \
+    <span class="o">-</span><span class="n">R</span> <span class="o">$</span><span class="p">{</span><span class="n">REF_FA</span><span class="p">}</span> \
+    <span class="o">-</span><span class="n">I</span> <span class="o">./</span><span class="n">sample</span><span class="o">.</span><span class="n">tagged</span><span class="o">.</span><span class="n">bam</span> \
+    <span class="o">-</span><span class="n">O</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="n">bqsr</span><span class="o">.</span><span class="n">bam</span> \
+    <span class="o">-</span><span class="n">bqsr</span> <span class="o">./</span><span class="n">data</span><span class="o">/</span><span class="n">sample</span><span class="o">.</span><span class="n">bqsr</span><span class="o">.</span><span class="n">table</span> \
+    <span class="o">--</span><span class="k">static</span><span class="o">-</span><span class="n">quantized</span><span class="o">-</span><span class="n">quals</span> <span class="mi">10</span> \
+    <span class="o">--</span><span class="k">static</span><span class="o">-</span><span class="n">quantized</span><span class="o">-</span><span class="n">quals</span> <span class="mi">20</span> \
+    <span class="o">--</span><span class="k">static</span><span class="o">-</span><span class="n">quantized</span><span class="o">-</span><span class="n">quals</span> <span class="mi">30</span> \
+    <span class="o">--</span><span class="n">add</span><span class="o">-</span><span class="n">output</span><span class="o">-</span><span class="n">sam</span><span class="o">-</span><span class="n">program</span><span class="o">-</span><span class="n">record</span> \
+    <span class="o">--</span><span class="n">create</span><span class="o">-</span><span class="n">output</span><span class="o">-</span><span class="n">bam</span><span class="o">-</span><span class="n">md5</span> \
+    <span class="o">--</span><span class="n">use</span><span class="o">-</span><span class="n">original</span><span class="o">-</span><span class="n">qualities</span>
 </code></pre></div>
-
 
 <ul>
 <li>其中所用到的已经知道的VCF文件需要使用 <code>bgzip</code> 来压缩，并利用 <code>tabix</code>
@@ -242,21 +237,20 @@ gatk ApplyBQSR <span class="se">\</span>
 <h3>Call Variant</h3>
 <p>有了经过矫正的BAM文件后,可以通过GATK的<code>HaplotypeCaller</code>命令来获取基本
 的VCF。</p>
-<div class="highlight"><pre><span></span><code>gatk --java-options <span class="s2">&quot;-Xmx10G -XX:ParallelGCThreads=4&quot;</span> <span class="se">\</span>
-    HaplotypeCaller <span class="se">\</span>
-    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
-    -I ./data/sample.bqsr.bam <span class="se">\</span>
-    -O ./data/sample.g.vcf.gz <span class="se">\</span>
-    -OVI <span class="se">\</span>
-    -contamination <span class="m">0</span> <span class="se">\</span>
-    -G StandardAnnotation <span class="se">\</span>
-    -G StandardHCAnnotation <span class="se">\</span>
-    -G AS_StandardAnnotation <span class="se">\</span>
-    -GQB <span class="m">10</span> -GQB <span class="m">20</span> -GQB <span class="m">30</span> -GQB <span class="m">40</span> -GQB <span class="m">50</span> -GQB <span class="m">60</span> -GQB <span class="m">70</span> -GQB <span class="m">80</span> -GQB <span class="m">90</span> <span class="se">\</span>
-    -ERC GVCF <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>gatk --java-options &quot;-Xmx10G -XX:ParallelGCThreads=4&quot; \
+    HaplotypeCaller \
+    -R <span class="cp">${</span><span class="n">REF_FA</span><span class="cp">}</span> \
+    -I ./data/sample.bqsr.bam \
+    -O ./data/sample.g.vcf.gz \
+    -OVI \
+    -contamination 0 \
+    -G StandardAnnotation \
+    -G StandardHCAnnotation \
+    -G AS_StandardAnnotation \
+    -GQB 10 -GQB 20 -GQB 30 -GQB 40 -GQB 50 -GQB 60 -GQB 70 -GQB 80 -GQB 90 \
+    -ERC GVCF \
     -bamout ./data/sample.HaplotypeCaller.bam
 </code></pre></div>
-
 
 <ul>
 <li><code>HaplotypeCaller</code> 可以直接输出压缩的 GVCF，并且可以建立
@@ -270,58 +264,56 @@ gatk ApplyBQSR <span class="se">\</span>
 立模型，而在 <code>ApplyVQSR</code> 中进行矫正。需要注意的是，当前的版本只能每次
 单独对 SNP 进行矫正或者对 Indel 进行矫正，而不能同时矫正两个。这里主要
 矫正 SNP。</p>
-<div class="highlight"><pre><span></span><code>gatk VariantRecalibrator <span class="se">\</span>
-    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
-    -V ./data/sample.g.vcf.gz <span class="se">\</span>
-    --resource:hapmap,known<span class="o">=</span>false,training<span class="o">=</span>true,truth<span class="o">=</span>true,prior<span class="o">=</span><span class="m">15</span>.0 hapmap_3.3.hg38.sites.vcf.gz <span class="se">\</span>
-    --resource:omni,known<span class="o">=</span>false,training<span class="o">=</span>true,truth<span class="o">=</span>false,prior<span class="o">=</span><span class="m">12</span>.0 1000G_omni2.5.hg38.sites.vcf.gz <span class="se">\</span>
-    --resource:1000G,known<span class="o">=</span>false,training<span class="o">=</span>true,truth<span class="o">=</span>false,prior<span class="o">=</span><span class="m">10</span>.0 1000G_phase1.snps.high_confidence.hg38.vcf.gz <span class="se">\</span>
-    --resource:dbsnp,known<span class="o">=</span>true,training<span class="o">=</span>false,truth<span class="o">=</span>false,prior<span class="o">=</span><span class="m">2</span>.0 Homo_sapiens_assembly38.dbsnp138.vcf.gz <span class="se">\</span>
-    -an QD -an MQ -an MQRankSum -an ReadPosRankSum -an FS -an SOR <span class="se">\</span>
-    -mode SNP <span class="se">\</span>
-    -O ./data/sample.recal <span class="se">\</span>
-    --tranches-file ./data/sample.tranches <span class="se">\</span>
+<div class="highlight"><pre><span></span><code>gatk VariantRecalibrator \
+    -R <span class="cp">${</span><span class="n">REF_FA</span><span class="cp">}</span> \
+    -V ./data/sample.g.vcf.gz \
+    --resource:hapmap,known=false,training=true,truth=true,prior=15.0 hapmap_3.3.hg38.sites.vcf.gz \
+    --resource:omni,known=false,training=true,truth=false,prior=12.0 1000G_omni2.5.hg38.sites.vcf.gz \
+    --resource:1000G,known=false,training=true,truth=false,prior=10.0 1000G_phase1.snps.high_confidence.hg38.vcf.gz \
+    --resource:dbsnp,known=true,training=false,truth=false,prior=2.0 Homo_sapiens_assembly38.dbsnp138.vcf.gz \
+    -an QD -an MQ -an MQRankSum -an ReadPosRankSum -an FS -an SOR \
+    -mode SNP \
+    -O ./data/sample.recal \
+    --tranches-file ./data/sample.tranches \
     --rscript-file ./data/sample.plots.R
 
-gatk ApplyVQSR <span class="se">\</span>
-    -R <span class="si">${</span><span class="nv">REF_FA</span><span class="si">}</span> <span class="se">\</span>
-    -V ./data/sample.g.vcf.gz <span class="se">\</span>
-    -O ./data/sample.recalibrated.g.vcf.gz <span class="se">\</span>
-    -OVI <span class="se">\</span>
-    --truth-sensitivity-filter-level <span class="m">99</span>.0 <span class="se">\</span>
-    --tranches-file ./data/sample.tranches <span class="se">\</span>
-    --recal-file ./data/sample.recal <span class="se">\</span>
+gatk ApplyVQSR \
+    -R <span class="cp">${</span><span class="n">REF_FA</span><span class="cp">}</span> \
+    -V ./data/sample.g.vcf.gz \
+    -O ./data/sample.recalibrated.g.vcf.gz \
+    -OVI \
+    --truth-sensitivity-filter-level 99.0 \
+    --tranches-file ./data/sample.tranches \
+    --recal-file ./data/sample.recal \
     -mode SNP
 </code></pre></div>
 
-
 <h2>多任务并行</h2>
 <p>在有的时候需要处理的测序样品比较多，想要同时处理多个数据，可以考虑使用<code>xargs</code>来同时运行多个数据。</p>
-<div class="highlight"><pre><span></span><code><span class="nb">echo</span> -e <span class="s2">&quot;sample1 ./bam/sample1.bam&quot;</span> &gt; files.txt
+<div class="highlight"><pre><span></span><code><span class="n">echo</span> <span class="o">-</span><span class="n">e</span> <span class="s2">&quot;sample1 ./bam/sample1.bam&quot;</span> <span class="o">&gt;</span> <span class="n">files</span><span class="o">.</span><span class="n">txt</span>
 
-<span class="nb">export</span> <span class="nv">DIR_WK</span><span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>
+<span class="k">export</span> <span class="n">DIR_WK</span><span class="o">=$</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span>
 
-<span class="k">function</span> MarkDuplicates <span class="o">{</span>
-    <span class="nv">LAB</span><span class="o">=</span><span class="nv">$1</span>
-    <span class="nv">BAM</span><span class="o">=</span><span class="nv">$2</span>
-    <span class="nv">OUTDIR</span><span class="o">=</span><span class="si">${</span><span class="nv">DIR_WK</span><span class="si">}</span>/bam_Sorted
-    <span class="nv">TMPDIR</span><span class="o">=</span><span class="si">${</span><span class="nv">DIR_WK</span><span class="si">}</span>/tmp
-    mkdir -p <span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span>
-    mkdir -p <span class="si">${</span><span class="nv">TMPDIR</span><span class="si">}</span>
-    <span class="nv">OUTBAM</span><span class="o">=</span><span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">LAB</span><span class="si">}</span>.Markduplicates.bam
-    <span class="nv">OUTTXT</span><span class="o">=</span><span class="si">${</span><span class="nv">OUTDIR</span><span class="si">}</span>/<span class="si">${</span><span class="nv">LAB</span><span class="si">}</span>.MarkDuplicates.matrics
-    picard MarkDuplicates <span class="se">\</span>
-           -I <span class="si">${</span><span class="nv">BAM</span><span class="si">}</span> <span class="se">\</span>
-           -O <span class="si">${</span><span class="nv">OUTBAM</span><span class="si">}</span> <span class="se">\</span>
-           -M <span class="si">${</span><span class="nv">OUTTXT</span><span class="si">}</span> <span class="se">\</span>
-           -Xms1g -Xmx10g -XX:ParallelGCThreads<span class="o">=</span><span class="m">4</span>
-<span class="o">}</span>
+<span class="n">function</span> <span class="n">MarkDuplicates</span> <span class="p">{</span>
+    <span class="n">LAB</span><span class="o">=$</span><span class="mi">1</span>
+    <span class="n">BAM</span><span class="o">=$</span><span class="mi">2</span>
+    <span class="n">OUTDIR</span><span class="o">=$</span><span class="p">{</span><span class="n">DIR_WK</span><span class="p">}</span><span class="o">/</span><span class="n">bam_Sorted</span>
+    <span class="n">TMPDIR</span><span class="o">=$</span><span class="p">{</span><span class="n">DIR_WK</span><span class="p">}</span><span class="o">/</span><span class="n">tmp</span>
+    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">$</span><span class="p">{</span><span class="n">OUTDIR</span><span class="p">}</span>
+    <span class="n">mkdir</span> <span class="o">-</span><span class="n">p</span> <span class="o">$</span><span class="p">{</span><span class="n">TMPDIR</span><span class="p">}</span>
+    <span class="n">OUTBAM</span><span class="o">=$</span><span class="p">{</span><span class="n">OUTDIR</span><span class="p">}</span><span class="o">/$</span><span class="p">{</span><span class="n">LAB</span><span class="p">}</span><span class="o">.</span><span class="n">Markduplicates</span><span class="o">.</span><span class="n">bam</span>
+    <span class="n">OUTTXT</span><span class="o">=$</span><span class="p">{</span><span class="n">OUTDIR</span><span class="p">}</span><span class="o">/$</span><span class="p">{</span><span class="n">LAB</span><span class="p">}</span><span class="o">.</span><span class="n">MarkDuplicates</span><span class="o">.</span><span class="n">matrics</span>
+    <span class="n">picard</span> <span class="n">MarkDuplicates</span> \
+           <span class="o">-</span><span class="n">I</span> <span class="o">$</span><span class="p">{</span><span class="n">BAM</span><span class="p">}</span> \
+           <span class="o">-</span><span class="n">O</span> <span class="o">$</span><span class="p">{</span><span class="n">OUTBAM</span><span class="p">}</span> \
+           <span class="o">-</span><span class="n">M</span> <span class="o">$</span><span class="p">{</span><span class="n">OUTTXT</span><span class="p">}</span> \
+           <span class="o">-</span><span class="n">Xms1g</span> <span class="o">-</span><span class="n">Xmx10g</span> <span class="o">-</span><span class="n">XX</span><span class="p">:</span><span class="n">ParallelGCThreads</span><span class="o">=</span><span class="mi">4</span>
+<span class="p">}</span>
 
-<span class="nb">export</span> -f MarkDuplicates
+<span class="k">export</span> <span class="o">-</span><span class="n">f</span> <span class="n">MarkDuplicates</span>
 
-cat files.txt <span class="p">|</span> xargs -P <span class="m">4</span> -n <span class="m">1</span> -I <span class="o">{}</span> bash -c <span class="s1">&#39;MarkDuplicates $@&#39;</span> _ <span class="o">{}</span>
+<span class="n">cat</span> <span class="n">files</span><span class="o">.</span><span class="n">txt</span> <span class="o">|</span> <span class="n">xargs</span> <span class="o">-</span><span class="n">P</span> <span class="mi">4</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span> <span class="o">-</span><span class="n">I</span> <span class="p">{}</span> <span class="n">bash</span> <span class="o">-</span><span class="n">c</span> <span class="s1">&#39;MarkDuplicates $@&#39;</span> <span class="n">_</span> <span class="p">{}</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>files.txt</code>中保存着需要处理的数据，数据有两列，第一列是样品名称，第

@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -80,9 +82,8 @@ checkout 用来切换不同的分支，merge 用于合并分支。</p>
 <h2>创建分支</h2>
 <p>使用 <code>git branch &lt;branchname&gt;</code> 就可以创建一个新的分支，例如创建一个叫
 做 dev 的分支：</p>
-<div class="highlight"><pre><span></span><code>git branch dev
+<div class="highlight"><pre><span></span><code><span class="err">git branch dev</span>
 </code></pre></div>
-
 
 <p>创建一个分支，可以简单理解为创建了一个指针，该指针指向了一个 commit，
 而 commit 中有其 parent commit 的 SHA-1 值，从而形成了一个分支链条。创
@@ -90,10 +91,9 @@ checkout 用来切换不同的分支，merge 用于合并分支。</p>
 没有做任何修改的时候，相当于新的分支和当前分支同时指向同一个 commit。</p>
 <h2>切换分支</h2>
 <p>如果要切换到新的分支来进行下一步开发，则需要使用 <code>git checkout</code> 命令，如：</p>
-<div class="highlight"><pre><span></span><code>git checkout dev
-<span class="c1"># Switched to branch &#39;dev&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="err">git checkout dev</span>
+<span class="err"># Switched to branch &#39;dev&#39;</span>
 </code></pre></div>
-
 
 <p>也可以使用 <code>git checkout -b &lt;branch&gt;</code> 来直接创建并切换分支。</p>
 <h2>合并分支</h2>
@@ -102,16 +102,14 @@ checkout 用来切换不同的分支，merge 用于合并分支。</p>
 master 分支中，可以使用 <code>git merge</code> 命令来合并分支。</p>
 <p>要合并代码，首先切换到被合并的分支上，如我们要把分支合并到 master，则
 要先切换到master分支：</p>
-<div class="highlight"><pre><span></span><code>git checkout master
-<span class="c1"># M       md/git_command_commit.md</span>
-<span class="c1"># Switched to branch &#39;master&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="err">git checkout master</span>
+<span class="err"># M       md/git_command_commit.md</span>
+<span class="err"># Switched to branch &#39;master&#39;</span>
 </code></pre></div>
-
 
 <p>然后执行 merge 命令：</p>
-<div class="highlight"><pre><span></span><code>git merge dev
+<div class="highlight"><pre><span></span><code><span class="err">git merge dev</span>
 </code></pre></div>
-
 
 <p>如果只有两个分支，并且在切换到一个分支后并未对原分支进行新的 commit ，
 那么 merge 将会非常容易，因为是线性的。而如果切换分支后，原分支又又了

@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -74,7 +76,6 @@ $ cat <span class="s">&lt;&lt;EOF &gt; advice</span>
 <span class="s">&gt; EOF</span>
 $ awk -f advice
 </code></pre></div>
-
 
 <ul>
 <li>awk 中的注释符号是 '#'.</li>
@@ -231,7 +232,6 @@ $ awk -f advice
 <span class="err">}</span>
 </code></pre></div>
 
-
 <h3>布尔运算与比较运算</h3>
 <p>在 awk 中的布尔值的定义很简单, 和 C 类似: 0 代表 False; 非 0 的数代表 True.
 另外需要注意的是: 空字符串 "" 为 False; 而非空字符串, 如 "0" 则为 True.</p>
@@ -284,13 +284,11 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 <span class="err">}</span>
 </code></pre></div>
 
-
 <h4>数组的数组</h4>
 <p>gawk 提供真正的多维数组, 实际上是数组的元素又是一个数组. 数组的每一个元素并不要求一定是同样的类型.</p>
 <div class="highlight"><pre><span></span><code><span class="err">a[1][1] = 1</span>
 <span class="err">a[1][2] = 2</span>
 </code></pre></div>
-
 
 <h2>函数</h2>
 <p>函数是一组相关的操作的合集.
@@ -323,7 +321,6 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 <span class="err">sub(/one/, &quot;&amp; two&quot;, string)</span>
 <span class="err"># string: &quot;one two&quot;</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>gsub(regexp, replacement [ , target ])</code>: 把符合条件的最长的, 全部的字符串均替换, 'g' 在这里代表的是 "global".</li>
@@ -467,7 +464,6 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 <span class="o">#</span> <span class="n">b</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="ss">&quot;two&quot;</span>
 </code></pre></div>
 
-
 <h4>其他函数</h4>
 <ul>
 <li><code>system(command)</code>: 运行系统的命令.</li>
@@ -482,10 +478,9 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 <p>awk 允许自己定义函数. 因为 awk 在运行程序之前会把所有代码都扫描一边, 所以函数的定义并不要要求出现在代码最前面.</p>
 <div class="highlight"><pre><span></span><code><span class="k">function</span><span class="w"> </span><span class="nf">name</span><span class="p">(</span>[parameter]<span class="p">)</span><span class="w"></span>
 <span class="p">{</span>
-    # <span class="k">function</span><span class="o">-</span><span class="n">body</span> <span class="c">...</span>
+    # <span class="k">function</span><span class="o">-</span><span class="n">body</span> <span class="k">...</span>
 <span class="p">}</span>
 </code></pre></div>
-
 
 <p>在函数的定义中出现在参数列表中的是参数名和局部变量名, 如果在调用参数的时候有给参数赋值, 则函数中使用参数值,
 如果没有给参数赋值, 则参数表现像是局部变量, 引用时候根据使用场景表现为空字符串或者数字 0.
@@ -505,16 +500,15 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 
 <span class="n">BEGIN</span> <span class="s">{</span>
     <span class="nb">i</span> <span class="p">=</span> <span class="mi">5</span>
-    <span class="n">print</span> <span class="s">&quot;全局</span> <span class="s">i</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">i</span>
-    <span class="n">print</span> <span class="s">&quot;foox</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">1</span>
-    <span class="n">print</span> <span class="s">&quot;foo</span> <span class="s">i</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">foo(1)</span>
-    <span class="n">print</span> <span class="s">&quot;全局</span> <span class="s">i</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">i</span>
-    <span class="n">print</span> <span class="s">&quot;barx</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">2</span>
-    <span class="n">print</span> <span class="s">&quot;bar</span> <span class="s">i</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">bar(2)</span>
-    <span class="n">print</span> <span class="s">&quot;全局</span> <span class="s">i</span> <span class="s">=</span> <span class="s">&quot;</span> <span class="s">i</span>
+    <span class="n">print</span> <span class="s">&quot;全局</span> <span class="s">i</span> <span class="p">=</span> <span class="s">&quot; i</span>
+<span class="s">    print &quot;</span><span class="n">foox</span> <span class="p">=</span> <span class="s">&quot; 1</span>
+<span class="s">    print &quot;</span><span class="n">foo</span> <span class="nb">i</span> <span class="p">=</span> <span class="s">&quot; foo(1)</span>
+<span class="s">    print &quot;</span>全局 <span class="nb">i</span> <span class="p">=</span> <span class="s">&quot; i</span>
+<span class="s">    print &quot;</span><span class="n">barx</span> <span class="p">=</span> <span class="s">&quot; 2</span>
+<span class="s">    print &quot;</span><span class="n">bar</span> <span class="nb">i</span> <span class="p">=</span> <span class="s">&quot; bar(2)</span>
+<span class="s">    print &quot;</span>全局 <span class="nb">i</span> <span class="p">=</span> &quot; <span class="nb">i</span>
 <span class="p">}</span>
 </code></pre></div>
-
 
 <p>输出结果会是:</p>
 <div class="highlight"><pre><span></span><code><span class="err">全局 i = 5</span>
@@ -526,7 +520,6 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 <span class="err">全局 i = 2</span>
 </code></pre></div>
 
-
 <p>当参数是数组的时候, 参数传递的是数组本身, 而如果参数是普通的变量的时候, 参数传递的是值, 这一点是和 C 语言类似的.</p>
 <h3>间接引用</h3>
 <p>有的时候使用的函数需要在运行的时候决定, 这个时候可以去提供函数名, 然后通过间接引用的方式去调用函数.
@@ -536,7 +529,6 @@ awk 存储数组不是在内存中简单连续排列相邻元素, 所以不能�
 <span class="err">    print @funcname(1)</span>
 <span class="err">}</span>
 </code></pre></div>
-
 
 <p>输出为 <code>2.71828</code>。使用 <code>@</code> 符号可以调用函数名变量所保存的字符串所指代的函数。</p>
 <h5>close</h5>
@@ -598,7 +590,6 @@ ENDFILE 则会在 awk 处理完文件最后一行数据之后运行, 即使是�
 <span class="err">}</span>
 </code></pre></div>
 
-
 <p>while 语句.</p>
 <div class="highlight"><pre><span></span><code><span class="err">i = 0</span>
 <span class="err">while (i &lt;= 3) {</span>
@@ -606,7 +597,6 @@ ENDFILE 则会在 awk 处理完文件最后一行数据之后运行, 即使是�
 <span class="err">    ++i</span>
 <span class="err">}</span>
 </code></pre></div>
-
 
 <p>do while 语句.</p>
 <div class="highlight"><pre><span></span><code><span class="err">i = 0</span>
@@ -616,13 +606,11 @@ ENDFILE 则会在 awk 处理完文件最后一行数据之后运行, 即使是�
 <span class="err">} while (i &lt;= 3)</span>
 </code></pre></div>
 
-
 <p>for 语句.</p>
 <div class="highlight"><pre><span></span><code><span class="err">for (i = 0; i &lt;=3; ++i) {</span>
 <span class="err">    print i</span>
 <span class="err">}</span>
 </code></pre></div>
-
 
 <p>如果是对数组进行操作的话, for 语句还可以如下.</p>
 <div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"></span>
@@ -630,7 +618,6 @@ ENDFILE 则会在 awk 处理完文件最后一行数据之后运行, 即使是�
 <span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"></span>
 <span class="w">    </span><span class="k">print</span><span class="w"> </span><span class="n">a</span><span class="o">[</span><span class="n">i</span><span class="o">]</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>switch 语句是 gawk 中的, 在兼容模式中没有.</p>
 <div class="highlight"><pre><span></span><code><span class="err">switch (a) {</span>
@@ -644,7 +631,6 @@ ENDFILE 则会在 awk 处理完文件最后一行数据之后运行, 即使是�
 <span class="err">        print &quot;test&quot;</span>
 <span class="err">}</span>
 </code></pre></div>
-
 
 <p>break 语句和 continue 语句是用来控制循环的, 仅能用于 for, while, do 循环.
 另外, break 还可以用于 switch 中, 来跳出 switch 的操作.
@@ -660,7 +646,6 @@ break 语句会中止其所在位置的循环.
 当 exit 执行的时候, BEGINFILE 和 ENDFILE 的语句都会被忽略.</p>
 <div class="highlight"><pre><span></span><code><span class="err">exit 1</span>
 </code></pre></div>
-
 
 <h4>输入输出语句</h4>
 <h5>getline</h5>
@@ -678,7 +663,6 @@ break 语句会中止其所在位置的循环.
 <span class="err">}</span>
 </code></pre></div>
 
-
 <h5>printf</h5>
 <ul>
 <li><code>printf</code>: 用于格式化输出的函数. <code>printf format, item1, item2 ...</code>, 其变量在使用 pipe 的时候需要用小括号括起来.</li>
@@ -693,7 +677,6 @@ break 语句会中止其所在位置的循环.
 <span class="err">    printf(&quot;%*.*f\n&quot;, w, p, 2.71828)</span>
 <span class="err">}</span>
 </code></pre></div>
-
 
 <h4>清除语句</h4>
 <ul>

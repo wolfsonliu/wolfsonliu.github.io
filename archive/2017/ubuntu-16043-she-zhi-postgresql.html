@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -84,14 +86,12 @@
 <div class="highlight"><pre><span></span><code><span class="err">sudo -u postgres psql postgres</span>
 </code></pre></div>
 
-
 <p>其中 -u 是表示用用户 postgres, 后面的 psql 是 PostgreSQL shell 的程序, 打开 postgres 数据库.
 命令输入之后, 在 psql 中设置 postgres 用户的密码:</p>
 <div class="highlight"><pre><span></span><code><span class="err">postgres=# \password postgres</span>
 <span class="err">Enter new password:</span>
 <span class="err">Enter it again:</span>
 </code></pre></div>
-
 
 <p>于是就设置成功.</p>
 <p>接下来就是创建用户:</p>
@@ -102,11 +102,9 @@
 <span class="err">Shall the new role be allowed to create more new roles? (y/n) n</span>
 </code></pre></div>
 
-
 <p>然后是创建用户的数据库:</p>
 <div class="highlight"><pre><span></span><code><span class="err">sudo -u postgres createdb wolfson</span>
 </code></pre></div>
-
 
 <p>接着是设置用户的密码:</p>
 <div class="highlight"><pre><span></span><code><span class="err">sudo -u postgres psql wolfson</span>
@@ -114,7 +112,6 @@
 <span class="err">Enter new password:</span>
 <span class="err">Enter it again:</span>
 </code></pre></div>
-
 
 <p>下面可以登陆新建的账户, 注意需要设置 <code>--host=localhost</code>,
 否则会出现错误 <code>psql: FATAL:  Peer authentication failed for user "wolfson"</code>.

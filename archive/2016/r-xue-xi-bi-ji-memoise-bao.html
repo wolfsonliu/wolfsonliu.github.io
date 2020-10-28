@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -100,7 +102,6 @@
 <span class="c1">#  0.004   0.000   0.003 </span>
 </code></pre></div>
 
-
 <p>从结果可以看出使用 memoise 函数的运算速度要快于没有使用 memoise 函数的运算速度.</p>
 <p>该包中还有函数 forget, 是用来清除存储的函数的计算值. 接着上面的例子.</p>
 <div class="highlight"><pre><span></span><code><span class="err">system.time(slow_fab(40))</span>
@@ -118,7 +119,6 @@
 <span class="err">#      0       0       0 </span>
 </code></pre></div>
 
-
 <p>从上面的例子, 可以知道, 对于 fast_fab 函数的不同的计算结果都被保存在了内存里面, 之后的调用会直接在以有的函数计算结果的基础上进行计算, 所以计算速度很快. 如果我们使用 forget 函数, 清除内存中保存的计算结果, 那么计算就会重新开始.</p>
 <p>memoise 包中也有相应的函数来帮助判断一个函数是否会记录结果.</p>
 <div class="highlight"><pre><span></span><code><span class="err">is.memoised(fast_fab)</span>
@@ -126,7 +126,6 @@
 <span class="err">is.memoised(slow_fab)</span>
 <span class="err">#[1] FALSE</span>
 </code></pre></div>
-
 
 <p>memoise 函数把不同参数的计算结果存储在哈希表中, 可以通过 has_cache 函数来查看. 接着上面的计算来查看.</p>
 <div class="highlight"><pre><span></span><code><span class="err">has_cache(fast_fab)(40)</span>
@@ -140,7 +139,6 @@
 <span class="err">has_cache(fast_fab)(50)</span>
 <span class="err">#[1] FALSE</span>
 </code></pre></div>
-
 
 <p>所以, memoise 函数实际上是用空间来换时间, 把中间计算过程记录在内存的哈希表中, 在下一次用到相同参数的结果时, 直接取出来. 当然, 第一次计算总是需要花和不使用 memoise 一样甚至更多的时间, 不过在未来的计算中就会节约时间. 所以, memoise 包十分适合需要多次使用, 有相同的输入和相应稳定的输出值的函数. 而对于例如随机数产生函数, 我们每次使用均希望获得不一样的值, 则 memoise 不能满足我们的要求, 因为当所输入的参数相同的时候, 它会把之前存储的随机数直接输出.</p>
         </div>

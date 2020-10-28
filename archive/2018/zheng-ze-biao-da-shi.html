@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -104,7 +106,6 @@ $ <span class="nb">echo</span> sunday <span class="p">|</span> egrep <span class
 sunday
 </code></pre></div>
 
-
 <ul>
 <li>分组：对于一个表达式中的一部分进行分组，可以在后面只输出分组中
   的内容，一般用小括号<code>(pattern)</code>表示分组。例如：<code>(sun|mon|tues)day</code>，
@@ -124,7 +125,6 @@ $ <span class="nb">echo</span> <span class="s2">&quot;sunday&quot;</span> <span 
 $ <span class="nb">echo</span> <span class="s2">&quot;monday&quot;</span> <span class="p">|</span> egrep <span class="s2">&quot;(sun|satur)day&quot;</span>
 </code></pre></div>
 
-
 <ul>
 <li>数量：使用数量匹配符号，可以对其前面的字符指定匹配的数量。</li>
 <li><code>?</code>：匹配零个或一个字符，例如 “ab?c” 匹配的只会是 “ac”，“abc”</li>
@@ -143,7 +143,6 @@ AGCGTTTTGT
 $ <span class="nb">echo</span> <span class="s2">&quot;AGCGTTTTGT&quot;</span> <span class="p">|</span> egpre <span class="s2">&quot;GT+G&quot;</span>
 AGCGTTTTGT
 </code></pre></div>
-
 
 <ul>
 <li>通配符：有的时候我们需要抓取的字符的组合非常多，这个时候就需要使用通
@@ -168,9 +167,8 @@ AGCGTTTTGT
 <li><code>[:graph:]</code>：能看得到的字符，相当于<code>[^ \t\n\r\f\v]</code></li>
 <li><code>[:print:]</code>：可打印字符，能看得到的字符和空格 <code>[^\t\n\r\f\v]</code>。</li>
 </ul>
-<div class="highlight"><pre><span></span><code>$ cat sample.fq <span class="p">|</span> grep <span class="s2">&quot;ACCG([ATCG]{20})GTTT&quot;</span> &gt; reads_with_sgRNA.txt
+<div class="highlight"><pre><span></span><code><span class="err">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">sample</span><span class="p">.</span><span class="n">fq</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">grep</span><span class="w"> </span><span class="ss">&quot;ACCG([ATCG]{20})GTTT&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">reads_with_sgRNA</span><span class="p">.</span><span class="n">txt</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>对于字符串开头和结尾，可以使用 <code>^</code> <code>$</code> 来进行定位。</p>
 <ul>

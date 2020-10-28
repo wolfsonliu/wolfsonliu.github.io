@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -88,7 +90,6 @@
 sunday
 </code></pre></div>
 
-
 <p>对于 sed 的替换命令有四部分：</p>
 <ol>
 <li>s：替换命令</li>
@@ -106,7 +107,6 @@ $ <span class="nb">echo</span> <span class="s1">&#39;sunday monday tuesday&#39;<
 sunday sunday sunday monday tuesday
 </code></pre></div>
 
-
 <h3>使用小括号去匹配分组并选择分组</h3>
 <p>使用 <code>&amp;</code> 代表被匹配的所有字符，而如果在正则表示中加入小括号作为分组，
 我们可以使用 <code>\1</code> <code>\2</code>直到 <code>\9</code> 来代表匹配到第一到第九个括号中正则表达
@@ -114,7 +114,6 @@ sunday sunday sunday monday tuesday
 <div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed <span class="s2">&quot;s/([a-z]*day) ([a-z]*day)/\1 \2 \1 \2/&quot;</span>
 saturday sunday saturday sunday monday tuesday
 </code></pre></div>
-
 
 <h3>flag</h3>
 <p>上面的栗子是否注意到了，其实仅仅按照正则表达式匹配结果并不唯一，如果我
@@ -134,7 +133,6 @@ $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tues
 saturday sunday saturday sunday monday tuesday monday tuesday
 </code></pre></div>
 
-
 <ul>
 <li>/1：诸如 1，2，3用于指定是第几个匹配。</li>
 </ul>
@@ -148,22 +146,20 @@ $ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tues
 saturday sunday monday tuesday monday tuesday
 </code></pre></div>
 
-
 <ul>
 <li>/p：输出符合匹配的序列。</li>
 </ul>
-<div class="highlight"><pre><span></span><code>$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
-saturday sunday monday tuesday
-$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -n -E <span class="s2">&quot;s/([a-z]*day)/&amp;/&quot;</span>
-$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -E <span class="s2">&quot;s/([a-z]*day)/&amp;/p&quot;</span>
-saturday sunday monday tuesday
-saturday sunday monday tuesday
-$ <span class="nb">echo</span> <span class="s1">&#39;saturday sunday monday tuesday&#39;</span> <span class="p">|</span> sed -n -E <span class="s2">&quot;s/([a-z]*day)/&amp;/p&quot;</span>
-saturday sunday monday tuesday
-$ cat lib.1.fq <span class="p">|</span> sed -n -E <span class="s2">&quot;s/ACCG([ATCG]{19,20})GTTT/\1/p&quot;</span> &gt; sgRNAs.seq
-$ cat sgRNAs.seq <span class="p">|</span> sort <span class="p">|</span> uniq -c &gt; sgRNA.count
+<div class="highlight"><pre><span></span><code><span class="err">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s1">&#39;saturday sunday monday tuesday&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="ss">&quot;s/([a-z]*day)/&amp;/&quot;</span><span class="w"></span>
+<span class="n">saturday</span><span class="w"> </span><span class="n">sunday</span><span class="w"> </span><span class="n">monday</span><span class="w"> </span><span class="n">tuesday</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s1">&#39;saturday sunday monday tuesday&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="ss">&quot;s/([a-z]*day)/&amp;/&quot;</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s1">&#39;saturday sunday monday tuesday&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="ss">&quot;s/([a-z]*day)/&amp;/p&quot;</span><span class="w"></span>
+<span class="n">saturday</span><span class="w"> </span><span class="n">sunday</span><span class="w"> </span><span class="n">monday</span><span class="w"> </span><span class="n">tuesday</span><span class="w"></span>
+<span class="n">saturday</span><span class="w"> </span><span class="n">sunday</span><span class="w"> </span><span class="n">monday</span><span class="w"> </span><span class="n">tuesday</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">echo</span><span class="w"> </span><span class="s1">&#39;saturday sunday monday tuesday&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="ss">&quot;s/([a-z]*day)/&amp;/p&quot;</span><span class="w"></span>
+<span class="n">saturday</span><span class="w"> </span><span class="n">sunday</span><span class="w"> </span><span class="n">monday</span><span class="w"> </span><span class="n">tuesday</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">lib</span><span class="mf">.1</span><span class="p">.</span><span class="n">fq</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sed</span><span class="w"> </span><span class="o">-</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="ss">&quot;s/ACCG([ATCG]{19,20})GTTT/\1/p&quot;</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">sgRNAs</span><span class="p">.</span><span class="n">seq</span><span class="w"></span>
+<span class="err">$</span><span class="w"> </span><span class="n">cat</span><span class="w"> </span><span class="n">sgRNAs</span><span class="p">.</span><span class="n">seq</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sort</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">uniq</span><span class="w"> </span><span class="o">-</span><span class="n">c</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">sgRNA</span><span class="p">.</span><span class="nf">count</span><span class="w"></span>
 </code></pre></div>
-
 
 <ul>
 <li>/w：输出到文件</li>
@@ -173,7 +169,6 @@ saturday sunday monday tuesday monday tuesday
 $ cat tmp
 saturday sunday monday tuesday monday tuesday
 </code></pre></div>
-
 
 <h2>选择特定的列</h2>
 <p>sed 可以根据位置（即行数），正则表达式去选择特定的行进行操作，而忽略其他的行。</p>
@@ -189,7 +184,6 @@ saturday sunday monday tuesday monday tuesday
 <div class="highlight"><pre><span></span><code>$ sed <span class="s1">&#39;1, 20 s/.*bin.*/BIN/&#39;</span> /etc/passwd
 </code></pre></div>
 
-
 <ul>
 <li>匹配正则表达式：</li>
 <li><code>/pattern/</code>：只对匹配正则表达式的行进行操作。</li>
@@ -201,7 +195,6 @@ $ sed <span class="s1">&#39;/@.*/,/\+/ {</span>
 <span class="s1">    /\+/!p</span>
 <span class="s1">}&#39;</span> lib.1.fq <span class="p">|</span> less
 </code></pre></div>
-
 
 <h2>输出命令 p</h2>
 <p>前面已经见到过输出命令 p 如何使用，我们可以根据各种符合匹配的情况使用
@@ -218,7 +211,6 @@ $ sed <span class="s1">&#39;/^@.*/ !p&#39;</span> lib.1.fq <span class="p">|</sp
 $ sed -n <span class="s1">&#39;1,16 p&#39;</span> lib.1.fq <span class="p">|</span> less
 $ head -16 lib.1.fq
 </code></pre></div>
-
 
 <h2>删除命令 d</h2>
 <p>删除命令可以指定符合要求的行从结果中删除，在一定程度上 <code>d</code> 相当于 <code>!p</code>。</p>
@@ -340,7 +332,6 @@ $ sed <span class="s1">&#39;1,16 !d&#39;</span> lib.1.fq <span class="p">|</span
 $ head -16 lib.1.fq
 </code></pre></div>
 
-
 <h2>附加命令 a，改变命令 c，插入命令 i</h2>
 <p>sed 也可以利用附加命令a，改变命令c，插入命令i来改变流的内容。</p>
 <ul>
@@ -353,12 +344,10 @@ $ sed <span class="s1">&#39;/@.*/ c haha&#39;</span> lib.1.fq <span class="p">|<
 $ sed <span class="s1">&#39;/@.*/ i haha&#39;</span> lib.1.fq <span class="p">|</span> less
 </code></pre></div>
 
-
 <h2>输出行号</h2>
 <p><code>=</code> 可以用来输出行号。</p>
 <div class="highlight"><pre><span></span><code>$ sed -n <span class="s1">&#39;/@.*/ =&#39;</span> lib.1.fq <span class="p">|</span> less
 </code></pre></div>
-
 
 <h2>转换命令 y</h2>
 <p>除了替换命令，sed 还支持字符转换命令 y，实现类似于 <code>tr</code> 的命令。转换命
@@ -369,7 +358,6 @@ ATATCCGATCTCCTAATCTC
 $ <span class="nb">echo</span> TATAGGCTAGAGGATTAGAG <span class="p">|</span> tr ATCG TAGC
 ATATCCGATCTCCTAATCTC
 </code></pre></div>
-
 
 <p>从上面的栗子，我们可以看到转换命令和替换命令的相似性，其在flag使用上也
 是类似的。</p>

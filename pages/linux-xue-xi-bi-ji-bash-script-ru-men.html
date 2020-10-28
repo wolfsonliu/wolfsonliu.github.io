@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -74,12 +76,13 @@
 </ul>
 <h2>一个简单的脚本</h2>
 <p>我们写第一个简单的脚本，脚本名字叫：<code>hello_world.sh</code></p>
-<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 
 <span class="nb">echo</span> <span class="s2">&quot;Hello World!&quot;</span>
 </code></pre></div>
-
-
+</td></tr></table>
 <p>在 bash script 中的注释是 <code>#</code> 后面的部分，bash 不会运行注释。在上面例
 子里面，第一行为 <code>#!</code> 是特殊的注释，这里是告诉bash，使用哪个命令来运行
 该脚本。在 <code>#!</code> 后面跟着具体的命令的绝对路径，因为这里是 bash 脚本，则
@@ -94,7 +97,18 @@ awk 脚本的话，则应该是 <code>/usr/bin/awk -f</code>。在我们把脚�
 数可以让脚本更简洁明了，方便维护。bash script 的函数很简单，就是把相应
 的命令放在函数体中。</p>
 <p>如 hello_world2.sh：</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 
 <span class="k">function</span> hello <span class="o">{</span>
     <span class="nb">echo</span> <span class="s2">&quot;Hello!&quot;</span>
@@ -107,8 +121,7 @@ world<span class="o">()</span> <span class="o">{</span>
 hello
 world
 </code></pre></div>
-
-
+</td></tr></table>
 <h2>变量</h2>
 <p>在 bash 中可以定义变量，引用变量的时候需要在变量名前加上 <code>$</code>，如
 <code>$HOME</code>。在 bash 中有若干预先定义好的以大写字母命令的变量，被称为环境
@@ -127,17 +140,16 @@ $ <span class="nb">echo</span> <span class="s1">&#39;$MYGRATE I am $myname&#39;<
 <span class="nv">$MYGRATE</span> I am <span class="nv">$myname</span><span class="err">&#39;</span>
 </code></pre></div>
 
-
 <h3>位置变量</h3>
 <p>对于脚本和函数都支持位置变量。<code>$0</code> 是该脚本的名称或者函数的名称；<code>$1</code>
 是该脚本或者该函数后面的第一个参数；<code>$2</code>是该脚本或者该函数后面的第二个
 参数，依次类推。</p>
 <p>例如 hello.sh 脚本：</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 <span class="nb">echo</span> “Hello, <span class="nv">$1</span>! I am <span class="nv">$2</span>.”
 </code></pre></div>
-
-
+</td></tr></table>
 <p>可以给运行该脚本，给参数或不给：</p>
 <div class="highlight"><pre><span></span><code>$ ./hello.sh
 Hello, ! I am .
@@ -145,17 +157,20 @@ $ ./hello.sh <span class="s2">&quot;Han Meimei&quot;</span> <span class="s2">&qu
 Hello, Han Meimei! I am Li Lei.
 </code></pre></div>
 
-
 <p>对于函数也如此，例如 hello2.sh脚本：</p>
-<div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#! /bin/bash</span>
 <span class="k">function</span> grate <span class="o">{</span>
     <span class="nb">echo</span> “Hello, <span class="nv">$1</span>! I am <span class="nv">$2</span>.”
 <span class="o">}</span>
 grate
 grate <span class="s2">&quot;Han Meimei&quot;</span> <span class="s2">&quot;Li Lei&quot;</span>
 </code></pre></div>
-
-
+</td></tr></table>
 <p>运行改脚本：</p>
 <div class="highlight"><pre><span></span><code>$ ./hello2.sh
 Hello, ! I am .
@@ -164,7 +179,6 @@ $ ./hello2.sh <span class="s2">&quot;Zhang San&quot;</span> <span class="s2">&qu
 Hello, ! I am .
 Hello, Han Meimei! I am Li Lei.
 </code></pre></div>
-
 
 <h2>流程控制</h2>
 <p>流程控制是为了使得脚本可以非线性地运行以达到任务目的。bash中有多种流程控制：</p>
@@ -178,285 +192,276 @@ Hello, Han Meimei! I am Li Lei.
 <h3>if/else</h3>
 <p>当需要根据一个条件来确定是否要执行或者要执行什么样的命令的情况下需要用
 到 if/else 做条件判断。</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span>
-    <span class="o">(</span>statement<span class="o">)</span>
-<span class="o">[</span><span class="k">elif</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">then</span><span class="o">]</span>
-<span class="o">[</span>    <span class="o">(</span>statement<span class="o">)]</span>
-<span class="o">[</span><span class="k">else</span><span class="o">]</span>
-<span class="o">[</span>    <span class="o">(</span>statement<span class="o">)]</span>
-<span class="k">fi</span>
+<div class="highlight"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">condition</span><span class="p">);</span><span class="w"> </span><span class="k">then</span><span class="w"></span>
+<span class="w">    </span><span class="p">(</span><span class="k">statement</span><span class="p">)</span><span class="w"></span>
+<span class="o">[</span><span class="n">elif (condition); then</span><span class="o">]</span><span class="w"></span>
+<span class="o">[</span><span class="n">    (statement)</span><span class="o">]</span><span class="w"></span>
+<span class="o">[</span><span class="n">else</span><span class="o">]</span><span class="w"></span>
+<span class="o">[</span><span class="n">    (statement)</span><span class="o">]</span><span class="w"></span>
+<span class="n">fi</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>在bash script中，可以使用 <code>[]</code> test 语句做条件判断，具体参考 <code>man test</code>。</p>
 <p>例如，我们可以在文件夹不存在的时候去创建文件夹，而在文件夹存在的时候不采取操作：</p>
-<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="o">[</span> ! -e ~/seq <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-    mkdir ~/seq
-<span class="k">fi</span>
+<div class="highlight"><pre><span></span><code><span class="err">if [ ! -e ~/seq ]; then</span>
+<span class="err">    mkdir ~/seq</span>
+<span class="err">fi</span>
 </code></pre></div>
-
 
 <h3>for</h3>
 <p>如果有同样的任务需要运行特定的次数，则可以使用 for 循环语句。</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="o">(</span>name<span class="o">)</span> <span class="o">[</span>in list<span class="o">]</span><span class="p">;</span> <span class="k">do</span>
-    <span class="o">(</span>statement<span class="o">)</span>
-<span class="k">done</span>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="p">[</span><span class="k">in</span> <span class="n">list</span><span class="p">];</span> <span class="k">do</span>
+    <span class="p">(</span><span class="n">statement</span><span class="p">)</span>
+<span class="n">done</span>
 </code></pre></div>
-
 
 <p>比如我们想输出 1 到 10：</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
+<div class="highlight"><pre><span></span><code><span class="err">for x in `seq 1 10`; do</span>
+<span class="err">    echo $x</span>
+<span class="err">done</span>
 </code></pre></div>
-
 
 <p>或者我们可以把要逐个处理的值用空格隔开：</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> x in one two three four<span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="nv">$x</span>
-<span class="k">done</span>
+<div class="highlight"><pre><span></span><code><span class="err">for x in one two three four; do</span>
+<span class="err">    echo $x</span>
+<span class="err">done</span>
 </code></pre></div>
-
 
 <p>写个 for 循环可以容易地批量实现文件重命名：</p>
 <div class="highlight"><pre><span></span><code>mkdir tmp
 
-<span class="k">for</span> x in <span class="sb">`</span>seq <span class="m">1</span> <span class="m">10</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
-    touch tmp/<span class="si">${</span><span class="nv">x</span><span class="si">}</span>.txt
-<span class="k">done</span>
-<span class="nb">echo</span> <span class="s2">&quot;Initial files:&quot;</span>
+for x in `seq 1 10`; do
+    touch tmp/<span class="cp">${</span><span class="n">x</span><span class="cp">}</span>.txt
+done
+echo &quot;Initial files:&quot;
 ls tmp
 
-<span class="k">for</span> x in <span class="sb">`</span>ls tmp<span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
-    mv tmp/<span class="si">${</span><span class="nv">x</span><span class="si">}</span> tmp/file<span class="si">${</span><span class="nv">x</span><span class="si">}</span>
-<span class="k">done</span>
-<span class="nb">echo</span> <span class="s2">&quot;Renamed files:&quot;</span>
+for x in `ls tmp`; do
+    mv tmp/<span class="cp">${</span><span class="n">x</span><span class="cp">}</span> tmp/file<span class="cp">${</span><span class="n">x</span><span class="cp">}</span>
+done
+echo &quot;Renamed files:&quot;
 ls tmp
 </code></pre></div>
-
 
 <h3>while 和 until</h3>
 <p>有时候我们希望一个命令不断执行，直到条件发生变化，这个时候我们可以用
 while 或者 until。两者区别在于， 如果初始条件为假，则while一次也不会执
 行，而until则会执行一次。只需要把条件取反，就能把while变成untile。</p>
-<div class="highlight"><pre><span></span><code><span class="k">while</span> <span class="o">(</span>condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
-    <span class="o">(</span>statement<span class="o">)</span>
-<span class="k">done</span>
-<span class="k">until</span> <span class="o">(</span>not condition<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
-    <span class="o">(</span>statement<span class="o">)</span>
-<span class="k">done</span>
+<div class="highlight"><pre><span></span><code><span class="err">while (condition); do</span>
+<span class="err">    (statement)</span>
+<span class="err">done</span>
+<span class="err">until (not condition); do</span>
+<span class="err">    (statement)</span>
+<span class="err">done</span>
 </code></pre></div>
-
 
 <p>例如我们写一个while 循环找到最后一层目录：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
+<div class="highlight"><pre><span></span><code>dirs=one/two/three/four/five
 
-mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">}</span>
+mkdir -p <span class="cp">${</span><span class="n">dirs</span><span class="cp">}</span>
 
-<span class="nv">pdirs</span><span class="o">=</span>one
+pdirs=one
 
-<span class="nb">echo</span> <span class="s2">&quot;Dirs: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="nv">i</span><span class="o">=</span><span class="m">1</span>
-<span class="k">while</span> <span class="o">[</span> <span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> wc -l<span class="sb">`</span> -ne <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dirs     : </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nv">pdirs</span><span class="o">=</span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span>/<span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> head -1<span class="sb">`</span>
-    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dirs Grow: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
-<span class="k">done</span>
+echo &quot;Dirs: <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+i=1
+while [ `ls <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span> | wc -l` -ne 0 ]; do
+    echo &quot;[<span class="nv">$i</span>] Dirs     : <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+    pdirs=<span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>/`ls <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span> | head -1`
+    echo &quot;[<span class="nv">$i</span>] Dirs Grow: <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+    i=$((i+1))
+done
 </code></pre></div>
-
 
 <p>如果我们要拓展一下，用上面 while 循环实现类似于 <code>rmdir -p</code> 的功能：</p>
-<div class="highlight"><pre><span></span><code><span class="nv">dirs</span><span class="o">=</span>one/two/three/four/five
+<div class="highlight"><pre><span></span><code>dirs=one/two/three/four/five
 
-mkdir -p <span class="si">${</span><span class="nv">dirs</span><span class="si">}</span>
+mkdir -p <span class="cp">${</span><span class="n">dirs</span><span class="cp">}</span>
 
-<span class="nv">pdirs</span><span class="o">=</span>./one
+pdirs=./one
 
-<span class="nb">echo</span> <span class="s2">&quot;Dirs: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-<span class="nv">i</span><span class="o">=</span><span class="m">1</span>
-<span class="k">while</span> <span class="o">[</span> <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> !<span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">do</span>
-    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dir: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">if</span> <span class="o">[</span> <span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> wc -l<span class="sb">`</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-        rmdir <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span>
-        <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Del: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="nv">pdirs</span><span class="o">=</span><span class="sb">`</span>dirname <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="sb">`</span>
-    <span class="k">else</span>
-        <span class="nv">pdirs</span><span class="o">=</span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span>/<span class="sb">`</span>ls <span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span> <span class="p">|</span> head -1<span class="sb">`</span>
-    <span class="k">fi</span>
-    <span class="nb">echo</span> <span class="s2">&quot;[</span><span class="nv">$i</span><span class="s2">] Dir: </span><span class="si">${</span><span class="nv">pdirs</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nv">i</span><span class="o">=</span><span class="k">$((</span>i+1<span class="k">))</span>
-<span class="k">done</span>
+echo &quot;Dirs: <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+i=1
+while [ <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span> != &quot;.&quot; ]; do
+    echo &quot;[<span class="nv">$i</span>] Dir: <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+    if [ `ls <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span> | wc -l` -eq 0 ]; then
+        rmdir <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>
+        echo &quot;[<span class="nv">$i</span>] Del: <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+        pdirs=`dirname <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>`
+    else
+        pdirs=<span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>/`ls <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span> | head -1`
+    fi
+    echo &quot;[<span class="nv">$i</span>] Dir: <span class="cp">${</span><span class="n">pdirs</span><span class="cp">}</span>&quot;
+    i=$((i+1))
+done
 </code></pre></div>
 
-
 <h3>man test</h3>
-<div class="highlight"><pre><span></span><code>TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>                          User Commands                         TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">TEST</span><span class="p">(</span><span class="mh">1</span><span class="p">)</span>                          <span class="n">User</span> <span class="n">Commands</span>                         <span class="n">TEST</span><span class="p">(</span><span class="mh">1</span><span class="p">)</span>
 
-NAME
-       <span class="nb">test</span> - check file types and compare values
+<span class="n">NAME</span>
+       <span class="n">test</span> <span class="o">-</span> <span class="n">check</span> <span class="n">file</span> <span class="n">types</span> <span class="k">and</span> <span class="n">compare</span> <span class="n">values</span>
 
-SYNOPSIS
-       <span class="nb">test</span> EXPRESSION
-       <span class="nb">test</span>
+<span class="n">SYNOPSIS</span>
+       <span class="n">test</span> <span class="n">EXPRESSION</span>
+       <span class="n">test</span>
 
-       <span class="o">[</span> EXPRESSION <span class="o">]</span>
-       <span class="o">[</span> <span class="o">]</span>
-       <span class="o">[</span> OPTION
+       <span class="p">[</span> <span class="n">EXPRESSION</span> <span class="p">]</span>
+       <span class="p">[</span> <span class="p">]</span>
+       <span class="p">[</span> <span class="n">OPTION</span>
 
-DESCRIPTION
-       Exit with the status determined by EXPRESSION.
+<span class="n">DESCRIPTION</span>
+       <span class="n">Exit</span> <span class="n">with</span> <span class="n">the</span> <span class="n">status</span> <span class="n">determined</span> <span class="n">by</span> <span class="n">EXPRESSION</span><span class="p">.</span>
 
-       --help display this <span class="nb">help</span> and <span class="nb">exit</span>
+       <span class="o">--</span><span class="n">help</span> <span class="n">display</span> <span class="n">this</span> <span class="n">help</span> <span class="k">and</span> <span class="n">exit</span>
 
-       --version
-              output version information and <span class="nb">exit</span>
+       <span class="o">--</span><span class="n">version</span>
+              <span class="k">output</span> <span class="n">version</span> <span class="n">information</span> <span class="k">and</span> <span class="n">exit</span>
 
-       An omitted EXPRESSION defaults to false.  Otherwise, EXPRESSION is <span class="nb">true</span>
-       or <span class="nb">false</span> and sets <span class="nb">exit</span> status.  It is one of:
+       <span class="n">An</span> <span class="n">omitted</span> <span class="n">EXPRESSION</span> <span class="n">defaults</span> <span class="n">to</span> <span class="n">false</span><span class="p">.</span>  <span class="n">Otherwise</span><span class="p">,</span> <span class="n">EXPRESSION</span> <span class="n">is</span> <span class="n">true</span>
+       <span class="k">or</span> <span class="n">false</span> <span class="k">and</span> <span class="n">sets</span> <span class="n">exit</span> <span class="n">status</span><span class="p">.</span>  <span class="n">It</span> <span class="n">is</span> <span class="n">one</span> <span class="nl">of:</span>
 
-       <span class="o">(</span> EXPRESSION <span class="o">)</span>
-              EXPRESSION is <span class="nb">true</span>
+       <span class="p">(</span> <span class="n">EXPRESSION</span> <span class="p">)</span>
+              <span class="n">EXPRESSION</span> <span class="n">is</span> <span class="n">true</span>
 
-       ! EXPRESSION
-              EXPRESSION is <span class="nb">false</span>
+       <span class="o">!</span> <span class="n">EXPRESSION</span>
+              <span class="n">EXPRESSION</span> <span class="n">is</span> <span class="n">false</span>
 
-       EXPRESSION1 -a EXPRESSION2
-              both EXPRESSION1 and EXPRESSION2 are <span class="nb">true</span>
+       <span class="n">EXPRESSION1</span> <span class="o">-</span><span class="n">a</span> <span class="n">EXPRESSION2</span>
+              <span class="n">both</span> <span class="n">EXPRESSION1</span> <span class="k">and</span> <span class="n">EXPRESSION2</span> <span class="n">are</span> <span class="n">true</span>
 
-       EXPRESSION1 -o EXPRESSION2
-              either EXPRESSION1 or EXPRESSION2 is <span class="nb">true</span>
+       <span class="n">EXPRESSION1</span> <span class="o">-</span><span class="n">o</span> <span class="n">EXPRESSION2</span>
+              <span class="n">either</span> <span class="n">EXPRESSION1</span> <span class="k">or</span> <span class="n">EXPRESSION2</span> <span class="n">is</span> <span class="n">true</span>
 
-       -n STRING
-              the length of STRING is nonzero
+       <span class="o">-</span><span class="n">n</span> <span class="n">STRING</span>
+              <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">STRING</span> <span class="n">is</span> <span class="n">nonzero</span>
 
-       STRING equivalent to -n STRING
+       <span class="n">STRING</span> <span class="n">equivalent</span> <span class="n">to</span> <span class="o">-</span><span class="n">n</span> <span class="n">STRING</span>
 
-       -z STRING
-              the length of STRING is zero
+       <span class="o">-</span><span class="n">z</span> <span class="n">STRING</span>
+              <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">STRING</span> <span class="n">is</span> <span class="n">zero</span>
 
-       <span class="nv">STRING1</span> <span class="o">=</span> STRING2
-              the strings are equal
+       <span class="n">STRING1</span> <span class="o">=</span> <span class="n">STRING2</span>
+              <span class="n">the</span> <span class="n">strings</span> <span class="n">are</span> <span class="n">equal</span>
 
-       STRING1 !<span class="o">=</span> STRING2
-              the strings are not equal
+       <span class="n">STRING1</span> <span class="o">!=</span> <span class="n">STRING2</span>
+              <span class="n">the</span> <span class="n">strings</span> <span class="n">are</span> <span class="k">not</span> <span class="n">equal</span>
 
-       INTEGER1 -eq INTEGER2
-              INTEGER1 is equal to INTEGER2
+       <span class="n">INTEGER1</span> <span class="o">-</span><span class="n">eq</span> <span class="n">INTEGER2</span>
+              <span class="n">INTEGER1</span> <span class="n">is</span> <span class="n">equal</span> <span class="n">to</span> <span class="n">INTEGER2</span>
 
-       INTEGER1 -ge INTEGER2
-              INTEGER1 is greater than or equal to INTEGER2
+       <span class="n">INTEGER1</span> <span class="o">-</span><span class="n">ge</span> <span class="n">INTEGER2</span>
+              <span class="n">INTEGER1</span> <span class="n">is</span> <span class="n">greater</span> <span class="n">than</span> <span class="k">or</span> <span class="n">equal</span> <span class="n">to</span> <span class="n">INTEGER2</span>
 
-       INTEGER1 -gt INTEGER2
-              INTEGER1 is greater than INTEGER2
+       <span class="n">INTEGER1</span> <span class="o">-</span><span class="n">gt</span> <span class="n">INTEGER2</span>
+              <span class="n">INTEGER1</span> <span class="n">is</span> <span class="n">greater</span> <span class="n">than</span> <span class="n">INTEGER2</span>
 
-       INTEGER1 -le INTEGER2
-              INTEGER1 is less than or equal to INTEGER2
+       <span class="n">INTEGER1</span> <span class="o">-</span><span class="n">le</span> <span class="n">INTEGER2</span>
+              <span class="n">INTEGER1</span> <span class="n">is</span> <span class="n">less</span> <span class="n">than</span> <span class="k">or</span> <span class="n">equal</span> <span class="n">to</span> <span class="n">INTEGER2</span>
 
-       INTEGER1 -lt INTEGER2
-              INTEGER1 is less than INTEGER2
+       <span class="n">INTEGER1</span> <span class="o">-</span><span class="n">lt</span> <span class="n">INTEGER2</span>
+              <span class="n">INTEGER1</span> <span class="n">is</span> <span class="n">less</span> <span class="n">than</span> <span class="n">INTEGER2</span>
 
-       INTEGER1 -ne INTEGER2
-              INTEGER1 is not equal to INTEGER2
+       <span class="n">INTEGER1</span> <span class="o">-</span><span class="n">ne</span> <span class="n">INTEGER2</span>
+              <span class="n">INTEGER1</span> <span class="n">is</span> <span class="k">not</span> <span class="n">equal</span> <span class="n">to</span> <span class="n">INTEGER2</span>
 
-       FILE1 -ef FILE2
-              FILE1 and FILE2 have the same device and inode numbers
+       <span class="n">FILE1</span> <span class="o">-</span><span class="n">ef</span> <span class="n">FILE2</span>
+              <span class="n">FILE1</span> <span class="k">and</span> <span class="n">FILE2</span> <span class="n">have</span> <span class="n">the</span> <span class="n">same</span> <span class="n">device</span> <span class="k">and</span> <span class="n">inode</span> <span class="n">numbers</span>
 
-       FILE1 -nt FILE2
-              FILE1 is newer <span class="o">(</span>modification date<span class="o">)</span> than FILE2
+       <span class="n">FILE1</span> <span class="o">-</span><span class="n">nt</span> <span class="n">FILE2</span>
+              <span class="n">FILE1</span> <span class="n">is</span> <span class="n">newer</span> <span class="p">(</span><span class="n">modification</span> <span class="n">date</span><span class="p">)</span> <span class="n">than</span> <span class="n">FILE2</span>
 
-       FILE1 -ot FILE2
-              FILE1 is older than FILE2
+       <span class="n">FILE1</span> <span class="o">-</span><span class="n">ot</span> <span class="n">FILE2</span>
+              <span class="n">FILE1</span> <span class="n">is</span> <span class="n">older</span> <span class="n">than</span> <span class="n">FILE2</span>
 
-       -b FILE
-              FILE exists and is block special
+       <span class="o">-</span><span class="n">b</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">block</span> <span class="n">special</span>
 
-       -c FILE
-              FILE exists and is character special
+       <span class="o">-</span><span class="n">c</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">character</span> <span class="n">special</span>
 
-       -d FILE
-              FILE exists and is a directory
+       <span class="o">-</span><span class="n">d</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">a</span> <span class="n">directory</span>
 
-       -e FILE
-              FILE exists
+       <span class="o">-</span><span class="n">e</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span>
 
-       -f FILE
-              FILE exists and is a regular file
+       <span class="o">-</span><span class="n">f</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">a</span> <span class="n">regular</span> <span class="n">file</span>
 
-       -g FILE
-              FILE exists and is set-group-ID
+       <span class="o">-</span><span class="n">g</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">set</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">ID</span>
 
-       -G FILE
-              FILE exists and is owned by the effective group ID
+       <span class="o">-</span><span class="n">G</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">owned</span> <span class="n">by</span> <span class="n">the</span> <span class="n">effective</span> <span class="n">group</span> <span class="n">ID</span>
 
-       -h FILE
-              FILE exists and is a symbolic link <span class="o">(</span>same as -L<span class="o">)</span>
+       <span class="o">-</span><span class="n">h</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">a</span> <span class="n">symbolic</span> <span class="n">link</span> <span class="p">(</span><span class="n">same</span> <span class="n">as</span> <span class="o">-</span><span class="n">L</span><span class="p">)</span>
 
-       -k FILE
-              FILE exists and has its sticky bit <span class="nb">set</span>
+       <span class="o">-</span><span class="n">k</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">has</span> <span class="n">its</span> <span class="n">sticky</span> <span class="kt">bit</span> <span class="n">set</span>
 
-       -L FILE
-              FILE exists and is a symbolic link <span class="o">(</span>same as -h<span class="o">)</span>
+       <span class="o">-</span><span class="n">L</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">a</span> <span class="n">symbolic</span> <span class="n">link</span> <span class="p">(</span><span class="n">same</span> <span class="n">as</span> <span class="o">-</span><span class="n">h</span><span class="p">)</span>
 
-       -O FILE
-              FILE exists and is owned by the effective user ID
+       <span class="o">-</span><span class="n">O</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">owned</span> <span class="n">by</span> <span class="n">the</span> <span class="n">effective</span> <span class="n">user</span> <span class="n">ID</span>
 
-       -p FILE
-              FILE exists and is a named pipe
+       <span class="o">-</span><span class="n">p</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">a</span> <span class="n">named</span> <span class="n">pipe</span>
 
-       -r FILE
-              FILE exists and <span class="nb">read</span> permission is granted
+       <span class="o">-</span><span class="n">r</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">read</span> <span class="n">permission</span> <span class="n">is</span> <span class="n">granted</span>
 
-       -s FILE
-              FILE exists and has a size greater than zero
+       <span class="o">-</span><span class="n">s</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">has</span> <span class="n">a</span> <span class="n">size</span> <span class="n">greater</span> <span class="n">than</span> <span class="n">zero</span>
 
-       -S FILE
-              FILE exists and is a socket
+       <span class="o">-</span><span class="n">S</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">is</span> <span class="n">a</span> <span class="n">socket</span>
 
-       -t FD  file descriptor FD is opened on a terminal
+       <span class="o">-</span><span class="n">t</span> <span class="n">FD</span>  <span class="n">file</span> <span class="n">descriptor</span> <span class="n">FD</span> <span class="n">is</span> <span class="n">opened</span> <span class="n">on</span> <span class="n">a</span> <span class="n">terminal</span>
 
-       -u FILE
-              FILE exists and its set-user-ID bit is <span class="nb">set</span>
+       <span class="o">-</span><span class="n">u</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">its</span> <span class="n">set</span><span class="o">-</span><span class="n">user</span><span class="o">-</span><span class="n">ID</span> <span class="kt">bit</span> <span class="n">is</span> <span class="n">set</span>
 
-       -w FILE
-              FILE exists and write permission is granted
+       <span class="o">-</span><span class="n">w</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">write</span> <span class="n">permission</span> <span class="n">is</span> <span class="n">granted</span>
 
-       -x FILE
-              FILE exists and execute <span class="o">(</span>or search<span class="o">)</span> permission is granted
+       <span class="o">-</span><span class="n">x</span> <span class="n">FILE</span>
+              <span class="n">FILE</span> <span class="n">exists</span> <span class="k">and</span> <span class="n">execute</span> <span class="p">(</span><span class="k">or</span> <span class="n">search</span><span class="p">)</span> <span class="n">permission</span> <span class="n">is</span> <span class="n">granted</span>
 
-       Except <span class="k">for</span> -h and  -L,  all  FILE-related  tests  dereference  symbolic
-       links.   Beware  that  parentheses  need  to be escaped <span class="o">(</span>e.g., by back‐
-       slashes<span class="o">)</span> <span class="k">for</span> shells.  INTEGER may also be -l STRING, which evaluates to
-       the length of STRING.
+       <span class="n">Except</span> <span class="k">for</span> <span class="o">-</span><span class="n">h</span> <span class="k">and</span>  <span class="o">-</span><span class="n">L</span><span class="p">,</span>  <span class="n">all</span>  <span class="n">FILE</span><span class="o">-</span><span class="n">related</span>  <span class="n">tests</span>  <span class="n">dereference</span>  <span class="n">symbolic</span>
+       <span class="n">links</span><span class="p">.</span>   <span class="n">Beware</span>  <span class="n">that</span>  <span class="n">parentheses</span>  <span class="n">need</span>  <span class="n">to</span> <span class="n">be</span> <span class="n">escaped</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">g</span><span class="p">.,</span> <span class="n">by</span> <span class="n">back</span><span class="err">‐</span>
+       <span class="n">slashes</span><span class="p">)</span> <span class="k">for</span> <span class="n">shells</span><span class="p">.</span>  <span class="n">INTEGER</span> <span class="n">may</span> <span class="n">also</span> <span class="n">be</span> <span class="o">-</span><span class="n">l</span> <span class="n">STRING</span><span class="p">,</span> <span class="n">which</span> <span class="n">evaluates</span> <span class="n">to</span>
+       <span class="n">the</span> <span class="n">length</span> <span class="n">of</span> <span class="n">STRING</span><span class="p">.</span>
 
-       NOTE:  Binary  -a  and -o are inherently ambiguous.  Use <span class="s1">&#39;test EXPR1 &amp;&amp;</span>
-<span class="s1">       test EXPR2&#39;</span> or <span class="s1">&#39;test EXPR1 || test EXPR2&#39;</span> instead.
+       <span class="nl">NOTE:</span>  <span class="n">Binary</span>  <span class="o">-</span><span class="n">a</span>  <span class="k">and</span> <span class="o">-</span><span class="n">o</span> <span class="n">are</span> <span class="n">inherently</span> <span class="n">ambiguous</span><span class="p">.</span>  <span class="n">Use</span> <span class="p">&#39;</span><span class="n">test</span> <span class="n">EXPR1</span> <span class="o">&amp;&amp;</span>
+       <span class="n">test</span> <span class="n">EXPR2</span><span class="p">&#39;</span> <span class="k">or</span> <span class="p">&#39;</span><span class="n">test</span> <span class="n">EXPR1</span> <span class="o">||</span> <span class="n">test</span> <span class="n">EXPR2</span><span class="p">&#39;</span> <span class="n">instead</span><span class="p">.</span>
 
-       NOTE: <span class="o">[</span> honors the --help and --version options,  but  <span class="nb">test</span>  does  not.
-       <span class="nb">test</span> treats each of those as it treats any other nonempty STRING.
+       <span class="nl">NOTE:</span> <span class="p">[</span> <span class="n">honors</span> <span class="n">the</span> <span class="o">--</span><span class="n">help</span> <span class="k">and</span> <span class="o">--</span><span class="n">version</span> <span class="n">options</span><span class="p">,</span>  <span class="n">but</span>  <span class="n">test</span>  <span class="n">does</span>  <span class="k">not</span><span class="p">.</span>
+       <span class="n">test</span> <span class="n">treats</span> <span class="n">each</span> <span class="n">of</span> <span class="n">those</span> <span class="n">as</span> <span class="n">it</span> <span class="n">treats</span> <span class="n">any</span> <span class="n">other</span> <span class="n">nonempty</span> <span class="n">STRING</span><span class="p">.</span>
 
-       NOTE:  your shell may have its own version of <span class="nb">test</span> and/or <span class="o">[</span>, which usu‐
-       ally supersedes the version  described  here.   Please  refer  to  your
-       shell<span class="s1">&#39;s documentation for details about the options it supports.</span>
+       <span class="nl">NOTE:</span>  <span class="n">your</span> <span class="n">shell</span> <span class="n">may</span> <span class="n">have</span> <span class="n">its</span> <span class="n">own</span> <span class="n">version</span> <span class="n">of</span> <span class="n">test</span> <span class="k">and</span><span class="o">/</span><span class="k">or</span> <span class="p">[,</span> <span class="n">which</span> <span class="n">usu</span><span class="err">‐</span>
+       <span class="n">ally</span> <span class="n">supersedes</span> <span class="n">the</span> <span class="n">version</span>  <span class="n">described</span>  <span class="n">here</span><span class="p">.</span>   <span class="n">Please</span>  <span class="n">refer</span>  <span class="n">to</span>  <span class="n">your</span>
+       <span class="n">shell</span><span class="p">&#39;</span><span class="n">s</span> <span class="n">documentation</span> <span class="k">for</span> <span class="n">details</span> <span class="n">about</span> <span class="n">the</span> <span class="n">options</span> <span class="n">it</span> <span class="n">supports</span><span class="p">.</span>
 
-<span class="s1">AUTHOR</span>
-<span class="s1">       Written by Kevin Braunsdorf and Matthew Bradburn.</span>
+<span class="n">AUTHOR</span>
+       <span class="n">Written</span> <span class="n">by</span> <span class="n">Kevin</span> <span class="n">Braunsdorf</span> <span class="k">and</span> <span class="n">Matthew</span> <span class="n">Bradburn</span><span class="p">.</span>
 
-<span class="s1">REPORTING BUGS</span>
-<span class="s1">       GNU coreutils online help: &lt;http://www.gnu.org/software/coreutils/&gt;</span>
-<span class="s1">       Report [ translation bugs to &lt;http://translationproject.org/team/&gt;</span>
+<span class="n">REPORTING</span> <span class="n">BUGS</span>
+       <span class="n">GNU</span> <span class="n">coreutils</span> <span class="n">online</span> <span class="nl">help:</span> <span class="o">&lt;</span><span class="nl">http:</span><span class="c1">//www.gnu.org/software/coreutils/&gt;</span>
+       <span class="n">Report</span> <span class="p">[</span> <span class="n">translation</span> <span class="n">bugs</span> <span class="n">to</span> <span class="o">&lt;</span><span class="nl">http:</span><span class="c1">//translationproject.org/team/&gt;</span>
 
-<span class="s1">COPYRIGHT</span>
-<span class="s1">       Copyright  ©  2017  Free Software Foundation, Inc.  License GPLv3+: GNU</span>
-<span class="s1">       GPL version 3 or later &lt;http://gnu.org/licenses/gpl.html&gt;.</span>
-<span class="s1">       This is free software: you are free  to  change  and  redistribute  it.</span>
-<span class="s1">       There is NO WARRANTY, to the extent permitted by law.</span>
+<span class="n">COPYRIGHT</span>
+       <span class="n">Copyright</span>  <span class="err">©</span>  <span class="mh">2017</span>  <span class="n">Free</span> <span class="n">Software</span> <span class="n">Foundation</span><span class="p">,</span> <span class="n">Inc</span><span class="p">.</span>  <span class="n">License</span> <span class="n">GPLv3</span><span class="o">+:</span> <span class="n">GNU</span>
+       <span class="n">GPL</span> <span class="n">version</span> <span class="mh">3</span> <span class="k">or</span> <span class="n">later</span> <span class="o">&lt;</span><span class="nl">http:</span><span class="c1">//gnu.org/licenses/gpl.html&gt;.</span>
+       <span class="n">This</span> <span class="n">is</span> <span class="n">free</span> <span class="nl">software:</span> <span class="n">you</span> <span class="n">are</span> <span class="n">free</span>  <span class="n">to</span>  <span class="n">change</span>  <span class="k">and</span>  <span class="n">redistribute</span>  <span class="n">it</span><span class="p">.</span>
+       <span class="n">There</span> <span class="n">is</span> <span class="n">NO</span> <span class="n">WARRANTY</span><span class="p">,</span> <span class="n">to</span> <span class="n">the</span> <span class="n">extent</span> <span class="n">permitted</span> <span class="n">by</span> <span class="n">law</span><span class="p">.</span>
 
-<span class="s1">SEE ALSO</span>
-<span class="s1">       Full documentation at: &lt;http://www.gnu.org/software/coreutils/[&gt;</span>
-<span class="s1">       or available locally via: info &#39;</span><span class="o">(</span>coreutils<span class="o">)</span> <span class="nb">test</span> invocation<span class="err">&#39;</span>
+<span class="n">SEE</span> <span class="n">ALSO</span>
+       <span class="n">Full</span> <span class="n">documentation</span> <span class="nl">at:</span> <span class="o">&lt;</span><span class="nl">http:</span><span class="c1">//www.gnu.org/software/coreutils/[&gt;</span>
+       <span class="k">or</span> <span class="n">available</span> <span class="n">locally</span> <span class="nl">via:</span> <span class="n">info</span> <span class="p">&#39;(</span><span class="n">coreutils</span><span class="p">)</span> <span class="n">test</span> <span class="n">invocation</span><span class="p">&#39;</span>
 
-GNU coreutils <span class="m">8</span>.28               January <span class="m">2018</span>                          TEST<span class="o">(</span><span class="m">1</span><span class="o">)</span>
+<span class="n">GNU</span> <span class="n">coreutils</span> <span class="mf">8.28</span>               <span class="n">January</span> <span class="mh">2018</span>                          <span class="n">TEST</span><span class="p">(</span><span class="mh">1</span><span class="p">)</span>
 </code></pre></div>
 </section>
   </article>

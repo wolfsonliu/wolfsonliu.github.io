@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -100,7 +102,6 @@
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">5</span> <span class="m">6</span> <span class="m">7</span>
 </code></pre></div>
 
-
 <p>如果是两个等长向量相加, 则是对应的元素一个个相加.</p>
 <div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
 <span class="n">y</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
@@ -108,14 +109,12 @@
 <span class="p">[</span><span class="m">1</span><span class="p">]</span>  <span class="m">2</span>  <span class="m">4</span>  <span class="m">6</span>  <span class="m">8</span> <span class="m">10</span> <span class="m">12</span>
 </code></pre></div>
 
-
 <p>如果两个向量长度不等长, 那么只有一个长度是另一个长度的倍数才能相加. 而短的向量则会重复为长度和长向量一样长. 其实这样看也就理解了当短向量长度为 1 的时候的结果其实是个特例. 这也是 R 语言淡化单一值和向量之间区别的一个特点.</p>
 <div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">6</span>
 <span class="n">z</span> <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">2</span>
 <span class="n">x</span> <span class="o">+</span> <span class="n">z</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">2</span> <span class="m">4</span> <span class="m">4</span> <span class="m">6</span> <span class="m">6</span> <span class="m">8</span>
 </code></pre></div>
-
 
 <p>判断一个变量是不是向量可以使用若干函数. 可以使用 is.character(), is.double(), is.interger(), is.logical() 等函数直接判断其类型, 也可以用 is.atomic() 函数来判断是不是向量. 需要注意的是, is.vector() 只能判断向量没有属性 (attributes) 或者仅有 names 属性的向量, 有其他属性的向量, 其也会给出 FALSE.</p>
 <p>构建向量, 如果元素的基本类型不一样, 那么会进行强制类型转换, 例如如果有字符, 则所有的元素都强制转换为字符. 也可以使用类型转换函数自己转换, as.character(), as.double(), as.interger(), as.logical().</p>
@@ -127,7 +126,6 @@
 <span class="k">as</span><span class="p">.</span><span class="nc">numeric</span><span class="p">(</span><span class="n">levels</span><span class="p">(</span><span class="n">myfactor</span><span class="p">)</span><span class="o">[</span><span class="n">myfactor</span><span class="o">]</span><span class="p">)</span><span class="w"></span>
 <span class="k">as</span><span class="p">.</span><span class="nc">numeric</span><span class="p">(</span><span class="k">as</span><span class="p">.</span><span class="k">character</span><span class="p">(</span><span class="n">myfactor</span><span class="p">))</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>有的时候我们会需要去生成某种类型的 factor 来做参数或者测试数据, 那么可以使用 gl 函数. gl 函数可以记成 "generate levels" 的缩写. gl 函数的参数主要有: <code>n</code> 用来设置 level 的个数; <code>k</code> 用来设置每个 level 重复的次数; <code>length</code> 来设置长度, 其实有了前两个参数这个可以忽略; <code>labels</code> 用来设置 level 的值; <code>ordered</code> 接受 bool 值, 设置是否 level 是排列好顺序的.</p>
 <p>需要注意的是, 在使用 c 函数把若干个因子组合在一起的时候, 需要先把因子转换为原来的值再使用 c 函数, 否则 c 函数直接把因子当作存在内存中的数字而丢失原来的意思.</p>
@@ -145,7 +143,6 @@
 <span class="n">Levels</span><span class="o">:</span> <span class="p">(</span><span class="m">0.994</span><span class="p">,</span><span class="m">3</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">5</span><span class="p">]</span> <span class="o">&lt;</span> <span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">7.006</span><span class="p">]</span>
 </code></pre></div>
 
-
 <p>有的时候, 我需要去了解两个因子之间有多少组合, 这时候就可以选择 interaction 函数, interaction 函数可以给出多个因子 level 的组合. 这些组合并不都有数据, 如果设置 <code>drop = TRUE</code> 则会扔掉没有数据的 level, 而只保留真的有数据的 level.</p>
 <div class="highlight"><pre><span></span><code><span class="n">a</span> <span class="o">&lt;-</span> <span class="nf">gl</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">8</span><span class="p">)</span>
 <span class="n">b</span> <span class="o">&lt;-</span> <span class="nf">gl</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;ctrl&quot;</span><span class="p">,</span> <span class="s">&quot;treat&quot;</span><span class="p">))</span>
@@ -153,7 +150,6 @@
 <span class="c1">#[1] 1.ctrl  1.ctrl  1.treat 1.treat 2.ctrl  2.ctrl  2.treat 2.treat</span>
 <span class="c1">#Levels: 1.ctrl 2.ctrl 1.treat 2.treat</span>
 </code></pre></div>
-
 
 <h5>矩阵</h5>
 <p>matrix, 二维的 array, 所有的元素都是相同类型. 函数 matrix(), as.matrix(), is.matrix(), 可以用来产生矩阵, 类型转换为矩阵和判断是否是矩阵.</p>
@@ -183,7 +179,6 @@
 <span class="c1">#[1] &quot;one&quot;</span>
 </code></pre></div>
 
-
 <p>由于列表中可以放各种类型的对象, 这就为把多种多样相关的数据整合在一起提供了便利. 一个 list 可以不准确地看作是 C++ 语言中专门用来存储数据的 class. 一些相关变量, 为了和其他的变量区分, 往往会取相似的变量名, 当变量十分多的时候, 这样的方法依然不方便查询. 我们就可以把这些相关的变量都放在一个列表中, 然后通过取下标的方法访问变量. 如果忘记了变量名, 还可以通过 names 函数或者 str 函数去查询包含在列表中的变量名. 这样的方法十分适合保存对多个数据集进行相同或相似的处理结果, 可以使用 for 循环来完成数据的保存.</p>
 <div class="highlight"><pre><span></span><code><span class="n">rna</span><span class="p">.</span><span class="n">gene</span><span class="p">.</span><span class="n">fpkm</span><span class="w">  </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">list</span><span class="p">()</span><span class="w">  </span><span class="err">#</span><span class="w"> </span><span class="n">需要提前建立空的列表</span><span class="p">.</span><span class="w"></span>
 <span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">nam</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">dir</span><span class="p">(</span><span class="n">rna</span><span class="p">.</span><span class="n">cuffnorm</span><span class="p">.</span><span class="k">result</span><span class="p">.</span><span class="n">dir</span><span class="p">))</span><span class="w"> </span><span class="err">{</span><span class="w"></span>
@@ -195,7 +190,6 @@
 <span class="w">        </span><span class="n">sep</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="ss">&quot;\t&quot;</span><span class="p">)</span><span class="w"></span>
 <span class="err">}</span><span class="w"></span>
 </code></pre></div>
-
 
 <p>如果想要删除列表中的一个元素, 则只要向该元素赋值 NULL 即可. 如果想要设置一个值为 NULL 的元素, 则应该向该元素赋值一个 <code>list(NULL)</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">a</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
@@ -211,7 +205,6 @@
 <span class="c1">#&gt; $ a: num 1</span>
 <span class="c1">#&gt; $ b: NULL</span>
 </code></pre></div>
-
 
 <p>列表在内存中的保存并不是连续的, 而是像 C 语言中的链表一样的分散开的, 所以对列表增加元素并不像矩阵那样效率低, 对于列表或者相应的数据框, 使用 rbind 则不会像对矩阵使用那么缓慢. 这也是为什么, 我们可以先建立一个空列表 (或数据框), 然后通过 for loop 等方式逐渐向其中高效地添加元素.</p>
 <h5>数据框</h5>

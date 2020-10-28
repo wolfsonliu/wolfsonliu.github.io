@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -123,7 +125,6 @@ CMY 三种颜色配合起来是黑色, 而减少其中一种或几种颜色的�
 <span class="err">[1] &quot;#FF0000&quot;</span>
 </code></pre></div>
 
-
 <p>如果知道 R 中定义的颜色的名称或者, 可以使用 col2rgb 把名称或者十六进制
 代码转换为 RGB 色彩. 也可以使用 rgb2hsv 把 RGB 转换为 HSV 色彩空间. 另
 外 convertColor 是更为通用的转换色彩空间的函数, 支持 colorspaces 对象
@@ -149,7 +150,6 @@ CMY 三种颜色配合起来是黑色, 而减少其中一种或几种颜色的�
 <span class="err">#s    1</span>
 <span class="err">#v    1</span>
 </code></pre></div>
-
 
 <p>在 grDevices 中有一些定义好的函数可以方便地输出特定类型的颜色序列.</p>
 <ul>
@@ -177,7 +177,6 @@ colorRamp 的返回函数接受的输入值为 0 到 1 的数字, 返回相对�
 <span class="nf">myBlues</span><span class="p">(</span><span class="m">5</span><span class="p">)</span>
 <span class="c1">#[1] &quot;#0000FF&quot; &quot;#3F3FFF&quot; &quot;#7F7FFF&quot; &quot;#BFBFFF&quot; &quot;#FFFFFF&quot;</span>
 </code></pre></div>
-
 
 <h3>RColorBrewer</h3>
 <p>RColorBrewer 包中设置好的固定的调色板是来自于
@@ -431,7 +430,6 @@ colorRamp 的返回函数接受的输入值为 0 到 1 的数字, 返回相对�
 <span class="c1">#[1] &quot;matrix&quot;</span>
 </code></pre></div>
 
-
 <p>mixcolor 函数可以计算两个颜色调配出的颜色. desaturate 函数可以在
 HCL 色彩空间内把输入的颜色 (十六位进制代码) 转换为相应亮度的灰度.</p>
 <div class="highlight"><pre><span></span><code><span class="err">mixcolor(</span>
@@ -444,7 +442,6 @@ HCL 色彩空间内把输入的颜色 (十六位进制代码) 转换为相应亮
 <span class="err">desaturate(&quot;#FF0000&quot;)</span>
 <span class="err">#[1] &quot;#7F7F7F&quot;</span>
 </code></pre></div>
-
 
 <p>choose_palette 函数提供了一个图形化的选择调色板的界面, 可以直观地选择颜色和设置调色板.</p>
 <h2>Palette</h2>
@@ -492,12 +489,10 @@ HCL 色彩空间内把输入的颜色 (十六位进制代码) 转换为相应亮
 <span class="n">cbbPalette</span>  <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#000000&quot;</span><span class="p">,</span> <span class="s">&quot;#E69F00&quot;</span><span class="p">,</span> <span class="s">&quot;#56B4E9&quot;</span><span class="p">,</span> <span class="s">&quot;#009E73&quot;</span><span class="p">,</span> <span class="s">&quot;#F0E442&quot;</span><span class="p">,</span> <span class="s">&quot;#0072B2&quot;</span><span class="p">,</span> <span class="s">&quot;#D55E00&quot;</span><span class="p">,</span> <span class="s">&quot;#CC79A7&quot;</span><span class="p">)</span>
 </code></pre></div>
 
-
 <h3>Single Color System</h3>
 <div class="highlight"><pre><span></span><code><span class="n">springgreen</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#7aa14c&quot;</span><span class="p">,</span> <span class="s">&quot;#86b251&quot;</span><span class="p">,</span> <span class="s">&quot;#a3d468&quot;</span><span class="p">,</span> <span class="s">&quot;#b7ea7b&quot;</span><span class="p">,</span> <span class="s">&quot;#cff99e&quot;</span><span class="p">)</span>
 <span class="n">cleanwater</span>  <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;#0669a5&quot;</span><span class="p">,</span> <span class="s">&quot;#0479c1&quot;</span><span class="p">,</span> <span class="s">&quot;#038de1&quot;</span><span class="p">,</span> <span class="s">&quot;#18a5fb&quot;</span><span class="p">,</span> <span class="s">&quot;#4cbbff&quot;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <h4>Reference</h4>
 <ul>

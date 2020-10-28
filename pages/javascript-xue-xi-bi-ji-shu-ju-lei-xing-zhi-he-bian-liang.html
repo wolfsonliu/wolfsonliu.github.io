@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -84,30 +86,28 @@ JavaScript 使用 64 位的浮点数来存储数值, 数值大小在 ±1.7976931
 如 <code>0xff</code> 为十进制的 255, 对于八进制的数字可以表示为以 <code>0</code> 开头, 如 <code>0377</code> 为十进制的 255.</p>
 <p>数字类型有若干的转换为字符串的函数.</p>
 <p>转换为不同的底数.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var n = 17;</span>
-<span class="err">n.toString(); // 默认为以 10 为底</span>
-<span class="err">// &#39;17&#39;</span>
-<span class="err">n.toString(2); // 以 2 为底</span>
-<span class="err">// &#39;10001&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">17</span><span class="p">;</span>
+<span class="n">n</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span> <span class="o">//</span> <span class="err">默认为以</span> <span class="mi">10</span> <span class="err">为底</span>
+<span class="o">//</span> <span class="s1">&#39;17&#39;</span>
+<span class="n">n</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="o">//</span> <span class="err">以</span> <span class="mi">2</span> <span class="err">为底</span>
+<span class="o">//</span> <span class="s1">&#39;10001&#39;</span>
 </code></pre></div>
-
 
 <p>转换小数点和表示等.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var m = 1234.5678;</span>
-<span class="err">m.toFixed(0);</span>
-<span class="err">// &#39;1235&#39;</span>
-<span class="err">m.toFixed(2);</span>
-<span class="err">// &#39;1234.57&#39;</span>
-<span class="err">m.toExponential(1);</span>
-<span class="err">// &#39;1.2e+3&#39;</span>
-<span class="err">m.toExponential(4);</span>
-<span class="err">// &#39;1.2346e+3&#39;</span>
-<span class="err">m.toPrecision(4);</span>
-<span class="err">// &#39;1235&#39;</span>
-<span class="err">m.toPrecision(8);</span>
-<span class="err">// &#39;1234.5678&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">m</span> <span class="o">=</span> <span class="mf">1234.5678</span><span class="p">;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toFixed</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1235&#39;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toFixed</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1234.57&#39;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toExponential</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1.2e+3&#39;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toExponential</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1.2346e+3&#39;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toPrecision</span><span class="p">(</span><span class="mi">4</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1235&#39;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toPrecision</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1234.5678&#39;</span>
 </code></pre></div>
-
 
 <h3>字符串类型</h3>
 <p>JavaScript 的字符串是不可改变的, 字符串由 Unicode 字符构成, 每个字符长度为 16 个字 (bit), 字符串的长度就是 16-bit 的个数.
@@ -119,22 +119,20 @@ JavaScript 使用 64 位的浮点数来存储数值, 数值大小在 ±1.7976931
 所以一个好的建议是在 HTML 和 JavaScript 中分别使用不同的引号.
 虽然 JavaScript 的字符串不可变更, 但是可以获取其特定位置的字符,
 JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.</p>
-<div class="highlight"><pre><span></span><code><span class="kd">var</span> <span class="nx">x</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span><span class="p">;</span>
-<span class="nx">x</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
-<span class="c1">// 3</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">x</span> <span class="o">=</span> <span class="s1">&#39;abc&#39;</span><span class="p">;</span>
+<span class="n">x</span><span class="o">.</span><span class="n">length</span><span class="p">;</span>
+<span class="o">//</span> <span class="mi">3</span>
 </code></pre></div>
-
 
 <p>使用字符串的属性 length, str.length 可以获得字符串的长度.
 需要注意的是, 有的字符在 UTF-16 中是用两个字符去编码的, 这个时候长度就是 2 而不是 1.</p>
 <p>在 JavaScript 中使用 '\' 来转义字符, 如 '\n' 代表的是新行.</p>
 <p>字符串相关的计算如下:</p>
 <p>'+' 可以用于连接两个字符串, 返回一个新的字符串.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var s = &#39;hello, world&#39;;</span>
-<span class="err">s + &#39;, ya&#39;;</span>
-<span class="err">// &#39;hello, world, ya&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;hello, world&#39;</span><span class="p">;</span>
+<span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;, ya&#39;</span><span class="p">;</span>
+<span class="o">//</span> <span class="s1">&#39;hello, world, ya&#39;</span>
 </code></pre></div>
-
 
 <p>获取特定位置的字符.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s.charAt(0); // 第 0 个字符</span>
@@ -145,7 +143,6 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">// &#39;h&#39;</span>
 </code></pre></div>
 
-
 <p>获取子字符串.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s.substring(1, 4); // 获取第 1, 2, 3 个字符</span>
 <span class="err">// &#39;ell&#39;</span>
@@ -154,7 +151,6 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">s.slice(-3); // 获取最后三个字符</span>
 <span class="err">// &#39;rld&#39;</span>
 </code></pre></div>
-
 
 <p>获取字符所在字符串的位置.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s.indexOf(&#39;o&#39;); // 第一个 &#39;o&#39; 所在位置</span>
@@ -165,18 +161,15 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">// 8</span>
 </code></pre></div>
 
-
 <p>分割字符串.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s.split(&#39;, &#39;);</span>
 <span class="err">// [ &#39;hello&#39;, &#39;world&#39; ]</span>
 </code></pre></div>
 
-
 <p>替换字符.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s.replace(&#39;h&#39;, &#39;H&#39;);</span>
 <span class="err">// &#39;Hello, world&#39;</span>
 </code></pre></div>
-
 
 <p>转换字符大小写.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s.toUpperCase();</span>
@@ -185,7 +178,6 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">// &#39;hello, world&#39;</span>
 </code></pre></div>
 
-
 <h3>正则表达式类型</h3>
 <p>JavaScript 的正则表达式由两个 '/' 标记.
 而第二斜线后面可以跟字母表示特别含义, 如 i 代表大小写敏感.</p>
@@ -193,43 +185,39 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">/\bjavascript\b/i // 大小写敏感匹配 javascript 单词, \b 代表空格</span>
 </code></pre></div>
 
-
 <p>正则表达式变量具有一些用于匹配的方法.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var text = &#39;test: 1, 2, 3&#39;;</span>
-<span class="err">var pattern = /\d+/g;</span>
-<span class="err">pattern.test(text); // 判断字符串是否可以匹配正则表达式</span>
-<span class="err">// true</span>
-<span class="err">text.search(pattern); // 返回匹配的第一个位置</span>
-<span class="err">// 6</span>
-<span class="err">text.replace(pattern, &#39;#&#39;); // 替换匹配的值</span>
-<span class="err">// &#39;test: #, #, #&#39;</span>
-<span class="err">text.match(pattern); // 返回包含所有的匹配的array</span>
-<span class="err">// [ &#39;1&#39;, &#39;2&#39;, &#39;3&#39; ]</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;test: 1, 2, 3&#39;</span><span class="p">;</span>
+<span class="k">var</span> <span class="n">pattern</span> <span class="o">=</span> <span class="o">/</span>\<span class="n">d</span><span class="o">+/</span><span class="n">g</span><span class="p">;</span>
+<span class="n">pattern</span><span class="o">.</span><span class="n">test</span><span class="p">(</span><span class="n">text</span><span class="p">);</span> <span class="o">//</span> <span class="err">判断字符串是否可以匹配正则表达式</span>
+<span class="o">//</span> <span class="bp">true</span>
+<span class="n">text</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">);</span> <span class="o">//</span> <span class="err">返回匹配的第一个位置</span>
+<span class="o">//</span> <span class="mi">6</span>
+<span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="s1">&#39;#&#39;</span><span class="p">);</span> <span class="o">//</span> <span class="err">替换匹配的值</span>
+<span class="o">//</span> <span class="s1">&#39;test: #, #, #&#39;</span>
+<span class="n">text</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">);</span> <span class="o">//</span> <span class="err">返回包含所有的匹配的</span><span class="n">array</span>
+<span class="o">//</span> <span class="p">[</span> <span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span> <span class="p">]</span>
 </code></pre></div>
-
 
 <h3>布尔类型</h3>
 <p>布尔类型的值就是 true 和 false.
 在 JavaScript 中, undefined, null, 0, -0, NaN, ''(空字符串)
 都被认为是 false 的, 出这些外都认为是 true 的.</p>
 <p>布尔值可以转换为字符串或者数字, true 为 1, false 为 0.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var bool = true;</span>
-<span class="err">bool.toString();</span>
-<span class="err">// &#39;true&#39;</span>
-<span class="err">bool + 2</span>
-<span class="err">// 3</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="nb nb-Type">bool</span> <span class="o">=</span> <span class="bp">true</span><span class="p">;</span>
+<span class="nb nb-Type">bool</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+<span class="o">//</span> <span class="s1">&#39;true&#39;</span>
+<span class="nb nb-Type">bool</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="o">//</span> <span class="mi">3</span>
 </code></pre></div>
-
 
 <p>&amp;&amp; 是布尔值的与运算符, || 是布尔值的或运算符号, ! 是布尔值的非运算符号.</p>
-<div class="highlight"><pre><span></span><code><span class="n">true</span> <span class="o">&amp;&amp;</span> <span class="n">true</span><span class="p">;</span>
-<span class="o">//</span> <span class="n">true</span>
-<span class="n">true</span> <span class="o">||</span> <span class="n">false</span><span class="p">;</span>
-<span class="o">//</span> <span class="n">true</span>
+<div class="highlight"><pre><span></span><code><span class="nb">true</span> <span class="o">&amp;&amp;</span> <span class="nb">true</span><span class="p">;</span>
+<span class="o">//</span> <span class="nb">true</span>
+<span class="nb">true</span> <span class="o">||</span> <span class="nb">false</span><span class="p">;</span>
+<span class="o">//</span> <span class="nb">true</span>
 <span class="sx">!false</span>
-<span class="o">//</span> <span class="n">true</span>
+<span class="o">//</span> <span class="nb">true</span>
 </code></pre></div>
-
 
 <h3>null 和 undefined</h3>
 <p>null 代表没有值, 而 undefined 代表没有定义.
@@ -238,7 +226,6 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <div class="highlight"><pre><span></span><code><span class="err">null == undefined</span>
 <span class="err">// true</span>
 </code></pre></div>
-
 
 <h3>对象类型</h3>
 <p>JavaScript 的对象是一系列属性的集合.
@@ -249,14 +236,13 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <p>对于字符串, 其本身是一种类型, 而不是对象, 所以理应不具有属性,
 但是在运行的时候如果调用相应的方法,
 则会利用 new String(s) 创建一个临时的 String 对象, 完成后即被抛弃.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var s = &#39;hello.world&#39;</span>
-<span class="err">s.length // 临时创建的 String 对象具有 .length 属性</span>
-<span class="err">// 12</span>
-<span class="err">s.len = 4 // 临时创建的 String 对象被赋予值为 4 的 .len 属性</span>
-<span class="err">// 4</span>
-<span class="err">s.len // 因为上面临时创建的 String 对象被抛弃, 此处新创建的对象没有 .len 属性</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;hello.world&#39;</span>
+<span class="n">s</span><span class="o">.</span><span class="n">length</span> <span class="o">//</span> <span class="err">临时创建的</span> <span class="nb nb-Type">String</span> <span class="err">对象具有</span> <span class="o">.</span><span class="n">length</span> <span class="err">属性</span>
+<span class="o">//</span> <span class="mi">12</span>
+<span class="n">s</span><span class="o">.</span><span class="n">len</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">//</span> <span class="err">临时创建的</span> <span class="nb nb-Type">String</span> <span class="err">对象被赋予值为</span> <span class="mi">4</span> <span class="err">的</span> <span class="o">.</span><span class="n">len</span> <span class="err">属性</span>
+<span class="o">//</span> <span class="mi">4</span>
+<span class="n">s</span><span class="o">.</span><span class="n">len</span> <span class="o">//</span> <span class="err">因为上面临时创建的</span> <span class="nb nb-Type">String</span> <span class="err">对象被抛弃</span><span class="p">,</span> <span class="err">此处新创建的对象没有</span> <span class="o">.</span><span class="n">len</span> <span class="err">属性</span>
 </code></pre></div>
-
 
 <p>同样, 数字类型和布尔类型都有如此特性.
 这类临时创建的类型被称为封装对象类型.</p>
@@ -272,7 +258,6 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">// &#39;object&#39;</span>
 </code></pre></div>
 
-
 <h3>类型转换</h3>
 <p>对于基本类型, JavaScript 会有隐式类型转换.
 如 0 和 '' 在条件判断的时候会被作为 false.
@@ -285,15 +270,13 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">// &#39;1e&#39;</span>
 </code></pre></div>
 
-
 <p>数字可以利用封装对象类型的 toString 等函数, 在前面也有提及.</p>
-<div class="highlight"><pre><span></span><code><span class="err">var m = 1234.5678;</span>
-<span class="err">m.toString();</span>
-<span class="err">// &#39;1234.5678&#39;</span>
-<span class="err">m.toFixed(0);</span>
-<span class="err">// &#39;1235&#39;</span>
+<div class="highlight"><pre><span></span><code><span class="k">var</span> <span class="n">m</span> <span class="o">=</span> <span class="mf">1234.5678</span><span class="p">;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+<span class="o">//</span> <span class="s1">&#39;1234.5678&#39;</span>
+<span class="n">m</span><span class="o">.</span><span class="n">toFixed</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="o">//</span> <span class="s1">&#39;1235&#39;</span>
 </code></pre></div>
-
 
 <p>使用 Number 函数把表示数字的字符串转换为数字则默认是转换为以 10 为底的整数或浮点数.
 也可以使用 parse 等函数来转换数字.</p>
@@ -323,19 +306,17 @@ JavaScript 的字符串的字符是从 0 开始计数, 第一位的索引为 0.<
 <span class="err">// NaN</span>
 </code></pre></div>
 
-
 <p>对于对象类型, 其本身转换为基础类型都是转换为 true,
 同时它们大多数都有定义相应的 toString 函数.
 另外有的类型也有 valueOf 函数可以转换为基本类型.</p>
-<div class="highlight"><pre><span></span><code><span class="err">[1, 2, 3].toString();</span>
-<span class="err">// &#39;1,2,3&#39;</span>
-<span class="err">/\d+/g.toString();</span>
-<span class="err">// &#39;/\\d+/g&#39;</span>
-<span class="err">var d = new Date(2010, 0, 1);</span>
-<span class="err">d.valueOf()</span>
-<span class="err">// 1262275200000</span>
+<div class="highlight"><pre><span></span><code><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+<span class="o">//</span> <span class="s1">&#39;1,2,3&#39;</span>
+<span class="o">/</span>\<span class="n">d</span><span class="o">+/</span><span class="n">g</span><span class="o">.</span><span class="n">toString</span><span class="p">();</span>
+<span class="o">//</span> <span class="s1">&#39;/</span><span class="se">\\</span><span class="s1">d+/g&#39;</span>
+<span class="k">var</span> <span class="n">d</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Date</span><span class="p">(</span><span class="mi">2010</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+<span class="n">d</span><span class="o">.</span><span class="n">valueOf</span><span class="p">()</span>
+<span class="o">//</span> <span class="mi">1262275200000</span>
 </code></pre></div>
-
 
 <p>对于一个对象类型, 如果其具有 toString 的方法则会使用 toString 把对象转换为字符串基本类型.
 如果其没有 toString 的方法, 则去寻找其具有的 valueOf 方法把对象转换为相应基本类型,

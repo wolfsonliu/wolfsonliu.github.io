@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -89,7 +91,6 @@
 <span class="c1">#[1] TRUE</span>
 </code></pre></div>
 
-
 <h3>建立新方法</h3>
 <p>对于新建立的类, 可以使用 UseMethod 函数来建立适合该类的方法. UseMethod 接受函数名做为参数. 然后接着建立对于不同的类的方法, 应该使用函数名加上一个小数点再加上类名作为类的方法函数.</p>
 <div class="highlight"><pre><span></span><code><span class="n">thefoo</span> <span class="o">&lt;-</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="nf">UseMethod</span><span class="p">(</span><span class="s">&quot;thefoo&quot;</span><span class="p">)</span>
@@ -99,7 +100,6 @@
 <span class="nf">thefoo</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 <span class="c1">#[1] &quot;Class foo&quot;</span>
 </code></pre></div>
-
 
 <hr>
 <h2>S4</h2>
@@ -115,7 +115,6 @@
 <span class="n">john</span> <span class="o">&lt;-</span> <span class="nf">new</span><span class="p">(</span><span class="s">&quot;Employee&quot;</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span> <span class="o">=</span> <span class="m">20</span><span class="p">,</span> <span class="n">boss</span> <span class="o">=</span> <span class="n">alice</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>选择对象的一个元素的时候, 需要使用 slot 函数或者 @, 相当于 S3 中的 "[[" 函数.</p>
 <div class="highlight"><pre><span></span><code><span class="n">slot</span><span class="p">(</span><span class="n">john</span><span class="p">,</span> <span class="ss">&quot;boss&quot;</span><span class="p">)</span>
 <span class="o">#</span><span class="n">An</span> <span class="k">object</span> <span class="k">of</span> <span class="k">class</span> <span class="ss">&quot;Person&quot;</span>
@@ -125,7 +124,6 @@
 <span class="o">#</span><span class="n">Slot</span> <span class="ss">&quot;age&quot;</span><span class="p">:</span>
 <span class="o">#</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">40</span>
 </code></pre></div>
-
 
 <h3>建立新方法</h3>
 <p>S4 为类建立新方法会相对于 S3 麻烦一点. 建立新方法时需要使用 setGeneric 和 setMethod 函数.</p>
@@ -139,7 +137,6 @@
 <span class="err">)</span>
 <span class="err">#[1] &quot;union&quot;</span>
 </code></pre></div>
-
 
 <h2>RC</h2>
 <p>RC 本身继承自 S4, RC 的建立方法和 S4 很像, 使用 setRefClasses 函数. RC 和 S4 的重要区别在于方法属于类本身, 所以创建新的对象使用的是类的 new 函数.</p>
@@ -159,7 +156,6 @@
 <span class="n">a</span><span class="o">$</span><span class="n">balance</span>
 <span class="c1">#&gt; [1] 200</span>
 </code></pre></div>
-
 
 <p>RC 的复制不是简单的使用赋值符号, 而应该使用 copy 方法.</p>
 <div class="highlight"><pre><span></span><code><span class="n">b</span> <span class="o">&lt;-</span> <span class="n">a</span><span class="o">$</span><span class="nf">copy</span><span class="p">()</span>

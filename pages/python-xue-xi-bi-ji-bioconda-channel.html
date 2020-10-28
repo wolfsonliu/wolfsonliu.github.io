@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -79,11 +81,10 @@ install</code>就可以方便地安装软件，而不用担心这些软件的依
 但是，命令输入顺序需要严格按照下面的顺序，来保证相应的 channel 的优先
 级，后添加的channel有更高的优先级。如果优先级不对的话，可以在之后进行
 重新设置。</p>
-<div class="highlight"><pre><span></span><code>conda config --add channels defaults
-conda config --add channels bioconda
-conda config --add channels conda-forge
+<div class="highlight"><pre><span></span><code><span class="err">conda config --add channels defaults</span>
+<span class="err">conda config --add channels bioconda</span>
+<span class="err">conda config --add channels conda-forge</span>
 </code></pre></div>
-
 
 <p>其中，defaults是conda默认的channel，conda-forge包括更多的defaults中没
 有的基础软件。</p>
@@ -93,15 +94,13 @@ conda config --add channels conda-forge
 install -c bioconda</code>来指定channel进行安装。安装不同的生信软件的时候建
 议创建不同的环境，这样不同的软件包的依赖就不会冲突。</p>
 <p>例如我们要安装bwa，samtools，bcftools等软件：</p>
-<div class="highlight"><pre><span></span><code>conda create -c bioconda -n NGS bwa samtools bcftools
+<div class="highlight"><pre><span></span><code><span class="n">conda</span> <span class="n">create</span> <span class="o">-</span><span class="n">c</span> <span class="n">bioconda</span> <span class="o">-</span><span class="n">n</span> <span class="n">NGS</span> <span class="n">bwa</span> <span class="n">samtools</span> <span class="n">bcftools</span>
 </code></pre></div>
-
 
 <p>其中，<code>conda create</code>为创建环境的命令，<code>-c bioconda</code>指定了bioconda
 channel，<code>-n NGS</code>设置了新的环境的名字，后面跟着的是在创建环境时候就安装的软件。</p>
-<div class="highlight"><pre><span></span><code>conda activate NGS
+<div class="highlight"><pre><span></span><code><span class="err">conda activate NGS</span>
 </code></pre></div>
-
 
 <p>激活环境后就可以使用安装好的生物信息软件了。</p>
 </section>

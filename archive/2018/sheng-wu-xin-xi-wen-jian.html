@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -98,7 +100,6 @@
 <span class="o">-</span><span class="n">r001</span><span class="o">/</span><span class="mi">2</span>                                        <span class="n">CAGCGGCAT</span>
 </code></pre></div>
 
-
 <p>那么其存为 SAM 文件应为：</p>
 <div class="highlight"><pre><span></span><code><span class="err">@HD VN:1.6 SO:coordinate</span>
 <span class="err">@SQ SN:ref LN:45</span>
@@ -109,7 +110,6 @@
 <span class="err">r003 2064 ref 29 17 6H5M       *  0   0 TAGGC             * SA:Z:ref,9,+,5S6M,30,1;</span>
 <span class="err">r001  147 ref 37 30 9M         =  7 -39 CAGCGGCAT         * NM:i:1</span>
 </code></pre></div>
-
 
 <p>其中 <code>@HD</code> 和 <code>@SQ</code> 是头部，头部的行以 @ 起始。而文件中剩下的部分则是
 匹配部，是具体的匹配信息。</p>
@@ -138,39 +138,38 @@
 包括三部分：元数据部分（meta-information），表头部分（header）和数据部
 分。</p>
 <p>VCF 的例子如下所示：</p>
-<div class="highlight"><pre><span></span><code><span class="err">##fileformat=VCFv4.2</span>
-<span class="err">##FILTER=&lt;ID=PASS,Description=&quot;All filters passed&quot;&gt;</span>
-<span class="err">##bcftoolsVersion=1.9+htslib-1.9</span>
-<span class="err">##bcftoolsCommand=mpileup -Ou -f /home/485/Reference/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa /home/485/Background_1/Background_1.sorted.bam</span>
-<span class="err">##reference=file:///home/485/Reference/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa</span>
-<span class="err">##contig=&lt;ID=chr1,length=248956422&gt;</span>
-<span class="err">##ALT=&lt;ID=*,Description=&quot;Represents allele(s) other than observed.&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=INDEL,Number=0,Type=Flag,Description=&quot;Indicates that the variant is an INDEL.&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=IDV,Number=1,Type=Integer,Description=&quot;Maximum number of reads supporting an indel&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=IMF,Number=1,Type=Float,Description=&quot;Maximum fraction of reads supporting an indel&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Raw read depth&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=VDB,Number=1,Type=Float,Description=&quot;Variant Distance Bias for filtering splice-site artefacts in RNA-seq data (bigger is better)&quot;,Version=&quot;3&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=RPB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Read Position Bias (bigger is better)&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=MQB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Mapping Quality Bias (bigger is better)&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=BQB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Base Quality Bias (bigger is better)&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=MQSB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Mapping Quality vs Strand Bias (bigger is better)&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=SGB,Number=1,Type=Float,Description=&quot;Segregation based metric.&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=MQ0F,Number=1,Type=Float,Description=&quot;Fraction of MQ0 reads (smaller is better)&quot;&gt;</span>
-<span class="err">##FORMAT=&lt;ID=PL,Number=G,Type=Integer,Description=&quot;List of Phred-scaled genotype likelihoods&quot;&gt;</span>
-<span class="err">##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=ICB,Number=1,Type=Float,Description=&quot;Inbreeding Coefficient Binomial test (bigger is better)&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=HOB,Number=1,Type=Float,Description=&quot;Bias in the number of HOMs number (smaller is better)&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=AC,Number=A,Type=Integer,Description=&quot;Allele count in genotypes for each ALT allele, in the same order as listed&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=AN,Number=1,Type=Integer,Description=&quot;Total number of alleles in called genotypes&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=DP4,Number=4,Type=Integer,Description=&quot;Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases&quot;&gt;</span>
-<span class="err">##INFO=&lt;ID=MQ,Number=1,Type=Integer,Description=&quot;Average mapping quality&quot;&gt;</span>
-<span class="err">##bcftools_callVersion=1.9+htslib-1.9</span>
-<span class="err">#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  /home/485/data/Background_1/Background_1.sorted.bam</span>
-<span class="err">chr1    12198   .       G       C       11.7172 .       DP=1;SGB=-0.379885;MQ0F=0;AC=2;AN=2;DP4=0,0,1,0;MQ=60   GT:PL   1/1:41,3,0</span>
-<span class="err">chr1    14464   .       A       T       117     .       DP=44;VDB=3.43916e-10;SGB=-0.693141;RPB=0.804784;MQB=0.997831;BQB=0.960039;MQ0F=0;AC=2;AN=2;DP4=4,0,37,0;MQ=44  GT:PL   1/1:144,7,0</span>
-<span class="err">chr1    14653   .       C       T       85      .       DP=252;VDB=1.88797e-18;SGB=-0.693147;RPB=7.469e-24;MQB=0.0373404;MQSB=0.720283;BQB=0.997816;MQ0F=0.0595238;ICB=1;HOB=0.5;AC=1;AN=2;DP4=151,17,69,1;MQ=32        GT:PL   0/1:118,0,255</span>
+<div class="highlight"><pre><span></span><code><span class="c1">##fileformat=VCFv4.2</span>
+<span class="c1">##FILTER=&lt;ID=PASS,Description=&quot;All filters passed&quot;&gt;</span>
+<span class="c1">##bcftoolsVersion=1.9+htslib-1.9</span>
+<span class="c1">##bcftoolsCommand=mpileup -Ou -f /home/485/Reference/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa /home/485/Background_1/Background_1.sorted.bam</span>
+<span class="c1">##reference=file:///home/485/Reference/Homo_sapiens/UCSC/hg38/Sequence/WholeGenomeFasta/genome.fa</span>
+<span class="c1">##contig=&lt;ID=chr1,length=248956422&gt;</span>
+<span class="c1">##ALT=&lt;ID=*,Description=&quot;Represents allele(s) other than observed.&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=INDEL,Number=0,Type=Flag,Description=&quot;Indicates that the variant is an INDEL.&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=IDV,Number=1,Type=Integer,Description=&quot;Maximum number of reads supporting an indel&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=IMF,Number=1,Type=Float,Description=&quot;Maximum fraction of reads supporting an indel&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=DP,Number=1,Type=Integer,Description=&quot;Raw read depth&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=VDB,Number=1,Type=Float,Description=&quot;Variant Distance Bias for filtering splice-site artefacts in RNA-seq data (bigger is better)&quot;,Version=&quot;3&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=RPB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Read Position Bias (bigger is better)&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=MQB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Mapping Quality Bias (bigger is better)&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=BQB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Base Quality Bias (bigger is better)&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=MQSB,Number=1,Type=Float,Description=&quot;Mann-Whitney U test of Mapping Quality vs Strand Bias (bigger is better)&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=SGB,Number=1,Type=Float,Description=&quot;Segregation based metric.&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=MQ0F,Number=1,Type=Float,Description=&quot;Fraction of MQ0 reads (smaller is better)&quot;&gt;</span>
+<span class="c1">##FORMAT=&lt;ID=PL,Number=G,Type=Integer,Description=&quot;List of Phred-scaled genotype likelihoods&quot;&gt;</span>
+<span class="c1">##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=ICB,Number=1,Type=Float,Description=&quot;Inbreeding Coefficient Binomial test (bigger is better)&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=HOB,Number=1,Type=Float,Description=&quot;Bias in the number of HOMs number (smaller is better)&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=AC,Number=A,Type=Integer,Description=&quot;Allele count in genotypes for each ALT allele, in the same order as listed&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=AN,Number=1,Type=Integer,Description=&quot;Total number of alleles in called genotypes&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=DP4,Number=4,Type=Integer,Description=&quot;Number of high-quality ref-forward , ref-reverse, alt-forward and alt-reverse bases&quot;&gt;</span>
+<span class="c1">##INFO=&lt;ID=MQ,Number=1,Type=Integer,Description=&quot;Average mapping quality&quot;&gt;</span>
+<span class="c1">##bcftools_callVersion=1.9+htslib-1.9</span>
+<span class="c1">#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  /home/485/data/Background_1/Background_1.sorted.bam</span>
+<span class="n">chr1</span>    <span class="mi">12198</span>   <span class="o">.</span>       <span class="n">G</span>       <span class="n">C</span>       <span class="mf">11.7172</span> <span class="o">.</span>       <span class="n">DP</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">SGB</span><span class="o">=-</span><span class="mf">0.379885</span><span class="p">;</span><span class="n">MQ0F</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">AC</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">AN</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">DP4</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span><span class="n">MQ</span><span class="o">=</span><span class="mi">60</span>   <span class="n">GT</span><span class="p">:</span><span class="n">PL</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="p">:</span><span class="mi">41</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">chr1</span>    <span class="mi">14464</span>   <span class="o">.</span>       <span class="n">A</span>       <span class="n">T</span>       <span class="mi">117</span>     <span class="o">.</span>       <span class="n">DP</span><span class="o">=</span><span class="mi">44</span><span class="p">;</span><span class="n">VDB</span><span class="o">=</span><span class="mf">3.43916e-10</span><span class="p">;</span><span class="n">SGB</span><span class="o">=-</span><span class="mf">0.693141</span><span class="p">;</span><span class="n">RPB</span><span class="o">=</span><span class="mf">0.804784</span><span class="p">;</span><span class="n">MQB</span><span class="o">=</span><span class="mf">0.997831</span><span class="p">;</span><span class="n">BQB</span><span class="o">=</span><span class="mf">0.960039</span><span class="p">;</span><span class="n">MQ0F</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">AC</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">AN</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">DP4</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">37</span><span class="p">,</span><span class="mi">0</span><span class="p">;</span><span class="n">MQ</span><span class="o">=</span><span class="mi">44</span>  <span class="n">GT</span><span class="p">:</span><span class="n">PL</span>   <span class="mi">1</span><span class="o">/</span><span class="mi">1</span><span class="p">:</span><span class="mi">144</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">0</span>
+<span class="n">chr1</span>    <span class="mi">14653</span>   <span class="o">.</span>       <span class="n">C</span>       <span class="n">T</span>       <span class="mi">85</span>      <span class="o">.</span>       <span class="n">DP</span><span class="o">=</span><span class="mi">252</span><span class="p">;</span><span class="n">VDB</span><span class="o">=</span><span class="mf">1.88797e-18</span><span class="p">;</span><span class="n">SGB</span><span class="o">=-</span><span class="mf">0.693147</span><span class="p">;</span><span class="n">RPB</span><span class="o">=</span><span class="mf">7.469e-24</span><span class="p">;</span><span class="n">MQB</span><span class="o">=</span><span class="mf">0.0373404</span><span class="p">;</span><span class="n">MQSB</span><span class="o">=</span><span class="mf">0.720283</span><span class="p">;</span><span class="n">BQB</span><span class="o">=</span><span class="mf">0.997816</span><span class="p">;</span><span class="n">MQ0F</span><span class="o">=</span><span class="mf">0.0595238</span><span class="p">;</span><span class="n">ICB</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">HOB</span><span class="o">=</span><span class="mf">0.5</span><span class="p">;</span><span class="n">AC</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">AN</span><span class="o">=</span><span class="mi">2</span><span class="p">;</span><span class="n">DP4</span><span class="o">=</span><span class="mi">151</span><span class="p">,</span><span class="mi">17</span><span class="p">,</span><span class="mi">69</span><span class="p">,</span><span class="mi">1</span><span class="p">;</span><span class="n">MQ</span><span class="o">=</span><span class="mi">32</span>        <span class="n">GT</span><span class="p">:</span><span class="n">PL</span>   <span class="mi">0</span><span class="o">/</span><span class="mi">1</span><span class="p">:</span><span class="mi">118</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span>
 </code></pre></div>
-
 
 <h3>元数据部分</h3>
 <p>元数据部分主要是关于计算环境的说明，关于参考序列的描述，和关于INFO的种种描述信息等。</p>

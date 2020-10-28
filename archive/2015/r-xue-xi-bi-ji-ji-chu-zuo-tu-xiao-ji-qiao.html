@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -78,13 +80,12 @@
         <div class="entry-content blog-post">
             <h2>R 基础绘图</h2>
 <p>R 自带有强大的基础绘图包：<code>graphics</code>。默认情况下应该会自动加载。</p>
-<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="nf">search</span><span class="p">()</span>
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;.GlobalEnv&quot;</span>        <span class="s">&quot;ESSR&quot;</span>              <span class="s">&quot;package:stats&quot;</span>    
- <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;package:graphics&quot;</span>  <span class="s">&quot;package:grDevices&quot;</span> <span class="s">&quot;package:utils&quot;</span>    
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;package:datasets&quot;</span>  <span class="s">&quot;package:methods&quot;</span>   <span class="s">&quot;Autoloads&quot;</span>        
-<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;package:base&quot;</span>     
+<div class="highlight"><pre><span></span><code><span class="o">&gt;</span> <span class="n">search</span><span class="p">()</span>
+ <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;.GlobalEnv&quot;</span>        <span class="s2">&quot;ESSR&quot;</span>              <span class="s2">&quot;package:stats&quot;</span>    
+ <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="s2">&quot;package:graphics&quot;</span>  <span class="s2">&quot;package:grDevices&quot;</span> <span class="s2">&quot;package:utils&quot;</span>    
+ <span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="s2">&quot;package:datasets&quot;</span>  <span class="s2">&quot;package:methods&quot;</span>   <span class="s2">&quot;Autoloads&quot;</span>        
+<span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="s2">&quot;package:base&quot;</span>     
 </code></pre></div>
-
 
 <p>基础绘图包中有若干高级绘图函数，可以直接根据对应的数据画出完整的图。这
 些函数非常好用，但是有个问题是其默认的绘制往往不符合最终的需求。基础绘

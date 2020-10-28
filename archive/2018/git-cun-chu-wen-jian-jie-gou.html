@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -91,24 +93,23 @@ refs/heads/master</code>。具体的 head 对应的 commit 的文件 SHA-1 需�
 <h3>config</h3>
 <p>当前 Git 的配置文件。<code>git config --local</code> 的配置信息将存在该文件中，如
 user 信息，remote 的信息，branch 的信息等。如例子中：</p>
-<div class="highlight"><pre><span></span><code>cat .git/config
+<div class="highlight"><pre><span></span><code><span class="n">cat</span><span class="w"> </span><span class="p">.</span><span class="n">git</span><span class="o">/</span><span class="n">config</span><span class="w"></span>
 
-<span class="o">[</span>core<span class="o">]</span>
-      <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span>
-      <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">false</span>
-      <span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
-      <span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
-      <span class="nv">editor</span> <span class="o">=</span> emacs
-<span class="o">[</span>user<span class="o">]</span>
-      <span class="nv">name</span> <span class="o">=</span> Wolfson Liu
-<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
-      <span class="nv">url</span> <span class="o">=</span> https://github.com/wolfsonliu/learngit.git
-      <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
-<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
-      <span class="nv">remote</span> <span class="o">=</span> origin
-      <span class="nv">merge</span> <span class="o">=</span> refs/heads/master
+<span class="o">[</span><span class="n">core</span><span class="o">]</span><span class="w"></span>
+<span class="w">      </span><span class="n">repositoryformatversion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
+<span class="w">      </span><span class="n">filemode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="w"></span>
+<span class="w">      </span><span class="n">bare</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">false</span><span class="w"></span>
+<span class="w">      </span><span class="n">logallrefupdates</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">true</span><span class="w"></span>
+<span class="w">      </span><span class="n">editor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">emacs</span><span class="w"></span>
+<span class="o">[</span><span class="n">user</span><span class="o">]</span><span class="w"></span>
+<span class="w">      </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Wolfson</span><span class="w"> </span><span class="n">Liu</span><span class="w"></span>
+<span class="o">[</span><span class="n">remote &quot;origin&quot;</span><span class="o">]</span><span class="w"></span>
+<span class="w">      </span><span class="n">url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nl">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">wolfsonliu</span><span class="o">/</span><span class="n">learngit</span><span class="p">.</span><span class="n">git</span><span class="w"></span>
+<span class="w">      </span><span class="k">fetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">+</span><span class="n">refs</span><span class="o">/</span><span class="n">heads</span><span class="cm">/*:refs/remotes/origin/*</span>
+<span class="cm">[branch &quot;master&quot;]</span>
+<span class="cm">      remote = origin</span>
+<span class="cm">      merge = refs/heads/master</span>
 </code></pre></div>
-
 
 <h3>description</h3>
 <p>文本文件，记录该仓库的名称和描述信息。<code>description</code> 文件只被 GitWeb 软
@@ -137,7 +138,6 @@ user 信息，remote 的信息，branch 的信息等。如例子中：</p>
 <span class="err">  │   │   ├── 0f</span>
 <span class="err">  │   │   │   └── b6d6e6201ad79b3d74b77493d0a7b9b439a018</span>
 </code></pre></div>
-
 
 <p><code>02a5f419fa69f1df550172be067237223b246d36</code> 文件存储路径为 <code>objects/02/a5f419fa69f1df550172be067237223b246d36</code></p>
 <h3>refs</h3>

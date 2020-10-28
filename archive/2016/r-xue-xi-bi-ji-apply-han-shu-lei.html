@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -96,7 +98,6 @@
 <span class="c1"># 10.920   0.013  10.953</span>
 </code></pre></div>
 
-
 <p>有的时候我们需要做的只是简单地对列表或者数据框的每一行或列数据使用同样的函数, 在 C 语言中, 同样的问题通过 for loop 或者 while 来解决是十分直观和方便高效的. 而由于上面提到了 R 的特点, 使用 for loop 尤其是多层 for loop 则会很慢. 这样的情况下, 就应该取考虑映射 (mapping), 即在一系列数据上重复地去使用同一个函数, 即把该函数映射到数据上.</p>
 <p>还应该注意的是, R 中对数据集合的单个元素的改变并不是在原来的位置上直接变换, 而是重新产生一个数据集合, 和之前的数据集合在需要变换的地方不同. 这样的效率就相对来说比较低下. 所以应该尽量避免频繁的复制改变. 那么一般的解决办法是使用一些在中间计算过程中不会赋值的函数, 如下面说道的 apply 系列, 还有就是使用 C++ 语言 和 RCpp 包来完成需要频繁改变的代码部分. </p>
 <hr>
@@ -110,7 +111,6 @@
 <span class="c1">#[1]  2  5  8 11</span>
 </code></pre></div>
 
-
 <p>除了使用 apply 可以使用不同的函数之外, 如果目的仅仅是需要得到几个值的和或者均值, 还可以在把向量转换为矩阵之后使用 colSums, rowSums, colMeans, rowMeans 等函数.</p>
 <h3>sweep</h3>
 <p>有的时候, 所需要对一个数据集映射的函数需要有两个值, 比如说 "/" 除法操作符等双目操作符, 对于一列或者一行, 所用的值也不太一样. 这个时候 apply 可能就不是很方便了, 这个时候, 使用 sweep 就更方便一些. sweep 相对于 apply 要多接受一个参数, STAT, STAT 就是用来接受如双目的操作符后面的一个数字的.</p>
@@ -121,7 +121,6 @@
 <span class="c1">#[1,]  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5  0.5   0.5   0.5   0.5</span>
 </code></pre></div>
 
-
 <h3>lapply, sapply, vapply, replicate</h3>
 <p>lapply, sapply, vapply, replicate 有很多相似的地方, 实际上, lapply 是最为基础的, sapply 是对 lapply 的一种方便使用的包装, 可以理解为 "simple apply". 而 replicate 则是对 sapply 的一个更方便使用的包装.</p>
 <p>lapply 可以理解为 "list apply", 其总会返回一个 list 结果, 这个 list 的长度和输入的 list x 的长度是一样. 其接受一个数据集, 列表 x, 并接受一个需要做映射的函数, 同时也可以接受该函数的参数.</p>
@@ -129,7 +128,6 @@
 <span class="n">f</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="n">sum</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">median</span><span class="p">,</span> <span class="n">sd</span><span class="p">)</span>
 <span class="nf">lapply</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">call_fun</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nf">runif</span><span class="p">(</span><span class="m">1e3</span><span class="p">))</span>
 </code></pre></div>
-
 
 <p>sapply 是对 lapply 的包装, 其结果不再一定是一个 list, 也会根据方便程度返回向量等, 其有参数 <code>simplify = TRUE</code> 可以设置是否采取简化输出.</p>
 <p>vapply 则是限定输出的结果为 vector, 其返回结果会和 FUN.VALUE 所设定的一致, 如设定每一项的名字 <code>c("one" = 0, "two" = 0, "three" = 0)</code>. 有的时候 sapply 输出的值和 vapply 输出的值是相似的.</p>
@@ -141,7 +139,6 @@
 <span class="err">#[1] 5 5 5 5</span>
 </code></pre></div>
 
-
 <p>在 parallel 包中, mcmapply 是多线程版的 mapply.</p>
 <h3>Map</h3>
 <p>Map 函数也可以实现一个对一个数据集进行多参数函数的映射. Map 相当于设置 <code>simplify = FALSE</code> 的 mapply 函数. 例如, weighted.mean 接受变量和其权重, 来计算加权平均值. </p>
@@ -150,19 +147,18 @@
 <span class="nf">Map</span><span class="p">(</span><span class="n">weighted.mean</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>在 parallel 包中, mcMap 是多线程版的 mcMap.</p>
 <h3>aggregate, tapply</h3>
 <p>有的时候我们需要根据某种分组来对数据集进行处理, 比如说根据性别来计算相对身高等. 这个时候就可以使用 aggregate, tapply 等函数.</p>
 <p>aggregate 函数也可以接受一个 list 或 data.frame 作为输入数据集, 也接受一个函数做参数. 相对前面提到的 sapply 有一点重要不同是, 接受一个分组的 list 作为 by 参数的值. 所有的计算将根据 by 的分组进行. 所输出的结果的维度将会和分组的维度相关.</p>
 <p>tapply 和 aggregate 类似, 不过其 INDEX 参数可以接受若干对数据集进行分组的向量, 输出结果将和分组相关. 也可以使用面向对象的 tapply, by 函数, 其参数和 tapply 类似. 对于 tapply, 就是可以把数据集按照一定规则分成几类, 那么相似的结果也可以通过 sapply 函数和 split 函数实现.</p>
-<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">&lt;-</span> <span class="m">17</span><span class="p">;</span> <span class="n">fac</span> <span class="o">&lt;-</span> <span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">n</span><span class="p">),</span> <span class="n">levels</span> <span class="o">=</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">)</span>
-<span class="nf">aggregate</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">n</span><span class="p">,</span> <span class="nf">list</span><span class="p">(</span><span class="n">fac</span><span class="p">),</span> <span class="n">fivenum</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">n</span> <span class="o">&lt;-</span> <span class="mi">17</span><span class="p">;</span> <span class="n">fac</span> <span class="o">&lt;-</span> <span class="n">factor</span><span class="p">(</span><span class="n">rep</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">length</span> <span class="o">=</span> <span class="n">n</span><span class="p">),</span> <span class="n">levels</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">aggregate</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="n">list</span><span class="p">(</span><span class="n">fac</span><span class="p">),</span> <span class="n">fivenum</span><span class="p">)</span>
 <span class="c1">#  Group.1  x.1  x.2  x.3  x.4  x.5</span>
 <span class="c1">#1       1  1.0  4.0  8.5 13.0 16.0</span>
 <span class="c1">#2       2  2.0  5.0  9.5 14.0 17.0</span>
 <span class="c1">#3       3  3.0  6.0  9.0 12.0 15.0</span>
-<span class="nf">tapply</span><span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="n">n</span><span class="p">,</span> <span class="nf">list</span><span class="p">(</span><span class="n">fac</span><span class="p">),</span> <span class="n">fivenum</span><span class="p">)</span>
+<span class="n">tapply</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="n">list</span><span class="p">(</span><span class="n">fac</span><span class="p">),</span> <span class="n">fivenum</span><span class="p">)</span>
 <span class="c1">#$`1`</span>
 <span class="c1">#[1]  1.0  4.0  8.5 13.0 16.0</span>
 
@@ -178,7 +174,6 @@
 <span class="c1">#$`5`</span>
 <span class="c1">#NULL</span>
 </code></pre></div>
-
 
 <hr>
 <h2>plyr</h2>
@@ -209,46 +204,43 @@ tidyr 的使用会在相应的笔记中说明.</p>
 <span class="c1"># [1] &quot;values&quot;  &quot;ind&quot;     &quot;Species&quot;</span>
 </code></pre></div>
 
-
 <p>如果我们需要去看一下对于不同物种的不同的属性的最大和最小值.
 我们自然是可以使用 summary 这样的函数 <code>summary(iris)</code>.
 也可以使用 tapply 函数来根据 index 去计算.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">tapply</span><span class="p">(</span>
-    <span class="n">long.iris</span><span class="o">$</span><span class="n">values</span><span class="p">,</span>
-    <span class="n">INDEX</span><span class="o">=</span><span class="nf">paste</span><span class="p">(</span>
-        <span class="n">long.iris</span><span class="o">$</span><span class="n">Species</span><span class="p">,</span>
-        <span class="n">long.iris</span><span class="o">$</span><span class="n">ind</span><span class="p">,</span>
-        <span class="n">sep</span><span class="o">=</span><span class="s">&#39;.&#39;</span>
-    <span class="p">),</span>
-    <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="p">))}</span>
-<span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">tapply(</span>
+<span class="err">    long.iris$values,</span>
+<span class="err">    INDEX=paste(</span>
+<span class="err">        long.iris$Species,</span>
+<span class="err">        long.iris$ind,</span>
+<span class="err">        sep=&#39;.&#39;</span>
+<span class="err">    ),</span>
+<span class="err">    function(x) {c(max(x), min(x))}</span>
+<span class="err">)</span>
 </code></pre></div>
-
 
 <p>这样可以计算出来结果, 不过结果是 list 的数据结构,
 不方便进一步的计算, 我们希望结果能够成为一个 data.frame.
 如果使用 plyr 包中的 ddply 则可以很好解决问题.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">ddply</span><span class="p">(</span>
-    <span class="n">long.iris</span><span class="p">,</span>
-    <span class="nf">.</span><span class="p">(</span><span class="n">Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
-    <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">),</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">))}</span>
+<div class="highlight"><pre><span></span><code><span class="n">ddply</span><span class="p">(</span>
+    <span class="n">long</span><span class="p">.</span><span class="n">iris</span><span class="p">,</span>
+    <span class="p">.(</span><span class="n">Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="err">{</span><span class="k">c</span><span class="p">(</span><span class="k">max</span><span class="p">(</span><span class="n">x$values</span><span class="p">),</span> <span class="k">min</span><span class="p">(</span><span class="n">x$values</span><span class="p">))</span><span class="err">}</span>
 <span class="p">)</span>
 
-<span class="c1">#       Species          ind  V1  V2</span>
-<span class="c1"># 1      setosa Petal.Length 1.9 1.0</span>
-<span class="c1"># 2      setosa  Petal.Width 0.6 0.1</span>
-<span class="c1"># 3      setosa Sepal.Length 5.8 4.3</span>
-<span class="c1"># 4      setosa  Sepal.Width 4.4 2.3</span>
-<span class="c1"># 5  versicolor Petal.Length 5.1 3.0</span>
-<span class="c1"># 6  versicolor  Petal.Width 1.8 1.0</span>
-<span class="c1"># 7  versicolor Sepal.Length 7.0 4.9</span>
-<span class="c1"># 8  versicolor  Sepal.Width 3.4 2.0</span>
-<span class="c1"># 9   virginica Petal.Length 6.9 4.5</span>
-<span class="c1"># 10  virginica  Petal.Width 2.5 1.4</span>
-<span class="c1"># 11  virginica Sepal.Length 7.9 4.9</span>
-<span class="c1"># 12  virginica  Sepal.Width 3.8 2.2</span>
+<span class="o">#</span>       <span class="n">Species</span>          <span class="n">ind</span>  <span class="n">V1</span>  <span class="n">V2</span>
+<span class="o">#</span> <span class="mi">1</span>      <span class="n">setosa</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="mi">1</span><span class="p">.</span><span class="mi">9</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">#</span> <span class="mi">2</span>      <span class="n">setosa</span>  <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="mi">0</span><span class="p">.</span><span class="mi">6</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span>
+<span class="o">#</span> <span class="mi">3</span>      <span class="n">setosa</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="mi">5</span><span class="p">.</span><span class="mi">8</span> <span class="mi">4</span><span class="p">.</span><span class="mi">3</span>
+<span class="o">#</span> <span class="mi">4</span>      <span class="n">setosa</span>  <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span> <span class="mi">4</span><span class="p">.</span><span class="mi">4</span> <span class="mi">2</span><span class="p">.</span><span class="mi">3</span>
+<span class="o">#</span> <span class="mi">5</span>  <span class="n">versicolor</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="mi">5</span><span class="p">.</span><span class="mi">1</span> <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">#</span> <span class="mi">6</span>  <span class="n">versicolor</span>  <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="mi">1</span><span class="p">.</span><span class="mi">8</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">#</span> <span class="mi">7</span>  <span class="n">versicolor</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="mi">7</span><span class="p">.</span><span class="mi">0</span> <span class="mi">4</span><span class="p">.</span><span class="mi">9</span>
+<span class="o">#</span> <span class="mi">8</span>  <span class="n">versicolor</span>  <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span> <span class="mi">3</span><span class="p">.</span><span class="mi">4</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">#</span> <span class="mi">9</span>   <span class="n">virginica</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="mi">6</span><span class="p">.</span><span class="mi">9</span> <span class="mi">4</span><span class="p">.</span><span class="mi">5</span>
+<span class="o">#</span> <span class="mi">10</span>  <span class="n">virginica</span>  <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="mi">2</span><span class="p">.</span><span class="mi">5</span> <span class="mi">1</span><span class="p">.</span><span class="mi">4</span>
+<span class="o">#</span> <span class="mi">11</span>  <span class="n">virginica</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="mi">7</span><span class="p">.</span><span class="mi">9</span> <span class="mi">4</span><span class="p">.</span><span class="mi">9</span>
+<span class="o">#</span> <span class="mi">12</span>  <span class="n">virginica</span>  <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span> <span class="mi">3</span><span class="p">.</span><span class="mi">8</span> <span class="mi">2</span><span class="p">.</span><span class="mi">2</span>
 </code></pre></div>
-
 
 <h2>plyr 包中的 apply 函数</h2>
 <p>首先, 我们先要回顾一下 R 中最基本的数据结构,
@@ -299,9 +291,8 @@ adply 代表输入的是数组, 输出的是数据表;
 a_ply 输入的是数组, 而不输出.</p>
 <h3>a*ply</h3>
 <p>对于 a*ply 函数, 即 aaply, adply, alply 和 a_ply 函数, 有:</p>
-<div class="highlight"><pre><span></span><code><span class="n">a</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.margins</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">a*ply(.data, .margins, .fun, ..., .progress=&#39;none&#39;)</span>
 </code></pre></div>
-
 
 <ul>
 <li>.data 接受的是输出的多维数组</li>
@@ -325,29 +316,26 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1"># 9  3  3 -0.08792167</span>
 </code></pre></div>
 
-
 <p>对于对分组进行操作的 .fun 则需要注意根据所输入的数组和选用的 margin 进行匹配.
 如果输入的是三维数组, 选择其中一个维度进行分组, 那么 .fun 则应该是对二维数组, 即矩阵的操作.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">aaply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="n">class</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">aaply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="k">c</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="k">class</span><span class="p">)</span>
 
-<span class="c1">#        1        2        3</span>
-<span class="c1"># &quot;matrix&quot; &quot;matrix&quot; &quot;matrix&quot;</span>
+<span class="o">#</span>        <span class="mi">1</span>        <span class="mi">2</span>        <span class="mi">3</span>
+<span class="o">#</span> <span class="ss">&quot;matrix&quot;</span> <span class="ss">&quot;matrix&quot;</span> <span class="ss">&quot;matrix&quot;</span>
 
-<span class="nf">aaply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> <span class="n">class</span><span class="p">)</span>
+<span class="n">aaply</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="k">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="k">class</span><span class="p">)</span>
 
-<span class="c1">#    X2</span>
-<span class="c1"># X1  1         2         3</span>
-<span class="c1">#   1 &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;</span>
-<span class="c1">#   2 &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;</span>
-<span class="c1">#   3 &quot;numeric&quot; &quot;numeric&quot; &quot;numeric&quot;</span>
+<span class="o">#</span>    <span class="n">X2</span>
+<span class="o">#</span> <span class="n">X1</span>  <span class="mi">1</span>         <span class="mi">2</span>         <span class="mi">3</span>
+<span class="o">#</span>   <span class="mi">1</span> <span class="ss">&quot;numeric&quot;</span> <span class="ss">&quot;numeric&quot;</span> <span class="ss">&quot;numeric&quot;</span>
+<span class="o">#</span>   <span class="mi">2</span> <span class="ss">&quot;numeric&quot;</span> <span class="ss">&quot;numeric&quot;</span> <span class="ss">&quot;numeric&quot;</span>
+<span class="o">#</span>   <span class="mi">3</span> <span class="ss">&quot;numeric&quot;</span> <span class="ss">&quot;numeric&quot;</span> <span class="ss">&quot;numeric&quot;</span>
 </code></pre></div>
-
 
 <h3>d*ply</h3>
 <p>对于 d*ply 函数, 即 daply, ddply, dlply 和 d_ply 函数, 有:</p>
-<div class="highlight"><pre><span></span><code><span class="n">d</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.variables</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">d</span><span class="o">*</span><span class="n">ply</span><span class="p">(</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">.</span><span class="n">variables</span><span class="p">,</span> <span class="o">.</span><span class="n">fun</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="o">.</span><span class="n">progress</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 
 <ul>
 <li>.data 接受的是输出的数据表</li>
@@ -357,98 +345,93 @@ a_ply 输入的是数组, 而不输出.</p>
 <li>.fun 接受对分组进行操作的函数.</li>
 </ul>
 <p>偷个懒, 还是上面用过的例子咯.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">daply</span><span class="p">(</span>
-    <span class="n">long.iris</span><span class="p">,</span>
-    <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species&#39;</span><span class="p">,</span> <span class="s">&#39;ind&#39;</span><span class="p">),</span>
-    <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">max</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">),</span> <span class="nf">min</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">values</span><span class="p">))}</span>
+<div class="highlight"><pre><span></span><code><span class="n">daply</span><span class="p">(</span>
+    <span class="n">long</span><span class="p">.</span><span class="n">iris</span><span class="p">,</span>
+    <span class="k">c</span><span class="p">(</span><span class="s1">&#39;Species&#39;</span><span class="p">,</span> <span class="s1">&#39;ind&#39;</span><span class="p">),</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="err">{</span><span class="k">c</span><span class="p">(</span><span class="k">max</span><span class="p">(</span><span class="n">x$values</span><span class="p">),</span> <span class="k">min</span><span class="p">(</span><span class="n">x$values</span><span class="p">))</span><span class="err">}</span>
 <span class="p">)</span>
 
-<span class="c1"># , ,  = 1</span>
-<span class="c1">#</span>
-<span class="c1">#             ind</span>
-<span class="c1"># Species      Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-<span class="c1">#   setosa              1.9         0.6          5.8         4.4</span>
-<span class="c1">#   versicolor          5.1         1.8          7.0         3.4</span>
-<span class="c1">#   virginica           6.9         2.5          7.9         3.8</span>
-<span class="c1">#</span>
-<span class="c1"># , ,  = 2</span>
-<span class="c1">#</span>
-<span class="c1">#             ind</span>
-<span class="c1"># Species      Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-<span class="c1">#   setosa              1.0         0.1          4.3         2.3</span>
-<span class="c1">#   versicolor          3.0         1.0          4.9         2.0</span>
-<span class="c1">#   virginica           4.5         1.4          4.9         2.2</span>
-<span class="c1">#</span>
+<span class="o">#</span> <span class="p">,</span> <span class="p">,</span>  <span class="o">=</span> <span class="mi">1</span>
+<span class="o">#</span>
+<span class="o">#</span>             <span class="n">ind</span>
+<span class="o">#</span> <span class="n">Species</span>      <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span>
+<span class="o">#</span>   <span class="n">setosa</span>              <span class="mi">1</span><span class="p">.</span><span class="mi">9</span>         <span class="mi">0</span><span class="p">.</span><span class="mi">6</span>          <span class="mi">5</span><span class="p">.</span><span class="mi">8</span>         <span class="mi">4</span><span class="p">.</span><span class="mi">4</span>
+<span class="o">#</span>   <span class="n">versicolor</span>          <span class="mi">5</span><span class="p">.</span><span class="mi">1</span>         <span class="mi">1</span><span class="p">.</span><span class="mi">8</span>          <span class="mi">7</span><span class="p">.</span><span class="mi">0</span>         <span class="mi">3</span><span class="p">.</span><span class="mi">4</span>
+<span class="o">#</span>   <span class="n">virginica</span>           <span class="mi">6</span><span class="p">.</span><span class="mi">9</span>         <span class="mi">2</span><span class="p">.</span><span class="mi">5</span>          <span class="mi">7</span><span class="p">.</span><span class="mi">9</span>         <span class="mi">3</span><span class="p">.</span><span class="mi">8</span>
+<span class="o">#</span>
+<span class="o">#</span> <span class="p">,</span> <span class="p">,</span>  <span class="o">=</span> <span class="mi">2</span>
+<span class="o">#</span>
+<span class="o">#</span>             <span class="n">ind</span>
+<span class="o">#</span> <span class="n">Species</span>      <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span>
+<span class="o">#</span>   <span class="n">setosa</span>              <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>         <span class="mi">0</span><span class="p">.</span><span class="mi">1</span>          <span class="mi">4</span><span class="p">.</span><span class="mi">3</span>         <span class="mi">2</span><span class="p">.</span><span class="mi">3</span>
+<span class="o">#</span>   <span class="n">versicolor</span>          <span class="mi">3</span><span class="p">.</span><span class="mi">0</span>         <span class="mi">1</span><span class="p">.</span><span class="mi">0</span>          <span class="mi">4</span><span class="p">.</span><span class="mi">9</span>         <span class="mi">2</span><span class="p">.</span><span class="mi">0</span>
+<span class="o">#</span>   <span class="n">virginica</span>           <span class="mi">4</span><span class="p">.</span><span class="mi">5</span>         <span class="mi">1</span><span class="p">.</span><span class="mi">4</span>          <span class="mi">4</span><span class="p">.</span><span class="mi">9</span>         <span class="mi">2</span><span class="p">.</span><span class="mi">2</span>
+<span class="o">#</span>
 </code></pre></div>
-
 
 <p>对于 <code>d*ply</code> 函数,
 其 <code>.fun</code> 所接受的函数应该是对于和输入数据表同样的列数而不同行数的数据表进行操作的函数.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">dim</span><span class="p">(</span><span class="n">long.iris</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">dim</span><span class="p">(</span><span class="n">long</span><span class="p">.</span><span class="n">iris</span><span class="p">)</span>
 
-<span class="c1"># 600 3</span>
+<span class="o">#</span> <span class="mi">600</span> <span class="mi">3</span>
 
-<span class="nf">ddply</span><span class="p">(</span>
-    <span class="n">long.iris</span><span class="p">,</span>
-    <span class="nf">.</span><span class="p">(</span><span class="n">Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
-    <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span><span class="nf">c</span><span class="p">(</span><span class="nf">class</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nf">dim</span><span class="p">(</span><span class="n">x</span><span class="p">))}</span>
+<span class="n">ddply</span><span class="p">(</span>
+    <span class="n">long</span><span class="p">.</span><span class="n">iris</span><span class="p">,</span>
+    <span class="p">.(</span><span class="n">Species</span><span class="p">,</span> <span class="n">ind</span><span class="p">),</span>
+    <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="err">{</span><span class="k">c</span><span class="p">(</span><span class="k">class</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">dim</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="err">}</span>
 <span class="p">)</span>
 
-<span class="c1">#       Species          ind         V1  V2 V3</span>
-<span class="c1"># 1      setosa Petal.Length data.frame  50  3</span>
-<span class="c1"># 2      setosa  Petal.Width data.frame  50  3</span>
-<span class="c1"># 3      setosa Sepal.Length data.frame  50  3</span>
-<span class="c1"># 4      setosa  Sepal.Width data.frame  50  3</span>
-<span class="c1"># 5  versicolor Petal.Length data.frame  50  3</span>
-<span class="c1"># 6  versicolor  Petal.Width data.frame  50  3</span>
-<span class="c1"># 7  versicolor Sepal.Length data.frame  50  3</span>
-<span class="c1"># 8  versicolor  Sepal.Width data.frame  50  3</span>
-<span class="c1"># 9   virginica Petal.Length data.frame  50  3</span>
-<span class="c1"># 10  virginica  Petal.Width data.frame  50  3</span>
-<span class="c1"># 11  virginica Sepal.Length data.frame  50  3</span>
-<span class="c1"># 12  virginica  Sepal.Width data.frame  50  3</span>
+<span class="o">#</span>       <span class="n">Species</span>          <span class="n">ind</span>         <span class="n">V1</span>  <span class="n">V2</span> <span class="n">V3</span>
+<span class="o">#</span> <span class="mi">1</span>      <span class="n">setosa</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">2</span>      <span class="n">setosa</span>  <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">3</span>      <span class="n">setosa</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">4</span>      <span class="n">setosa</span>  <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">5</span>  <span class="n">versicolor</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">6</span>  <span class="n">versicolor</span>  <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">7</span>  <span class="n">versicolor</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">8</span>  <span class="n">versicolor</span>  <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">9</span>   <span class="n">virginica</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">10</span>  <span class="n">virginica</span>  <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">11</span>  <span class="n">virginica</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
+<span class="o">#</span> <span class="mi">12</span>  <span class="n">virginica</span>  <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span> <span class="k">data</span><span class="p">.</span><span class="n">frame</span>  <span class="mi">50</span>  <span class="mi">3</span>
 
-<span class="m">50</span> <span class="o">*</span> <span class="m">12</span>
+<span class="mi">50</span> <span class="o">*</span> <span class="mi">12</span>
 
-<span class="c1"># [1] 600</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">600</span>
 </code></pre></div>
-
 
 <h3>l*ply</h3>
 <p>对于 l*ply 函数, 即 laply, ldply, llply 和 l_ply 函数, 有:</p>
-<div class="highlight"><pre><span></span><code><span class="n">l</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">l*ply(.data, .fun, ..., .progress=&#39;none&#39;)</span>
 </code></pre></div>
-
 
 <ul>
 <li>.data 接受的是输出的数据表</li>
 <li>.fun 接受对分组进行操作的函数.</li>
 </ul>
 <p>举个简单的例子:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">llply</span><span class="p">(</span><span class="n">long.iris</span><span class="p">,</span> <span class="n">unique</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">llply</span><span class="p">(</span><span class="n">long</span><span class="p">.</span><span class="n">iris</span><span class="p">,</span> <span class="k">unique</span><span class="p">)</span>
 
-<span class="c1"># $values</span>
-<span class="c1">#  [1] 5.1 4.9 4.7 4.6 5.0 5.4 4.4 4.8 4.3 5.8 5.7 5.2 5.5 4.5 5.3 7.0 6.4 6.9 6.5</span>
-<span class="c1"># [20] 6.3 6.6 5.9 6.0 6.1 5.6 6.7 6.2 6.8 7.1 7.6 7.3 7.2 7.7 7.4 7.9 3.5 3.0 3.2</span>
-<span class="c1"># [39] 3.1 3.6 3.9 3.4 2.9 3.7 4.0 3.8 3.3 4.1 4.2 2.3 2.8 2.4 2.7 2.0 2.2 2.5 2.6</span>
-<span class="c1"># [58] 1.4 1.3 1.5 1.7 1.6 1.1 1.2 1.0 1.9 0.2 0.4 0.3 0.1 0.5 0.6 1.8 2.1</span>
-<span class="c1">#</span>
-<span class="c1"># $ind</span>
-<span class="c1"># [1] Sepal.Length Sepal.Width  Petal.Length Petal.Width</span>
-<span class="c1"># Levels: Petal.Length Petal.Width Sepal.Length Sepal.Width</span>
-<span class="c1">#</span>
-<span class="c1"># $Species</span>
-<span class="c1"># [1] setosa     versicolor virginica</span>
-<span class="c1"># Levels: setosa versicolor virginica</span>
+<span class="o">#</span> <span class="err">$</span><span class="k">values</span>
+<span class="o">#</span>  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">5</span><span class="p">.</span><span class="mi">1</span> <span class="mi">4</span><span class="p">.</span><span class="mi">9</span> <span class="mi">4</span><span class="p">.</span><span class="mi">7</span> <span class="mi">4</span><span class="p">.</span><span class="mi">6</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span> <span class="mi">5</span><span class="p">.</span><span class="mi">4</span> <span class="mi">4</span><span class="p">.</span><span class="mi">4</span> <span class="mi">4</span><span class="p">.</span><span class="mi">8</span> <span class="mi">4</span><span class="p">.</span><span class="mi">3</span> <span class="mi">5</span><span class="p">.</span><span class="mi">8</span> <span class="mi">5</span><span class="p">.</span><span class="mi">7</span> <span class="mi">5</span><span class="p">.</span><span class="mi">2</span> <span class="mi">5</span><span class="p">.</span><span class="mi">5</span> <span class="mi">4</span><span class="p">.</span><span class="mi">5</span> <span class="mi">5</span><span class="p">.</span><span class="mi">3</span> <span class="mi">7</span><span class="p">.</span><span class="mi">0</span> <span class="mi">6</span><span class="p">.</span><span class="mi">4</span> <span class="mi">6</span><span class="p">.</span><span class="mi">9</span> <span class="mi">6</span><span class="p">.</span><span class="mi">5</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span> <span class="mi">6</span><span class="p">.</span><span class="mi">3</span> <span class="mi">6</span><span class="p">.</span><span class="mi">6</span> <span class="mi">5</span><span class="p">.</span><span class="mi">9</span> <span class="mi">6</span><span class="p">.</span><span class="mi">0</span> <span class="mi">6</span><span class="p">.</span><span class="mi">1</span> <span class="mi">5</span><span class="p">.</span><span class="mi">6</span> <span class="mi">6</span><span class="p">.</span><span class="mi">7</span> <span class="mi">6</span><span class="p">.</span><span class="mi">2</span> <span class="mi">6</span><span class="p">.</span><span class="mi">8</span> <span class="mi">7</span><span class="p">.</span><span class="mi">1</span> <span class="mi">7</span><span class="p">.</span><span class="mi">6</span> <span class="mi">7</span><span class="p">.</span><span class="mi">3</span> <span class="mi">7</span><span class="p">.</span><span class="mi">2</span> <span class="mi">7</span><span class="p">.</span><span class="mi">7</span> <span class="mi">7</span><span class="p">.</span><span class="mi">4</span> <span class="mi">7</span><span class="p">.</span><span class="mi">9</span> <span class="mi">3</span><span class="p">.</span><span class="mi">5</span> <span class="mi">3</span><span class="p">.</span><span class="mi">0</span> <span class="mi">3</span><span class="p">.</span><span class="mi">2</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">39</span><span class="p">]</span> <span class="mi">3</span><span class="p">.</span><span class="mi">1</span> <span class="mi">3</span><span class="p">.</span><span class="mi">6</span> <span class="mi">3</span><span class="p">.</span><span class="mi">9</span> <span class="mi">3</span><span class="p">.</span><span class="mi">4</span> <span class="mi">2</span><span class="p">.</span><span class="mi">9</span> <span class="mi">3</span><span class="p">.</span><span class="mi">7</span> <span class="mi">4</span><span class="p">.</span><span class="mi">0</span> <span class="mi">3</span><span class="p">.</span><span class="mi">8</span> <span class="mi">3</span><span class="p">.</span><span class="mi">3</span> <span class="mi">4</span><span class="p">.</span><span class="mi">1</span> <span class="mi">4</span><span class="p">.</span><span class="mi">2</span> <span class="mi">2</span><span class="p">.</span><span class="mi">3</span> <span class="mi">2</span><span class="p">.</span><span class="mi">8</span> <span class="mi">2</span><span class="p">.</span><span class="mi">4</span> <span class="mi">2</span><span class="p">.</span><span class="mi">7</span> <span class="mi">2</span><span class="p">.</span><span class="mi">0</span> <span class="mi">2</span><span class="p">.</span><span class="mi">2</span> <span class="mi">2</span><span class="p">.</span><span class="mi">5</span> <span class="mi">2</span><span class="p">.</span><span class="mi">6</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">58</span><span class="p">]</span> <span class="mi">1</span><span class="p">.</span><span class="mi">4</span> <span class="mi">1</span><span class="p">.</span><span class="mi">3</span> <span class="mi">1</span><span class="p">.</span><span class="mi">5</span> <span class="mi">1</span><span class="p">.</span><span class="mi">7</span> <span class="mi">1</span><span class="p">.</span><span class="mi">6</span> <span class="mi">1</span><span class="p">.</span><span class="mi">1</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span> <span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="mi">1</span><span class="p">.</span><span class="mi">9</span> <span class="mi">0</span><span class="p">.</span><span class="mi">2</span> <span class="mi">0</span><span class="p">.</span><span class="mi">4</span> <span class="mi">0</span><span class="p">.</span><span class="mi">3</span> <span class="mi">0</span><span class="p">.</span><span class="mi">1</span> <span class="mi">0</span><span class="p">.</span><span class="mi">5</span> <span class="mi">0</span><span class="p">.</span><span class="mi">6</span> <span class="mi">1</span><span class="p">.</span><span class="mi">8</span> <span class="mi">2</span><span class="p">.</span><span class="mi">1</span>
+<span class="o">#</span>
+<span class="o">#</span> <span class="err">$</span><span class="n">ind</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span>  <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span>
+<span class="o">#</span> <span class="n">Levels</span><span class="p">:</span> <span class="n">Petal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Petal</span><span class="p">.</span><span class="n">Width</span> <span class="n">Sepal</span><span class="p">.</span><span class="k">Length</span> <span class="n">Sepal</span><span class="p">.</span><span class="n">Width</span>
+<span class="o">#</span>
+<span class="o">#</span> <span class="err">$</span><span class="n">Species</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="n">setosa</span>     <span class="n">versicolor</span> <span class="n">virginica</span>
+<span class="o">#</span> <span class="n">Levels</span><span class="p">:</span> <span class="n">setosa</span> <span class="n">versicolor</span> <span class="n">virginica</span>
 </code></pre></div>
-
 
 <h3>m*ply</h3>
 <p>在 plyr 包中还有一系列对应于 mapply 的函数,
 包括 <code>maply</code>, <code>mdply</code>, <code>mlply</code>, <code>m_ply</code> 等.</p>
-<div class="highlight"><pre><span></span><code><span class="n">m</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.data</span><span class="p">,</span> <span class="n">.fun</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">m*ply(.data, .fun, ..., .progress=&#39;none&#39;)</span>
 </code></pre></div>
-
 
 <ul>
 <li>.data 接受一个矩阵或者数据表</li>
@@ -473,29 +456,26 @@ a_ply 输入的是数组, 而不输出.</p>
 <span class="c1"># 3 5  300 300 507.72 634.58 -70.71 643.29 555.39</span>
 </code></pre></div>
 
-
 <h3>r*ply</h3>
 <p>对应于 replicate 函数, plyr 中的函数是 <code>r*ply</code>.
 其也包括 <code>raply</code>, <code>rdply</code>, <code>rlaply</code>, <code>r_ply</code> 等.</p>
-<div class="highlight"><pre><span></span><code><span class="n">r</span><span class="o">*</span><span class="nf">ply</span><span class="p">(</span><span class="n">.n</span><span class="p">,</span> <span class="n">.expr</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">.progress</span><span class="o">=</span><span class="s">&#39;none&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">r*ply(.n, .expr, ..., .progress=&#39;none&#39;)</span>
 </code></pre></div>
-
 
 <ul>
 <li>.n 是要重复的个数</li>
 <li>.expr 是需要重复的表达式</li>
 </ul>
 <p>例如生成随机数:</p>
-<div class="highlight"><pre><span></span><code><span class="nf">raply</span><span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="nf">rnorm</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">raply</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">rnorm</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 
-<span class="c1">#          1     2     3     4     5</span>
-<span class="c1"># [1,]  0.74  0.05 -2.08 -0.57  0.12</span>
-<span class="c1"># [2,] -1.23  0.32 -0.58  0.19 -0.31</span>
-<span class="c1"># [3,] -1.10  0.32  0.07 -0.97 -0.05</span>
-<span class="c1"># [4,]  0.82 -0.07 -0.12  1.53 -0.32</span>
-<span class="c1"># [5,]  0.83 -0.20 -0.61 -0.42 -0.56</span>
+<span class="o">#</span>          <span class="mi">1</span>     <span class="mi">2</span>     <span class="mi">3</span>     <span class="mi">4</span>     <span class="mi">5</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">,]</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">74</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">05</span> <span class="o">-</span><span class="mi">2</span><span class="p">.</span><span class="mi">08</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">57</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">12</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">2</span><span class="p">,]</span> <span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">23</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">32</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">58</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">19</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">31</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">3</span><span class="p">,]</span> <span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">10</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">32</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">07</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">97</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">05</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">4</span><span class="p">,]</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">82</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">07</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">12</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">53</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">32</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">5</span><span class="p">,]</span>  <span class="mi">0</span><span class="p">.</span><span class="mi">83</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">20</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">61</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">42</span> <span class="o">-</span><span class="mi">0</span><span class="p">.</span><span class="mi">56</span>
 </code></pre></div>
-
 
 <h2>总结</h2>
 <p>于是这主要的十二个 apply 函数介绍完了.
@@ -510,51 +490,48 @@ a_ply 输入的是数组, 而不输出.</p>
 <ul>
 <li>splat: 把函数转换为可以接受一个列表进行输入, 配合 <code>m*ply</code> 有奇效</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nf">splat</span><span class="p">(</span><span class="n">rnorm</span><span class="p">)(</span><span class="nf">list</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="m">5</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="m">2</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="n">splat</span><span class="p">(</span><span class="n">rnorm</span><span class="p">)(</span><span class="n">list</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mean</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
 
-<span class="c1"># [1] 2.505678 2.944919 1.485397 1.536358 2.216418</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="mi">2</span><span class="p">.</span><span class="mi">505678</span> <span class="mi">2</span><span class="p">.</span><span class="mi">944919</span> <span class="mi">1</span><span class="p">.</span><span class="mi">485397</span> <span class="mi">1</span><span class="p">.</span><span class="mi">536358</span> <span class="mi">2</span><span class="p">.</span><span class="mi">216418</span>
 </code></pre></div>
-
 
 <ul>
 <li>each: 同一个值传入不同的函数, 输出向量等, 可以配合 <code>ddply</code> 使用.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nf">each</span><span class="p">(</span><span class="n">max</span><span class="p">,</span> <span class="n">min</span><span class="p">)(</span><span class="nf">seq</span><span class="p">(</span><span class="m">5</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="k">each</span><span class="p">(</span><span class="k">max</span><span class="p">,</span> <span class="k">min</span><span class="p">)(</span><span class="n">seq</span><span class="p">(</span><span class="mi">5</span><span class="p">))</span>
 
-<span class="c1"># max min</span>
-<span class="c1">#   5   1</span>
+<span class="o">#</span> <span class="k">max</span> <span class="k">min</span>
+<span class="o">#</span>   <span class="mi">5</span>   <span class="mi">1</span>
 </code></pre></div>
-
 
 <ul>
 <li>colwise: 把一个标量函数转为向量化的函数</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nf">class</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="k">class</span>(<span class="n">iris</span>)
 
 <span class="c1"># [1] &quot;data.frame&quot;</span>
 
-<span class="nf">colwise</span><span class="p">(</span><span class="n">class</span><span class="p">)(</span><span class="n">iris</span><span class="p">)</span>
+<span class="n">colwise</span>(<span class="k">class</span>)(<span class="n">iris</span>)
 
 <span class="c1">#   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
 <span class="c1"># 1      numeric     numeric      numeric     numeric  factor</span>
 </code></pre></div>
 
-
 <ul>
 <li>failwith: 如果一个函数报错了, 整个计算就错了, 算的岂不可惜?
   可以用 failwith 对于报错的函数返回特定的值, 而不中断计算.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="nf">sum</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">))</span>
+<div class="highlight"><pre><span></span><code><span class="k">sum</span><span class="p">(</span><span class="k">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">))</span>
 
-<span class="c1"># Error in sum(c(1, 2, &quot;3&quot;)) : invalid &#39;type&#39; (character) of argument</span>
+<span class="o">#</span> <span class="n">Error</span> <span class="k">in</span> <span class="k">sum</span><span class="p">(</span><span class="k">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="ss">&quot;3&quot;</span><span class="p">))</span> <span class="p">:</span> <span class="n">invalid</span> <span class="s1">&#39;type&#39;</span> <span class="p">(</span><span class="nb">character</span><span class="p">)</span> <span class="k">of</span> <span class="n">argument</span>
 
-<span class="nf">failwith</span><span class="p">(</span><span class="s">&#39;错啦&#39;</span><span class="p">,</span> <span class="n">sum</span><span class="p">)(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">))</span>
+<span class="n">failwith</span><span class="p">(</span><span class="s1">&#39;错啦&#39;</span><span class="p">,</span> <span class="k">sum</span><span class="p">)(</span><span class="k">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">))</span>
 
-<span class="c1"># Error in f(...) : invalid &#39;type&#39; (character) of argument</span>
-<span class="c1"># [1] &quot;错啦&quot;</span>
+<span class="o">#</span> <span class="n">Error</span> <span class="k">in</span> <span class="n">f</span><span class="p">(...)</span> <span class="p">:</span> <span class="n">invalid</span> <span class="s1">&#39;type&#39;</span> <span class="p">(</span><span class="nb">character</span><span class="p">)</span> <span class="k">of</span> <span class="n">argument</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;错啦&quot;</span>
 
-<span class="nf">failwith</span><span class="p">(</span><span class="s">&#39;又错啦&#39;</span><span class="p">,</span> <span class="n">sum</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="bp">T</span><span class="p">)(</span><span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">))</span>
-<span class="c1"># [1] &quot;又错啦&quot;</span>
+<span class="n">failwith</span><span class="p">(</span><span class="s1">&#39;又错啦&#39;</span><span class="p">,</span> <span class="k">sum</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="n">T</span><span class="p">)(</span><span class="k">c</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;3&#39;</span><span class="p">))</span>
+<span class="o">#</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ss">&quot;又错啦&quot;</span>
 </code></pre></div>
         </div>
         <div class="post_list">

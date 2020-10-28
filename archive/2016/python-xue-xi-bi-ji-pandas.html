@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -149,7 +151,6 @@
 <span class="err"># 2 -0.055451  1.775159 -1.079502  0.518504</span>
 </code></pre></div>
 
-
 <h4>行列操作</h4>
 <p>DataFrame 或者 Series 的 Index 在本质上和 DataFrame 的列或者 Series 没有太大差别, 适用于 DataFrame 列或者 Series 的部分 method 在 index 中也都有.</p>
 <p>因为在数据分析中有大量的任务是针对整列操作的, 所以 pandas 的 DataFrame 取列的设计是容易的. 可以像 dict 一样利用列名去取列, 同时 DataFrame 的每一列也都是 attribute, 可以像 attribute 一样取.</p>
@@ -168,7 +169,6 @@
 <span class="o">#</span> <span class="mi">27</span>        <span class="n">Passeridae</span>
 <span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="n">Family</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="k">object</span>
 </code></pre></div>
-
 
 <p>在进行 DataFrame 的操作的时候, 我们会需要去取特定地行, 有的时候是取符合一定要求的行, 有的时候是取特定的行. 需要说明的是取特定的行的时候, 我们可以根据行的号来取, 也可以根据行的 index 来取, 这两者是不一样的.</p>
 <p>如果想要根据 index 或者 column 来取行列, 则可以使用 <code>df.ix['index']</code> 或者 <code>df['column']</code> 来取特定的行列, <code>df.ix[row, col]</code> 则可以用来取特定的位置的元素. 而如果想要根据行号或者列号来取, 则要使用 <code>df.irow(n)</code> 或者 <code>df.icol(n)</code> 方法.</p>
@@ -237,7 +237,6 @@
 <span class="o">#</span> <span class="err">绿头鸭</span>      <span class="n">Anatidae</span><span class="o">&amp;</span><span class="n">Mallard</span>      <span class="mi">4</span>  <span class="n">Anatidae</span>  <span class="p">...</span> <span class="o">#</span> <span class="err">省略后面内容</span>
 </code></pre></div>
 
-
 <p>正如数据库中有时会用到多列数据作为 key, DataFrame 和 Series 也可以使用多级 index, 即 MultiIndex. 对 MultiIndex 也可以使用包含每一级 index 值的 tuple 去取值. 或者使用 <code>df.xs</code> 方法, 可以指定单一的 level 的值去取值.</p>
 <p>如果想要增加一列或者删除一列, 可以使用多种方法.</p>
 <div class="highlight"><pre><span></span><code><span class="err">bird[&#39;Chinese2&#39;] = bird[&#39;Chinese&#39;]</span>
@@ -247,7 +246,6 @@
 <span class="err">bird.drop(&#39;Chinese2&#39;, axis = 1)</span>
 <span class="err"># 删除列</span>
 </code></pre></div>
-
 
 <h4>统计量与描述</h4>
 <ul>
@@ -290,7 +288,6 @@
 <span class="o">#</span> <span class="n">Species</span>       <span class="mi">28</span>
 <span class="o">#</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </code></pre></div>
-
 
 <p>除了一般的统计计算的函数, 还有 window 函数可以使用, 这些函数按照一定的窗口宽度去滑动计算统计量.</p>
 <ul>
@@ -350,7 +347,6 @@
 <span class="err"># dtype: bool</span>
 </code></pre></div>
 
-
 <h4>集合运算</h4>
 <ul>
 <li><code>s.unique</code>: 返回 Series 中非重复的值.</li>
@@ -382,7 +378,6 @@
 <span class="err"># 2     True</span>
 <span class="err"># dtype: bool</span>
 </code></pre></div>
-
 
 <h4>缺失数据</h4>
 <p>在实际的数据分析中, 我们有时候难以保证数据的每一种情况都有值, 有时候因为各种人为或非人为的原因, 我们会遇到缺失值. 如前面提到的观鸟记录一般要用铅笔写, 防止水把字迹模糊, 如果用水性笔记录, 遇到记录本被水打湿, 有些数据就会模糊不清, 就会造成缺失数据. 在 Pandas 和 NumPy 中都有处理缺失数据的方法. 因为 Pandas 是建立在 NumPy 的基础上的, 所以, Pandas 使用了 NumPy 中缺失数据的表示方法 np.NaN (np.nan). 另外对于时间的缺失值, Pandas 有 pd.NaT 来表示.</p>
@@ -431,7 +426,6 @@
 <span class="err"># 4    True   True   True</span>
 </code></pre></div>
 
-
 <h4>向量化和 apply</h4>
 <p>当我们需要对 DataFrame 或者 Series 中每一个元素或近乎每一个元素都要操作的时候, 采用向量化的操作方法要比使用 for 循环一个个元素进行操作要高效得多. Pandas 中提供的数值计算等函数都是向量化对数据操作的. 而如果要把一个非向量化的函数应用到每一个元素, 使用 Pandas 提供的 map 和 apply 函数将会比使用 for 更清晰, 虽然性能上不会差太多. 在 R 语言中的 apply 函数则因为其减少了解析语句和赋值的次数而使得计算效率得到提升.</p>
 <ul>
@@ -475,7 +469,6 @@
 <span class="err"># Species       28</span>
 <span class="err"># dtype: int64</span>
 </code></pre></div>
-
 
 <h4>分组计算 和 groupby</h4>
 <p>DataFrame 的 groupby 方法可以方便地对数据根据一定的水平分组进行计算. 在 R 中, 处理数据的时候会经常用到 Hadley Wickham 写的包, 其中对数据处理就会有按照一定地值对数据进行分组, 然后在分组中分别进行计算, 最后把结果合并起来. 这样的数据处理方式类似于数据库中对 group by 的表格进行窗口函数计算. groupby 方法可以接受 DataFrame 中的 column names 作为参数, 也可以直接接受 DataFrame 的 column 的值, Series 或者 list 等作为参数. groubpy 会返回 tuple 的 iter, tuple 中的第一个元素是 subgroup 的名字, 第二个元素是 subgroup 的 DataFrame.</p>
@@ -547,7 +540,6 @@
 <span class="o">#</span> <span class="n">Name</span><span class="p">:</span> <span class="k">Count</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </code></pre></div>
 
-
 <p>正如上面例子所展示出来的, 对于一个 DataFrame groupby 可以直接输入 column 的名称, 而对于一个 column 进行 groupby 则要输入 groupby 的具体的值. 所以如果要对 DataFrame 的一列单独进行分组操作, 那么下面的代码是等价的.</p>
 <div class="highlight"><pre><span></span><code><span class="err">bird.groupby([&#39;Order&#39;])[&#39;Chinese&#39;].count()</span>
 <span class="err">bird[&#39;Chinese&#39;].groupby([bird[&#39;Order&#39;]]).count()</span>
@@ -563,14 +555,12 @@
 <span class="err"># Name: Chinese, dtype: int64</span>
 </code></pre></div>
 
-
 <p>groupby 方法会按照输入的值来对 DataFrame 进行分组, 所以, 我们也可以给 groupby 传入一个可以返回值的函数, 来对 DataFrame 进行分组.</p>
 <div class="highlight"><pre><span></span><code><span class="err">bird[&#39;Count&#39;].groupby(lambda x: x &gt; 10).count()</span>
 <span class="err"># False    11</span>
 <span class="err"># True     17</span>
 <span class="err"># Name: Count, dtype: int64</span>
 </code></pre></div>
-
 
 <p>Pandas 中有些函数是对 groupby 进行优化的, 这些函数也是对数据进行分组之后常用的操作. 如 count, sum, mean, median, std, var, min, max, prod, first, last 等. 也可以使用 agg (aggregate) 方法来把函数应用到每个小组.</p>
 <div class="highlight"><pre><span></span><code><span class="err">bird.groupby([&#39;Order&#39;])[&#39;Count&#39;].agg(sum)</span>
@@ -586,7 +576,6 @@
 <span class="err"># Name: Count, dtype: int64</span>
 </code></pre></div>
 
-
 <p>另外, transform 函数可以按照分组和传入的函数去计算值, 并返回一个 Series, 其 index 和原来的 DataFrame 的 index 是对应的.</p>
 <div class="highlight"><pre><span></span><code><span class="err">bird.groupby([&#39;Order&#39;])[&#39;Count&#39;].transform(np.mean)</span>
 <span class="err"># 0      3.5000</span>
@@ -597,38 +586,36 @@
 <span class="err"># dtype: float64</span>
 </code></pre></div>
 
-
 <p>在 Excel 里面我们可以对一个表单建立数据透视表 (pivot table), pandas 的 DataFrame 也可以建立数据透视表, 使用 <code>df.pivot_table</code> 方法. <code>df.pivot_table</code> 的输出结果和 <code>df.groupby</code> 很像, <code>pivot_table</code> 实际上是用户友好的简化的 <code>df.groupby</code>.</p>
-<div class="highlight"><pre><span></span><code><span class="err">bird.pivot_table(</span>
-<span class="err">    data   = [&#39;Chinese&#39;],</span>
-<span class="err">    index  = [&#39;Order&#39;, &#39;Family&#39;],</span>
-<span class="err">    aggfunc = lambda x: &#39; &#39;.join(x)</span>
-<span class="err">)</span>
-<span class="err">#                                       Chinese</span>
-<span class="err"># Order            Family                      </span>
-<span class="err"># Accipitriformes  Accipitridae             白尾鹞</span>
-<span class="err"># Anseriformes     Anatidae            绿头鸭 白眼潜鸭</span>
-<span class="err"># Charadriiformes  Charadriidae            凤头麦鸡</span>
-<span class="err">#                  Laridae                  红嘴鸥</span>
-<span class="err"># Galliformes      Phasianidae               雉鸡</span>
-<span class="err"># Gruiformes       Rallidae            普通秧鸡 白骨顶</span>
-<span class="err"># Passeriformes    Aegithalidae          银喉长尾山雀</span>
-<span class="err">#                  Corvidae              灰喜鹊 喜鹊</span>
-<span class="err">#                  Emberizidae        小鹀 灰头鹀 苇鹀</span>
-<span class="err">#                  Fringillidae             金翅雀</span>
-<span class="err">#                  Laniidae           棕背伯劳 楔尾伯劳</span>
-<span class="err">#                  Muscicapidae      红胁蓝尾鸲 北红尾鸲</span>
-<span class="err">#                  Panuridae                文须雀</span>
-<span class="err">#                  Passeridae                麻雀</span>
-<span class="err">#                  Phylloscopidae          黄眉柳莺</span>
-<span class="err">#                  Pycnonotidae             白头鹎</span>
-<span class="err">#                  Sylviidae               棕头鸦雀</span>
-<span class="err"># Piciformes       Picidae         大斑啄木鸟 灰头绿啄木鸟</span>
-<span class="err"># Podicipediformes Podicipedidae       小䴙䴘 凤头䴙䴘</span>
-<span class="err">bird.groupby([&#39;Order&#39;, &#39;Family&#39;])[&#39;Chinese&#39;].agg(lambda x: &#39; &#39;.join(x))</span>
-<span class="err"># 也可以拿到和上面相同的结果.</span>
+<div class="highlight"><pre><span></span><code><span class="n">bird</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+    <span class="n">data</span>   <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">],</span>
+    <span class="n">index</span>  <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Order&#39;</span><span class="p">,</span> <span class="s1">&#39;Family&#39;</span><span class="p">],</span>
+    <span class="n">aggfunc</span> <span class="o">=</span> <span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1">#                                       Chinese</span>
+<span class="c1"># Order            Family                      </span>
+<span class="c1"># Accipitriformes  Accipitridae             白尾鹞</span>
+<span class="c1"># Anseriformes     Anatidae            绿头鸭 白眼潜鸭</span>
+<span class="c1"># Charadriiformes  Charadriidae            凤头麦鸡</span>
+<span class="c1">#                  Laridae                  红嘴鸥</span>
+<span class="c1"># Galliformes      Phasianidae               雉鸡</span>
+<span class="c1"># Gruiformes       Rallidae            普通秧鸡 白骨顶</span>
+<span class="c1"># Passeriformes    Aegithalidae          银喉长尾山雀</span>
+<span class="c1">#                  Corvidae              灰喜鹊 喜鹊</span>
+<span class="c1">#                  Emberizidae        小鹀 灰头鹀 苇鹀</span>
+<span class="c1">#                  Fringillidae             金翅雀</span>
+<span class="c1">#                  Laniidae           棕背伯劳 楔尾伯劳</span>
+<span class="c1">#                  Muscicapidae      红胁蓝尾鸲 北红尾鸲</span>
+<span class="c1">#                  Panuridae                文须雀</span>
+<span class="c1">#                  Passeridae                麻雀</span>
+<span class="c1">#                  Phylloscopidae          黄眉柳莺</span>
+<span class="c1">#                  Pycnonotidae             白头鹎</span>
+<span class="c1">#                  Sylviidae               棕头鸦雀</span>
+<span class="c1"># Piciformes       Picidae         大斑啄木鸟 灰头绿啄木鸟</span>
+<span class="c1"># Podicipediformes Podicipedidae       小䴙䴘 凤头䴙䴘</span>
+<span class="n">bird</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;Order&#39;</span><span class="p">,</span> <span class="s1">&#39;Family&#39;</span><span class="p">])[</span><span class="s1">&#39;Chinese&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">agg</span><span class="p">(</span><span class="n">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="c1"># 也可以拿到和上面相同的结果.</span>
 </code></pre></div>
-
 
 <p>另外, 如果 pivot table 不方便使用, 还可以使用 <code>pd.crosstab</code>.</p>
 <div class="highlight"><pre><span></span><code><span class="err">s1 = pd.Series([&#39;one&#39;] * 4 + [&#39;two&#39;] * 3 + [&#39;Three&#39;] * 3)</span>
@@ -641,7 +628,6 @@
 <span class="err"># two    2  0  0  1  0    3</span>
 <span class="err"># All    4  1  1  2  2   10</span>
 </code></pre></div>
-
 
 <p>还有一个与分组有关的函数是 <code>df.cut</code>, 该函数接受一个 bin 参数, 按照给定的值把 DataFrame 的某一列的值转换成区间或者一定的标签, 在分组或者计算数量的时候可以使用.</p>
 <h4>连接与结合</h4>

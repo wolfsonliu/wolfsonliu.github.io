@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -73,18 +75,15 @@
 <span class="nf">fix</span><span class="p">(</span><span class="n">mydata</span><span class="p">)</span>  <span class="c1"># 使用fix直接修改变量</span>
 </code></pre></div>
 
-
 <p>scan 函数如果不加 file 的参数, 则直接从终端读取数据, 需要使用 what 来指明数据类型: <code>what=""</code> 读字符, <code>what=0</code> 读数字, <code>what=list(a=0, b="")</code> 把读的结果按相应类型保存成 list. scan 函数也可以放在其他的函数中, 如 matrix, 然后在终端输入值.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">scan</span><span class="p">()</span>
 
 <span class="n">mymat</span> <span class="o">&lt;-</span> <span class="nf">matrix</span><span class="p">(</span><span class="nf">scan</span><span class="p">(),</span><span class="n">ncol</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">byrow</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </code></pre></div>
 
-
 <h3>读取文本文件</h3>
 <div class="highlight"><pre><span></span><code><span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.table</span><span class="p">(</span><span class="n">file</span>   <span class="o">=</span> <span class="n">THEFILE</span><span class="p">,</span> <span class="n">header</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;,&quot;</span><span class="p">,</span> <span class="n">stringsAsFactors</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
 </code></pre></div>
-
 
 <p>除了 read.table 直接把 scan 函数封装好的函数外, 还有 read.csv, read.csv2, read.delim, read.delim2 等对 read.table 进行了按照文件类型进行特别设置的函数可以使用.</p>
 <ul>
@@ -102,12 +101,10 @@
 <span class="nf">odbcClose</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span>
 </code></pre></div>
 
-
 <p>Excel 2007 采用的 xlsx 文件实际上相当于 xls 的压缩文件. 对于 xlsx 文件, 可以使用 xlsx 包, 来读取和操作 xlsx 文件.</p>
 <div class="highlight"><pre><span></span><code><span class="nf">library</span><span class="p">(</span><span class="n">xlsx</span><span class="p">)</span>
 <span class="n">mydata</span> <span class="o">&lt;-</span> <span class="nf">read.xlsx</span><span class="p">(</span><span class="s">&quot;myfile.xlsx&quot;</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span> <span class="c1"># 1 指的是要读取的表单.</span>
 </code></pre></div>
-
 
 <p>也可以在所有的平台上使用 gdata 包的 read.xls 来读取 Excel 文件.</p>
 <h3>读取关系数据库数据</h3>
@@ -121,7 +118,6 @@
 <span class="err">sqlDrop(channel,sqtable)  # 删除ODBC数据库中的某个表</span>
 <span class="err">close(channel)  # 关闭连接</span>
 </code></pre></div>
-
 
 <h4>DBI 数据库接口</h4>
 <p>DBI 提供数据库通用接口. 相关 R 包有 RJDBC, RMySQL, RPostgreSQL, ROracle, RSQLite 等.</p>

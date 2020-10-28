@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -78,7 +80,6 @@
 <span class="err"># array([0, 1, 2, 3, 4])</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>np.asarray</code>: 把其他类型的数据转换成为 ndarray, 如果是 ndarray 输入则默认不进行 copy, 而如果是其他类型数据则创建新的 ndarray.</li>
 </ul>
@@ -87,14 +88,12 @@
 <span class="err"># True</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>np.arange</code>: 类似于 range 函数, 创建一个序列.</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="err">np.arange(1, 16, 2)</span>
 <span class="err"># array([ 1,  3,  5,  7,  9, 11, 13, 15])</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>np.ones</code>, <code>np.ones_like</code>: 创建一个数组, 其中的元素全为 1. <code>np.ones</code> 根据参数设定的纬度创建一个元素为 1 的数组, 而 <code>np.ones_like</code> 则根据一个已有的数组创建和其有相同纬度的元素全为 1 的数组.</li>
@@ -118,7 +117,6 @@
 <span class="err"># array([0, 0, 0, 0, 0])</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>np.eye</code>: 创建一个对角线为 1 其他为 0 的矩阵.</li>
 <li><code>np.identity</code>: 创建一个主对角线为 1 其他为 0 的方阵.</li>
@@ -131,7 +129,6 @@
 <span class="err">#        [ 0.,  1.,  0.],</span>
 <span class="err">#        [ 0.,  0.,  1.]])</span>
 </code></pre></div>
-
 
 <h4>ndarray 方法</h4>
 <p>一个 ndarray 有如下常用的属性.</p>
@@ -158,7 +155,6 @@
 <span class="err">nd.shape</span>
 <span class="err"># (3, 4)</span>
 </code></pre></div>
-
 
 <p>NumPy 提供了常用的对 ndarray 进行变换的方法.</p>
 <ul>
@@ -197,7 +193,6 @@
 <span class="err">#        [6, 9, 5, 1, 3, 5]])</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>np.nonzero</code>: 返回元素中非零的索引, 如果是多维的, 则每个维度都会有一个包含该维度的序号的 ndarray.</li>
 </ul>
@@ -206,7 +201,6 @@
 <span class="err">#  array([0, 1, 2, 3, 4, 5, 0, 1, 2, 3, 4, 5]))</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>np.repeat</code>: 复制 ndarray 的每个元素的值, 返回一个延长的 ndarray, 需要传入复制的次数作为参数. 当 ndarray 不是一维的时候, 返回的 ndarray 也会是一维的.</li>
 </ul>
@@ -214,7 +208,6 @@
 <span class="err"># array([6, 6, 2, 2, 4, 4, 5, 5, 5, 5, 3, 3,</span>
 <span class="err">#        6, 6, 9, 9, 5, 5, 1, 1, 3, 3, 5, 5])</span>
 </code></pre></div>
-
 
 <ul>
 <li><code>np.compress</code>: 按照给定的 bool list 来选取 ndarray 中的值, 返回一个新的 ndarray.</li>
@@ -225,7 +218,6 @@
 <span class="err"># array([[6, 2, 5],</span>
 <span class="err">#        [6, 9, 3]])</span>
 </code></pre></div>
-
 
 <p>ndarray 也有排序的方法可以使用.</p>
 <ul>
@@ -252,7 +244,6 @@
 <span class="err"># array([False, False,  True, False, False], dtype=bool)</span>
 </code></pre></div>
 
-
 <ul>
 <li><code>np.all</code>: 如果所有的值都是真或者非零则返回 True, 否则返回 False.</li>
 <li><code>np.any</code>: ndarray 中有任何真值或者非零值则返回 True.</li>
@@ -264,7 +255,6 @@
 <span class="err">mybool.any()</span>
 <span class="err"># True</span>
 </code></pre></div>
-
 
 <h4>数值计算</h4>
 <p>NumPy 中有许多和数值计算相关的函数, 这些函数与 math module 中的不同, 是向量化的, 能够高效地对 ndarray 类型的数组中的每一个元素进行运算. 这些函数也被称为通用函数 (ufunc).</p>
@@ -295,7 +285,6 @@
 <span class="err">#         0.01538155,  0.77812592,  0.94664076,  0.85143997,  0.68542156])</span>
 </code></pre></div>
 
-
 <p>还有一些双目运算函数.</p>
 <ul>
 <li><code>np.add</code>, <code>+</code>: 两个数组元素一一对应相加.</li>
@@ -317,7 +306,6 @@
 <span class="err">np.maximum(nd1, nd2)</span>
 <span class="err"># array([ 8, 18, 15, 15, 16, 13, 19, 12, 19, 10])</span>
 </code></pre></div>
-
 
 <h4>集合运算</h4>
 <p>我们有时候关心的是数据中有多少个单一的值, 或者两个数据中相同的值有哪些, 这个时候可以通过集合运算函数来获取所关心的值. NumPy 中提供了高效的集合运算的函数.</p>
@@ -352,7 +340,6 @@
 <span class="err">#       dtype=&#39;&lt;U1&#39;)</span>
 </code></pre></div>
 
-
 <h4>统计量</h4>
 <p>NumPy 中有简单的统计计算的方法或者函数, 有着很好的效率. 统计量计算的函数和方法可以通过更高层调用, 如 <code>np.sum(arr)</code>, 或者使用数组的方法, 如 <code>arr.sum</code>.</p>
 <ul>
@@ -365,25 +352,24 @@
 <li><code>np.cumsum</code>: 累加.</li>
 <li><code>np.cumprod</code>: 累乘.</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="err">nd = np.random.randn(100)  # 随机产生 100 个随机数.</span>
-<span class="err">nd.sum()</span>
-<span class="err"># -13.300540142526414</span>
-<span class="err">np.mean(nd)</span>
-<span class="err"># -0.13300540142526412</span>
-<span class="err">nd.std()</span>
-<span class="err"># 1.0860199448302112</span>
-<span class="err">nd.var()</span>
-<span class="err"># 1.1794393205690152</span>
-<span class="err">nd.min(), np.max(nd)</span>
-<span class="err"># (-3.2346987329963834, 2.3950110710189687)</span>
-<span class="err">nd.argmin(), np.argmax(nd)</span>
-<span class="err"># (24, 31)</span>
-<span class="err">nd.cumsum()</span>
-<span class="err"># array([ -0.55436107,  -0.86184171,  -2.47687452,  -5.0649675 ,</span>
-<span class="err">#            ...            ...            ...          ...</span>
-<span class="err">#        -13.96853959, -13.59106636, -14.16799745, -13.30054014])</span>
+<div class="highlight"><pre><span></span><code><span class="n">nd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>  <span class="c1"># 随机产生 100 个随机数.</span>
+<span class="n">nd</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="c1"># -13.300540142526414</span>
+<span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
+<span class="c1"># -0.13300540142526412</span>
+<span class="n">nd</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="c1"># 1.0860199448302112</span>
+<span class="n">nd</span><span class="o">.</span><span class="k">var</span><span class="p">()</span>
+<span class="c1"># 1.1794393205690152</span>
+<span class="n">nd</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
+<span class="c1"># (-3.2346987329963834, 2.3950110710189687)</span>
+<span class="n">nd</span><span class="o">.</span><span class="n">argmin</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">nd</span><span class="p">)</span>
+<span class="c1"># (24, 31)</span>
+<span class="n">nd</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+<span class="c1"># array([ -0.55436107,  -0.86184171,  -2.47687452,  -5.0649675 ,</span>
+<span class="c1">#            ...            ...            ...          ...</span>
+<span class="c1">#        -13.96853959, -13.59106636, -14.16799745, -13.30054014])</span>
 </code></pre></div>
-
 
 <h4>线性代数</h4>
 <p>NumPy 中提供了一些线性代数运算的函数, 在 linalg 中有更全的线性代数的计算函数. 更多的线性代数相关函数包含在 scipy.linalg 包中.</p>
@@ -415,7 +401,6 @@
 <span class="err"># 190</span>
 </code></pre></div>
 
-
 <h4>随机数和随机排列</h4>
 <p>不论是在构建模拟数据还是实际数据分析中, 我们都需要频繁地生成随机数或者随机抽样. NumPy 提供了众多方便使用的生成各种分布的伪随机数的函数.</p>
 <ul>
@@ -438,7 +423,6 @@
 <span class="err"># array([[3, 4, 5],</span>
 <span class="err">#        [0, 1, 2]])</span>
 </code></pre></div>
-
 
 <h4>缺失值</h4>
 </section>

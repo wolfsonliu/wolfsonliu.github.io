@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -81,7 +83,6 @@
 <div class="highlight"><pre><span></span><code><span class="err">mkdir ~/myblog</span>
 <span class="err">cd ~/myblog</span>
 </code></pre></div>
-
 
 <ul>
 <li>运行 <code>pelican-quickstart</code>: 因为我没有时间去钻研 Pelican 具体该怎么用，所以就用傻瓜式操作了，Pelican 写了很方便的脚本来辅助建立项目。只要回答一些问题就好了。每个问题后面的方括号中的是默认设置，圆括号中是选项。有一点需要注意的是时区的设置，名称可以参考 <a href="http://en.wikipedia.org/wiki/List_of_tz_database_time_zones">wikipedia</a>。</li>
@@ -133,7 +134,6 @@
 <span class="n">Done</span><span class="p">.</span><span class="w"> </span><span class="n">Your</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">project</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">available</span><span class="w"> </span><span class="k">at</span><span class="w"> </span><span class="o">~/</span><span class="n">Wolfson</span><span class="w"></span>
 </code></pre></div>
 
-
 <p>当这些问题回答完后, Pelican 会自动建立所需要的文件和文件夹。</p>
 <div class="highlight"><pre><span></span><code>$ tree
 .
@@ -145,7 +145,6 @@
 ├── pelicanconf.py
 └── publishconf.py
 </code></pre></div>
-
 
 <p>简要说下各个文件和文件夹的用途：
 * <code>Makefile</code> 使用 <code>make</code> 来生成页面的文件；
@@ -162,20 +161,17 @@
 <div class="highlight"><pre><span></span><code><span class="err">git clone https://github.com/getpelican/pelican-themes</span>
 </code></pre></div>
 
-
 <ul>
 <li>设置自己喜欢的主题，可以通过 Pelican 程序提供的 <a href="http://docs.getpelican.com/en/3.3.0/pelican-themes.html">pelican-themes</a> 设置，也可以在 <code>pelicanconf.py</code> 中设置。</li>
 </ul>
 <div class="highlight"><pre><span></span><code><span class="err">THEME = &quot;pelican-themes/pelican-blue&quot;</span>
 </code></pre></div>
 
-
 <h4>增加 Disqus 评论</h4>
 <p>因为是静态博客, 所以 Pelican 生成的页面本身没有评论的功能, 但是可以很方便地通过 Disqus 来增加评论功能.</p>
 <p>首先, 需要在 Disqus 上面注册账号, 然后点击小齿轮出现的 "增加 Disqus 到其他网站", 跟着相关的设置就好. 设置完成后, 需要记下设置的 Disqus 网页名称. 接着, 在 pelicanconf.py 中进行设置就可以了.</p>
 <div class="highlight"><pre><span></span><code><span class="err">DISQUS_SITENAME = u&quot;wolfsonliu&quot;</span>
 </code></pre></div>
-
 
 <h4>生成网页</h4>
 <ul>
@@ -185,7 +181,6 @@
 <div class="highlight"><pre><span></span><code>$ <span class="nb">cd</span> myblog
 $ make devserver
 </code></pre></div>
-
 
 <p>命令运行之后，output 文件夹中会有相应的网页生成。在浏览器中打开：http://localhost:8000 就可以进入生成的网页，可以看看效果然后修改错误之类的。</p>
 <h4>推送到 GitHub</h4>
@@ -200,7 +195,6 @@ $ git commit -m <span class="s2">&quot;first commit&quot;</span>
 $ git remote add origin https://github.com/wolfsonliu/wolfsonliu.github.io.git
 $ git push -u origin master
 </code></pre></div>
-
 
 <hr>
 <p>终于有了自己的博客了，可以好好写东西了。当然，还有很多需要调试需要修改的地方，有时间了可以弄一下。比如，修改下主题，增加些新的特性等。</p>

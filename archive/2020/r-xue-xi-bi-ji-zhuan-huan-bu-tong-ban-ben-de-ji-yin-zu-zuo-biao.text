@@ -1,0 +1,86 @@
+Title: R 学习笔记：转换不同版本的基因组坐标
+Date: 2020-10-28 14:16
+Modified: 2020-10-28 16:39
+Category: 壹零零壹
+Tags: r, bioinformatics
+Authors: Wolfson Liu
+Summary: R liftOver.
+
+在利用公共数据做基因组数据分析的时候经常会遇到不同的数据使用的人类基因
+组版本不同。想要对比就需要对基因组坐标进行转换，通常可以直接利用[UCSC
+LiftOver](https://genome.ucsc.edu/cgi-bin/hgLiftOver)工具进行转换。当
+需要写程序来自动化的情况下，使用R的
+[liftOver](http://master.bioconductor.org/packages/release/bioc/html/BiocGenerics.html)包就很方便。
+
+### 安装 liftOver ###
+
+R的liftOver包通过[Bioconductor](https://bioconductor.org)进行分发。
+
+对于R 3.6及以上版本的安装方法如下：
+
+```{r}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("liftOver")
+```
+
+对于较老版本的R（<3.5），bioconductor和liftOver的安装方法不同：
+
+```{r}
+source("https://bioconductor.org/biocLite.R")
+BiocInstaller::biocLite(c("liftOver"))
+```
+
+### 下载chain file ###
+
+基因组坐标的转换需要有两个不同的基因组坐标之间的关系文件，所谓的chain
+file。这个文件可以从
+[UCSC](http://hgdownload.soe.ucsc.edu/downloads.html)的网站上下载对应
+的文件。例如，如果我们想要把hg38的坐标转换为hg19的坐标，则可以下载[hg38ToHg19.over.chainñ](http://hgdownload.soe.ucsc.edu/goldenPath/hg38/liftOver/hg38ToHg19.over.chain.gz)文件。
+
+### 转换坐标系 ###
+
+假设我们有一个hg38的GRanges数据：
+
+```{r}
+hg38.gr <- GRanges(seqnames='chr1', ranges=IRanges(start=c(1000000, 2000000), width=5))
+hg38.gr
+# GRanges object with 2 ranges and 0 metadata columns:
+#       seqnames          ranges strand
+#          <Rle>       <IRanges>  <Rle>
+#   [1]     chr1 1000000-1000004      *
+#   [2]     chr1 2000000-2000004      *
+#   -------
+#   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```
+
+首先读取chain file：
+
+```{r}
+library(liftOver)
+ch <- import.chain('hg38ToHg19.over.chain')
+```
+
+对hg38进行转换：
+
+```{r}
+hg19.gr <- liftOver(hg38.gr, ch)
+hg19.gr
+# GRangesList object of length 2:
+# [[1]]
+# GRanges object with 1 range and 0 metadata columns:
+#       seqnames        ranges strand
+#          <Rle>     <IRanges>  <Rle>
+#   [1]     chr1 935380-935384      *
+#   -------
+#   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+#
+# [[2]]
+# GRanges object with 1 range and 0 metadata columns:
+#       seqnames          ranges strand
+#          <Rle>       <IRanges>  <Rle>
+#   [1]     chr1 1931439-1931443      *
+#   -------
+#   seqinfo: 1 sequence from an unspecified genome; no seqlengths
+```

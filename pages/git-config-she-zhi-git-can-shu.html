@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -74,30 +76,26 @@
 <span class="err">git config --global user.email wanger@microsoft.com</span>
 </code></pre></div>
 
-
 <p>这样就会在 <code>~/.gitconfig</code> 文件中看到：</p>
 <div class="highlight"><pre><span></span><code><span class="k">[user]</span>
         <span class="na">email</span> <span class="o">=</span> <span class="s">wanger@microsoft.com</span>
 <span class="s">        name = Er Wang</span>
 </code></pre></div>
 
-
 <p>如果设置项目级别或者系统级别，也会在相应的配置文件中找到相应的值。</p>
 <h2>设置编辑器</h2>
 <p>因为 git 在使用中需要对信息进行编辑，就需要编辑器的支持。如果没有设置编辑器的话，git 会使用系统默认 编辑器，一般类 Unix 系统的默认编辑器是 vim。如果需要设置编辑器，也可以通过 git config 进行。</p>
-<div class="highlight"><pre><span></span><code>git config --global core.editor emacs
+<div class="highlight"><pre><span></span><code><span class="err">git config --global core.editor emacs</span>
 </code></pre></div>
-
 
 <p>这样就可以把编辑器设置为 Emacs。相应也可以在配置文件中看到设置。</p>
-<div class="highlight"><pre><span></span><code><span class="o">[</span>core<span class="o">]</span>
-        <span class="nv">repositoryformatversion</span> <span class="o">=</span> <span class="m">0</span>
-        <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">false</span>
-        <span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
-        <span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
-        <span class="nv">editor</span> <span class="o">=</span> emacs
+<div class="highlight"><pre><span></span><code><span class="k">[core]</span>
+        <span class="na">repositoryformatversion</span> <span class="o">=</span> <span class="s">0</span>
+<span class="s">        filemode = false</span>
+<span class="s">        bare = false</span>
+<span class="s">        logallrefupdates = true</span>
+<span class="s">        editor = emacs</span>
 </code></pre></div>
-
 
 <h2>显示设置的参数</h2>
 <p>如果需要显示当前的参数设置，可以使用 <code>git config</code> 命令加上参数名。</p>
@@ -105,17 +103,14 @@
 <span class="err"># emacs</span>
 </code></pre></div>
 
-
 <p>如果需要显示所有的参数，可以使用 <code>--list</code> 选项。</p>
 <div class="highlight"><pre><span></span><code><span class="err">git config --list</span>
 </code></pre></div>
-
 
 <p>而如果只想要显示项目特有参数（local）或者用户全局参数（global），又或者系统参数（system）也可以通过加上相应选项来实现。</p>
 <p>如显示项目特有参数：</p>
 <div class="highlight"><pre><span></span><code><span class="err">git config --list --local</span>
 </code></pre></div>
-
 
 <h2>参数文件</h2>
 <p>因为 <code>git</code> 的参数都是存于前面提到的三个文件中，也可以直接手动或者程序去修改文件，从而改变参数。</p>

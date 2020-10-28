@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -97,7 +99,6 @@
 <span class="p">}</span>
 </code></pre></div>
 
-
 <div class="highlight"><pre><span></span><code><span class="c1">// C++ version</span>
 <span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
 
@@ -108,7 +109,6 @@
   <span class="c1">// memory managed by vector.</span>
 <span class="p">}</span>
 </code></pre></div>
-
 
 <p>所以, 如果需要动态申请空间, 就应该在使用结束后进行释放. 内存泄漏发生在指针的使用, 如果在指针所指的内存未释放就将指针重新设置, 则会造成内存泄漏的问题. 实际上, 可以采用 Rule of Five 来指导 C++ 编程: 如果一个类需要编写自定义的 destructor, copy/move constructor, copy/move assignment 中任意一种, 那么也需要自定义其他四种. 这样在 destructor 中就可以处理内存释放问题. 如果使用智能指针, 将更方便管理内存使用.</p>
 <hr>
@@ -150,7 +150,6 @@
 <span class="err">// only one allocation! fast.</span>
 </code></pre></div>
 
-
 <p>在使用智能指针的时候, 相关的类中都需要有 virtual 的析构函数, 这样才能使得智能指针在释放对象的时候选择正确的方式进行析构. 可以使用 make shared 函数, 这样就避免了直接使用 new, make shared 函数和 shared ptr 使得 new 和 delete 都不用显示地进行使用, 使得代码更可靠. </p>
 <p>在 boost 库中, shared ptr 可以支持 array, 可以通过 <code>shared_ptr&lt;int[10]&gt; a</code> 实现, 方括号中如果写具体数字, 则会限制 [] 调用到一定的范围之内. 而在 memory 中不支持 array.</p>
 <h5>Weak ptr</h5>
@@ -164,13 +163,11 @@
 <span class="err">}</span>
 </code></pre></div>
 
-
 <p>当使用从 weak ptr 赋值的 shared ptr 的时候, 需要使用 if 去检验 shared ptr 对象是否存在, 直接检验即可得到 true or false 的结果. </p>
 <h5>Unique ptr</h5>
 <p>如果需要使用指向 array 的指针的时候, 需要使用 unique ptr, 因为 unique ptr 支持 delete [] 的释放操作, 而对于没有增加函数的 shared ptr 则只会调用 delete, 这样就会造成 array 除了第一项后面的内存泄漏. </p>
 <div class="highlight"><pre><span></span><code><span class="err">unique_ptr&lt;int[]&gt; p(new int[10]);</span>
 </code></pre></div>
-
 
 <p>因为 <code>unique_ptr</code> 没有定义 operator+, 所以 <code>unique_ptr</code> 不能像 build-in 的指针那样指定数组的时候可以直接使用 + 来指向数组的某一位. 如果要使用, 就可以考虑在程序内部使用传统的方法建立和释放动态存储空间来使用诸如 <code>max_element</code> 等泛型函数. 在一个小范围内可控地使用 new 和 delete 还是可以的. </p>
 <p>在 boost 库中, 相应的为 <code>scoped_ptr</code></p>
@@ -179,14 +176,14 @@
 <div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;memory&gt;</span><span class="cp"></span>
 <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
 
-<span class="kr">struct</span> <span class="nl">Good</span><span class="p">:</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span>
+<span class="kr">struct</span> <span class="nc">Good</span><span class="o">:</span> <span class="n">std</span><span class="o">::</span><span class="n">enable_shared_from_this</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span>
 <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Good</span><span class="o">&gt;</span> <span class="n">getptr</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="n">shared_from_this</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nf">shared_from_this</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">};</span>
 
-<span class="kr">struct</span> <span class="n">Bad</span>
+<span class="kr">struct</span> <span class="nc">Bad</span>
 <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Bad</span><span class="o">&gt;</span> <span class="n">getptr</span><span class="p">()</span> <span class="p">{</span>
         <span class="k">return</span> <span class="n">std</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">Bad</span><span class="o">&gt;</span><span class="p">(</span><span class="n">this</span><span class="p">);</span>
@@ -208,14 +205,12 @@
 <span class="p">}</span> <span class="c1">// UB: double-delete of Bad</span>
 </code></pre></div>
 
-
 <p>输出结果如下：</p>
 <div class="highlight"><pre><span></span><code><span class="err">gp2.use_count() = 2</span>
 <span class="err">bp2.use_count() = 1</span>
 <span class="c">Bad::~Bad() called</span>
 <span class="c">Bad::~Bad() called</span>
 </code></pre></div>
-
 
 <hr>
 <h6>Reference</h6>

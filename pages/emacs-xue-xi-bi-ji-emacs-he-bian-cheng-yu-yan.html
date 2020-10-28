@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -76,22 +78,19 @@
 <h2>写代码</h2>
 <h3>Mode</h3>
 <p>如果相应的语言没有被 Emacs 默认支持, 则在部署相应的 mode 之后, 可能还需要在 init.el 文件中添加一行命令根据文件名自动加载相应的 mode.</p>
-<div class="highlight"><pre><span></span><code><span class="err">(autoload \&#39;function &quot;filename&quot; &quot;description&quot; t) </span>
-<span class="err">(autoload \&#39;python-mode &quot;python-mode&quot; &quot;python&quot; t) ;; 加载 mode lisp 文件</span>
+<div class="highlight"><pre><span></span><code><span class="p">(</span><span class="n">autoload</span> \<span class="s1">&#39;function &quot;filename&quot; &quot;description&quot; t) </span>
+<span class="p">(</span><span class="n">autoload</span> \<span class="s1">&#39;python-mode &quot;python-mode&quot; &quot;python&quot; t) ;; 加载 mode lisp 文件</span>
 </code></pre></div>
-
 
 <p>在自动加载 lisp 文件后还应该自动根据代码后缀名自动开启相应的 mode. auto-mode-alist 存储文件后缀名和相应 mode 的对应关系.</p>
 <div class="highlight"><pre><span></span><code><span class="err">(setq auto-mode-alist (cons \&#39;(&quot;\\.py$&quot; . python-mode) auto-mode-alist))</span>
 </code></pre></div>
-
 
 <p>对于交互式语言, 还可以添加下列支持.</p>
 <div class="highlight"><pre><span></span><code><span class="err">(setq interpreter-mode-alist</span>
 <span class="err">      (cons \&#39;(&quot;python&quot; . python-mode)</span>
 <span class="err">            interpreter-mode-alist))</span>
 </code></pre></div>
-
 
 <h3>注释</h3>
 <ul>

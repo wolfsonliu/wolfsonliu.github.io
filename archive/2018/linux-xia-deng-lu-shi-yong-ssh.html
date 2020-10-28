@@ -54,6 +54,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -64,6 +65,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -84,12 +86,11 @@
 件夹或文件权限不对则不能正常使用 KEY 进行登陆。</p>
 <p>SSH 登陆相关的文件在 $HOME 下的 .ssh 文件夹中。.ssh 文件夹的权限应该设
 置为 700。</p>
-<div class="highlight"><pre><span></span><code><span class="nb">cd</span> <span class="nv">$HOME</span>
-chmod <span class="m">700</span> .ssh
-ls -al <span class="p">|</span> grep .ssh
-<span class="c1"># drwx------   2 User User  4096 Aug  1 20:43 .ssh</span>
+<div class="highlight"><pre><span></span><code><span class="err">cd $HOME</span>
+<span class="err">chmod 700 .ssh</span>
+<span class="err">ls -al | grep .ssh</span>
+<span class="err"># drwx------   2 User User  4096 Aug  1 20:43 .ssh</span>
 </code></pre></div>
-
 
 <h3>登录时直接进入上一次登出时候的目录</h3>
 <p>有时候工作没有做完就先登出了，下次登陆还想继续做，但是需要走很长的路径
@@ -99,27 +100,24 @@ ls -al <span class="p">|</span> grep .ssh
 <div class="highlight"><pre><span></span><code><span class="err">echo $PWD &gt;&gt; ~/.cd_stack</span>
 </code></pre></div>
 
-
 <p>然后在 <code>.bashrc</code> 中设置每次登录时自动前往上次存储的地址：</p>
 <div class="highlight"><pre><span></span><code><span class="n">cd</span> <span class="err">$</span><span class="p">(</span><span class="n">tail</span> <span class="o">-</span><span class="mi">1</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">)</span>
 
 <span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="mi">1</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span> <span class="o">&gt;</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">.</span><span class="n">tmp</span> <span class="o">&amp;&amp;</span> <span class="n">mv</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span><span class="p">.</span><span class="n">tmp</span> <span class="err">$</span><span class="n">HOME</span><span class="o">/</span><span class="p">.</span><span class="n">cd_stack</span>
 </code></pre></div>
 
-
 <h3>存储常用登陆信息</h3>
 <p>在 <code>~/.ssh/config</code> 文件中可以存储经常登陆的服务器信息：</p>
-<div class="highlight"><pre><span></span><code>Host fwq
-    HostName <span class="m">8</span>.8.8.8
-    Port <span class="m">22</span>
-    User yonghu
-    IdentityFile ~/.ssh/id_rsa
+<div class="highlight"><pre><span></span><code><span class="err">Host fwq</span>
+<span class="err">    HostName 8.8.8.8</span>
+<span class="err">    Port 22</span>
+<span class="err">    User yonghu</span>
+<span class="err">    IdentityFile ~/.ssh/id_rsa</span>
 </code></pre></div>
 
-
 <p>这样之后使用ssh登陆该地址或者使用scp传输数据的时候就可以打服务器名称了：</p>
-<div class="highlight"><pre><span></span><code>ssh fwq
-scp myfile fwq:~/
+<div class="highlight"><pre><span></span><code><span class="err">ssh fwq</span>
+<span class="err">scp myfile fwq:~/</span>
 </code></pre></div>
         </div>
         <div class="post_list">

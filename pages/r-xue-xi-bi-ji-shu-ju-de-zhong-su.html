@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -131,7 +133,6 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 4 张大四   英语    93</span>
 </code></pre></div>
 
-
 <h3>规整数据 gather</h3>
 <p>然而, 往往我们所获得的数据并不是像数据中数据那样的规整的数据.
 我们所得到的数据可能有若干情况:
@@ -142,13 +143,12 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 * 一个观测被存在不同的表
 我们整理数据, 往往就是把上面的不整洁数据整理成符合之前提到的第三范式数据库所接受的数据结构.</p>
 <p>例如, 如果我们收到的是下面这样的数据.</p>
-<div class="highlight"><pre><span></span><code><span class="n">score.b</span>
-<span class="c1">#   person 数学 英语</span>
-<span class="c1"># 1 张大四   90   93</span>
-<span class="c1"># 2 李中三   NA   96</span>
-<span class="c1"># 3 王小二   NA   94</span>
+<div class="highlight"><pre><span></span><code><span class="err">score.b</span>
+<span class="err">#   person 数学 英语</span>
+<span class="err"># 1 张大四   90   93</span>
+<span class="err"># 2 李中三   NA   96</span>
+<span class="err"># 3 王小二   NA   94</span>
 </code></pre></div>
-
 
 <p>上面的表中列名也是一个变量.
 我们就需要把列对应的变量转换为上面我们提到的规整的数据结构.
@@ -183,12 +183,10 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 6 王小二   英语    94</span>
 </code></pre></div>
 
-
 <p><code>gather</code> 函数是用来把列名作为变量的数据转换为规整的格式.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">gather</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="s">&quot;key&quot;</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">na.rm</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>
-       <span class="n">convert</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">factor_key</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">gather(data, key = &quot;key&quot;, value = &quot;value&quot;, ..., na.rm = FALSE,</span>
+<span class="err">       convert = FALSE, factor_key = FALSE)</span>
 </code></pre></div>
-
 
 <ul>
 <li>data 为原来的数据, 可以是矩阵, 数据表 (<code>data.frame</code> 或者 dplyr 中的 <code>data_frame</code>) 等.</li>
@@ -204,15 +202,14 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 而避免了函数的层层嵌套, 主要是方便数入和理解,
 对运行效率并没有太大影响.</p>
 <p>假如说我们的数据比上面的数据还多一列班级信息:</p>
-<div class="highlight"><pre><span></span><code><span class="n">score2.b</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2</span><span class="p">.</span><span class="n">b</span>
 
-<span class="c1">#   person class 数学 英语</span>
-<span class="c1"># 1 王小二     1   NA   94</span>
-<span class="c1"># 2 李中三     1   NA   96</span>
-<span class="c1"># 3 张大四     1   90   93</span>
-<span class="c1"># 4 王小二     2   92   NA</span>
+<span class="o">#</span>   <span class="n">person</span> <span class="k">class</span> <span class="err">数学</span> <span class="err">英语</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="err">王小二</span>     <span class="mi">1</span>   <span class="n">NA</span>   <span class="mi">94</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="err">李中三</span>     <span class="mi">1</span>   <span class="n">NA</span>   <span class="mi">96</span>
+<span class="o">#</span> <span class="mi">3</span> <span class="err">张大四</span>     <span class="mi">1</span>   <span class="mi">90</span>   <span class="mi">93</span>
+<span class="o">#</span> <span class="mi">4</span> <span class="err">王小二</span>     <span class="mi">2</span>   <span class="mi">92</span>   <span class="n">NA</span>
 </code></pre></div>
-
 
 <p>显然, person 和 class 两列的值才能确定一个人,
 这个时候我们的 gather 函数会有少量差别, 增加了一个 class.</p>
@@ -233,7 +230,6 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 <span class="c1"># 8 王小二     2   英语    NA</span>
 </code></pre></div>
 
-
 <p>整理过的数据中, person class 和 object 三列作为变量, score 作为值,
 变量和值组成一个观测.</p>
 <h3>扩展 spread</h3>
@@ -241,28 +237,26 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 有的时候我们需要某一个变量的值扩展为列, 方便分析.
 这样的情况下就需要展开 (spread) 数据.
 拿上面的 score2.l 为例, 我们把班级展开.</p>
-<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">spread</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">class</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2</span><span class="p">.</span><span class="n">l</span> <span class="o">%&gt;%</span> <span class="n">spread</span><span class="p">(</span><span class="k">key</span><span class="o">=</span><span class="k">class</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
 
-<span class="c1">#   person object  1  2</span>
-<span class="c1"># 1 张大四   数学 90 NA</span>
-<span class="c1"># 2 张大四   英语 93 NA</span>
-<span class="c1"># 3 李中三   数学 NA NA</span>
-<span class="c1"># 4 李中三   英语 96 NA</span>
-<span class="c1"># 5 王小二   数学 NA 92</span>
-<span class="c1"># 6 王小二   英语 94 NA</span>
+<span class="o">#</span>   <span class="n">person</span> <span class="k">object</span>  <span class="mi">1</span>  <span class="mi">2</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="err">张大四</span>   <span class="err">数学</span> <span class="mi">90</span> <span class="n">NA</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="err">张大四</span>   <span class="err">英语</span> <span class="mi">93</span> <span class="n">NA</span>
+<span class="o">#</span> <span class="mi">3</span> <span class="err">李中三</span>   <span class="err">数学</span> <span class="n">NA</span> <span class="n">NA</span>
+<span class="o">#</span> <span class="mi">4</span> <span class="err">李中三</span>   <span class="err">英语</span> <span class="mi">96</span> <span class="n">NA</span>
+<span class="o">#</span> <span class="mi">5</span> <span class="err">王小二</span>   <span class="err">数学</span> <span class="n">NA</span> <span class="mi">92</span>
+<span class="o">#</span> <span class="mi">6</span> <span class="err">王小二</span>   <span class="err">英语</span> <span class="mi">94</span> <span class="n">NA</span>
 </code></pre></div>
-
 
 <p>或者我们也可以把数据按照科目展开.</p>
-<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">spread</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="n">object</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2</span><span class="p">.</span><span class="n">l</span> <span class="o">%&gt;%</span> <span class="n">spread</span><span class="p">(</span><span class="k">key</span><span class="o">=</span><span class="k">object</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">score</span><span class="p">)</span>
 
-<span class="c1">#   person class 数学 英语</span>
-<span class="c1"># 1 张大四     1   90   93</span>
-<span class="c1"># 2 李中三     1   NA   96</span>
-<span class="c1"># 3 王小二     1   NA   94</span>
-<span class="c1"># 4 王小二     2   92   NA</span>
+<span class="o">#</span>   <span class="n">person</span> <span class="k">class</span> <span class="err">数学</span> <span class="err">英语</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="err">张大四</span>     <span class="mi">1</span>   <span class="mi">90</span>   <span class="mi">93</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="err">李中三</span>     <span class="mi">1</span>   <span class="n">NA</span>   <span class="mi">96</span>
+<span class="o">#</span> <span class="mi">3</span> <span class="err">王小二</span>     <span class="mi">1</span>   <span class="n">NA</span>   <span class="mi">94</span>
+<span class="o">#</span> <span class="mi">4</span> <span class="err">王小二</span>     <span class="mi">2</span>   <span class="mi">92</span>   <span class="n">NA</span>
 </code></pre></div>
-
 
 <h3>分列</h3>
 <p>有的时候输入的一列数据实际上包括若干的信息,
@@ -272,15 +266,13 @@ R 作为数据分析的利器, 对于数据的整理就会有一些方便使用�
 这两个函数都是把单一的列分成若干列, 不过有细微的差别.
 separate 是根据 sep 变量所指定的分隔符来分列,
 而 extract 则根据 regex 变量所指定的正则表达式去提取列信息.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">separate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">into</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;[^[:alnum:]]+&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
-         <span class="n">convert</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="n">extra</span> <span class="o">=</span> <span class="s">&quot;warn&quot;</span><span class="p">,</span> <span class="n">fill</span> <span class="o">=</span> <span class="s">&quot;warn&quot;</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">separate(data, col, into, sep = &quot;[^[:alnum:]]+&quot;, remove = TRUE,</span>
+<span class="err">         convert = FALSE, extra = &quot;warn&quot;, fill = &quot;warn&quot;, ...)</span>
 </code></pre></div>
 
-
-<div class="highlight"><pre><span></span><code><span class="nf">extract</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">into</span><span class="p">,</span> <span class="n">regex</span> <span class="o">=</span> <span class="s">&quot;([[:alnum:]]+)&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span>
-        <span class="n">convert</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">extract(data, col, into, regex = &quot;([[:alnum:]]+)&quot;, remove = TRUE,</span>
+<span class="err">        convert = FALSE, ...)</span>
 </code></pre></div>
-
 
 <ul>
 <li>data 是输入的数据表 (<code>data.frame</code> 或者 <code>data_frame</code>),
@@ -296,61 +288,58 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 这里我们所有的姓都是一个字, 所以对应正则表达式为 '.',
 而名可能是一个或多个, 所以对应正则表达式为 '.+'.
 相应的 regex 的值应为 '(.)(.+)'.</p>
-<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">extract</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">person</span><span class="p">,</span> <span class="n">into</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;姓&#39;</span><span class="p">,</span> <span class="s">&#39;名&#39;</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="s">&#39;(.)(.+)&#39;</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2</span><span class="p">.</span><span class="n">l</span> <span class="o">%&gt;%</span> <span class="n">extract</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="n">person</span><span class="p">,</span> <span class="n">into</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="sc">&#39;姓&#39;</span><span class="p">,</span> <span class="sc">&#39;名&#39;</span><span class="p">),</span> <span class="n">regex</span><span class="o">=</span><span class="p">&#39;(.)(.</span><span class="o">+</span><span class="p">)&#39;)</span>
 
-<span class="c1">#   姓   名 class object score</span>
-<span class="c1"># 1 王 小二     1   数学    NA</span>
-<span class="c1"># 2 李 中三     1   数学    NA</span>
-<span class="c1"># 3 张 大四     1   数学    90</span>
-<span class="c1"># 4 王 小二     2   数学    92</span>
-<span class="c1"># 5 王 小二     1   英语    94</span>
-<span class="c1"># 6 李 中三     1   英语    96</span>
-<span class="c1"># 7 张 大四     1   英语    93</span>
-<span class="c1"># 8 王 小二     2   英语    NA</span>
+<span class="p">#</span>   <span class="err">姓</span>   <span class="err">名</span> <span class="n">class</span> <span class="n">object</span> <span class="n">score</span>
+<span class="p">#</span> <span class="mh">1</span> <span class="err">王</span> <span class="err">小二</span>     <span class="mh">1</span>   <span class="err">数学</span>    <span class="n">NA</span>
+<span class="p">#</span> <span class="mh">2</span> <span class="err">李</span> <span class="err">中三</span>     <span class="mh">1</span>   <span class="err">数学</span>    <span class="n">NA</span>
+<span class="p">#</span> <span class="mh">3</span> <span class="err">张</span> <span class="err">大四</span>     <span class="mh">1</span>   <span class="err">数学</span>    <span class="mh">90</span>
+<span class="p">#</span> <span class="mh">4</span> <span class="err">王</span> <span class="err">小二</span>     <span class="mh">2</span>   <span class="err">数学</span>    <span class="mh">92</span>
+<span class="p">#</span> <span class="mh">5</span> <span class="err">王</span> <span class="err">小二</span>     <span class="mh">1</span>   <span class="err">英语</span>    <span class="mh">94</span>
+<span class="p">#</span> <span class="mh">6</span> <span class="err">李</span> <span class="err">中三</span>     <span class="mh">1</span>   <span class="err">英语</span>    <span class="mh">96</span>
+<span class="p">#</span> <span class="mh">7</span> <span class="err">张</span> <span class="err">大四</span>     <span class="mh">1</span>   <span class="err">英语</span>    <span class="mh">93</span>
+<span class="p">#</span> <span class="mh">8</span> <span class="err">王</span> <span class="err">小二</span>     <span class="mh">2</span>   <span class="err">英语</span>    <span class="n">NA</span>
 </code></pre></div>
-
 
 <p>我们也可以利用 separate 函数去分外国人的名, 比如 tidyr 中的 smiths 数据.</p>
 <div class="highlight"><pre><span></span><code><span class="n">smiths</span>
 
-<span class="c1"># # A tibble: 2 x 5</span>
-<span class="c1">#      subject  time   age weight height</span>
-<span class="c1">#        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="c1"># 1 John Smith     1    33     90   1.87</span>
-<span class="c1"># 2 Mary Smith     1    NA     NA   1.54</span>
+<span class="o">#</span> <span class="o">#</span> <span class="n">A</span> <span class="n">tibble</span><span class="p">:</span> <span class="mi">2</span> <span class="n">x</span> <span class="mi">5</span>
+<span class="o">#</span>      <span class="n">subject</span>  <span class="k">time</span>   <span class="n">age</span> <span class="n">weight</span> <span class="n">height</span>
+<span class="o">#</span>        <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="n">John</span> <span class="n">Smith</span>     <span class="mi">1</span>    <span class="mi">33</span>     <span class="mi">90</span>   <span class="mi">1</span><span class="p">.</span><span class="mi">87</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="n">Mary</span> <span class="n">Smith</span>     <span class="mi">1</span>    <span class="n">NA</span>     <span class="n">NA</span>   <span class="mi">1</span><span class="p">.</span><span class="mi">54</span>
 
-<span class="n">smiths</span> <span class="o">%&gt;%</span> <span class="nf">gather</span><span class="p">(</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+<span class="n">smiths</span> <span class="o">%&gt;%</span> <span class="n">gather</span><span class="p">(</span>
+    <span class="k">key</span><span class="o">=</span><span class="k">key</span><span class="p">,</span>
     <span class="n">value</span><span class="o">=</span><span class="n">value</span><span class="p">,</span>
     <span class="o">-</span><span class="n">subject</span>
-<span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">separate</span><span class="p">(</span>
+<span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">separate</span><span class="p">(</span>
     <span class="n">col</span><span class="o">=</span><span class="n">subject</span><span class="p">,</span>
-    <span class="n">into</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;First&#39;</span><span class="p">,</span> <span class="s">&#39;Last&#39;</span><span class="p">),</span>
-    <span class="n">sep</span><span class="o">=</span><span class="s">&#39; &#39;</span><span class="p">,</span>
-    <span class="n">remove</span><span class="o">=</span><span class="kc">FALSE</span>
+    <span class="k">into</span><span class="o">=</span><span class="k">c</span><span class="p">(</span><span class="s1">&#39;First&#39;</span><span class="p">,</span> <span class="s1">&#39;Last&#39;</span><span class="p">),</span>
+    <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">,</span>
+    <span class="n">remove</span><span class="o">=</span><span class="k">FALSE</span>
 <span class="p">)</span>
 
-<span class="c1"># # A tibble: 8 x 5</span>
-<span class="c1">#      subject First  Last    key value</span>
-<span class="c1"># *      &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt;</span>
-<span class="c1"># 1 John Smith  John Smith   time  1.00</span>
-<span class="c1"># 2 Mary Smith  Mary Smith   time  1.00</span>
-<span class="c1"># 3 John Smith  John Smith    age 33.00</span>
-<span class="c1"># 4 Mary Smith  Mary Smith    age    NA</span>
-<span class="c1"># 5 John Smith  John Smith weight 90.00</span>
-<span class="c1"># 6 Mary Smith  Mary Smith weight    NA</span>
-<span class="c1"># 7 John Smith  John Smith height  1.87</span>
-<span class="c1"># 8 Mary Smith  Mary Smith height  1.54</span>
+<span class="o">#</span> <span class="o">#</span> <span class="n">A</span> <span class="n">tibble</span><span class="p">:</span> <span class="mi">8</span> <span class="n">x</span> <span class="mi">5</span>
+<span class="o">#</span>      <span class="n">subject</span> <span class="k">First</span>  <span class="k">Last</span>    <span class="k">key</span> <span class="n">value</span>
+<span class="o">#</span> <span class="o">*</span>      <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>  <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+<span class="o">#</span> <span class="mi">1</span> <span class="n">John</span> <span class="n">Smith</span>  <span class="n">John</span> <span class="n">Smith</span>   <span class="k">time</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">00</span>
+<span class="o">#</span> <span class="mi">2</span> <span class="n">Mary</span> <span class="n">Smith</span>  <span class="n">Mary</span> <span class="n">Smith</span>   <span class="k">time</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">00</span>
+<span class="o">#</span> <span class="mi">3</span> <span class="n">John</span> <span class="n">Smith</span>  <span class="n">John</span> <span class="n">Smith</span>    <span class="n">age</span> <span class="mi">33</span><span class="p">.</span><span class="mi">00</span>
+<span class="o">#</span> <span class="mi">4</span> <span class="n">Mary</span> <span class="n">Smith</span>  <span class="n">Mary</span> <span class="n">Smith</span>    <span class="n">age</span>    <span class="n">NA</span>
+<span class="o">#</span> <span class="mi">5</span> <span class="n">John</span> <span class="n">Smith</span>  <span class="n">John</span> <span class="n">Smith</span> <span class="n">weight</span> <span class="mi">90</span><span class="p">.</span><span class="mi">00</span>
+<span class="o">#</span> <span class="mi">6</span> <span class="n">Mary</span> <span class="n">Smith</span>  <span class="n">Mary</span> <span class="n">Smith</span> <span class="n">weight</span>    <span class="n">NA</span>
+<span class="o">#</span> <span class="mi">7</span> <span class="n">John</span> <span class="n">Smith</span>  <span class="n">John</span> <span class="n">Smith</span> <span class="n">height</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">87</span>
+<span class="o">#</span> <span class="mi">8</span> <span class="n">Mary</span> <span class="n">Smith</span>  <span class="n">Mary</span> <span class="n">Smith</span> <span class="n">height</span>  <span class="mi">1</span><span class="p">.</span><span class="mi">54</span>
 </code></pre></div>
-
 
 <p>上面的例子也体现出了管道函数的方便的地方.</p>
 <h3>合列 unite</h3>
 <p>我们可以把列分开, 就也能把列合起来.
 除了利用 lapply 和 paste 等函数, 还可以使用 unite 函数.</p>
-<div class="highlight"><pre><span></span><code><span class="nf">unite</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="kc">...</span><span class="p">,</span> <span class="n">sep</span> <span class="o">=</span> <span class="s">&quot;_&quot;</span><span class="p">,</span> <span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="err">unite(data, col, ..., sep = &quot;_&quot;, remove = TRUE)</span>
 </code></pre></div>
-
 
 <ul>
 <li>data 是输入的数据表 (<code>data.frame</code> 或者 <code>data_frame</code>),
@@ -361,23 +350,22 @@ separate 是根据 sep 变量所指定的分隔符来分列,
 <li>... 合并的列要用 c 函数连接起来</li>
 <li>remove bool 值, 如果为 TRUE, 则去除被拆分的列, 如果为 FALSE 则保留原列</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">score2.l</span> <span class="o">%&gt;%</span> <span class="nf">extract</span><span class="p">(</span>
+<div class="highlight"><pre><span></span><code><span class="n">score2</span><span class="p">.</span><span class="n">l</span> <span class="o">%&gt;%</span> <span class="n">extract</span><span class="p">(</span>
     <span class="n">col</span><span class="o">=</span><span class="n">person</span><span class="p">,</span>
-    <span class="n">into</span><span class="o">=</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;姓&#39;</span><span class="p">,</span> <span class="s">&#39;名&#39;</span><span class="p">),</span>
-    <span class="n">regex</span><span class="o">=</span><span class="s">&#39;(.)(.+)&#39;</span>
-<span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">unite</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="s">&#39;姓名&#39;</span><span class="p">,</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;姓&#39;</span><span class="p">,</span> <span class="s">&#39;名&#39;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">into</span><span class="o">=</span><span class="n">c</span><span class="p">(</span><span class="sc">&#39;姓&#39;</span><span class="p">,</span> <span class="sc">&#39;名&#39;</span><span class="p">),</span>
+    <span class="n">regex</span><span class="o">=</span><span class="p">&#39;(.)(.</span><span class="o">+</span><span class="p">)&#39;</span>
+<span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">unite</span><span class="p">(</span><span class="n">col</span><span class="o">=</span><span class="p">&#39;</span><span class="err">姓名</span><span class="p">&#39;,</span> <span class="n">c</span><span class="p">(</span><span class="sc">&#39;姓&#39;</span><span class="p">,</span> <span class="sc">&#39;名&#39;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="sc">&#39;.&#39;</span><span class="p">)</span>
 
-<span class="c1">#      姓名 class object score</span>
-<span class="c1"># 1 王.小二     1   数学    NA</span>
-<span class="c1"># 2 李.中三     1   数学    NA</span>
-<span class="c1"># 3 张.大四     1   数学    90</span>
-<span class="c1"># 4 王.小二     2   数学    92</span>
-<span class="c1"># 5 王.小二     1   英语    94</span>
-<span class="c1"># 6 李.中三     1   英语    96</span>
-<span class="c1"># 7 张.大四     1   英语    93</span>
-<span class="c1"># 8 王.小二     2   英语    NA</span>
+<span class="p">#</span>      <span class="err">姓名</span> <span class="n">class</span> <span class="n">object</span> <span class="n">score</span>
+<span class="p">#</span> <span class="mh">1</span> <span class="err">王</span><span class="p">.</span><span class="err">小二</span>     <span class="mh">1</span>   <span class="err">数学</span>    <span class="n">NA</span>
+<span class="p">#</span> <span class="mh">2</span> <span class="err">李</span><span class="p">.</span><span class="err">中三</span>     <span class="mh">1</span>   <span class="err">数学</span>    <span class="n">NA</span>
+<span class="p">#</span> <span class="mh">3</span> <span class="err">张</span><span class="p">.</span><span class="err">大四</span>     <span class="mh">1</span>   <span class="err">数学</span>    <span class="mh">90</span>
+<span class="p">#</span> <span class="mh">4</span> <span class="err">王</span><span class="p">.</span><span class="err">小二</span>     <span class="mh">2</span>   <span class="err">数学</span>    <span class="mh">92</span>
+<span class="p">#</span> <span class="mh">5</span> <span class="err">王</span><span class="p">.</span><span class="err">小二</span>     <span class="mh">1</span>   <span class="err">英语</span>    <span class="mh">94</span>
+<span class="p">#</span> <span class="mh">6</span> <span class="err">李</span><span class="p">.</span><span class="err">中三</span>     <span class="mh">1</span>   <span class="err">英语</span>    <span class="mh">96</span>
+<span class="p">#</span> <span class="mh">7</span> <span class="err">张</span><span class="p">.</span><span class="err">大四</span>     <span class="mh">1</span>   <span class="err">英语</span>    <span class="mh">93</span>
+<span class="p">#</span> <span class="mh">8</span> <span class="err">王</span><span class="p">.</span><span class="err">小二</span>     <span class="mh">2</span>   <span class="err">英语</span>    <span class="n">NA</span>
 </code></pre></div>
-
 
 <h2>集合操作</h2>
 <ul>

@@ -44,6 +44,7 @@
           <li><a class="nav__link" href="https://wolfsonliu.github.io/tag/">标签</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/category/">类别</a></li>
           <li><a class="nav__link" href="https://wolfsonliu.github.io/about.html">关于</a></li>
+          <li><a class="nav__link" href="https://wolfsonliu.github.io/suggestion.html">推荐</a></li>
          
         
       </ul>
@@ -54,6 +55,7 @@
         <a href="https://www.douban.com/people/77536581/" target="_blank" ><img src="../theme/images/icons/douban.png"></a>
         <a href="https://ebird.org/ebird/profile/NDY3ODYz" target="_blank" ><img src="../theme/images/icons/ebird.png"></a>
         <a href="https://zh.wikipedia.org/wiki/User:Wolfsonliu" target="_blank" ><img src="../theme/images/icons/wikipedia.png"></a>
+        <a href="https://orcid.org/0000-0001-6711-4801" target="_blank" ><img src="../theme/images/icons/orcid.png"></a>
     </p>
 
 
@@ -105,8 +107,8 @@
 </ol>
 <p>来自<a href="http://www.cplusplus.com/reference/ios/ios/good/">cplusplus</a>的例子如下。</p>
 <div class="highlight"><pre><span></span><code><span class="c1">// error state flags</span>
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;     // std::cout, std::ios</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;      // std::stringstream</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="c1">     // std::cout, std::ios</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;sstream&gt;</span><span class="c1">      // std::stringstream</span><span class="cp"></span>
 
 <span class="kr">void</span> <span class="nf">print_state</span> <span class="p">(</span><span class="kr">const</span> <span class="n">std</span><span class="o">::</span><span class="n">ios</span><span class="o">&amp;</span> <span class="n">stream</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; good()=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">stream</span><span class="p">.</span><span class="n">good</span><span class="p">();</span>    <span class="c1">// 判断是否是 goodbit，是的话返回 true。</span>
@@ -133,7 +135,6 @@
     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div>
-
 
 <p>相应的有一些函数可以帮助判断和操作，其中 stream 可以为 cin cout 等：</p>
 <ul>
@@ -162,14 +163,12 @@
 <span class="n">ofile</span><span class="p">.</span><span class="k">open</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
 </code></pre></div>
 
-
 <p>其中 filename 应该是 char *，如果把 filename 存入 string 类型的话应该记得使用 filename.c_str() 函数转换类型。</p>
 <p>在文件使用完后需要关闭文件，如果需要重新使用变量名还需要清空状态。</p>
 <div class="highlight"><pre><span></span><code><span class="err">ifile.close();</span>
 <span class="err">ifile.clear();    // 必须要有，因为上一个文件读到了 eof.</span>
 <span class="err">ifile.open(anotherfile);</span>
 </code></pre></div>
-
 
 <p>文件打开有模式的区别，ifstream 和 ofstream 定义的变量都有默认的模式，也可以自己设置。</p>
 <ul>
@@ -184,7 +183,6 @@
 <div class="highlight"><pre><span></span><code><span class="err">ofstream outfile(&quot;file&quot;, ofstream::out | ofstream::trunc);</span>
 </code></pre></div>
 
-
 <p>不同的组合如下：</p>
 <ul>
 <li>out：打开文件写操作，清除有的数据；</li>
@@ -196,13 +194,12 @@
 </ul>
 <h4>示例</h4>
 <p>如果想要检测是否存在文件, 可以使用 std::ifstream::good().</p>
-<div class="highlight"><pre><span></span><code><span class="err">bool isFileExist(const char* file_name)</span>
-<span class="err">{</span>
-<span class="err">    ifstream in_file(file_name);</span>
-<span class="err">    return in_file.good();</span>
-<span class="err">}</span>
+<div class="highlight"><pre><span></span><code><span class="nb nb-Type">bool</span> <span class="n">isFileExist</span><span class="p">(</span><span class="k">const</span> <span class="nb">char</span><span class="o">*</span> <span class="n">file_name</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">ifstream</span> <span class="n">in_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">in_file</span><span class="o">.</span><span class="n">good</span><span class="p">();</span>
+<span class="p">}</span>
 </code></pre></div>
-
 
 <hr>
 <h3>字符串输入输出</h3>
@@ -222,7 +219,6 @@
 <span class="err">}</span>
 </code></pre></div>
 
-
 <p>stringstream 也可以用来进行格式转换；</p>
 <div class="highlight"><pre><span></span><code><span class="err">int val1 = 512, val2 = 024;</span>
 <span class="err">ostringstream format_message;</span>
@@ -233,7 +229,6 @@
 <span class="err">input_istring &gt;&gt; dump &gt;&gt; val1 &gt;&gt; dump &gt;&gt; val2;    // &quot;val1:&quot; 和 &quot;val2:&quot; 被输入 dump，空格和换行符被忽略.</span>
 </code></pre></div>
 
-
 <hr>
 <h3>格式</h3>
 <p>在 c 中, 使用 printf 进行输出, 使用 c 的格式说明 % 来输出特定的精度. Python 中也可以使用 c 风格的格式. 在 c++ 中, 如果使用 iostream 的话, 格式说明和 c 不一样. 在 头文件 <ios> 和 <iomanip> 中有相关的声明和定义. <iomanip> 中的函数是对 <ios> 中的 flag 的补充.</p>
@@ -243,14 +238,12 @@
 <span class="err">os.flags(current_fmt);</span>
 </code></pre></div>
 
-
 <h4>iostream 操作符</h4>
 <p>在 iostream 中定义了一些操作符, 可以用来改变格式状态, 有些是默认的设置, 另一些可以选择改变. 斜体的为默认设置.</p>
 <p>设置方法均为:</p>
 <div class="highlight"><pre><span></span><code><span class="err">cout &lt;&lt; boolalpha &lt;&lt; something;</span>
 <span class="err">cin &gt;&gt; noskipws;</span>
 </code></pre></div>
-
 
 <ul>
 <li>boolalpha: 把 true 和 false 显示为字符串.</li>
